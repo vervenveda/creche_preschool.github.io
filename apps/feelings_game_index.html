@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Noetic Kids – Feelings Game</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+  body {
+    font-family: "Comic Sans MS", system-ui, sans-serif;
+    background: linear-gradient(#fdf6ff, #e8f6ff);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 77vh;
+  }
+
+  .app {
+    background: white;
+    border-radius: 14px;
+    padding: 25px;
+    max-width: 555px;
+    width: 88%;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+    text-align: center;
+  }
+
+  h1 {
+    margin-bottom: 10px;
+    color: #6b3fa0;
+  }
+
+  #emotionIcon {
+    font-size: 4rem;
+    margin: 10px 0;
+  }
+
+  .question {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+  }
+
+  .answers button {
+    display: block;
+    width: 100%;
+    margin: 8px 0;
+    padding: 12px;
+    font-size: 1.1rem;
+    border-radius: 12px;
+    border: none;
+    background: #f0e6ff;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+  }
+
+  .answers button:hover {
+    background: #e0ccff;
+  }
+
+  .answers button:active {
+    transform: scale(1.1);
+  }
+
+  #feedback {
+    font-size: 1.2rem;
+    margin-top: 12px;
+  }
+
+  #nextBtn {
+    margin-top: 15px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+    background: #6b3fa0;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    display: none;
+  }
+</style>
+</head>
+
+<body>
+<div class="app">
+  <h1>😊 Feelings Game</h1>
+
+  <div id="emotionIcon">😊</div>
+  <div id="question" class="question"></div>
+  <div class="answers" id="answers"></div>
+
+  <div id="feedback"></div>
+  <button id="nextBtn">Next</button>
+</div>
+
+<script>
+const QUESTIONS = [
+  { q:"Someone takes your toy. How do you feel?", icon:"😢", a:["Happy","Sad","Sleepy"], c:1 },
+  { q:"A friend hugs you. How do you feel?", icon:"🥰", a:["Angry","Loved","Scared"], c:1 },
+  { q:"You fall down and get hurt. How do you feel?", icon:"😖", a:["Okay","Hurt","Excited"], c:1 },
+  { q:"You share your snack. How do you feel?", icon:"😊", a:["Proud","Mad","Tired"], c:0 },
+  { q:"Someone yells at you. How do you feel?", icon:"😟", a:["Scared","Happy","Funny"], c:0 },
+  { q:"You help a friend. How do you feel?", icon:"🌟", a:["Good","Angry","Sleepy"], c:0 },
+  { q:"You break something by accident. How do you feel?", icon:"😔", a:["Sorry","Happy","Silly"], c:0 },
+  { q:"You win a game. How do you feel?", icon:"🎉", a:["Happy","Sad","Angry"], c:0 },
+  { q:"Someone is crying. What should you do?", icon:"🤗", a:["Help","Laugh","Ignore"], c:0 },
+  { q:"You wait your turn. How do you feel?", icon:"🙂", a:["Calm","Mad","Scared"], c:0 }
+];
+
+// select 5 random
+let session = QUESTIONS.sort(() => 0.5 - Math.random()).slice(0,5);
+let index = 0;
+
+const iconEl = document.getElementById("emotionIcon");
+const qEl = document.getElementById("question");
+const answersEl = document.getElementById("answers");
+const feedbackEl = document.getElementById("feedback");
+const nextBtn = document.getElementById("nextBtn");
+
+function loadQuestion() {
+  feedbackEl.textContent = "";
+  nextBtn.style.display = "none";
+  answersEl.innerHTML = "";
+
+  let q = session[index];
+  iconEl.textContent = q.icon;
+  qEl.textContent = q.q;
+
+  q.a.forEach((text, i) => {
+    const btn = document.createElement("button");
+    btn.textContent = text;
+    btn.onclick = () => checkAnswer(i, btn);
+    answersEl.appendChild(btn);
+  });
+}
+
+function checkAnswer(i, btn) {
+  const q = session[index];
+  Array.from(answersEl.children).forEach(b => b.disabled = true);
+
+  if (i === q.c) {
+    feedbackEl.textContent = "🌈 Kind choice!";
+  } else {
+    feedbackEl.textContent = "💗 Let's try again next time.";
+  }
+
+  nextBtn.style.display = "inline-block";
+}
+
+nextBtn.onclick = () => {
+  index++;
+  if (index < session.length) {
+    loadQuestion();
+  } else {
+    qEl.textContent = "🎉 Great job!";
+    iconEl.textContent = "🌟";
+    answersEl.innerHTML = "";
+    feedbackEl.textContent = "You learned about feelings!";
+    nextBtn.style.display = "none";
+  }
+};
+
+loadQuestion();
+</script>
+</body>
+</html>
