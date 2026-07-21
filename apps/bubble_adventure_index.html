@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ABC Bubble Adventure</title>
+  <style>
+    body {
+      margin: 0; padding: 0;
+      font-family: Comic Sans MS, sans-serif;
+      background: linear-gradient(135deg, #89f7fe, #66a6ff);
+      overflow: hidden;
+      text-align: center;
+    }
+    h1 {
+      margin: 10px; color: #fff; font-size: 42px;
+      text-shadow: 2px 2px 4px #333;
+    }
+    #gameArea {
+      position: relative;
+      width: 100%;
+      height: calc(80vh - 20px); /* leave space for footer */
+      overflow: hidden;
+      border: 4px solid #fff;
+      background: linear-gradient(to top, #d9f7ff, #ffffff);
+    }
+    .bubble {
+      position: absolute;
+      border-radius: 50%;
+      width: 120px; height: 120px; /* bigger bubbles */
+      display: flex; align-items: center; justify-content: center;
+      font-size: 48px; font-weight: bold;
+      color: #fff;
+      cursor: pointer;
+    }
+    #message {
+      margin: 10px; font-size: 24px; color: #fff;
+    }
+    #startBtn {
+      padding: 12px 24px;
+      font-size: 20px;
+      border: none; border-radius: 10px;
+      background: #ff69b4; color: white;
+      cursor: pointer;
+      margin-bottom: 10px;
+    }
+    #footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      padding: 4px 0;
+      font-size: 12px;
+      background: rgba(0,0,0,0.3);
+      color: #fff;
+      text-shadow: 0 0 2px #333;
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+  <h1>ABC Bubble Adventure 🎈</h1>
+  <button id="startBtn">Start Game</button>
+  <div id="message"></div>
+  <div id="gameArea"></div>
+  <div id="footer">All Rights Reserved Archaemenes Academy 2025.</div>
+
+  <!-- Pop sound -->
+  <audio id="popSound" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"></audio>
+
+  <script>
+    const gameArea = document.getElementById("gameArea");
+    const message = document.getElementById("message");
+    const startBtn = document.getElementById("startBtn");
+    const popSound = document.getElementById("popSound");
+
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+    let targetLetter = null;
+    let gameInterval;
+    let bubbleSpeed = 4000; // initial speed (ms)
+
+    function randomColor() {
+      const colors = ["#ff7675","#55efc4","#ffeaa7","#74b9ff","#a29bfe","#fd79a8"];
+      return colors[Math.floor(Math.random()*colors.length)];
+    }
+
+    function createBubble(letter = null) {
+      const bubble = document.createElement("div");
+      bubble.classList.add("bubble");
+      bubble.style.background = randomColor();
+
+      // Either a random letter or the one we want to show
+      const bubbleLetter = letter || letters[Math.floor(Math.random()*letters.length)];
+      bubble.textContent = bubbleLetter;
+
+      const maxLeft = gameArea.clientWidth - 120;
+      bubble.style.left = Math.random() * maxLeft + "px";
+      bubble.style.bottom = "-120px";
+
+      gameArea.appendChild(bubble);
+
+      let start = null;
+      const bottomLimit = gameArea.clientHeight - 120; // so it doesn’t go behind footer
+
+      function animate(time) {
+        if (!start) start = time;
+        const progress = (time - start) / bubbleSpeed;
+        const newBottom = progress * bottomLimit;
+        bubble.style.bottom = newBottom + "px";
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        } else {
+          // Bubble reached top, remove and respawn missed letter
+          bubble.remove();
+          if (bubbleLetter === targetLetter) {
+            createBubble(targetLetter); // respawn the target letter if missed
+          }
+        }
+      }
+      requestAnimationFrame(animate);
+
+      bubble.addEventListener("click", () => {
+        if (bubbleLetter === targetLetter) {
+          message.textContent = "✅ Great job! You found " + bubbleLetter;
+          popSound.play();
+          bubble.remove();
+          pickNewLetter();
+        } else {
+          message.textContent = "❌ Try again!";
+          bubble.remove();
+        }
+      });
+    }
+
+    function pickNewLetter() {
+      targetLetter = letters[Math.floor(Math.random()*letters.length)];
+      message.textContent = "👂 Pop the bubble with the letter: " + targetLetter;
+      createBubble(targetLetter);
+    }
+
+    function startGame() {
+      message.textContent = "";
+      clearInterval(gameInterval);
+      bubbleSpeed = 4000; // reset speed
+      pickNewLetter();
+      gameInterval = setInterval(() => {
+        createBubble();
+      }, 1500);
+    }
+
+    startBtn.addEventListener("click", startGame);
+  </script>
+</body>
+</html>
