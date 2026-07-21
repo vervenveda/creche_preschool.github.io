@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🧭 Compass Explorer</title>
+<style>
+  body {
+    margin: 0;
+    overflow: hidden;
+    height: 100vh;
+    background: radial-gradient(circle at center, #b3f0ff, #80e1ff, #40c3ff);
+    font-family: "Comic Sans MS", cursive, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  h1 {
+    color: #ff3366;
+    font-size: 4em;
+    text-shadow: 3px 3px #333;
+    margin-bottom: 20px;
+  }
+
+  .compass {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, #fff, #ffe680);
+    border: 10px solid #ff3366;
+    border-radius: 50%;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+  }
+
+  .needle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 6px;
+    height: 140px;
+    background: linear-gradient(to bottom, red 50%, black 50%);
+    border-radius: 3px;
+    transform-origin: 50% 80%;
+    transform: rotate(0deg);
+    transition: transform 0.2s ease-out;
+  }
+
+  .direction {
+    position: absolute;
+    color: #333;
+    font-weight: bold;
+    font-size: 1.5em;
+  }
+
+  .north { top: 10px; left: 50%; transform: translateX(-50%); color: red; }
+  .south { bottom: 10px; left: 50%; transform: translateX(-50%); }
+  .east { right: 10px; top: 50%; transform: translateY(-50%); }
+  .west { left: 10px; top: 50%; transform: translateY(-50%); }
+
+  #directionText {
+    font-size: 2em;
+    color: #0066ff;
+    margin-top: 30px;
+    text-shadow: 1px 1px #fff;
+  }
+
+  #startButton {
+    margin-top: 20px;
+    padding: 20px 40px;
+    background: #ffcc00;
+    border: none;
+    border-radius: 20px;
+    font-size: 1.5em;
+    color: #333;
+    box-shadow: 3px 3px #666;
+    cursor: pointer;
+  }
+
+  #startButton:hover {
+    background: #ffdd33;
+  }
+</style>
+</head>
+<body>
+
+<h1>🧭 Compass Explorer</h1>
+<div class="compass">
+  <div class="needle" id="needle"></div>
+  <div class="direction north">N</div>
+  <div class="direction east">E</div>
+  <div class="direction south">S</div>
+  <div class="direction west">W</div>
+</div>
+
+<div id="directionText">Tap “Start” to begin!</div>
+<button id="startButton">▶️ Start Exploring</button>
+
+<script>
+let lastDirection = "";
+
+function sayDirection(dir) {
+  const utter = new SpeechSynthesisUtterance(dir);
+  utter.pitch = 1;
+  utter.rate = 0.8;
+  utter.volume = 1;
+  utter.voice = speechSynthesis.getVoices().find(v => v.lang.startsWith("en"));
+  speechSynthesis.cancel();
+  speechSynthesis.speak(utter);
+}
+
+function getDirectionFromDegree(deg) {
+  if (deg >= 315 || deg < 45) return "North";
+  if (deg >= 45 && deg < 135) return "East";
+  if (deg >= 135 && deg < 225) return "South";
+  if (deg >= 225 && deg < 315) return "West";
+}
+
+function updateCompass(deg) {
+  const needle = document.getElementById("needle");
+  const directionText = document.getElementById("directionText");
+  needle.style.transform = `rotate(${deg}deg)`;
+
+  const dir = getDirectionFromDegree(deg);
+  if (dir !== lastDirection) {
+    lastDirection = dir;
+    directionText.textContent = dir + "!";
+    sayDirection(dir);
+  }
+}
+
+function handleOrientation(event) {
+  const alpha = event.alpha; // 0–360 degrees
+  if (alpha != null) updateCompass(360 - alpha);
+}
+
+document.getElementById("startButton").onclick = () => {
+  if (window.DeviceOrientationEvent) {
+    DeviceOrientationEvent.requestPermission?.()
+      .then(response => {
+        if (response === "granted" || !DeviceOrientationEvent.requestPermission) {
+          window.addEventListener("deviceorientation", handleOrientation);
+          document.getElementById("directionText").textContent = "Move your device to explore!";
+        } else {
+          alert("Permission denied. Please allow motion access.");
+        }
+      })
+      .catch(() => alert("Motion sensor not available."));
+  } else {
+    alert("Your device doesn't support motion detection. Try on a phone or tablet!");
+  }
+};
+</script>
+
+</body>
+</html>
