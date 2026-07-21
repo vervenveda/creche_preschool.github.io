@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cosmic Alphabet Quest™ - Pre-K Bilingual</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Brandon+Grotesque:wght@400;700&display=swap');
+body { font-family: 'Brandon Grotesque', sans-serif; margin:0; padding:0; background:#FFF7EC; }
+h1, h2, h3 { font-family:'Cinzel', serif; color:#FF6F61; margin:0; }
+.container { max-width: 900px; margin:auto; padding:20px; }
+nav { display:flex; justify-content:center; gap:5px; flex-wrap:wrap; margin-bottom:20px; }
+button { padding:10px 15px; border:none; border-radius:8px; font-weight:bold; cursor:pointer; }
+button:disabled { opacity:0.5; cursor:not-allowed; }
+.flashcards { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-top:10px; }
+.flashcard { width:120px; height:120px; background:#FFF3E0; border-radius:15px; display:flex; flex-direction:column; justify-content:center; align-items:center; box-shadow:0 4px 8px rgba(0,0,0,0.1); font-size:20px; cursor:pointer; text-align:center; transition:transform 0.2s; }
+.flashcard:hover { transform:scale(1.05); }
+#tracingCanvas { border:2px solid #FF6F61; border-radius:10px; background:#FFF9F0; touch-action:none; }
+#tiles { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:10px; }
+.tile { width:50px; height:50px; background:#FFD180; display:flex; justify-content:center; align-items:center; font-size:24px; border-radius:8px; cursor:pointer; user-select:none; }
+.reward { position:absolute; font-size:24px; animation: floatUp 1s ease-out forwards; }
+@keyframes floatUp { 0% {opacity:1; transform:translateY(0);} 100% {opacity:0; transform:translateY(-80px);}}
+.progress { margin-top:15px; font-weight:bold; text-align:center; }
+</style>
+</head>
+<body>
+<div class="container">
+<h1>🌟 Cosmic Alphabet Quest™ - Pre-K Bilingual</h1>
+<nav id="weekNav"></nav>
+<div id="content"></div>
+<div class="progress" id="progress"></div>
+</div>
+
+<script>
+// --- Pre-K 42-Week Sequential Alphabet/Phonics Curriculum ---
+const CURRICULUM = [
+  { week:1, tracing:[{english:"A",arabic:"ا",translit:"alif"},{english:"B",arabic:"ب",translit:"baa"},{english:"C",arabic:"ك",translit:"kaaf"},{english:"D",arabic:"د",translit:"daal"},{english:"E",arabic:"إ",translit:"alif hamza"}], spelling:[{english:"at",arabic:"في",translit:"fi"},{english:"an",arabic:"أن",translit:"an"},{english:"be",arabic:"يكون",translit:"yakun"},{english:"do",arabic:"يفعل",translit:"yaf‘al"},{english:"ed",arabic:"إد",translit:"id"}], matching:[{word:{english:"A",arabic:"ا",translit:"alif"},def:{english:"First letter",arabic:"أول حرف",translit:"awwal harf"}}]},
+  { week:2, tracing:[{english:"F",arabic:"ف",translit:"faa"},{english:"G",arabic:"ج",translit:"jeem"},{english:"H",arabic:"ح",translit:"haa"},{english:"I",arabic:"إ",translit:"alif hamza"},{english:"J",arabic:"ج",translit:"jeem"}], spelling:[{english:"if",arabic:"إذا",translit:"idha"},{english:"in",arabic:"في",translit:"fi"},{english:"he",arabic:"هو",translit:"huwa"},{english:"hi",arabic:"مرحبا",translit:"marhaba"},{english:"jo",arabic:"جو",translit:"jaw"}], matching:[{word:{english:"F",arabic:"ف",translit:"faa"},def:{english:"Letter F",arabic:"حرف ف",translit:"harf faa"}}]},
+  // ... Add Weeks 3 through 42 sequentially (similar structure)
+];
+
+// --- State Management ---
+let currentWeek = 1;
+let completedWeeks = JSON.parse(localStorage.getItem('completedWeeks')) || [];
+const content = document.getElementById('content');
+const progressEl = document.getElementById('progress');
+
+// --- Week Navigation ---
+const weekNav = document.getElementById('weekNav');
+CURRICULUM.forEach(w=>{
+  const btn = document.createElement('button');
+  btn.textContent = 'Week '+w.week;
+  btn.disabled = w.week>currentWeek;
+  btn.onclick = ()=>{currentWeek=w.week; renderWeek();};
+  weekNav.appendChild(btn);
+});
+
+// --- Render Week ---
+function renderWeek(){
+  const weekData = CURRICULUM.find(w=>w.week===currentWeek);
+  content.innerHTML='';
+  progressEl.textContent = `Week ${currentWeek} Progress: ${completedWeeks.includes(currentWeek)?'✅ Completed':'❌ Incomplete'}`;
+
+  // Tracing Canvas
+  const tracingDiv = document.createElement('div');
+  tracingDiv.innerHTML='<h2>✏️ Trace the Letters</h2><canvas id="tracingCanvas" width="500" height="150"></canvas>';
+  content.appendChild(tracingDiv);
+  initTracing(weekData.tracing);
+
+  // Spelling Tiles
+  const spellingDiv = document.createElement('div');
+  spellingDiv.innerHTML='<h2>🔤 Spell the Words</h2><div id="tiles"></div>';
+  content.appendChild(spellingDiv);
+  initSpelling(weekData.spelling);
+
+  // Matching Game
+  const matchDiv = document.createElement('div');
+  matchDiv.innerHTML='<h2>🧩 Match the Letters</h2><div class="flashcards" id="flashcards"></div>';
+  content.appendChild(matchDiv);
+  initMatching(weekData.matching);
+}
+
+// --- Tracing ---
+function initTracing(letters){
+  const canvas = document.getElementById('tracingCanvas');
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.font='48px Cinzel';
+  ctx.fillStyle='#FF6F61';
+  letters.forEach((l,i)=>{ctx.fillText(l.english,50+i*90,80); ctx.fillText(l.arabic,50+i*90,130);});
+
+  let drawing=false;
+  canvas.addEventListener('pointerdown',()=>drawing=true);
+  canvas.addEventListener('pointerup',()=>drawing=false);
+  canvas.addEventListener('pointermove',(e)=>{
+    if(!drawing) return;
+    ctx.lineWidth=5; ctx.lineCap='round'; ctx.strokeStyle='#FFD180';
+    ctx.beginPath(); ctx.moveTo(e.offsetX,e.offsetY); ctx.lineTo(e.offsetX+2,e.offsetY+2); ctx.stroke();
+  });
+}
+
+// --- Spelling ---
+function initSpelling(words){
+  const tilesDiv = document.getElementById('tiles');
+  tilesDiv.innerHTML='';
+  words.forEach(w=>{
+    const tile = document.createElement('div');
+    tile.className='tile';
+    tile.textContent=w.arabic;
+    tile.title=w.translit+' / '+w.english;
+    tile.onclick = ()=>{showReward(tile);};
+    tilesDiv.appendChild(tile);
+  });
+}
+
+// --- Matching ---
+function initMatching(pairs){
+  const fc = document.getElementById('flashcards');
+  fc.innerHTML='';
+  pairs.forEach(p=>{
+    const card = document.createElement('div');
+    card.className='flashcard';
+    card.innerHTML=`${p.word.english}<br>${p.word.arabic}<br><i>${p.word.translit}</i>`;
+    card.onclick=()=>{showReward(card);};
+    fc.appendChild(card);
+  });
+}
+
+// --- Rewards ---
+function showReward(el){
+  const reward = document.createElement('div');
+  reward.className='reward';
+  reward.textContent='⭐';
+  const rect=el.getBoundingClientRect();
+  reward.style.left=rect.left+rect.width/2+'px';
+  reward.style.top=rect.top+'px';
+  document.body.appendChild(reward);
+  setTimeout(()=>document.body.removeChild(reward),1000);
+}
+
+// --- Mark Week Completed ---
+function completeWeek(){
+  if(!completedWeeks.includes(currentWeek)){completedWeeks.push(currentWeek);}
+  localStorage.setItem('completedWeeks',JSON.stringify(completedWeeks));
+  renderWeek();
+}
+
+// --- Initial Render ---
+renderWeek();
+</script>
+</body>
+</html>
