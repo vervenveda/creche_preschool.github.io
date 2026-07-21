@@ -1,0 +1,733 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Move & Groove Academy — Boppi's PE</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg1:#FFEEFF; --bg2:#E6FFF7;
+    --red:#FF6B6B; --blue:#4D96FF; --green:#6BE281; --yellow:#FFD166;
+    --pink:#2469BF; --purple:#A18FFF;
+    --card:#ffffff; --muted:#6b7280;
+    --big: clamp(18px, 3.6vw, 28px);
+  }
+  html,body{height:100%; margin:0; font-family:"Baloo 2", system-ui, Arial; background:linear-gradient(135deg,var(--bg1),var(--bg2)); color:#000; -webkit-font-smoothing:antialiased;}
+  .app{max-width:1000px; margin:0 auto; padding:18px;}
+  header{display:flex; align-items:center; gap:12px;}
+  h1{font-size:32px; margin:0; color:#222; letter-spacing:0.6px;}
+  .subtitle{color:var(--muted); font-size:14px;}
+  nav{margin-top:14px; display:flex; gap:12px; flex-wrap:wrap;}
+  .big-btn{display:inline-flex; align-items:center; justify-content:center; gap:10px; border:none; cursor:pointer;
+         border-radius:14px; padding:14px 22px; font-size:var(--big); box-shadow:0 10px rgba(0,0,0,0.08);
+         color:#fff; transform:translateY(0); transition:transform .18s ease;}
+  .big-btn:active{transform:translateY(3px);}
+  .primary{background:linear-gradient(180deg,var(--blue),#3b82d6);}
+  .accent{background:linear-gradient(180deg,var(--green),#2469BF);}
+  .warm{background:linear-gradient(180deg,var(--yellow),#C1D8F5); color:#222}
+  .screen{margin-top:18px;}
+  .lesson-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px;}
+  .lesson-card{background:var(--card); border-radius:14px; padding:12px; box-shadow: 0 10px 24px rgba(0,0,0,0.08); cursor:pointer; display:flex; align-items:center; gap:12px; transition:transform .12s ease;}
+  .lesson-card:hover{transform:translateY(-6px)}
+  .lesson-num{width:56px; height:56px; border-radius:12px; display:flex; align-items:center; justify-content:center; font-weight:800; color:#fff; font-size:20px}
+  .l-red{background:var(--red)} .l-blue{background:var(--blue)} .l-green{background:var(--green)} .l-yellow{background:var(--yellow)}
+  .lesson-title{font-size:16px; text-align:left}
+  .card{background:var(--card); padding:18px; border-radius:14px; box-shadow:0 12px 30px rgba(0,0,0,0.06); margin-top:12px;}
+  .question{font-size:22px; margin-bottom:12px; font-weight:700;}
+  .options{display:flex; flex-direction:column; gap:12px; margin-top:6px;}
+  .option-btn{padding:14px; border-radius:12px; background:linear-gradient(180deg,#fff,#2469BF); border:2px solid transparent; font-size:18px; cursor:pointer; box-shadow:0 8px rgba(0,0,0,0.04);}
+  .option-btn:hover{transform:translateY(-4px)}
+  .option-btn.correct{background:linear-gradient(180deg,#dff7e1,#baf3c7); border-color:#3ad06a;}
+  .option-btn.wrong{background:linear-gradient(180deg,#ffdede,#ffbebe); border-color:#ff6b6b}
+  .controls{display:flex; gap:10px; margin-top:12px; align-items:center;}
+  .progress{display:flex; gap:8px; align-items:center;}
+  .star{font-size:22px;}
+  #confettiCanvas{position:fixed; left:0; top:0; width:100%; height:100%; pointer-events:none; z-index:9999;}
+  .mascot{
+    width:96px;height:96px; border-radius:20px; background:linear-gradient(180deg,#fff,#fff0);
+    display:flex; align-items:center; justify-content:center; font-size:42px; box-shadow:0 8px rgba(0,0,0,0.06);
+  }
+  footer{margin-top:22px; font-size:13px; color:var(--muted); text-align:center;}
+  .floating-star{position:fixed; right:18px; bottom:120px; font-size:40px; opacity:0.12}
+  @media (max-width:440px){
+    .big-btn{font-size:16px;padding:12px 14px}
+    .lesson-num{width:48px;height:48px}
+  }
+
+  /* animated gradient background subtle movement */
+  body::before{
+    content:""; position:fixed; inset:0; z-index:-1;
+    background: conic-gradient(from 120deg at 50% 50%, #2469BF, #f0fff7, #eef6ff, #fff6e6);
+    opacity:0.35; filter:blur(60px); transform:scale(1.05);
+    animation: rotateBG 20s linear infinite;
+  }
+  @keyframes rotateBG { to { transform:rotate(360deg) scale(1.05)} }
+</style>
+</head>
+<body>
+<canvas id="confettiCanvas"></canvas>
+<div class="app" role="application" aria-label="Move and Groove Academy">
+  <header>
+    <div class="mascot" id="boppiMascot" title="Boppi the Kangaroo">🦘</div>
+    <div>
+      <h1>Move & Groove Academy</h1>
+      <div class="subtitle">Boppi says: "Hop, stretch, and smile!"</div>
+    </div>
+  </header>
+
+  <nav aria-label="Main controls">
+    <button class="big-btn primary" id="startBtn" onclick="showScreen('lessons')">Start Lessons</button>
+    <button class="big-btn accent" id="progressBtn" onclick="showScreen('progress')">My Progress</button>
+    <button class="big-btn warm" id="helpBtn" onclick="showHelp()">Teacher / Parent</button>
+  </nav>
+
+  <!-- LESSONS SCREEN -->
+  <section id="screen-lessons" class="screen" aria-live="polite">
+    <div class="card">
+      <h2 style="margin:0">Choose a Lesson</h2>
+      <p style="color:var(--muted)">Tap a colorful card. Boppi will read the questions and cheer you on!</p>
+      <div id="lessonGrid" class="lesson-grid" style="margin-top:12px"></div>
+    </div>
+  </section>
+
+  <!-- QUIZ SCREEN -->
+  <section id="screen-quiz" class="screen hidden" aria-live="polite">
+    <div style="display:flex; gap:12px; align-items:center; margin-bottom:10px">
+      <button class="big-btn" onclick="backToLessons()" aria-label="Back to lessons">⬅️ Back</button>
+      <div style="flex:1"></div>
+      <div id="boppiCallout" style="display:flex;gap:10px;align-items:center">
+        <div style="font-weight:700">Boppi:</div>
+        <div id="boppiPhrase" style="color:var(--muted)">Let's get moving!</div>
+      </div>
+    </div>
+
+    <div class="card" id="quizCard" role="region" aria-labelledby="quizTitle">
+      <h2 id="quizTitle">Lesson</h2>
+      <div id="characterRow" style="display:flex;gap:12px;align-items:center;margin-bottom:8px;"></div>
+      <div id="quizContent">
+        <p class="question" id="questionText">Question text</p>
+        <div id="options" class="options"></div>
+      </div>
+
+      <div class="controls">
+        <div class="progress" aria-live="polite">
+          <div style="font-size:14px;color:var(--muted)">Question:</div>
+          <div id="qCount" style="font-weight:700; margin-left:6px">1 / 5</div>
+        </div>
+        <div style="flex:1"></div>
+        <div id="feedback" style="font-weight:800; color:var(--muted)"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROGRESS SCREEN -->
+  <section id="screen-progress" class="screen hidden" aria-live="polite">
+    <div class="card">
+      <h2>Progress</h2>
+      <p id="progressSummary">You have completed 0 lessons.</p>
+      <div style="margin-top:10px">
+        <div style="display:flex;gap:8px;flex-wrap:wrap" id="starRow"></div>
+      </div>
+      <div style="margin-top:14px; display:flex; gap:10px;">
+        <button class="big-btn primary" onclick="resetProgress()">Reset Progress</button>
+        <button class="big-btn accent" onclick="showScreen('lessons')">Back to Lessons</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>Made for Khaemenes Academy • Boppi the Kangaroo says: "You can do it!"</footer>
+</div>
+
+<script>
+/* -------------------------
+  Full 42-lesson quiz bank (5 questions per lesson).
+  Options chosen to be simple / visual / age-appropriate.
+  answer is the index of the correct option (0-based).
+--------------------------*/
+const lessons = [
+/* Unit 1: Moving Our Bodies (1-7) */
+{ id:1, title:"Walking Feet", color:"l-blue", icon:"🚶‍♀️", char:"🦘", quiz:[
+  {q:"What do we use to walk?", options:["Hands","Legs","Ears"], answer:1},
+  {q:"Should we walk or run inside the classroom?", options:["Run","Walk","Jump"], answer:1},
+  {q:"Which way is forward?", options:["Backward","Sideways","Forward"], answer:2},
+  {q:"What should we do when the teacher says “stop”?", options:["Stop","Jump","Sing"], answer:0},
+  {q:"Is walking slow or fast?", options:["Slow","Fast","Loud"], answer:0}
+]},
+{ id:2, title:"Running Fun", color:"l-red", icon:"🏃‍♂️", char:"🐇", quiz:[
+  {q:"When we run, do our feet move fast or slow?", options:["Fast","Slow","Quietly"], answer:0},
+  {q:"What color means “stop” in Red Light, Green Light?", options:["Blue","Green","Red"], answer:2},
+  {q:"What color means “go”?", options:["Red","Green","Yellow"], answer:1},
+  {q:"Should we bump into friends when we run?", options:["Yes","No","Maybe"], answer:1},
+  {q:"What helps us know when to stop and go?", options:["Television","Teacher","Toy"], answer:1}
+]},
+{ id:3, title:"Hopping Like a Bunny", color:"l-green", icon:"🐇", char:"🐰", quiz:[
+  {q:"How many feet do we hop on?", options:["One","Two","Three"], answer:0},
+  {q:"What animal hops?", options:["Dog","Frog","Bunny"], answer:2},
+  {q:"Which foot are you hopping on now?", options:["Left","Right","Both"], answer:2},
+  {q:"Is hopping a jump or a crawl?", options:["Jump","Crawl","Swim"], answer:0},
+  {q:"What keeps you balanced when you hop?", options:["Music","Legs","Hat"], answer:1}
+]},
+{ id:4, title:"Skipping Steps", color:"l-yellow", icon:"🩰", char:"🦊", quiz:[
+  {q:"Is skipping slow or fast?", options:["Slow","Fast","Tiny"], answer:1},
+  {q:"What helps you skip in rhythm?", options:["Drum","Chair","Water"], answer:0},
+  {q:"What should your arms do when you skip?", options:["Hang","Move","Hide"], answer:1},
+  {q:"What sound do your feet make when skipping?", options:["Clap","Tap","Beep"], answer:1},
+  {q:"Can we skip in a circle?", options:["Yes","No","Maybe"], answer:0}
+]},
+{ id:5, title:"Marching Parade", color:"l-blue", icon:"🥁", char:"🦁", quiz:[
+  {q:"Do we lift our knees high when we march?", options:["Yes","No","Sometimes"], answer:0},
+  {q:"What sound keeps the beat?", options:["Drum","Spoon","Bell"], answer:0},
+  {q:"What part of our body moves up and down when marching?", options:["Arms","Head","Legs"], answer:2},
+  {q:"Should we march in a straight line or spin around?", options:["Straight line","Spin","Hide"], answer:0},
+  {q:"What is another name for marching together?", options:["Parade","Nap","Race"], answer:0}
+]},
+{ id:6, title:"Crawling Critters", color:"l-green", icon:"🐢", char:"🐛", quiz:[
+  {q:"Which body parts touch the floor when crawling?", options:["Feet only","Hands and knees","Elbows only"], answer:1},
+  {q:"Do cats crawl or fly?", options:["Crawl","Fly","Swim"], answer:0},
+  {q:"What animal moves slowly on the floor?", options:["Eagle","Shark","Turtle"], answer:2},
+  {q:"Should we crawl fast or safely?", options:["Fast","Safely","Quietly"], answer:1},
+  {q:"What do we look for when crawling?", options:["Treasure","Obstacles","Cookies"], answer:1}
+]},
+{ id:7, title:"Balance Beam", color:"l-yellow", icon:"🤸‍♀️", char:"🦄", quiz:[
+  {q:"What helps us stay balanced?", options:["Eyes closed","Arms out","Silly face"], answer:1},
+  {q:"Should our arms go out or down when balancing?", options:["Out","Down","Wave"], answer:0},
+  {q:"What do we look at while balancing?", options:["The floor","A far point","A friend"], answer:1},
+  {q:"If we wobble, what can we do?", options:["Jump","Bend knees","Run"], answer:1},
+  {q:"Is balancing safe and fun?", options:["Yes","No","Maybe"], answer:0}
+]},
+
+/* Unit 2: Stretch & Grow (8-14) */
+{ id:8, title:"Reach for the Sky", color:"l-blue", icon:"🖐️", char:"☁️", quiz:[
+  {q:"What direction is the sky?", options:["Up","Down","Sideways"], answer:0},
+  {q:"Which body part do you stretch up high?", options:["Finger","Foot","Knee"], answer:0},
+  {q:"How many fingers reach the sky (count)?", options:["One","Five","Ten"], answer:1},
+  {q:"Should we breathe in or hold our breath when stretching?", options:["Breathe in","Hold","Breathe out"], answer:0},
+  {q:"How does stretching make us feel?", options:["Tired","Happy","Angry"], answer:1}
+]},
+{ id:9, title:"Wiggle Legs", color:"l-green", icon:"🦵", char:"🦖", quiz:[
+  {q:"What body part do we wiggle?", options:["Nose","Legs","Ears"], answer:1},
+  {q:"Do we sit or stand when wiggling legs?", options:["Sit","Stand","Jump"], answer:1},
+  {q:"What helps our legs get strong?", options:["Playing","Sleeping","Eating candy"], answer:0},
+  {q:"Can we kick gently without hitting friends?", options:["Yes","No","Maybe"], answer:0},
+  {q:"What makes wiggling fun?", options:["Music","Silence","Rain"], answer:0}
+]},
+{ id:10, title:"Neck & Shoulders", color:"l-yellow", icon:"🤖", char:"🐻", quiz:[
+  {q:"What body part helps us turn our head?", options:["Hands","Neck","Feet"], answer:1},
+  {q:"Where are our shoulders?", options:["Near head","Near knees","On head"], answer:0},
+  {q:"Should we turn our necks slowly or quickly?", options:["Slowly","Quickly","Never"], answer:0},
+  {q:"What sound helps us move in rhythm?", options:["Music","Gun","Phone"], answer:0},
+  {q:"Can you shrug your shoulders up and down?", options:["Yes","No","Maybe"], answer:0}
+]},
+{ id:11, title:"Breathe & Move", color:"l-blue", icon:"🌬️", char:"🕊️", quiz:[
+  {q:"What do we breathe in?", options:["Air","Food","Shoes"], answer:0},
+  {q:"What do we breathe out?", options:["Air","Toys","Water"], answer:0},
+  {q:"Where do we feel air moving?", options:["Nose","Feet","Elbows"], answer:0},
+  {q:"Does breathing help us calm down?", options:["Yes","No","Maybe"], answer:0},
+  {q:"Should we take deep or tiny breaths to relax?", options:["Deep","Tiny","None"], answer:0}
+]},
+{ id:12, title:"Yoga Animals", color:"l-green", icon:"🧘‍♂️", char:"🐶", quiz:[
+  {q:"What pose looks like a dog?", options:["Downward dog","Sleeping","Running"], answer:0},
+  {q:"Which animal stretches like a cat?", options:["Lion","Cat","Fish"], answer:1},
+  {q:"What pose helps us stand tall?", options:["Tree pose","Lay down","Sit"], answer:0},
+  {q:"Should we move quickly or slowly in yoga?", options:["Quickly","Slowly","Fast"], answer:1},
+  {q:"What makes yoga fun?", options:["Breathing","Eating","Running"], answer:0}
+]},
+{ id:13, title:"Dance Warm-Up", color:"l-yellow", icon:"💃", char:"🕺", quiz:[
+  {q:"What helps us move to music?", options:["Beat","Blanket","Pillow"], answer:0},
+  {q:"Should we listen for the beat?", options:["Yes","No","Maybe"], answer:0},
+  {q:"Can we move our arms and legs together?", options:["Yes","No","Sometimes"], answer:0},
+  {q:"What happens when the music stops?", options:["We stop","We run","We sleep"], answer:0},
+  {q:"What do we do when we dance?", options:["Smile","Cry","Hide"], answer:0}
+]},
+{ id:14, title:"Rainbow Stretch", color:"l-blue", icon:"🌈", char:"🦋", quiz:[
+  {q:"How many colors are in a rainbow (choose approximate)?", options:["3","7","20"], answer:1},
+  {q:"Can we stretch to each color?", options:["Yes","No","Sometimes"], answer:0},
+  {q:"What color is often at the top of a rainbow?", options:["Red","Blue","Black"], answer:0},
+  {q:"What color is often near the bottom?", options:["Violet","Red","Green"], answer:0},
+  {q:"Do we stretch side to side or up and down?", options:["Side to side","Only up","Sit still"], answer:0}
+]},
+
+/* Unit 3: Sports Basics (15-21) */
+{ id:15, title:"Throw & Catch", color:"l-red", icon:"🧸", char:"🏀", quiz:[
+  {q:"What do we throw in class today?", options:["Book","Beanbag","Shoe"], answer:1},
+  {q:"Do we catch with hands or feet?", options:["Hands","Feet","Head"], answer:0},
+  {q:"Should we watch the ball when catching?", options:["Yes","No","Maybe"], answer:0},
+  {q:"What makes catching easier?", options:["Closing eyes","Watching ball","Running away"], answer:1},
+  {q:"Can we throw softly to a friend?", options:["Yes","No","Only at school"], answer:0}
+]},
+{ id:16, title:"Roll It", color:"l-green", icon:"⚽", char:"🐢", quiz:[
+  {q:"What shape rolls best?", options:["Square","Circle","Triangle"], answer:1},
+  {q:"Do we roll with our hands or feet?", options:["Hands","Feet","Ears"], answer:0},
+  {q:"Should we roll gently or hard?", options:["Gently","Hard","Fast"], answer:0},
+  {q:"Where should we aim the ball?", options:["At friends","At target","In the air"], answer:1},
+  {q:"What sound does rolling make sometimes?", options:["Tap","Boom","Quack"], answer:0}
+]},
+{ id:17, title:"Kick It", color:"l-yellow", icon:"⚽", char:"🦘", quiz:[
+  {q:"What do we use to kick?", options:["Hands","Feet","Ears"], answer:1},
+  {q:"Do we kick high or low when learning?", options:["High","Low","None"], answer:1},
+  {q:"Should we look at the ball before kicking?", options:["Yes","No","Sometimes"], answer:0},
+  {q:"What happens when we kick too hard?", options:["Ball goes far","Ball disappears","Ball turns"], answer:0},
+  {q:"Can we kick safely with friends?", options:["Yes","No","Maybe"], answer:0}
+]},
+{ id:18, title:"Bounce Time", color:"l-blue", icon:"🏀", char:"🐵", quiz:[
+  {q:"What do we bounce?", options:["Ball","Book","Chair"], answer:0},
+  {q:"What hand do you use to bounce? (choose any)", options:["Right","Left","Both"], answer:2},
+  {q:"What happens when you push the ball down?", options:["It goes down","It stays","It flies"], answer:0},
+  {q:"What happens when it comes up?", options:["It bounces up","It hides","It melts"], answer:0},
+  {q:"Can you bounce and count together?", options:["Yes","No","Maybe"], answer:0}
+]},
+{ id:19, title:"Jumping Fun", color:"l-red", icon:"🦘", char:"🐸", quiz:[
+  {q:"What body part pushes off the ground to jump?", options:["Arms","Legs","Nose"], answer:1},
+  {q:"Do we bend knees before jumping?", options:["Yes","No","Only sometimes"], answer:0},
+  {q:"Can we jump over a line?", options:["Yes","No","Maybe"], answer:0},
+  {q:"Should we land softly or loudly?", options:["Softly","Loudly","Quickly"], answer:0},
+  {q:"Is jumping good exercise?", options:["Yes","No","Maybe"], answer:0}
+]},
+{ id:20, title:"Swing & Hit", color:"l-green", icon:"🏓", char:"🐯", quiz:[
+  {q:"What do we use to hit a balloon or ball gently?", options:["Stick","Hand","Shoe"], answer:1},
+  {q:"Should we swing safely or wildly?", options:["Safely","Wildly","Never"], answer:0},
+  {q:"What do our eyes watch when hitting?", options:["The ball","The floor","The wall"], answer:0},
+  {q:"What happens when we hit gently?", options:["Ball moves softly","Ball explodes","Ball disappears"], answer:0},
+  {q:"Can we take turns hitting?", options:["Yes","No","Always"], answer:0}
+]},
+{ id:21, title:"Mini Sports Day", color:"l-yellow", icon:"🏅", char:"🎉", quiz:[
+  {q:"What sport uses kicking?", options:["Basketball","Soccer","Tennis"], answer:1},
+  {q:"What sport uses catching?", options:["Soccer","Baseball","Swimming"], answer:1},
+  {q:"What do all sports have in common?", options:["Rules","No people","Only adults"], answer:0},
+  {q:"Should we cheer for friends?", options:["Yes","No","Maybe"], answer:0},
+  {q:"What's most important — winning or having fun?", options:["Winning","Having fun","Both"], answer:1}
+]},
+
+/* Unit 4: Teamwork Time (22-28) */
+{ id:22, title:"Taking Turns", color:"l-blue", icon:"🔁", char:"🤝", quiz:[
+  {q:"What do we do when it's not our turn?", options:["Shout","Wait","Take it"], answer:1},
+  {q:"How do we know it's our turn?", options:["Teacher says so","Guess","Close eyes"], answer:0},
+  {q:"Should we share the ball?", options:["Yes","No","Maybe"], answer:0},
+  {q:"What makes taking turns fair?", options:["Being loud","Sharing equally","Hiding"], answer:1},
+  {q:"How do we feel when we wait nicely?", options:["Sad","Proud","Angry"], answer:1}
+]},
+{ id:23, title:"Helping Hands", color:"l-green", icon:"🖐️", char:"👐", quiz:[
+  {q:"How can we help a friend?", options:["Push them","Help pick up","Run away"], answer:1},
+  {q:"What do helping hands do?", options:["Break toys","Pick up items","Hide things"], answer:1},
+  {q:"Can we clean up toys together?", options:["Yes","No","Maybe"], answer:0},
+  {q:"What words do we use when helping?", options:["Please and thank you","Silence","Yell"], answer:0},
+  {q:"How does helping make us feel?", options:["Happy","Tired","Scared"], answer:0}
+]},
+{ id:24, title:"Following Rules", color:"l-yellow", icon:"📜", char:"🧑‍🏫", quiz:[
+  {q:"Why do games have rules?", options:["To make them fun and safe","To confuse people","To make noise"], answer:0},
+  {q:"Who do we listen to during games?", options:["Teacher","Toy","Dog"], answer:0},
+  {q:"What happens if we don't follow rules?", options:["Game is unsafe","Everyone applauds","We win"], answer:0},
+  {q:"Is being fair important?", options:["Yes","No","Sometimes"], answer:0},
+  {q:"Can we make our own rules sometimes?", options:["Yes with teacher","No ever","Only at home"], answer:0}
+]},
+{ id:25, title:"Encouraging Others", color:"l-blue", icon:"📣", char:"🌟", quiz:[
+  {q:"What words make friends feel happy?", options:["Nice words","Mean words","Quiet words"], answer:0},
+  {q:"Should we cheer when friends do well?", options:["Yes","No","Maybe"], answer:0},
+  {q:"What can we say if someone falls?", options:["Good job","Are you okay?","Leave them"], answer:1},
+  {q:"What does 'good job' mean?", options:["Praise","Noise","Silence"], answer:0},
+  {q:"Does cheering make PE fun?", options:["Yes","No","Sometimes"], answer:0}
+]},
+{ id:26, title:"Sharing Equipment", color:"l-green", icon:"⚽", char:"🎈", quiz:[
+  {q:"Should we keep all the balls or share?", options:["Keep","Share","Hide"], answer:1},
+  {q:"How do we ask nicely to share?", options:["Yell","Please may I?","Grab"], answer:1},
+  {q:"What happens when we share?", options:["Everyone plays","No one plays","We fight"], answer:0},
+  {q:"Is it kind to let others play too?", options:["Yes","No","Maybe"], answer:0},
+  {q:"What's more fun — playing alone or together?", options:["Alone","Together","None"], answer:1}
+]},
+{ id:27, title:"Listening Ears", color:"l-yellow", icon:"👂", char:"🐦", quiz:[
+  {q:"What helps us hear the teacher?", options:["Listening ears","Running shoes","Hat"], answer:0},
+  {q:"What do we do when we hear 'stop'?", options:["Run","Stop","Sing"], answer:1},
+  {q:"Should we talk or listen first?", options:["Talk","Listen","Ignore"], answer:1},
+  {q:"What happens when we listen?", options:["We learn","We fall","We hide"], answer:0},
+  {q:"Is listening part of teamwork?", options:["Yes","No","Maybe"], answer:0}
+]},
+{ id:28, title:"Celebration Day", color:"l-blue", icon:"🎉", char:"🥳", quiz:[
+  {q:"Why do we celebrate?", options:["To be happy and thank friends","To be sad","To sleep"], answer:0},
+  {q:"What do we do to cheer our team?", options:["Clap and shout nice words","Run away","Make noise loudly"], answer:0},
+  {q:"Should everyone be included?", options:["Yes","No","Only some"], answer:0},
+  {q:"How can we make it fun for all?", options:["Share and smile","Hide toys","Yell"], answer:0},
+  {q:"What do teams do best together?", options:["Play and help","Fight","Ignore"], answer:0}
+]},
+
+/* Unit 5: Healthy Habits (29-35) */
+{ id:29, title:"Eating the Rainbow", color:"l-green", icon:"🍎", char:"🍓", quiz:[
+  {q:"Which is a fruit?", options:["Apple","Rock","Shoe"], answer:0},
+  {q:"What color are many vegetables?", options:["Green","Blue","Black"], answer:0},
+  {q:"Should we eat lots of candy?", options:["Yes","No","Maybe"], answer:1},
+  {q:"Which food helps us grow strong?", options:["Candy","Banana","Plastic"], answer:1},
+  {q:"What color is your favorite fruit? (choose)", options:["Red","Blue","Gray"], answer:0}
+]},
+{ id:30, title:"Water Break", color:"l-blue", icon:"💧", char:"🚰", quiz:[
+  {q:"What do we drink when we're thirsty?", options:["Water","Rocks","Shoes"], answer:0},
+  {q:"Should we drink water before or after playing?", options:["Before and after","Never","Only at night"], answer:0},
+  {q:"What happens if we don't drink water?", options:["We get thirsty or tired","We fly","We grow wings"], answer:0},
+  {q:"What container holds water?", options:["Cup","Pillow","Shoe"], answer:0},
+  {q:"How does water make us feel?", options:["Happy and refreshed","Sad","Angry"], answer:0}
+]},
+{ id:31, title:"Rest & Recharge", color:"l-yellow", icon:"😴", char:"🌙", quiz:[
+  {q:"Why do we rest?", options:["To help our body and brain","To be bored","To run more"], answer:0},
+  {q:"What happens when we sleep?", options:["We feel better","We disappear","We cry"], answer:0},
+  {q:"Should we play all night?", options:["No","Yes","Maybe"], answer:0},
+  {q:"What makes our body feel ready again?", options:["Sleep and rest","Sugar","Noise"], answer:0},
+  {q:"What do we use as a pillow?", options:["Cushion or pillow","Shoe","Book"], answer:0}
+]},
+{ id:32, title:"Smile Power", color:"l-green", icon:"😊", char:"🌞", quiz:[
+  {q:"What makes us smile?", options:["Kind words","Trash","Storm"], answer:0},
+  {q:"Can smiles make others happy?", options:["Yes","No","Maybe"], answer:0},
+  {q:"What muscles move when we smile?", options:["Face muscles","Legs","Toes"], answer:0},
+  {q:"When do we smile in PE?", options:["When trying and helping","When hiding","When sleeping"], answer:0},
+  {q:"Should we smile when trying new moves?", options:["Yes","No","Sometimes"], answer:0}
+]},
+{ id:33, title:"Clean & Strong", color:"l-blue", icon:"🧼", char:"🧽", quiz:[
+  {q:"When do we wash our hands?", options:["Before eating and after bathroom","Never","Only on Sundays"], answer:0},
+  {q:"What do we use to clean?", options:["Soap and water","Blanket","Toy"], answer:0},
+  {q:"Should we share towels without washing?", options:["No","Yes","Maybe"], answer:0},
+  {q:"What happens when we stay clean?", options:["We stay healthy","We get sick","We run faster"], answer:0},
+  {q:"Is being clean part of being healthy?", options:["Yes","No","Maybe"], answer:0}
+]},
+{ id:34, title:"Kindness in Motion", color:"l-green", icon:"🤗", char:"💖", quiz:[
+  {q:"What does kindness look like?", options:["Helping and sharing","Ignoring","Hitting"], answer:0},
+  {q:"Can we help someone pick up a ball?", options:["Yes","No","Maybe"], answer:0},
+  {q:"What happens when we are kind?", options:["Everyone feels good","We get sad","We lose things"], answer:0},
+  {q:"Should we smile or frown at friends?", options:["Smile","Frown","Cry"], answer:0},
+  {q:"Is kindness a healthy habit?", options:["Yes","No","Maybe"], answer:0}
+]},
+{ id:35, title:"Healthy Heroes", color:"l-yellow", icon:"🦸‍♀️", char:"🛡️", quiz:[
+  {q:"What do heroes do?", options:["Help others","Hide","Yell"], answer:0},
+  {q:"What makes someone strong?", options:["Healthy food and rest","Being mean","Running fast only"], answer:0},
+  {q:"Should heroes help others?", options:["Yes","No","Maybe"], answer:0},
+  {q:"What foods make heroes strong?", options:["Fruits and veggies","Candy","Socks"], answer:0},
+  {q:"Can you move like a hero?", options:["Yes","No","Maybe"], answer:0}
+]},
+
+/* Unit 6: Fun Fitness (36-42) */
+{ id:36, title:"Freeze Dance", color:"l-red", icon:"⏸️", char:"🩰", quiz:[
+  {q:"What do we do when the music stops?", options:["Freeze","Dance more","Leave"], answer:0},
+  {q:"Should we move or freeze?", options:["Freeze","Move","Jump"], answer:0},
+  {q:"What helps us hear the music?", options:["Ears","Shoes","Pants"], answer:0},
+  {q:"Can we dance and smile?", options:["Yes","No","Maybe"], answer:0},
+  {q:"What color means go in games like this?", options:["Green","Black","White"], answer:0}
+]},
+{ id:37, title:"Animal Moves", color:"l-green", icon:"🐾", char:"🦁", quiz:[
+  {q:"Which animal hops?", options:["Rabbit","Fish","Elephant"], answer:0},
+  {q:"Which animal slithers?", options:["Snake","Bird","Horse"], answer:0},
+  {q:"Which animal flies?", options:["Bird","Cow","Dog"], answer:0},
+  {q:"Which animal stomps?", options:["Elephant","Ant","Butterfly"], answer:0},
+  {q:"Which move was your favorite?", options:["Hop","Fly","Swim"], answer:0}
+]},
+{ id:38, title:"Obstacle Adventure", color:"l-yellow", icon:"🚧", char:"🦊", quiz:[
+  {q:"What do we do at obstacles?", options:["Go around or over them safely","Crash","Ignore"], answer:0},
+  {q:"Should we go over or under when told?", options:["Over or under as shown","Always over","Always under"], answer:0},
+  {q:"What helps us stay safe on a course?", options:["Listening and walking carefully","Running wildly","Closing eyes"], answer:0},
+  {q:"Can we wait for our turn on the course?", options:["Yes","No","Maybe"], answer:0},
+  {q:"Is it fun to finish a course?", options:["Yes","No","Sometimes"], answer:0}
+]},
+{ id:39, title:"Balloon Games", color:"l-blue", icon:"🎈", char:"🐤", quiz:[
+  {q:"What happens if the balloon pops?", options:["It makes a loud pop sound","It sings","It dances"], answer:0},
+  {q:"Should we hit the balloon gently?", options:["Yes","No","Maybe"], answer:0},
+  {q:"What shape is a balloon often?", options:["Round","Square","Triangle"], answer:0},
+  {q:"What color balloon do you like?", options:["Red","Green","None"], answer:0},
+  {q:"Can we play without letting it touch the floor?", options:["Yes","No","Maybe"], answer:0}
+]},
+{ id:40, title:"Shadow Tag", color:"l-green", icon:"🌤️", char:"🌟", quiz:[
+  {q:"What makes a shadow?", options:["Light","Sound","Food"], answer:0},
+  {q:"Where does your shadow follow you?", options:["On the ground","In the sky","Inside a box"], answer:0},
+  {q:"Can we tag shadows safely?", options:["Yes","No","Only sometimes"], answer:0},
+  {q:"What happens when the light moves?", options:["Shadow changes","Shadow disappears forever","Shadow grows hair"], answer:0},
+  {q:"Is shadow tag fun outdoors?", options:["Yes","No","Sometimes"], answer:0}
+]},
+{ id:41, title:"Parachute Play", color:"l-blue", icon:"🪂", char:"🎪", quiz:[
+  {q:"What colors might be on the parachute?", options:["Red, blue, yellow","Black only","Invisible"], answer:0},
+  {q:"What happens when we lift it up together?", options:["It makes a big wave","It breaks","It disappears"], answer:0},
+  {q:"Should we hold the parachute tight?", options:["Yes","No","Maybe"], answer:0},
+  {q:"What happens when we go under it?", options:["We laugh and hide","We cry","We sleep"], answer:0},
+  {q:"Is working together important with a parachute?", options:["Yes","No","Maybe"], answer:0}
+]},
+{ id:42, title:"Celebration Day", color:"l-yellow", icon:"🎊", char:"🦋", quiz:[
+  {q:"What was your favorite move?", options:["Jump","Skip","Clap"], answer:0},
+  {q:"Should we clap for everyone?", options:["Yes","No","Maybe"], answer:0},
+  {q:"How do we show teamwork?", options:["Help and share","Hide","Yell"], answer:0},
+  {q:"What helps us stay healthy?", options:["Water, food, rest","Only toys","Only sugar"], answer:0},
+  {q:"What do we say at the end? (celebration)", options:["We did it!","Goodbye forever","Stop"], answer:0}
+]}
+]; // end lessons array
+
+/* ---------- app state ---------- */
+let state = {
+  currentLessonId: null,
+  qIndex: 0,
+  answersCorrect: 0,
+  completed: JSON.parse(localStorage.getItem('mg_completed')||'{}')
+};
+
+/* ---------- DOM refs ---------- */
+const lessonGrid = document.getElementById('lessonGrid');
+const quizTitle = document.getElementById('quizTitle');
+const questionText = document.getElementById('questionText');
+const optionsEl = document.getElementById('options');
+const qCount = document.getElementById('qCount');
+const screenLessons = document.getElementById('screen-lessons');
+const screenQuiz = document.getElementById('screen-quiz');
+const screenProgress = document.getElementById('screen-progress');
+const progressSummary = document.getElementById('progressSummary');
+const starRow = document.getElementById('starRow');
+const boppiMascot = document.getElementById('boppiMascot');
+const boppiPhrase = document.getElementById('boppiPhrase');
+const boppiCallout = document.getElementById('boppiCallout');
+const characterRow = document.getElementById('characterRow');
+
+/* speech & audio */
+const synth = window.speechSynthesis;
+function speak(text){
+  if(!synth) return;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'en-US';
+  u.rate = 0.95;
+  u.pitch = 1.05;
+  synth.cancel();
+  synth.speak(u);
+}
+const audioCtx = window.AudioContext ? new AudioContext() : null;
+function beep(freq=880,dur=0.12,type='sine'){
+  if(!audioCtx) return;
+  const o = audioCtx.createOscillator();
+  const g = audioCtx.createGain();
+  o.type = type; o.frequency.value = freq;
+  o.connect(g); g.connect(audioCtx.destination);
+  g.gain.setValueAtTime(0.001, audioCtx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.15, audioCtx.currentTime + 0.02);
+  o.start();
+  g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+  o.stop(audioCtx.currentTime + dur + 0.02);
+}
+
+/* confetti canvas */
+const confettiCanvas = document.getElementById('confettiCanvas');
+const confettiCtx = confettiCanvas.getContext('2d');
+let confettiParticles = [];
+function resizeCanvas(){ confettiCanvas.width = window.innerWidth; confettiCanvas.height = window.innerHeight; }
+window.addEventListener('resize', resizeCanvas); resizeCanvas();
+
+function spawnConfetti(count=80){
+  confettiParticles = [];
+  for(let i=0;i<count;i++){
+    confettiParticles.push({
+      x: Math.random()*confettiCanvas.width,
+      y: Math.random()*-confettiCanvas.height,
+      r: Math.random()*8+4,
+      d: Math.random()*40+10,
+      color: ['#FFD166','#06D6A0','#4D96FF','#FF6B6B','#A18FFF'][Math.floor(Math.random()*5)],
+      tilt: Math.random()*10-10,
+      tiltAngle: Math.random()*0.1+0.05,
+      speed: Math.random()*3+2
+    });
+  }
+  requestAnimationFrame(runConfetti);
+}
+function runConfetti(){
+  confettiCtx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
+  for(let i=0;i<confettiParticles.length;i++){
+    const p = confettiParticles[i];
+    p.tilt += p.tiltAngle;
+    p.y += p.speed;
+    p.x += Math.sin(p.y/20)*2;
+    confettiCtx.fillStyle = p.color;
+    confettiCtx.fillRect(p.x + p.tilt, p.y, p.r, p.r*0.6);
+  }
+  confettiParticles = confettiParticles.filter(p => p.y < confettiCanvas.height + 50);
+  if(confettiParticles.length>0) requestAnimationFrame(runConfetti);
+  else confettiCtx.clearRect(0,0,confettiCanvas.width,confettiCanvas.height);
+}
+
+/* ---------- UI helpers ---------- */
+function showScreen(name){
+  screenLessons.classList.add('hidden');
+  screenQuiz.classList.add('hidden');
+  screenProgress.classList.add('hidden');
+  if(name==='lessons') screenLessons.classList.remove('hidden');
+  if(name==='quiz') screenQuiz.classList.remove('hidden');
+  if(name==='progress') screenProgress.classList.remove('hidden');
+  renderProgress();
+}
+
+function backToLessons(){
+  if(synth) synth.cancel();
+  showScreen('lessons');
+}
+
+/* render lesson cards */
+function renderLessons(){
+  lessonGrid.innerHTML='';
+  lessons.forEach(l=>{
+    const card = document.createElement('button');
+    card.className='lesson-card';
+    card.onclick = ()=>openLesson(l.id);
+    card.setAttribute('aria-label', l.title);
+    const num = document.createElement('div');
+    num.className='lesson-num ' + (l.color || 'l-blue');
+    num.innerText = l.id;
+    const title = document.createElement('div');
+    title.className='lesson-title';
+    title.innerHTML = `<strong>${l.title}</strong><div style="font-size:13px;color:var(--muted)">5-question mini quiz</div>`;
+    const right = document.createElement('div');
+    right.style.marginLeft='auto';
+    right.style.fontSize='30px';
+    right.innerText = l.icon || '⭐';
+    card.appendChild(num); card.appendChild(title); card.appendChild(right);
+    lessonGrid.appendChild(card);
+  });
+}
+
+/* ---------- open lesson ---------- */
+function openLesson(id){
+  const lesson = lessons.find(x=>x.id===id);
+  if(!lesson) return;
+  state.currentLessonId = id;
+  state.qIndex = 0;
+  state.answersCorrect = 0;
+  populateCharacter(lesson);
+  showScreen('quiz');
+  renderQuestion();
+  // mascot intro
+  boppiPhrase.innerText = `Let's play: ${lesson.title}!`;
+  speak(`Lesson ${lesson.id}. ${lesson.title}. Let's play and learn with Boppi!`);
+}
+
+/* populate mascot area */
+function populateCharacter(lesson){
+  characterRow.innerHTML = '';
+  const char = document.createElement('div');
+  char.style.fontSize='44px';
+  char.innerText = lesson.char || '🦘';
+  const info = document.createElement('div');
+  info.style.color='var(--muted)';
+  info.style.fontSize='14px';
+  info.innerText = "Tap the right answer — Boppi reads the question!";
+  characterRow.appendChild(char); characterRow.appendChild(info);
+}
+
+/* render question */
+let answering=false;
+function renderQuestion(){
+  const lesson = lessons.find(x=>x.id===state.currentLessonId);
+  const qObj = lesson.quiz[state.qIndex];
+  quizTitle.innerText = `${lesson.title} — Question ${state.qIndex+1} of ${lesson.quiz.length}`;
+  questionText.innerText = qObj.q;
+  qCount.innerText = `${state.qIndex+1} / ${lesson.quiz.length}`;
+  optionsEl.innerHTML='';
+  // create buttons for options
+  qObj.options.forEach((opt, idx)=>{
+    const b = document.createElement('button');
+    b.className = 'option-btn';
+    b.innerText = opt;
+    b.onclick = ()=>selectOption(idx, b);
+    optionsEl.appendChild(b);
+  });
+  // speak question and options (short)
+  speak(qObj.q);
+}
+
+/* handle selection */
+function selectOption(index, btn){
+  if(answering) return;
+  answering = true;
+  const lesson = lessons.find(x=>x.id===state.currentLessonId);
+  const qObj = lesson.quiz[state.qIndex];
+  const correct = qObj.answer;
+  // disable buttons
+  Array.from(optionsEl.children).forEach(b => b.disabled = true);
+  if(index === correct){
+    btn.classList.add('correct');
+    state.answersCorrect++;
+    beep(880,0.12,'sine');
+    boppiPhrase.innerText = "Yay! Great job!";
+    speak("Great job! You got it right!");
+  } else {
+    btn.classList.add('wrong');
+    beep(220,0.18,'sine');
+    boppiPhrase.innerText = "Nice try! Here's the right one.";
+    // highlight correct
+    const correctBtn = Array.from(optionsEl.children)[correct];
+    if(correctBtn) correctBtn.classList.add('correct');
+    speak("That's okay. The correct answer is " + qObj.options[correct]);
+  }
+  // short delay then move next
+  setTimeout(()=> {
+    state.qIndex++;
+    answering = false;
+    if(state.qIndex < lesson.quiz.length) renderQuestion();
+    else finishLesson();
+  }, 1000);
+}
+
+/* finish lesson */
+function finishLesson(){
+  const lesson = lessons.find(x=>x.id===state.currentLessonId);
+  state.completed[lesson.id] = {score: state.answersCorrect, total: lesson.quiz.length, date:new Date().toISOString()};
+  localStorage.setItem('mg_completed', JSON.stringify(state.completed));
+  // celebration
+  boppiPhrase.innerText = `You finished ${lesson.title}! ${state.answersCorrect}/${lesson.quiz.length}`;
+  speak(`Hooray! You finished ${lesson.title}. You got ${state.answersCorrect} out of ${lesson.quiz.length} correct.`);
+  beep(1320,0.15,'triangle');
+  spawnConfetti(100);
+  // show alert summary then back
+  setTimeout(()=> {
+    alert(`🎉 Great job! ${lesson.title}\nScore: ${state.answersCorrect} / ${lesson.quiz.length}\nBoppi is proud!`);
+    showScreen('lessons');
+  },700);
+}
+
+/* progress */
+function renderProgress(){
+  const keys = Object.keys(state.completed).map(k=>parseInt(k)).sort((a,b)=>a-b);
+  progressSummary.innerText = `You have completed ${keys.length} lesson${keys.length===1?'':'s'}.`;
+  starRow.innerHTML='';
+  keys.forEach(id=>{
+    const e = state.completed[id];
+    const item = document.createElement('div');
+    item.style.minWidth='140px';
+    item.style.padding='10px';
+    item.style.margin='6px';
+    item.style.borderRadius='12px';
+    item.style.background='#fff';
+    item.style.boxShadow='0 8px 20px rgba(0,0,0,0.06)';
+    item.innerHTML = `<div style="font-weight:800">Lesson ${id}</div><div style="color:var(--muted)">${e.score}/${e.total} ✅</div>`;
+    starRow.appendChild(item);
+  });
+}
+
+/* reset */
+function resetProgress(){
+  if(!confirm("Reset progress? This will clear completed lessons.")) return;
+  state.completed = {};
+  localStorage.removeItem('mg_completed');
+  renderProgress();
+  alert("Progress reset. Boppi loves a fresh start!");
+}
+
+/* help */
+function showHelp(){
+  const msg = `Teacher / Parent Mode - Quick Notes:
+- All 42 lessons with 5 questions each are loaded.
+- Voice uses your browser SpeechSynthesis (best on Chrome/Edge).
+- Sounds use WebAudio.
+- Confetti and Boppi mascot celebrate on completion.
+- Progress saved to localStorage under key "mg_completed".
+To customize: edit the 'lessons' array in the script (id,title,icon,char,color,quiz[{q,options[],answer}]).`;
+  alert(msg);
+}
+
+/* initial */
+renderLessons();
+renderProgress();
+showScreen('lessons');
+
+/* keyboard accessibility */
+document.addEventListener('keydown',(e)=>{
+  if(e.key==='Escape') showScreen('lessons');
+});
+
+</script>
+</body>
+</html>
