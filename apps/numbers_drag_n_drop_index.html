@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Count with Fun! 1–12</title>
+
+<style>
+  body {
+    font-family: "Comic Sans MS", system-ui, sans-serif;
+    background: linear-gradient(135deg, #fff3c4, #ffd6e8);
+    text-align: center;
+    margin: 0;
+    padding: 20px;
+  }
+
+  h1 { color: #ff6f61; }
+
+  #number {
+    font-size: 5rem;
+    margin: 10px;
+    color: #ff8c00;
+    animation: pop 0.3s ease;
+  }
+
+  @keyframes pop {
+    from { transform: scale(0.8); }
+    to { transform: scale(1); }
+  }
+
+  button {
+    font-size: 1.2rem;
+    padding: 10px 16px;
+    margin: 5px;
+    border: none;
+    border-radius: 12px;
+    background: #6ec6ff;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  button:hover { background: #42a5f5; }
+
+  .dots, .dropzone {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin: 15px 0;
+  }
+
+  .dot {
+    width: 28px;
+    height: 28px;
+    background: #ff6f61;
+    border-radius: 50%;
+    animation: bounce 0.4s ease;
+  }
+
+  @keyframes bounce {
+    0% { transform: scale(0); }
+    100% { transform: scale(1); }
+  }
+
+  .draggable {
+    background: #7cdbd5;
+    cursor: grab;
+  }
+
+  .dropzone {
+    min-height: 60px;
+    border: 3px dashed #999;
+    border-radius: 12px;
+    padding: 10px;
+    background: #fff;
+  }
+
+  #reward {
+    font-size: 1.5rem;
+    color: #4caf50;
+    margin-top: 10px;
+  }
+
+  .confetti {
+    position: fixed;
+    top: -10px;
+    width: 10px;
+    height: 10px;
+    background: red;
+    animation: fall 2s linear forwards;
+  }
+
+  @keyframes fall {
+    to { transform: translateY(110vh) rotate(360deg); }
+  }
+</style>
+</head>
+
+<body>
+
+<h1>🎈 Learn Numbers 1–12 🎈</h1>
+
+<div id="number">1</div>
+
+<button onclick="prev()">⬅️</button>
+<button onclick="next()">➡️</button>
+<button onclick="speak()">🔊 Say It</button>
+
+<div class="dots" id="dots"></div>
+
+<hr>
+
+<h2>🎮 Drag & Count Game</h2>
+<p>Drag dots into the box!</p>
+
+<div class="dots" id="draggables"></div>
+<div class="dropzone" id="dropzone"></div>
+
+<hr>
+
+<h2>🧠 Quiz</h2>
+<p id="quizText"></p>
+<div id="quizBtns"></div>
+
+<div id="reward"></div>
+
+<script>
+let num = 1;
+const max = 12;
+let progress = JSON.parse(localStorage.getItem("progress")) || {};
+
+const numberEl = document.getElementById("number");
+const dotsEl = document.getElementById("dots");
+const dragEl = document.getElementById("draggables");
+const dropzone = document.getElementById("dropzone");
+const rewardEl = document.getElementById("reward");
+
+function render() {
+  numberEl.textContent = num;
+  dotsEl.innerHTML = "";
+  dragEl.innerHTML = "";
+  dropzone.innerHTML = "";
+
+  for (let i = 0; i < num; i++) {
+    const d = document.createElement("div");
+    d.className = "dot";
+    dotsEl.appendChild(d);
+
+    const drag = document.createElement("div");
+    drag.className = "dot draggable";
+    drag.draggable = true;
+    drag.ondragstart = e => e.dataTransfer.setData("dot", "1");
+    dragEl.appendChild(drag);
+  }
+
+  makeQuiz();
+}
+
+function next() {
+  if (num < max) num++;
+  render();
+}
+
+function prev() {
+  if (num > 1) num--;
+  render();
+}
+
+/* 🔊 Audio Pronunciation */
+function speak() {
+  if ("speechSynthesis" in window) {
+    const u = new SpeechSynthesisUtterance(num.toString());
+    u.rate = 0.8;
+    speechSynthesis.speak(u);
+  }
+}
+
+/* 🎯 Drag Game */
+let dropped = 0;
+dropzone.ondragover = e => e.preventDefault();
+dropzone.ondrop = e => {
+  e.preventDefault();
+  dropped++;
+  const d = document.createElement("div");
+  d.className = "dot";
+  dropzone.appendChild(d);
+
+  if (dropped === num) {
+    win();
+    dropped = 0;
+  }
+};
+
+/* 🧠 Quiz */
+function makeQuiz() {
+  const quizText = document.getElementById("quizText");
+  const quizBtns = document.getElementById("quizBtns");
+  quizBtns.innerHTML = "";
+
+  const answer = Math.ceil(Math.random() * num);
+  quizText.textContent = `Which number is ${answer}?`;
+
+  [answer, Math.max(1, answer - 1), Math.min(max, answer + 1)]
+    .sort(() => Math.random() - 0.5)
+    .forEach(n => {
+      const b = document.createElement("button");
+      b.textContent = n;
+      b.onclick = () => n === answer ? win() : b.style.background = "#ccc";
+      quizBtns.appendChild(b);
+    });
+}
+
+/* 🎉 Rewards + Confetti */
+function win() {
+  progress[num] = true;
+  localStorage.setItem("progress", JSON.stringify(progress));
+  rewardEl.textContent = "⭐ Great Job! ⭐";
+  confetti();
+}
+
+function confetti() {
+  for (let i = 0; i < 40; i++) {
+    const c = document.createElement("div");
+    c.className = "confetti";
+    c.style.left = Math.random() * 100 + "vw";
+    c.style.background = `hsl(${Math.random()*360},100%,60%)`;
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 2000);
+  }
+}
+
+render();
+</script>
+
+</body>
+</html>
