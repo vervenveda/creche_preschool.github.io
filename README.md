@@ -1,6 +1,4 @@
-from pathlib import Path
-
-readme = """# Crechè Preschool
+# Crechè Preschool
 
 **A colorful, playful, privacy-respecting early-learning portal for young children and their grown-ups.**
 
