@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Mini Organizer: Kids Edition</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background: linear-gradient(135deg, #f2f9fb 0%, #f9e9ff 100%);
+      font-family: 'Comic Sans MS', 'Poppins', sans-serif;
+      color: #333; margin: 0; padding: 0; min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    .container {
+      background: #fff; border-radius: 32px;
+      box-shadow: 0 6px 28px #78d3e359;
+      margin: 28px 0 0 0; padding: 36px 16px 28px 16px;
+      width: 99%; max-width: 330px; text-align: center;
+      border: 5px solid #f9b14f;
+      position: relative;
+    }
+    h1 {
+      font-size: 2em; color: #fc48ba;
+      margin-bottom: 8px; letter-spacing: 1.2px;
+      text-shadow: 1.5px 2px #fff9, 0 0 12px #6ee9b6aa;
+    }
+    .tagline {
+      color: #6bcad1; font-size: 1.1em; margin-bottom: 19px;
+    }
+    .task-card {
+      background: #ffece9; color: #7d28b2;
+      border-radius: 20px;
+      padding: 28px 12px;
+      min-height: 120px;
+      font-size: 1.25em;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 10px #f4931769;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      transition: background 0.17s, color 0.17s;
+    }
+    .big-emoji {
+      font-size: 2.3em; margin-bottom: 6px;
+    }
+    .btn {
+      background: linear-gradient(90deg,#fbdd67 0%,#ff71d1 100%);
+      color: #5f00a0; font-weight: bold;
+      border: none; border-radius: 24px;
+      font-size: 1.25em; padding: 18px 26px;
+      margin-top: 12px; cursor: pointer;
+      box-shadow: 0 2px 14px #fbc1ff60;
+      letter-spacing: 1.1px;
+      transition: background 0.18s, box-shadow 0.18s;
+      outline: none;
+      user-select: none;
+    }
+    .btn:active { background: #fff6d3; color: #e92f85; }
+    .success {
+      font-size: 1.17em; color: #13ad62; margin-top: 15px; min-height: 26px;
+      font-family: inherit; font-weight: bold; letter-spacing: 1.1px;
+      animation: pop 0.9s;
+    }
+    @keyframes pop {
+      0% { transform: scale(0.5); opacity: 0;}
+      65% { transform: scale(1.2); opacity: 1;}
+      100% { transform: scale(1);}
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Mini Organizer! 🌈</h1>
+    <div class="tagline">One tiny tidy mission at a time!</div>
+    <div class="task-card" id="taskCard">
+      <span class="big-emoji" id="taskEmoji">🧸</span>
+      <span id="taskPrompt">Tap below to get your task!</span>
+    </div>
+    <button class="btn" id="nextBtn">Show Me a Task!</button>
+    <button class="btn" id="doneBtn" style="display:none">I Did It! 🎉</button>
+    <div class="success" id="successMsg"></div>
+  </div>
+  <script>
+    const tasks = [
+      {emoji:"📦", prompt:"Help stack toy boxes neatly."},
+  {emoji:"🪁", prompt:"Collect outdoor toys and bring them inside."},
+  {emoji:"🥄", prompt:"Put spoons and forks in the sink."},
+  {emoji:"🧴", prompt:"Place your lotion and soap back in order."},
+      {emoji:"🧷", prompt:"Pin small cloth pieces or napkins together neatly."},
+  {emoji:"🪟", prompt:"Wipe the windows with a soft cloth (just a little!)"},
+  {emoji:"🧽", prompt:"Help scrub a little countertop or table."},
+  {emoji:"🛁", prompt:"Pick up bath toys and place them on the tub edge."},
+  {emoji:"🧦", prompt:"Match socks by color or pattern."},
+  {emoji:"🪑", prompt:"Line up chairs neatly around the table."},
+  {emoji:"📦", prompt:"Stack your building blocks in a tower."},
+  {emoji:"🎀", prompt:"Put ribbons or hair ties back in a small box."},
+  {emoji:"🖼️", prompt:"Arrange your stickers or drawings on a board."},
+       {emoji:"🧃", prompt:"Line up your juice boxes or cups neatly."},
+  {emoji:"🧵", prompt:"Help roll up yarn or string and put it away."},
+  {emoji:"🖌️", prompt:"Rinse your paintbrushes in a cup of water."},
+  {emoji:"🧸", prompt:"Give your stuffed animals a hug before putting them away."},
+  {emoji:"📚", prompt:"Sort your storybooks by size or color."},
+  {emoji:"🛋️", prompt:"Fluff the pillows on the couch."},
+  {emoji:"🪀", prompt:"Put your toys back in their correct bins."},
+  {emoji:"🎨", prompt:"Organize your coloring pages in a folder."},
+  {emoji:"🧺", prompt:"Carry your laundry basket to the laundry area."},
+  {emoji:"🧹", prompt:"Sweep a small area with a toy broom."},
+  {emoji:"🥣", prompt:"Put your small bowls in the sink after snack."},
+  {emoji:"🪑", prompt:"Push your chair in after sitting."},
+  {emoji:"🧩", prompt:"Put puzzle pieces back in the box."},
+     {emoji:"🌞", prompt:"Open the curtains and let the sunshine in."},
+  {emoji:"🧦", prompt:"Pair up your socks and put them in a drawer."},
+  {emoji:"🍽️", prompt:"Clear your plate and cup after snack time."},
+  {emoji:"🖼️", prompt:"Arrange your artwork on the wall or shelf."},
+  {emoji:"🧹", prompt:"Sweep up tiny crumbs under the table."},
+  {emoji:"🛋️", prompt:"Straighten the cushions on the couch."},
+  {emoji:"🖌️", prompt:"Put your paint pots back in the tray."},
+  {emoji:"🪞", prompt:"Wipe a small mirror with a soft cloth."},
+  {emoji:"🎵", prompt:"Sing a tidy-up song as you pick up toys."},
+  {emoji:"🧺", prompt:"Put dirty clothes in the laundry basket."}, 
+  {emoji:"🎒", prompt:"Pack your backpack for tomorrow."},
+  {emoji:"🪣", prompt:"Carry a small bucket to help clean up."},
+  {emoji:"🧵", prompt:"Fold small napkins or cloths neatly."},
+  {emoji:"🎨", prompt:"Organize crayons and markers by color."},
+  {emoji:"🧸", prompt:"Find your favorite stuffed animal and give it a cozy spot."},
+  {emoji:"📚", prompt:"Stack your books in a neat little pile."},
+  {emoji:"🧦", prompt:"Match up your socks or help a grownup do it!"},
+  {emoji:"🎨", prompt:"Put crayons and markers in their box."},
+  {emoji:"🪀", prompt:"Pick up toys and put them in the toy basket."},
+  {emoji:"🛏️", prompt:"Smooth your pillow and tuck in your blanket."},
+  {emoji:"🚗", prompt:"Line up your toy cars or blocks by color!"},
+  {emoji:"👟", prompt:"Place your shoes together by the door."},
+  {emoji:"🍎", prompt:"Wipe your table clean with a napkin."},
+  {emoji:"🎵", prompt:"Make a happy song for your tidy room!"},
+  {emoji:"🖍️", prompt:"Put your coloring sheets in a folder or drawer."},
+  {emoji:"🥣", prompt:"Help put your cup and plate in the sink."},
+  {emoji:"🧹", prompt:"Sweep up little crumbs or dirt on the floor."},
+  {emoji:"🧴", prompt:"Put your lotion or soap back where it belongs."},
+  {emoji:"🖼️", prompt:"Hang up your art or place it on the shelf."},
+  {emoji:"🌱", prompt:"Water a small plant with care."},
+  {emoji:"🧺", prompt:"Sort your clothes into clean and dirty piles."},
+  {emoji:"🧸", prompt:"Hug a toy before putting it away."},
+  {emoji:"🥄", prompt:"Help set a spoon or fork at the table."},
+  {emoji:"🛋️", prompt:"Fluff a pillow on the couch."},
+  {emoji:"🖌️", prompt:"Rinse your paintbrushes and put them in the cup."},
+  {emoji:"🪞", prompt:"Wipe a small mirror with a cloth."},
+  {emoji:"🪣", prompt:"Fill a bucket with water to help clean up."},
+  {emoji:"🪁", prompt:"Put your outdoor toys in their bin after play."},
+  {emoji:"🧩", prompt:"Put puzzle pieces back in the box."},
+  {emoji:"🩰", prompt:"Put your dress-up clothes back on the hanger."},
+  {emoji:"🛁", prompt:"Put your bath toys in the tub basket."},
+  {emoji:"🖊️", prompt:"Put pens and pencils back in the cup."},
+  {emoji:"🧷", prompt:"Collect small items that rolled under the table."},
+  {emoji:"🪑", prompt:"Push your chair in at the table."},
+  {emoji:"🎒", prompt:"Pack your backpack for tomorrow."},
+  {emoji:"🥬", prompt:"Help put fruits or veggies in a basket."},
+  {emoji:"🪟", prompt:"Wipe the windowsill or small ledge."},
+  {emoji:"🪣", prompt:"Help carry a small basket to the laundry."},
+  {emoji:"🧃", prompt:"Put your juice box in the recycling bin."},
+  {emoji:"🧵", prompt:"Help fold a small cloth or napkin."},
+  {emoji:"🧻", prompt:"Replace the toilet paper roll if needed."},
+  {emoji:"🧽", prompt:"Wipe a counter with a damp sponge."},
+  {emoji:"🛎️", prompt:"Tidy your play kitchen area."},
+  {emoji:"🧩", prompt:"Put your games neatly on the shelf."},
+  {emoji:"🎁", prompt:"Wrap up a pretend gift and place it nicely."},
+  {emoji:"📦", prompt:"Help sort items in a box or bin."},
+  {emoji:"🪞", prompt:"Check yourself in a mirror and smile!"}
+];
+    const taskCard = document.getElementById('taskCard');
+    const taskEmoji = document.getElementById('taskEmoji');
+    const taskPrompt = document.getElementById('taskPrompt');
+    const nextBtn = document.getElementById('nextBtn');
+    const doneBtn = document.getElementById('doneBtn');
+    const successMsg = document.getElementById('successMsg');
+    let lastTask = -1;
+
+    function getRandomTask() {
+      let i;
+      do { i = Math.floor(Math.random()*tasks.length); } while (i === lastTask);
+      lastTask = i;
+      return tasks[i];
+    }
+
+    nextBtn.onclick = function() {
+      const t = getRandomTask();
+      taskEmoji.textContent = t.emoji;
+      taskPrompt.textContent = t.prompt;
+      nextBtn.style.display = 'none';
+      doneBtn.style.display = '';
+      successMsg.textContent = '';
+      taskCard.style.background = "#ffece9";
+      taskCard.style.color = "#7d28b2";
+    };
+
+    doneBtn.onclick = function() {
+      successMsg.textContent = "Great job! 🌟 Tap for a new task!";
+      taskCard.style.background = "#d6ffe7";
+      taskCard.style.color = "#19924a";
+      nextBtn.style.display = '';
+      doneBtn.style.display = 'none';
+    };
+  </script>
+</body>
+</html>
