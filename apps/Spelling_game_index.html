@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Colorful Spelling Game</title>
+
+<style>
+body{
+  background:linear-gradient(135deg,#fff6b7,#f6416c);
+  font-family:"Comic Sans MS",system-ui,sans-serif;
+  text-align:center;
+  padding:20px;
+  margin:0;
+}
+
+h1{
+  color:#fff;
+  font-size:3em;
+  text-shadow:2px 2px 6px #0004;
+}
+
+#wordDisplay{
+  font-size:2.2em;
+  color:#fff;
+  margin:20px;
+}
+
+#blanks{
+  display:flex;
+  justify-content:center;
+  gap:18px;
+  margin:30px 0;
+}
+
+.blank{
+  width:80px;
+  height:80px;
+  border-radius:50%;
+  background:#fff;
+  border:4px dashed #bbb;
+  font-size:2.2em;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+}
+
+#letters{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:15px;
+  margin-top:30px;
+}
+
+.letter{
+  width:80px;
+  height:80px;
+  border-radius:50%;
+  font-size:2em;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  user-select:none;
+  transition:transform .15s;
+}
+.letter:hover{transform:scale(1.1);}
+
+button{
+  background:#4caf50;
+  color:#fff;
+  font-size:1.2em;
+  border:none;
+  border-radius:12px;
+  padding:10px 22px;
+  margin-top:25px;
+  cursor:pointer;
+}
+
+#confetti{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:999;
+}
+</style>
+</head>
+
+<body>
+<h1>🌈 Let’s Spell!</h1>
+<div id="wordDisplay"></div>
+<div id="blanks"></div>
+<div id="letters"></div>
+<button id="nextBtn">Next Word ▶</button>
+<canvas id="confetti"></canvas>
+
+<script>
+/* =====================
+   DATA
+===================== */
+const words=["cat","dog","sun","hat","fish","tree","apple","ball","star"];
+const colors=["#ff4081","#3f51b5","#ff9800","#4caf50","#00bcd4","#9c27b0"];
+
+let current=0;
+let selectedLetter=null;
+
+/* =====================
+   SPEECH (STABLE)
+===================== */
+const utterance=new SpeechSynthesisUtterance();
+utterance.lang="en-US";
+utterance.pitch=1.2;
+utterance.rate=0.9;
+
+function getVoice(){
+  const voices=speechSynthesis.getVoices();
+  return voices.find(v=>/female|child|soft|kind/i.test(v.name))||voices[0];
+}
+
+function speak(text){
+  speechSynthesis.cancel();
+  utterance.text=text;
+  utterance.voice=getVoice();
+  speechSynthesis.speak(utterance);
+}
+
+/* =====================
+   HELPERS
+===================== */
+const rand=a=>a[Math.floor(Math.random()*a.length)];
+const randomColor=()=>rand(colors);
+
+function shuffle(a){return a.sort(()=>Math.random()-0.5);}
+
+/* =====================
+   SETUP
+===================== */
+function setupWord(){
+  selectedLetter=null;
+  const word=words[current];
+  document.getElementById("wordDisplay").textContent=`Spell: ${word.toUpperCase()}`;
+  speak(word);
+
+  createBlanks(word);
+  createLetters(word);
+}
+
+function createBlanks(word){
+  const blanks=document.getElementById("blanks");
+  blanks.innerHTML="";
+  [...word].forEach((l,i)=>{
+    const b=document.createElement("div");
+    b.className="blank";
+    b.dataset.letter=l;
+    b.dataset.index=i;
+    b.addEventListener("click",()=>placeLetter(b));
+    blanks.appendChild(b);
+  });
+}
+
+function createLetters(word){
+  const letters=document.getElementById("letters");
+  letters.innerHTML="";
+  const pool=shuffle([...word,...randomExtras()]);
+  pool.forEach(ch=>{
+    const d=document.createElement("div");
+    d.className="letter";
+    d.textContent=ch.toUpperCase();
+    d.style.background=randomColor();
+    d.addEventListener("click",()=>{
+      selectedLetter=ch;
+      speak(ch);
+    });
+    letters.appendChild(d);
+  });
+}
+
+function randomExtras(){
+  const alpha="abcdefghijklmnopqrstuvwxyz";
+  return Array.from({length:3},()=>alpha[Math.floor(Math.random()*26)]);
+}
+
+/* =====================
+   GAMEPLAY
+===================== */
+function placeLetter(blank){
+  if(!selectedLetter) return;
+
+  blank.textContent=selectedLetter.toUpperCase();
+
+  if(selectedLetter===blank.dataset.letter){
+    blank.style.background="#c8e6c9";
+    speak(selectedLetter);
+  }else{
+    blank.style.background="#ffcdd2";
+    speak("Try again");
+    setTimeout(()=>{
+      blank.textContent="";
+      blank.style.background="#fff";
+    },700);
+  }
+  checkWord();
+}
+
+function checkWord(){
+  const built=[...document.querySelectorAll(".blank")]
+    .map(b=>b.textContent.toLowerCase()).join("");
+  const word=words[current];
+  if(built.length===word.length && built===word){
+    celebrate(word);
+  }
+}
+
+function celebrate(word){
+  speak(`Awesome job! You spelled ${word}!`);
+  startConfetti();
+  setTimeout(()=>{
+    stopConfetti();
+    current=(current+1)%words.length;
+    setupWord();
+  },2500);
+}
+
+/* =====================
+   CONFETTI
+===================== */
+const canvas=document.getElementById("confetti");
+const ctx=canvas.getContext("2d");
+let pieces=[],running=false;
+
+function resize(){
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
+}
+window.addEventListener("resize",resize);
+resize();
+
+function startConfetti(){
+  running=true;
+  pieces=Array.from({length:80},()=>({
+    x:Math.random()*canvas.width,
+    y:Math.random()*-50,
+    r:Math.random()*6+4,
+    c:randomColor(),
+    s:Math.random()*3+2
+  }));
+  draw();
+}
+
+function draw(){
+  if(!running) return;
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  pieces.forEach(p=>{
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle=p.c;
+    ctx.fill();
+    p.y+=p.s;
+    if(p.y>canvas.height) p.y=0;
+  });
+  requestAnimationFrame(draw);
+}
+
+function stopConfetti(){
+  running=false;
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+}
+
+/* =====================
+   CONTROLS
+===================== */
+document.getElementById("nextBtn").addEventListener("click",()=>{
+  stopConfetti();
+  current=(current+1)%words.length;
+  setupWord();
+});
+
+/* =====================
+   INIT
+===================== */
+window.addEventListener("load",()=>{
+  setTimeout(()=>setupWord(),200);
+});
+</script>
+</body>
+</html>
