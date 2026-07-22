@@ -1,838 +1,808 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>🌈 Alphabet Adventure Book</title>
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Alphabet Adventure Book — Story Garden</title>
+<meta name="description" content="A private alphabet reading game for young readers. Local storage only, no ads, no trackers.">
 <style>
-
-*{
-box-sizing:border-box;
-}
-
-body{
-
-margin:0;
-
-height:100vh;
-
-font-family:'Comic Sans MS','Poppins',sans-serif;
-
-display:flex;
-
-flex-direction:column;
-
-align-items:center;
-
-background:
-
-linear-gradient(
-180deg,
-#8ed8ff,
-#c9f7d8,
-#fff1b8
-);
-
-overflow:hidden;
-
-}
-
-
-/* HEADER */
-
-header{
-
-text-align:center;
-
-padding:10px;
-
-}
-
-header h1{
-
-margin:0;
-
-font-size:34px;
-
-color:#ff5f6d;
-
-text-shadow:
-
-3px 3px white;
-
-}
-
-
-
-/* MODE BUTTONS */
-
-
-.mode-buttons button{
-
-margin:8px;
-
-padding:12px 22px;
-
-border:none;
-
-border-radius:30px;
-
-font-size:18px;
-
-font-weight:bold;
-
-cursor:pointer;
-
-background:
-
-linear-gradient(
-135deg,
-#ff9a9e,
-#fad0c4
-);
-
-color:white;
-
-box-shadow:
-0 5px 15px #999;
-
-}
-
-
-
-/* BOOK */
-
-
-#book{
-
-width:90%;
-
-max-width:850px;
-
-height:520px;
-
-perspective:1500px;
-
-position:relative;
-
-}
-
-
-
-.page{
-
-position:absolute;
-
-width:100%;
-
-height:100%;
-
-background:white;
-
-border-radius:30px;
-
-padding:35px;
-
-text-align:center;
-
-box-shadow:
-
-0 15px 35px rgba(0,0,0,.25);
-
-border:
-
-8px solid #ffd166;
-
-}
-
-
-
-.page h2{
-
-font-size:34px;
-
-color:#5b4bdb;
-
-}
-
-
-
-.page p{
-
-font-size:22px;
-
-line-height:1.5;
-
-color:#555;
-
-}
-
-
-
-.letter{
-
-font-size:150px;
-
-font-weight:bold;
-
-color:#ff5757;
-
-animation:bounce 2s infinite;
-
-text-shadow:
-
-5px 5px #ffd166;
-
-}
-
-
-
-.character{
-
-font-size:100px;
-
-}
-
-
-
-.object{
-
-font-size:80px;
-
-}
-
-
-
-@keyframes bounce{
-
-50%{
-
-transform:translateY(-20px);
-
-}
-
-}
-
-
-
-
-/* CONTROLS */
-
-
-.controls{
-
-margin-top:20px;
-
-}
-
-
-
-.controls button{
-
-padding:14px 25px;
-
-margin:5px;
-
-border:none;
-
-border-radius:30px;
-
-background:#69c57e;
-
-color:white;
-
-font-size:18px;
-
-cursor:pointer;
-
-}
-
-
-
-/* PARTICLES */
-
-
-.sparkle{
-
-position:absolute;
-
-font-size:30px;
-
-animation:float 3s infinite;
-
-}
-
-
-
-@keyframes float{
-
-100%{
-
-transform:
-
-translateY(-300px)
-rotate(360deg);
-
-opacity:0;
-
-}
-
-}
-
-
-
-@media(max-width:600px){
-
-#book{
-
-height:450px;
-
-}
-
-.page p{
-
-font-size:17px;
-
-}
-
-}
-
-
-
+  :root{
+    --sky:#7dd3fc;
+    --leaf:#86efac;
+    --sun:#fde68a;
+    --pink:#f9a8d4;
+    --card:#fffdf8;
+    --ink:#172033;
+    --muted:#5f6472;
+    --line:rgba(23,32,51,.12);
+    --dark:#111827;
+    --dark2:#1f2937;
+    --white:#ffffff;
+    --gold:#facc15;
+    --good:#22c55e;
+    --danger:#dc2626;
+    --radius:20px;
+    --shadow:0 18px 42px rgba(15,23,42,.16);
+  }
+
+  *{box-sizing:border-box;}
+  html,body{height:100%;margin:0;}
+  body{
+    min-height:100%;
+    font-family:ui-rounded, "Comic Sans MS", "Trebuchet MS", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color:var(--ink);
+    background:
+      radial-gradient(circle at 12% 8%, rgba(255,255,255,.75), transparent 13rem),
+      radial-gradient(circle at 86% 16%, rgba(255,255,255,.62), transparent 13rem),
+      linear-gradient(180deg,var(--sky),#c7f9d4 52%,#fff1b8);
+    overflow:hidden;
+  }
+
+  button,select,input{font:inherit;}
+  button{touch-action:manipulation;}
+
+  .app{
+    width:min(1180px,100%);
+    height:100dvh;
+    min-height:620px;
+    margin:0 auto;
+    padding:clamp(8px,1.7vw,14px);
+    display:grid;
+    grid-template-rows:auto auto minmax(0,1fr) auto;
+    gap:8px;
+  }
+
+  .topbar{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding:10px 12px;
+    border-radius:24px;
+    background:rgba(255,255,255,.86);
+    border:1px solid var(--line);
+    box-shadow:var(--shadow);
+    backdrop-filter:blur(8px);
+  }
+
+  .brand{display:flex;align-items:center;gap:10px;min-width:0;}
+  .logo{
+    width:54px;height:54px;border-radius:18px;
+    display:grid;place-items:center;
+    background:linear-gradient(135deg,#fb7185,#facc15,#22c55e,#38bdf8);
+    box-shadow:0 12px 26px rgba(15,23,42,.18);
+    font-size:28px;flex:0 0 auto;
+  }
+  h1{margin:0;font-size:clamp(1.15rem,3.2vw,1.85rem);line-height:1.05;color:#ec4899;text-shadow:2px 2px #fff;}
+  .subtitle{margin-top:2px;color:var(--muted);font-size:clamp(.78rem,2vw,.92rem);line-height:1.25;}
+  .privacy-pill{white-space:nowrap;border-radius:999px;padding:7px 10px;background:#fff7ed;border:1px solid rgba(249,115,22,.18);color:#7c2d12;font-size:.78rem;font-weight:900;}
+
+  .control-panel{
+    display:grid;
+    grid-template-columns:minmax(92px,130px) minmax(128px,170px) minmax(170px,1fr) auto;
+    gap:8px;
+    align-items:end;
+    padding:9px;
+    border-radius:20px;
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.82);
+    box-shadow:0 12px 30px rgba(15,23,42,.11);
+  }
+  .field label{display:block;margin:0 0 4px;color:var(--muted);font-size:.74rem;font-weight:900;}
+  select{
+    width:100%;min-height:38px;border-radius:14px;border:1px solid var(--line);
+    background:#fff;color:var(--ink);font-weight:900;padding:7px 10px;
+  }
+  .mode-tabs{display:flex;flex-wrap:wrap;gap:6px;}
+  .btn{
+    min-height:38px;border:0;border-radius:999px;padding:8px 12px;cursor:pointer;
+    font-weight:950;color:white;background:linear-gradient(135deg,#0ea5e9,#22c55e);
+    box-shadow:0 8px 18px rgba(15,23,42,.16);
+  }
+  .btn.secondary{background:#fff;color:var(--ink);border:1px solid var(--line);box-shadow:none;}
+  .btn.gold{background:linear-gradient(135deg,#fde047,#fb923c);color:#422006;}
+  .btn.pink{background:linear-gradient(135deg,#fb7185,#f472b6);}
+  .btn.dark{background:linear-gradient(135deg,var(--dark),var(--dark2));}
+  .btn:active{transform:translateY(1px);}
+  .btn[aria-pressed="true"]{outline:3px solid rgba(250,204,21,.7);}
+  .small{min-height:32px;padding:6px 10px;font-size:.82rem;}
+
+  .main{
+    min-height:0;
+    display:grid;
+    grid-template-columns:minmax(0,1fr) minmax(288px,360px);
+    gap:10px;
+  }
+
+  .stage,.side{
+    min-height:0;
+    border-radius:var(--radius);
+    border:1px solid var(--line);
+    background:rgba(255,255,255,.9);
+    box-shadow:var(--shadow);
+    overflow:hidden;
+  }
+
+  .stage{
+    display:grid;
+    grid-template-rows:auto minmax(0,1fr) auto;
+    gap:8px;
+    padding:10px;
+  }
+
+  .reader-card{
+    border-radius:20px;
+    background:
+      radial-gradient(circle at 18% 18%, rgba(250,204,21,.18), transparent 12rem),
+      linear-gradient(135deg,var(--dark),#111827 50%,#0f172a);
+    color:white;
+    padding:12px;
+    display:grid;
+    grid-template-columns:auto minmax(0,1fr) auto;
+    gap:12px;
+    align-items:center;
+    min-height:118px;
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.1), 0 12px 24px rgba(15,23,42,.20);
+  }
+
+  .big-letter{
+    width:88px;height:88px;border-radius:24px;display:grid;place-items:center;
+    background:linear-gradient(135deg,#fff,#fde68a);color:#dc2626;
+    font-size:58px;font-weight:1000;line-height:1;text-shadow:3px 3px rgba(250,204,21,.65);
+    box-shadow:0 12px 22px rgba(0,0,0,.22);
+  }
+  .sentence-wrap{min-width:0;}
+  .reader-kicker{font-size:.78rem;font-weight:900;color:#fde68a;letter-spacing:.04em;text-transform:uppercase;margin-bottom:4px;}
+  .sentence{
+    font-size:clamp(1.18rem,3vw,1.85rem);
+    line-height:1.18;
+    font-weight:1000;
+    color:#fff;
+  }
+  .reader-help{margin-top:4px;color:#dbeafe;font-size:.86rem;line-height:1.3;}
+  .reader-emoji{font-size:58px;filter:drop-shadow(0 8px 10px rgba(0,0,0,.25));}
+
+  .book-area{
+    min-height:0;
+    display:grid;
+    grid-template-columns:minmax(210px,320px) minmax(0,1fr);
+    gap:8px;
+  }
+
+  .letter-card,.choice-card{
+    min-height:0;
+    border-radius:18px;
+    border:1px solid var(--line);
+    background:linear-gradient(180deg,#fff,#fffaf3);
+    padding:10px;
+    overflow:hidden;
+  }
+  .letter-card{display:grid;place-items:center;text-align:center;}
+  .letter-character{font-size:clamp(66px,11vw,120px);line-height:1;animation:bounce 2.4s ease-in-out infinite;}
+  @keyframes bounce{50%{transform:translateY(-8px) scale(1.02);}}
+  .letter-title{margin:4px 0 2px;font-size:clamp(1.15rem,3vw,1.55rem);color:#4338ca;line-height:1.08;}
+  .word-row{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin-top:7px;}
+  .word-pill{border-radius:999px;padding:5px 9px;background:#eef2ff;color:#3730a3;font-weight:900;font-size:.84rem;}
+  .fact{margin-top:7px;color:var(--muted);font-size:.9rem;line-height:1.32;max-width:31ch;}
+
+  .choice-card{display:grid;grid-template-rows:auto minmax(0,1fr);gap:8px;}
+  .choice-head{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+  .choice-head strong{font-size:1rem;}
+  .choice-columns{
+    min-height:0;
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:8px;
+    overflow:auto;
+    padding-right:2px;
+  }
+  .choice-group{border-radius:15px;border:1px solid var(--line);background:#fff;padding:8px;}
+  .choice-group h3{margin:0 0 6px;font-size:.86rem;color:#334155;display:flex;justify-content:space-between;gap:6px;}
+  .choice-list{display:grid;gap:6px;}
+  .choice{
+    width:100%;border:1px solid rgba(15,23,42,.10);border-radius:13px;background:#fff;text-align:left;
+    padding:7px;cursor:pointer;display:flex;gap:7px;align-items:center;font-weight:900;color:#1f2937;
+  }
+  .choice .dot{width:31px;height:31px;border-radius:12px;display:grid;place-items:center;flex:0 0 auto;background:linear-gradient(135deg,#fff7ad,#c7f9d4);}
+  .choice.selected{background:linear-gradient(135deg,#312e81,#0f766e);color:white;border-color:transparent;}
+
+  .action-bar{display:flex;gap:7px;flex-wrap:wrap;justify-content:space-between;align-items:center;}
+  .status{color:var(--muted);font-size:.84rem;font-weight:800;line-height:1.25;min-height:32px;display:flex;align-items:center;}
+
+  .side{padding:10px;display:grid;grid-template-rows:auto auto minmax(0,1fr);gap:8px;}
+  .side-title{margin:0;font-size:1.05rem;color:#334155;}
+  .progress-card{border-radius:16px;background:#fff;padding:9px;border:1px solid var(--line);}
+  .progress-row{display:flex;justify-content:space-between;gap:8px;color:var(--muted);font-size:.82rem;font-weight:900;margin-bottom:7px;}
+  .bar{height:10px;border-radius:999px;background:#e2e8f0;overflow:hidden;}
+  .bar-inner{height:100%;width:0%;background:linear-gradient(90deg,#fb7185,#facc15,#22c55e);border-radius:999px;transition:width .25s ease;}
+  .letter-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(36px,1fr));gap:5px;}
+  .letter-btn{min-height:35px;border:1px solid var(--line);border-radius:12px;background:#fff;font-weight:1000;color:#334155;cursor:pointer;}
+  .letter-btn.current{background:#312e81;color:white;border-color:transparent;}
+  .letter-btn.done{background:#dcfce7;border-color:#86efac;color:#166534;}
+  .nest{min-height:0;overflow:auto;border-radius:16px;background:#fff;border:1px solid var(--line);padding:8px;}
+  .nest-item{border-bottom:1px solid rgba(15,23,42,.08);padding:7px 2px;}
+  .nest-item:last-child{border-bottom:0;}
+  .nest-text{font-weight:900;line-height:1.28;}
+  .nest-meta{color:var(--muted);font-size:.76rem;margin-top:3px;}
+  .empty{color:var(--muted);font-size:.85rem;line-height:1.3;padding:8px;}
+
+  .footer{display:flex;align-items:center;justify-content:space-between;gap:8px;color:#3f3f46;font-size:.76rem;font-weight:800;padding:0 4px;}
+
+  .sparkle{position:fixed;pointer-events:none;font-size:26px;animation:floatUp 1.7s ease-out forwards;z-index:10;}
+  @keyframes floatUp{to{transform:translateY(-130px) rotate(180deg);opacity:0;}}
+
+  @media(max-width:980px){
+    body{overflow:auto;}
+    .app{height:auto;min-height:100dvh;overflow:visible;}
+    .control-panel{grid-template-columns:1fr 1fr;}
+    .control-panel .mode-field{grid-column:1/-1;}
+    .main{grid-template-columns:1fr;}
+    .reader-card{position:sticky;top:6px;z-index:5;}
+    .side{min-height:360px;}
+  }
+
+  @media(max-width:720px){
+    .topbar{align-items:flex-start;}
+    .privacy-pill{display:none;}
+    .book-area{grid-template-columns:1fr;}
+    .letter-card{min-height:190px;}
+    .choice-columns{grid-template-columns:1fr 1fr;max-height:330px;}
+    .reader-card{grid-template-columns:auto 1fr;}
+    .reader-emoji{display:none;}
+    .big-letter{width:70px;height:70px;font-size:48px;border-radius:20px;}
+  }
+
+  @media(max-width:520px){
+    .app{padding:7px;gap:7px;}
+    .control-panel{grid-template-columns:1fr;}
+    .mode-tabs{display:grid;grid-template-columns:1fr 1fr;}
+    .choice-columns{grid-template-columns:1fr;max-height:360px;}
+    .action-bar{display:grid;grid-template-columns:1fr 1fr;}
+    .status{grid-column:1/-1;}
+    .footer{display:block;text-align:center;}
+  }
 </style>
-
 </head>
-
-
 <body>
+<div class="app" data-app="alphabet-adventure-book">
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo" aria-hidden="true">🌈</div>
+      <div>
+        <h1>Alphabet Adventure Book</h1>
+        <div class="subtitle">Read letters, build little sentences, and save favorite pages.</div>
+      </div>
+    </div>
+    <div class="privacy-pill">Private on this device</div>
+  </header>
 
+  <section class="control-panel" aria-label="Alphabet controls">
+    <div class="field">
+      <label for="letterSelect">Letter</label>
+      <select id="letterSelect"></select>
+    </div>
+    <div class="field">
+      <label for="levelSelect">Reader Level</label>
+      <select id="levelSelect">
+        <option value="little">Little Reader</option>
+        <option value="growing">Growing Reader</option>
+        <option value="story">Story Reader</option>
+      </select>
+    </div>
+    <div class="field mode-field">
+      <label>Mode</label>
+      <div class="mode-tabs" role="group" aria-label="Choose mode">
+        <button class="btn secondary small" id="learnMode" type="button" aria-pressed="true">📘 Learn</button>
+        <button class="btn secondary small" id="buildMode" type="button" aria-pressed="false">🧩 Build</button>
+        <button class="btn secondary small" id="adventureMode" type="button" aria-pressed="false">✨ Adventure</button>
+        <button class="btn secondary small" id="traceMode" type="button" aria-pressed="false">✏️ Sound</button>
+      </div>
+    </div>
+    <div class="mode-tabs">
+      <button class="btn gold small" id="shuffleBtn" type="button">Shuffle</button>
+      <button class="btn dark small" id="readBtn" type="button">🔊 Read</button>
+    </div>
+  </section>
 
-<header>
+  <main class="main">
+    <section class="stage" aria-label="Reading stage">
+      <article class="reader-card" aria-live="polite">
+        <div class="big-letter" id="bigLetter">A</div>
+        <div class="sentence-wrap">
+          <div class="reader-kicker" id="readerKicker">Learn the letter</div>
+          <div class="sentence" id="sentenceText">A is for Alligator.</div>
+          <div class="reader-help" id="readerHelp">Tap Read to hear the sentence.</div>
+        </div>
+        <div class="reader-emoji" id="readerEmoji" aria-hidden="true">🐊</div>
+      </article>
 
-<h1>
-🌈 Alphabet Adventure Book
-</h1>
+      <div class="book-area">
+        <article class="letter-card">
+          <div>
+            <div class="letter-character" id="letterEmoji">🐊</div>
+            <h2 class="letter-title" id="letterTitle">A is for Alligator</h2>
+            <div class="word-row" id="wordRow"></div>
+            <p class="fact" id="factText">Alligators are reptiles that love water.</p>
+          </div>
+        </article>
 
+        <article class="choice-card">
+          <div class="choice-head">
+            <strong id="choiceTitle">Build with A words</strong>
+            <button class="btn secondary small" id="reshuffleBtn" type="button">Mix choices</button>
+          </div>
+          <div class="choice-columns" id="choiceColumns"></div>
+        </article>
+      </div>
 
-<div class="mode-buttons">
+      <div class="action-bar">
+        <button class="btn secondary small" id="backBtn" type="button">⬅ Back</button>
+        <button class="btn pink small" id="makeBtn" type="button">Make Sentence</button>
+        <button class="btn gold small" id="magicBtn" type="button">Magic Page</button>
+        <button class="btn secondary small" id="saveBtn" type="button">Save Page</button>
+        <button class="btn secondary small" id="nextBtn" type="button">Next ➡</button>
+        <div class="status" id="statusText">Ready. Choose a letter or press Magic Page.</div>
+      </div>
+    </section>
 
-<button onclick="learnMode()">
-📘 Learn Letters
-</button>
+    <aside class="side" aria-label="Alphabet progress and saved pages">
+      <div>
+        <h2 class="side-title">My Alphabet Trail</h2>
+        <div class="progress-card">
+          <div class="progress-row">
+            <span><span id="visitedCount">0</span> / 26 letters visited</span>
+            <span>Stars: <span id="starCount">0</span> ⭐</span>
+          </div>
+          <div class="bar"><div class="bar-inner" id="progressBar"></div></div>
+        </div>
+      </div>
+      <div class="letter-grid" id="letterGrid" aria-label="Letter buttons"></div>
+      <div class="nest" id="pageNest" role="list"></div>
+    </aside>
+  </main>
 
-<button onclick="adventureMode()">
-✨ Create Adventure
-</button>
-
-
+  <footer class="footer">
+    <span>No ads. No trackers. No accounts.</span>
+    <span>Saved progress stays in this browser.</span>
+  </footer>
 </div>
-
-</header>
-
-
-
-<div id="book">
-
-
-<div class="page">
-
-
-<div id="content">
-
-</div>
-
-
-</div>
-
-
-</div>
-
-
-
-<div class="controls">
-
-<button onclick="previousLetter()">
-⬅ Back
-</button>
-
-
-<button onclick="readStory()">
-🔊 Read
-</button>
-
-
-<button onclick="nextLetter()">
-Next ➡
-</button>
-
-
-</div>
-
-
-
-
 
 <script>
-
-
-const alphabet=[
-
-{
-letter:"A",
-character:"Alligator",
-emoji:"🐊",
-object:"Apple",
-objectEmoji:"🍎",
-setting:"Alphabet River",
-fact:"Alligators are reptiles that love water."
-},
-
-{
-letter:"B",
-character:"Bear",
-emoji:"🐻",
-object:"Ball",
-objectEmoji:"⚽",
-setting:"Bluebell Forest",
-fact:"Bears have an excellent sense of smell."
-},
-
-{
-letter:"C",
-character:"Cat",
-emoji:"🐱",
-object:"Cookie",
-objectEmoji:"🍪",
-setting:"Crystal Cave",
-fact:"Cats use whiskers to explore."
-},
-
-{
-letter:"D",
-character:"Duck",
-emoji:"🦆",
-object:"Drum",
-objectEmoji:"🥁",
-setting:"Dewdrop Pond",
-fact:"Ducks have waterproof feathers."
-},
-
-{
-letter:"E",
-character:"Elephant",
-emoji:"🐘",
-object:"Egg",
-objectEmoji:"🥚",
-setting:"Emerald Meadow",
-fact:"Elephants remember many things."
-},
-
-{
-letter:"F",
-character:"Fox",
-emoji:"🦊",
-object:"Flower",
-objectEmoji:"🌸",
-setting:"Firefly Forest",
-fact:"Foxes have excellent hearing."
-},
-
-{
-letter:"G",
-character:"Giraffe",
-emoji:"🦒",
-object:"Grapes",
-objectEmoji:"🍇",
-setting:"Golden Grasslands",
-fact:"Giraffes have very long necks."
-},
-
-{
-letter:"H",
-character:"Hedgehog",
-emoji:"🦔",
-object:"Honey",
-objectEmoji:"🍯",
-setting:"Honey Grove",
-fact:"Hedgehogs have protective spines."
-},
-
-{
-letter:"I",
-character:"Iguana",
-emoji:"🦎",
-object:"Island",
-objectEmoji:"🏝️",
-setting:"Ivy Island",
-fact:"Iguanas enjoy warm sunshine."
-},
-
-{
-letter:"J",
-character:"Jellyfish",
-emoji:"🪼",
-object:"Jewel",
-objectEmoji:"💎",
-setting:"Jade Ocean",
-fact:"Jellyfish have lived for millions of years."
-},
-
-{
-letter:"K",
-character:"Kangaroo",
-emoji:"🦘",
-object:"Kite",
-objectEmoji:"🪁",
-setting:"Kite Valley",
-fact:"Kangaroos hop using powerful legs."
-},
-
-{
-letter:"L",
-character:"Lion",
-emoji:"🦁",
-object:"Leaf",
-objectEmoji:"🍃",
-setting:"Lantern Meadow",
-fact:"Lions live together in groups."
-},
-
-{
-letter:"M",
-character:"Monkey",
-emoji:"🐒",
-object:"Mango",
-objectEmoji:"🥭",
-setting:"Moonlit Forest",
-fact:"Monkeys are clever explorers."
-},
-
-{
-letter:"N",
-character:"Narwhal",
-emoji:"🐋",
-object:"Nest",
-objectEmoji:"🪺",
-setting:"Northern Sea",
-fact:"Narwhals are ocean unicorns."
-},
-
-{
-letter:"O",
-character:"Owl",
-emoji:"🦉",
-object:"Orange",
-objectEmoji:"🍊",
-setting:"Oak Forest",
-fact:"Owls can see well at night."
-},
-
-{
-letter:"P",
-character:"Penguin",
-emoji:"🐧",
-object:"Pearl",
-objectEmoji:"🦪",
-setting:"Polar Valley",
-fact:"Penguins are excellent swimmers."
-},
-
-{
-letter:"Q",
-character:"Quail",
-emoji:"🐦",
-object:"Quilt",
-objectEmoji:"🧵",
-setting:"Quiet Meadow",
-fact:"Quails are small friendly birds."
-},
-
-{
-letter:"R",
-character:"Rabbit",
-emoji:"🐇",
-object:"Rainbow",
-objectEmoji:"🌈",
-setting:"Rainbow Garden",
-fact:"Rabbits can hop very quickly."
-},
-
-{
-letter:"S",
-character:"Squirrel",
-emoji:"🐿️",
-object:"Star",
-objectEmoji:"⭐",
-setting:"Secret Grove",
-fact:"Squirrels save food for later."
-},
-
-{
-letter:"T",
-character:"Turtle",
-emoji:"🐢",
-object:"Tree",
-objectEmoji:"🌳",
-setting:"Tiny Island",
-fact:"Turtles carry protective shells."
-},
-
-{
-letter:"U",
-character:"Unicorn",
-emoji:"🦄",
-object:"Umbrella",
-objectEmoji:"☂️",
-setting:"Unicorn Valley",
-fact:"Unicorns are magical story creatures."
-},
-
-{
-letter:"V",
-character:"Vulture",
-emoji:"🦅",
-object:"Vine",
-objectEmoji:"🌿",
-setting:"Violet Valley",
-fact:"Vultures help clean nature."
-},
-
-{
-letter:"W",
-character:"Wolf",
-emoji:"🐺",
-object:"Wing",
-objectEmoji:"🪽",
-setting:"Whispering Woods",
-fact:"Wolves are social animals."
-},
-
-{
-letter:"X",
-character:"X-Ray Fish",
-emoji:"🐟",
-object:"Xylophone",
-objectEmoji:"🎵",
-setting:"Xenon Ocean",
-fact:"X-ray fish have see-through bodies."
-},
-
-{
-letter:"Y",
-character:"Yak",
-emoji:"🐂",
-object:"Yarn",
-objectEmoji:"🧶",
-setting:"Yellow Valley",
-fact:"Yaks have thick warm fur."
-},
-
-{
-letter:"Z",
-character:"Zebra",
-emoji:"🦓",
-object:"Zinnia",
-objectEmoji:"🌺",
-setting:"Zebra Plains",
-fact:"Every zebra has unique stripes."
-}
-
-];
-
-
-
-let current=0;
-
-
-let mode="learn";
-
-
-
-function showLetter(data){
-
-
-document.getElementById("content").innerHTML=`
-
-<div class="letter">
-${data.letter}
-</div>
-
-
-<div class="character">
-${data.emoji}
-</div>
-
-
-<h2>
-${data.letter} is for ${data.character}
-</h2>
-
-
-<p>
-The ${data.character} explored 
-<b>${data.setting}</b>
-and discovered a magical ${data.object}.
-</p>
-
-
-<div class="object">
-${data.objectEmoji}
-</div>
-
-
-<p>
-${data.fact}
-</p>
-
-`;
-
-
-createSparkles();
-
-
-}
-
-
-
-function learnMode(){
-
-mode="learn";
-
-showLetter(alphabet[current]);
-
-}
-
-
-
-function adventureMode(){
-
-
-const data=
-alphabet[Math.floor(Math.random()*alphabet.length)];
-
-
-document.getElementById("content").innerHTML=`
-
-<div class="character">
-${data.emoji}
-</div>
-
-
-<h2>
-✨ ${data.character}'s Adventure
-</h2>
-
-
-<p>
-
-The ${data.character}
-wandered through
-<b>${data.setting}</b>
-
-and discovered a magical
-${data.object}.
-
-</p>
-
-
-<div class="object">
-${data.objectEmoji}
-</div>
-
-
-<p>
-${data.letter} is for ${data.character}!
-</p>
-
-`;
-
-
-createSparkles();
-
-}
-
-
-
-function nextLetter(){
-
-if(current<25){
-
-current++;
-
-}
-
-showLetter(alphabet[current]);
-
-}
-
-
-
-function previousLetter(){
-
-if(current>0){
-
-current--;
-
-}
-
-showLetter(alphabet[current]);
-
-}
-
-
-
-
-function readStory(){
-
-let text=
-document.getElementById("content")
-.innerText;
-
-
-speechSynthesis.speak(
-
-new SpeechSynthesisUtterance(text)
-
-);
-
-}
-
-
-
-function createSparkles(){
-
-for(let i=0;i<8;i++){
-
-let s=document.createElement("div");
-
-s.className="sparkle";
-
-s.innerHTML="✨";
-
-s.style.left=Math.random()*90+"%";
-
-s.style.bottom="0";
-
-document.body.appendChild(s);
-
-
-setTimeout(()=>s.remove(),3000);
-
-}
-
-}
-
-
-
-showLetter(alphabet[0]);
-
-
+(function(){
+  "use strict";
+
+  const STORAGE_KEY = "alphabet_adventure_story_garden_v1";
+  const LETTERS = [
+    {letter:"A", sound:"/ă/ like apple", emoji:"🐊", main:"Alligator", facts:"Alligators are reptiles that love water.", chars:["alligator","ant","alpaca","ape"], objects:["apple","acorn","anchor","apron"], settings:["Alphabet River","Acorn Woods","Apple Orchard","Amber Meadow"]},
+    {letter:"B", sound:"/b/ like bear", emoji:"🐻", main:"Bear", facts:"Bears have an excellent sense of smell.", chars:["bear","bunny","beaver","bluebird"], objects:["ball","book","bell","button"], settings:["Bluebell Forest","Bubble Brook","Berry Hill","Butterfly Garden"]},
+    {letter:"C", sound:"/k/ like cat", emoji:"🐱", main:"Cat", facts:"Cats use whiskers to explore.", chars:["cat","cow","camel","crab"], objects:["cookie","cup","crown","candle"], settings:["Crystal Cave","Clover Camp","Cotton Cloud","Cozy Castle"]},
+    {letter:"D", sound:"/d/ like duck", emoji:"🦆", main:"Duck", facts:"Ducks have waterproof feathers.", chars:["duck","deer","dog","dragonfly"], objects:["drum","door","daisy","diamond"], settings:["Dewdrop Pond","Daisy Dale","Dragonfly Marsh","Doodle Dock"]},
+    {letter:"E", sound:"/ĕ/ like elephant", emoji:"🐘", main:"Elephant", facts:"Elephants remember many things.", chars:["elephant","eagle","elk","earthworm"], objects:["egg","envelope","easel","emerald"], settings:["Emerald Meadow","Echo Forest","Elderberry Grove","Evergreen Hill"]},
+    {letter:"F", sound:"/f/ like fox", emoji:"🦊", main:"Fox", facts:"Foxes have excellent hearing.", chars:["fox","frog","finch","firefly"], objects:["flower","feather","flag","fish"], settings:["Firefly Forest","Flower Field","Fern Valley","Frosty Farm"]},
+    {letter:"G", sound:"/g/ like giraffe", emoji:"🦒", main:"Giraffe", facts:"Giraffes have very long necks.", chars:["giraffe","goat","goose","goldfish"], objects:["grapes","gift","garden","guitar"], settings:["Golden Grasslands","Garden Gate","Glitter Glen","Green Grove"]},
+    {letter:"H", sound:"/h/ like hedgehog", emoji:"🦔", main:"Hedgehog", facts:"Hedgehogs have protective spines.", chars:["hedgehog","horse","hawk","hamster"], objects:["honey","hat","heart","hammer"], settings:["Honey Grove","Happy Hill","Hidden Hollow","Harvest House"]},
+    {letter:"I", sound:"/ĭ/ like iguana", emoji:"🦎", main:"Iguana", facts:"Iguanas enjoy warm sunshine.", chars:["iguana","ibis","inchworm","impala"], objects:["island","ink","ice","igloo"], settings:["Ivy Island","Iceberg Inlet","Inkberry Inn","Island Garden"]},
+    {letter:"J", sound:"/j/ like jellyfish", emoji:"🪼", main:"Jellyfish", facts:"Jellyfish have lived for millions of years.", chars:["jellyfish","jaguar","jay","jackrabbit"], objects:["jewel","jar","jacket","jigsaw"], settings:["Jade Ocean","Jingle Jungle","Jewel Cove","Juniper Trail"]},
+    {letter:"K", sound:"/k/ like kangaroo", emoji:"🦘", main:"Kangaroo", facts:"Kangaroos hop using powerful legs.", chars:["kangaroo","koala","kitten","kingfisher"], objects:["kite","key","kettle","kiwi"], settings:["Kite Valley","Kindness Kingdom","Koala Woods","Kiwi Creek"]},
+    {letter:"L", sound:"/l/ like lion", emoji:"🦁", main:"Lion", facts:"Lions live together in groups.", chars:["lion","lamb","lizard","ladybug"], objects:["leaf","lamp","ladder","lemon"], settings:["Lantern Meadow","Lemon Lake","Leafy Lane","Lilac Valley"]},
+    {letter:"M", sound:"/m/ like monkey", emoji:"🐒", main:"Monkey", facts:"Monkeys are clever explorers.", chars:["monkey","mouse","moth","moose"], objects:["mango","moon","map","muffin"], settings:["Moonlit Forest","Mango Mountain","Mossy Meadow","Maple Marsh"]},
+    {letter:"N", sound:"/n/ like narwhal", emoji:"🐋", main:"Narwhal", facts:"Narwhals are sometimes called ocean unicorns.", chars:["narwhal","newt","nightingale","numbat"], objects:["nest","net","notebook","noodle"], settings:["Northern Sea","Nest Nook","Nutmeg Woods","Night Sky Bay"]},
+    {letter:"O", sound:"/ŏ/ like owl", emoji:"🦉", main:"Owl", facts:"Owls can see well at night.", chars:["owl","otter","octopus","orangutan"], objects:["orange","oar","ocean","opal"], settings:["Oak Forest","Orange Orchard","Otter Pond","Ocean Overlook"]},
+    {letter:"P", sound:"/p/ like penguin", emoji:"🐧", main:"Penguin", facts:"Penguins are excellent swimmers.", chars:["penguin","panda","pony","parrot"], objects:["pearl","pencil","pumpkin","paintbrush"], settings:["Polar Valley","Pumpkin Patch","Pearl Pond","Poppy Prairie"]},
+    {letter:"Q", sound:"/kw/ like quail", emoji:"🐦", main:"Quail", facts:"Quails are small birds that often stay close to the ground.", chars:["quail","queen bee","quiet quokka","quick quail"], objects:["quilt","quarter","quill","question card"], settings:["Quiet Meadow","Quilted Hill","Quartz Cave","Quail Creek"]},
+    {letter:"R", sound:"/r/ like rabbit", emoji:"🐇", main:"Rabbit", facts:"Rabbits can hop very quickly.", chars:["rabbit","raccoon","robin","reindeer"], objects:["rainbow","ring","ribbon","rocket"], settings:["Rainbow Garden","River Road","Rose Ridge","Robin Nest"]},
+    {letter:"S", sound:"/s/ like squirrel", emoji:"🐿️", main:"Squirrel", facts:"Squirrels save food for later.", chars:["squirrel","seal","skunk","sparrow"], objects:["star","shell","sunflower","sock"], settings:["Secret Grove","Starry Shore","Sunflower Street","Silver Stream"]},
+    {letter:"T", sound:"/t/ like turtle", emoji:"🐢", main:"Turtle", facts:"Turtles carry protective shells.", chars:["turtle","tiger","toucan","toad"], objects:["tree","train","teacup","tulip"], settings:["Tiny Island","Tulip Trail","Turtle Bay","Twinkle Town"]},
+    {letter:"U", sound:"/ŭ/ like umbrella", emoji:"🦄", main:"Unicorn", facts:"Unicorns are magical story creatures.", chars:["unicorn","urchin","umbrella bird","upland owl"], objects:["umbrella","ukulele","uniform","up arrow"], settings:["Unicorn Valley","Umbrella Hill","Uplift Meadow","Undersea Garden"]},
+    {letter:"V", sound:"/v/ like vine", emoji:"🦅", main:"Vulture", facts:"Vultures help clean nature.", chars:["vulture","vole","velvet moth","violet bird"], objects:["vine","violin","vase","vest"], settings:["Violet Valley","Velvet Grove","Vineyard Path","Village Garden"]},
+    {letter:"W", sound:"/w/ like wolf", emoji:"🐺", main:"Wolf", facts:"Wolves are social animals.", chars:["wolf","whale","wombat","woodpecker"], objects:["wing","wagon","watermelon","wand"], settings:["Whispering Woods","Waterfall Way","Willow Walk","Winter Meadow"]},
+    {letter:"X", sound:"/ks/ like fox or x-ray", emoji:"🐟", main:"X-Ray Fish", facts:"X-ray fish have see-through bodies.", chars:["x-ray fish","xenops bird","xantic fish","xolo puppy"], objects:["xylophone","x-ray picture","x mark","xenon star"], settings:["Xenon Ocean","Xylophone Hall","X Marks Cove","X-Ray Reef"]},
+    {letter:"Y", sound:"/y/ like yak", emoji:"🐂", main:"Yak", facts:"Yaks have thick warm fur.", chars:["yak","yellow bird","yabby","yorkie pup"], objects:["yarn","yo-yo","yacht","yellow flower"], settings:["Yellow Valley","Yarn Yard","Yonder Hill","Yucca Garden"]},
+    {letter:"Z", sound:"/z/ like zebra", emoji:"🦓", main:"Zebra", facts:"Every zebra has unique stripes.", chars:["zebra","zebu","zippy bee","zebra finch"], objects:["zinnia","zipper","zero","zigzag path"], settings:["Zebra Plains","Zinnia Garden","Zigzag Trail","Zooming Hills"]}
+  ];
+
+  const ACTIONS = ["finds","sees","holds","shares","follows","visits","paints","counts","carries","builds","draws","helps","greets","looks for","listens to","dances near"];
+  const ADJECTIVES = ["happy","brave","gentle","curious","kind","tiny","bright","silly","sleepy","sparkly","friendly","rainbow","golden","cozy","clever","quiet"];
+
+  const state = loadState();
+  let currentIndex = Math.max(0, Math.min(25, state.currentIndex || 0));
+  let mode = state.mode || "learn";
+  let visibleChoices = null;
+  let selected = {character:null, object:null, setting:null, action:null, adjective:null};
+  let currentPage = null;
+
+  const els = {
+    letterSelect:document.getElementById("letterSelect"),
+    levelSelect:document.getElementById("levelSelect"),
+    bigLetter:document.getElementById("bigLetter"),
+    readerKicker:document.getElementById("readerKicker"),
+    sentenceText:document.getElementById("sentenceText"),
+    readerHelp:document.getElementById("readerHelp"),
+    readerEmoji:document.getElementById("readerEmoji"),
+    letterEmoji:document.getElementById("letterEmoji"),
+    letterTitle:document.getElementById("letterTitle"),
+    wordRow:document.getElementById("wordRow"),
+    factText:document.getElementById("factText"),
+    choiceTitle:document.getElementById("choiceTitle"),
+    choiceColumns:document.getElementById("choiceColumns"),
+    statusText:document.getElementById("statusText"),
+    letterGrid:document.getElementById("letterGrid"),
+    visitedCount:document.getElementById("visitedCount"),
+    starCount:document.getElementById("starCount"),
+    progressBar:document.getElementById("progressBar"),
+    pageNest:document.getElementById("pageNest")
+  };
+
+  function loadState(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return {visited:{}, stars:0, nest:[], currentIndex:0, mode:"learn"};
+      const data = JSON.parse(raw);
+      return {
+        visited: data.visited && typeof data.visited === "object" ? data.visited : {},
+        stars: Number(data.stars || 0),
+        nest: Array.isArray(data.nest) ? data.nest.slice(0,60) : [],
+        currentIndex: Number(data.currentIndex || 0),
+        mode: data.mode || "learn"
+      };
+    }catch(e){
+      return {visited:{}, stars:0, nest:[], currentIndex:0, mode:"learn"};
+    }
+  }
+
+  function saveState(){
+    try{
+      state.currentIndex = currentIndex;
+      state.mode = mode;
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }catch(e){
+      setStatus("Storage is full. Save fewer pages or export them.", true);
+    }
+    renderProgress();
+    renderNest();
+  }
+
+  function choose(arr){return arr[Math.floor(Math.random()*arr.length)];}
+  function shuffle(arr){
+    const out = arr.slice();
+    for(let i=out.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[out[i],out[j]]=[out[j],out[i]];}
+    return out;
+  }
+  function item(){return LETTERS[currentIndex];}
+  function cap(s){return String(s || "").replace(/^./, c=>c.toUpperCase());}
+  function article(word){return /^[aeiou]/i.test(String(word).trim()) ? "an" : "a";}
+  function emojiFor(type,label){
+    const s = String(label || "").toLowerCase();
+    const map = [
+      [/alligator/,"🐊"],[/ant/,"🐜"],[/bear|panda/,"🐻"],[/bunny|rabbit/,"🐇"],[/cat|kitten/,"🐱"],[/duck/,"🦆"],[/elephant/,"🐘"],[/fox/,"🦊"],[/giraffe/,"🦒"],[/hedgehog/,"🦔"],[/iguana|lizard/,"🦎"],[/jellyfish/,"🪼"],[/kangaroo/,"🦘"],[/lion/,"🦁"],[/monkey/,"🐒"],[/narwhal|whale/,"🐋"],[/owl/,"🦉"],[/penguin/,"🐧"],[/quail|bird|finch|robin|sparrow|jay|eagle/,"🐦"],[/squirrel/,"🐿️"],[/turtle/,"🐢"],[/unicorn/,"🦄"],[/wolf/,"🐺"],[/zebra/,"🦓"],
+      [/apple/,"🍎"],[/ball/,"⚽"],[/cookie/,"🍪"],[/drum/,"🥁"],[/egg/,"🥚"],[/flower|zinnia|daisy|tulip/,"🌸"],[/grapes/,"🍇"],[/honey/,"🍯"],[/island/,"🏝️"],[/jewel|diamond|opal|emerald/,"💎"],[/kite/,"🪁"],[/leaf/,"🍃"],[/mango/,"🥭"],[/nest/,"🪺"],[/orange/,"🍊"],[/pearl/,"🦪"],[/quilt/,"🧵"],[/rainbow/,"🌈"],[/star/,"⭐"],[/tree/,"🌳"],[/umbrella/,"☂️"],[/vine/,"🌿"],[/wing/,"🪽"],[/xylophone|music/,"🎵"],[/yarn/,"🧶"]
+    ];
+    for(const [re,em] of map){if(re.test(s)) return em;}
+    if(type === "setting") return "🌳";
+    if(type === "action") return "✨";
+    if(type === "adjective") return "🌟";
+    return "🔤";
+  }
+
+  function markVisited(){
+    const l = item().letter;
+    if(!state.visited[l]){
+      state.visited[l] = true;
+      state.stars += 1;
+      popSparkles();
+    }
+  }
+
+  function renderLetterSelect(){
+    els.letterSelect.innerHTML = "";
+    LETTERS.forEach((x,i)=>{
+      const opt = document.createElement("option");
+      opt.value = String(i);
+      opt.textContent = `${x.letter} — ${x.main}`;
+      els.letterSelect.appendChild(opt);
+    });
+  }
+
+  function renderLetterGrid(){
+    els.letterGrid.innerHTML = "";
+    LETTERS.forEach((x,i)=>{
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "letter-btn";
+      if(i === currentIndex) b.classList.add("current");
+      if(state.visited[x.letter]) b.classList.add("done");
+      b.textContent = x.letter;
+      b.addEventListener("click",()=>goTo(i));
+      els.letterGrid.appendChild(b);
+    });
+  }
+
+  function renderProgress(){
+    const count = Object.keys(state.visited || {}).length;
+    els.visitedCount.textContent = String(count);
+    els.starCount.textContent = String(state.stars || 0);
+    els.progressBar.style.width = ((count/26)*100) + "%";
+    renderLetterGrid();
+  }
+
+  function setMode(next){
+    mode = next;
+    document.querySelectorAll("#learnMode,#buildMode,#adventureMode,#traceMode").forEach(btn=>btn.setAttribute("aria-pressed","false"));
+    const id = {learn:"learnMode",build:"buildMode",adventure:"adventureMode",trace:"traceMode"}[mode];
+    document.getElementById(id).setAttribute("aria-pressed","true");
+    shuffleChoices();
+    renderAll();
+    saveState();
+  }
+
+  function shuffleChoices(){
+    const x = item();
+    visibleChoices = {
+      character: shuffle(x.chars).slice(0,4),
+      object: shuffle(x.objects).slice(0,4),
+      setting: shuffle(x.settings).slice(0,4),
+      action: shuffle(ACTIONS).slice(0,4),
+      adjective: shuffle(ADJECTIVES).slice(0,4)
+    };
+    selected = {
+      character: visibleChoices.character[0],
+      object: visibleChoices.object[0],
+      setting: visibleChoices.setting[0],
+      action: visibleChoices.action[0],
+      adjective: visibleChoices.adjective[0]
+    };
+  }
+
+  function renderAll(){
+    const x = item();
+    els.letterSelect.value = String(currentIndex);
+    els.bigLetter.textContent = x.letter;
+    els.readerEmoji.textContent = x.emoji;
+    els.letterEmoji.textContent = x.emoji;
+    els.letterTitle.textContent = `${x.letter} is for ${x.main}`;
+    els.factText.textContent = x.facts;
+    els.wordRow.innerHTML = "";
+    [x.main, ...x.objects.slice(0,2)].forEach(word=>{
+      const span = document.createElement("span");
+      span.className = "word-pill";
+      span.textContent = word;
+      els.wordRow.appendChild(span);
+    });
+    els.choiceTitle.textContent = `Build with ${x.letter} words`;
+    renderChoices();
+    if(mode === "learn") showLearn();
+    if(mode === "build") makeSentence(false);
+    if(mode === "adventure") magicPage(false);
+    if(mode === "trace") showSound();
+    renderProgress();
+  }
+
+  function renderChoices(){
+    if(!visibleChoices) shuffleChoices();
+    const groups = [
+      ["character","Friend"],
+      ["object","Thing"],
+      ["setting","Place"],
+      ["action","Action"]
+    ];
+    els.choiceColumns.innerHTML = "";
+    groups.forEach(([key,title])=>{
+      const box = document.createElement("section");
+      box.className = "choice-group";
+      const h = document.createElement("h3");
+      h.innerHTML = `<span>${title}</span><span>pick 1</span>`;
+      const list = document.createElement("div");
+      list.className = "choice-list";
+      visibleChoices[key].forEach(label=>{
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "choice";
+        if(selected[key] === label) btn.classList.add("selected");
+        const dot = document.createElement("span");
+        dot.className = "dot";
+        dot.textContent = emojiFor(key,label);
+        const name = document.createElement("span");
+        name.textContent = label;
+        btn.append(dot,name);
+        btn.addEventListener("click",()=>{
+          selected[key] = label;
+          renderChoices();
+          if(mode !== "learn" && mode !== "trace") makeSentence(false);
+        });
+        list.appendChild(btn);
+      });
+      box.append(h,list);
+      els.choiceColumns.appendChild(box);
+    });
+  }
+
+  function showLearn(){
+    const x = item();
+    currentPage = {text:`${x.letter} is for ${x.main}. ${x.main} begins with ${x.letter}.`, letter:x.letter, mode:"learn", ts:Date.now()};
+    els.readerKicker.textContent = "Learn the letter";
+    els.sentenceText.textContent = currentPage.text;
+    els.readerHelp.textContent = `${x.letter} makes the sound ${x.sound}.`;
+    setStatus(`Learning letter ${x.letter}. Press Read to hear it.`);
+  }
+
+  function showSound(){
+    const x = item();
+    const words = [x.main, ...x.objects.slice(0,3)].join(", ");
+    currentPage = {text:`Letter ${x.letter}. Sound: ${x.sound}. Try these words: ${words}.`, letter:x.letter, mode:"sound", ts:Date.now()};
+    els.readerKicker.textContent = "Sound it out";
+    els.sentenceText.textContent = `${x.letter} says ${x.sound}.`;
+    els.readerHelp.textContent = `Practice words: ${words}.`;
+    setStatus("Sound practice is ready.");
+  }
+
+  function makeSentence(reshuffleAfter=true){
+    const x = item();
+    const c = selected.character || x.main.toLowerCase();
+    const o = selected.object || x.objects[0];
+    const s = selected.setting || x.settings[0];
+    const a = selected.action || "finds";
+    const adj = selected.adjective || choose(ADJECTIVES);
+    const sentence = `${x.letter} is for ${cap(c)}. The ${adj} ${c} ${a} ${article(o)} ${o} in ${s}.`;
+    currentPage = {text:sentence, letter:x.letter, mode:"build", ts:Date.now(), selection:{...selected}};
+    els.readerKicker.textContent = "Your sentence";
+    els.sentenceText.textContent = sentence;
+    els.readerHelp.textContent = "Read it, save it, or press Shuffle for new choices.";
+    markVisited();
+    saveState();
+    setStatus("Sentence made. The choices will mix after each finished page.");
+    if(reshuffleAfter) window.setTimeout(()=>{shuffleChoices(); renderChoices();}, 260);
+  }
+
+  function magicPage(reshuffleAfter=true){
+    const x = item();
+    if(!visibleChoices) shuffleChoices();
+    const sel = {
+      character: choose(x.chars),
+      object: choose(x.objects),
+      setting: choose(x.settings),
+      action: choose(ACTIONS),
+      adjective: choose(ADJECTIVES)
+    };
+    selected = {...sel};
+    const templates = [
+      `${x.letter} is for ${cap(sel.character)}. The ${sel.adjective} ${sel.character} ${sel.action} ${article(sel.object)} ${sel.object} in ${sel.setting}.`,
+      `In ${sel.setting}, ${article(sel.adjective)} ${sel.adjective} ${sel.character} ${sel.action} ${article(sel.object)} ${sel.object}. ${x.letter} begins ${cap(sel.character)}!`,
+      `${cap(sel.character)} starts with ${x.letter}. Today, the ${sel.character} ${sel.action} ${article(sel.object)} ${sel.object} beside ${sel.setting}.`
+    ];
+    const text = choose(templates);
+    currentPage = {text, letter:x.letter, mode:"adventure", ts:Date.now(), selection:{...selected}};
+    els.readerKicker.textContent = "Magic page";
+    els.sentenceText.textContent = text;
+    els.readerHelp.textContent = "A new little page is ready to read.";
+    els.readerEmoji.textContent = emojiFor("character", sel.character);
+    markVisited();
+    saveState();
+    renderChoices();
+    setStatus("Magic Page made. Choices are reshuffled for the next story.");
+    popSparkles();
+    if(reshuffleAfter) window.setTimeout(()=>{shuffleChoices(); renderChoices();}, 260);
+  }
+
+  function goTo(i){
+    currentIndex = Math.max(0, Math.min(25, i));
+    shuffleChoices();
+    renderAll();
+    saveState();
+  }
+
+  function nextLetter(){goTo(currentIndex >= 25 ? 0 : currentIndex + 1);}
+  function previousLetter(){goTo(currentIndex <= 0 ? 25 : currentIndex - 1);}
+
+  function readCurrent(){
+    const text = currentPage?.text || els.sentenceText.textContent || "";
+    if(!text) return;
+    try{
+      if(!("speechSynthesis" in window)){setStatus("Read aloud is not available in this browser.", true);return;}
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang = "en-US";
+      u.rate = els.levelSelect.value === "little" ? 0.78 : els.levelSelect.value === "growing" ? 0.88 : 0.95;
+      window.speechSynthesis.speak(u);
+      setStatus("Reading aloud...");
+    }catch(e){setStatus("Read aloud could not start.", true);}
+  }
+
+  function savePage(){
+    if(!currentPage || !currentPage.text){setStatus("Make a page before saving.", true);return;}
+    state.nest.unshift({...currentPage});
+    state.nest = state.nest.slice(0,60);
+    state.stars += 1;
+    saveState();
+    setStatus("Saved to your Alphabet Nest.");
+    popSparkles();
+  }
+
+  function renderNest(){
+    const nest = state.nest || [];
+    els.pageNest.innerHTML = "";
+    if(!nest.length){
+      const empty = document.createElement("div");
+      empty.className = "empty";
+      empty.textContent = "Saved pages will appear here. Make a sentence or Magic Page, then tap Save Page.";
+      els.pageNest.appendChild(empty);
+      return;
+    }
+    nest.forEach((n,i)=>{
+      const item = document.createElement("div");
+      item.className = "nest-item";
+      item.setAttribute("role","listitem");
+      const text = document.createElement("div");
+      text.className = "nest-text";
+      text.textContent = n.text;
+      const meta = document.createElement("div");
+      meta.className = "nest-meta";
+      meta.textContent = `Letter ${n.letter} • ${new Date(n.ts).toLocaleString()}`;
+      const row = document.createElement("div");
+      row.style.marginTop = "5px";
+      row.style.display = "flex";
+      row.style.gap = "5px";
+      row.style.flexWrap = "wrap";
+      const read = miniButton("Read",()=>{currentPage=n;els.sentenceText.textContent=n.text;els.readerKicker.textContent="Saved page";readCurrent();});
+      const del = miniButton("Delete",()=>{state.nest.splice(i,1);saveState();setStatus("Saved page deleted.");});
+      row.append(read,del);
+      item.append(text,meta,row);
+      els.pageNest.appendChild(item);
+    });
+  }
+
+  function miniButton(label,fn){
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "btn secondary small";
+    b.textContent = label;
+    b.addEventListener("click",fn);
+    return b;
+  }
+
+  function setStatus(msg,isError){
+    els.statusText.textContent = msg;
+    els.statusText.style.color = isError ? "var(--danger)" : "var(--muted)";
+  }
+
+  function popSparkles(){
+    for(let i=0;i<8;i++){
+      const s = document.createElement("div");
+      s.className = "sparkle";
+      s.textContent = ["✨","⭐","🌟","💫"][Math.floor(Math.random()*4)];
+      s.style.left = (10 + Math.random()*80) + "vw";
+      s.style.top = (58 + Math.random()*24) + "vh";
+      document.body.appendChild(s);
+      setTimeout(()=>s.remove(),1800);
+    }
+  }
+
+  function bind(){
+    els.letterSelect.addEventListener("change",()=>goTo(Number(els.letterSelect.value)));
+    document.getElementById("learnMode").addEventListener("click",()=>setMode("learn"));
+    document.getElementById("buildMode").addEventListener("click",()=>setMode("build"));
+    document.getElementById("adventureMode").addEventListener("click",()=>setMode("adventure"));
+    document.getElementById("traceMode").addEventListener("click",()=>setMode("trace"));
+    document.getElementById("shuffleBtn").addEventListener("click",()=>{shuffleChoices();renderChoices();setStatus("Choices mixed.");});
+    document.getElementById("reshuffleBtn").addEventListener("click",()=>{shuffleChoices();renderChoices();setStatus("Choices mixed.");});
+    document.getElementById("readBtn").addEventListener("click",readCurrent);
+    document.getElementById("backBtn").addEventListener("click",previousLetter);
+    document.getElementById("nextBtn").addEventListener("click",nextLetter);
+    document.getElementById("makeBtn").addEventListener("click",()=>makeSentence(true));
+    document.getElementById("magicBtn").addEventListener("click",()=>magicPage(true));
+    document.getElementById("saveBtn").addEventListener("click",savePage);
+    els.levelSelect.addEventListener("change",()=>setStatus("Reader speed updated."));
+  }
+
+  function init(){
+    renderLetterSelect();
+    bind();
+    shuffleChoices();
+    setMode(mode);
+    renderNest();
+  }
+
+  init();
+})();
 </script>
-
-
 </body>
 </html>
-}
