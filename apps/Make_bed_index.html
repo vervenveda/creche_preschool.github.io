@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Little Tikes Life Skills – How to Make Your Bed</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<style>
+  :root {
+    --parchment:#fff7e6;
+    --parchment-soft:#fff9ee;
+    --accent:#ffb347;
+    --accent-deep:#ff9b1a;
+    --ink:#4a351f;
+    --radius-card:21px;
+    --shadow-card:0 18px 40px rgba(0,0,0,0.12);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:"Nunito","Segoe UI",system-ui,-apple-system,sans-serif;
+    background:radial-gradient(circle at top,#fff7e6,#ffe6c7);
+    color:var(--ink);
+    padding:24px 12px;
+  }
+  .lt-shelf{
+    max-width:520px;
+    margin:0 auto;
+    text-align:center;
+  }
+  .lt-tagline{
+    font-size:18px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:#96744a;
+    margin-bottom:4px;
+  }
+  .lt-title{
+    font-size:27px;
+    font-weight:800;
+    margin-bottom:4px;
+  }
+  .lt-sub{
+    font-size:15px;
+    color:#7a5b3a;
+    margin-bottom:21px;
+  }
+  .lt-book-card{
+    position:relative;
+    background:var(--parchment-soft);
+    border-radius:var(--radius-card);
+    box-shadow:var(--shadow-card);
+    padding:21px 21px 18px;
+    display:flex;
+    gap:18px;
+    justify-content:space-between;
+    align-items:stretch;
+    overflow:hidden;
+  }
+  .lt-book-card.flip{
+    animation:lt-flip 260ms ease-out;
+  }
+  @keyframes lt-flip{
+    0%{transform:scale(1) rotateY(0deg);}
+    50%{transform:scale(0.97) rotateY(-8deg);}
+    100%{transform:scale(1) rotateY(0deg);}
+  }
+  .lt-column{
+    flex:1;
+    min-width:0;
+  }
+  .lt-page-label{
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:0.13em;
+    color:#aa8454;
+    margin-bottom:6px;
+  }
+  .lt-mini-title{
+    font-size:21px;
+    font-weight:700;
+    margin-bottom:6px;
+  }
+  .lt-icon-bubble{
+    width:72px;
+    height:72px;
+    border-radius:999px;
+    margin:6px auto 10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:33px;
+    background:linear-gradient(145deg,#ffe0b8,#ffd19a);
+    box-shadow:0 10px 18px rgba(0,0,0,0.12);
+  }
+  .lt-badge{
+    display:inline-block;
+    padding:3px 10px;
+    border-radius:999px;
+    background:rgba(255,179,71,0.14);
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.12em;
+    margin-bottom:6px;
+    color:#b1742e;
+  }
+  .lt-text{
+    font-size:15px;
+    line-height:1.55;
+    text-align:left;
+    white-space:pre-line;
+  }
+  .lt-try{
+    font-size:14px;
+    font-weight:600;
+    margin-top:10px;
+    color:#b36a21;
+  }
+  .lt-nav-row{
+    margin-top:15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    font-size:13px;
+    color:#7a5b3a;
+  }
+  .lt-btn{
+    border:none;
+    border-radius:999px;
+    padding:6px 16px;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+    background:var(--accent);
+    color:#3f2914;
+    box-shadow:0 6px 12px rgba(0,0,0,0.15);
+    transition:transform 120ms ease, box-shadow 120ms ease, background 120ms;
+  }
+  .lt-btn[disabled]{
+    opacity:.4;
+    cursor:default;
+    box-shadow:none;
+  }
+  .lt-btn:not([disabled]):hover{
+    transform:translateY(-1px);
+    box-shadow:0 9px 18px rgba(0,0,0,0.18);
+    background:var(--accent-deep);
+  }
+  .lt-dots{
+    display:flex;
+    gap:4px;
+    align-items:center;
+    justify-content:center;
+    flex:1;
+  }
+  .lt-dot{
+    width:7px;
+    height:7px;
+    border-radius:999px;
+    background:#ffd9aa;
+  }
+  .lt-dot.active{
+    width:16px;
+    background:var(--accent-deep);
+  }
+  .lt-footnote{
+    font-size:13px;
+    color:#7a5b3a;
+    margin-top:16px;
+  }
+  @media (max-width:600px){
+    .lt-book-card{
+      flex-direction:column;
+    }
+    .lt-mini-title{
+      font-size:18px;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="lt-shelf" id="lt-bed-app">
+  <div class="lt-tagline">Little Tikes Life Skills</div>
+  <div class="lt-title">How to Make Your Bed</div>
+  <div class="lt-sub">A cozy morning story for tiny hands & tidy hearts.</div>
+
+  <div class="lt-book-card">
+    <div class="lt-column lt-left">
+      <div class="lt-page-label" id="lt-bed-page-label">Page 1 of 7</div>
+      <div class="lt-mini-title" id="lt-bed-left-title">Morning Magic</div>
+      <div class="lt-icon-bubble" id="lt-bed-icon">🛏️</div>
+      <div class="lt-text" id="lt-bed-left-text">
+Welcome to your cozy morning!
+This little story will show you
+how to turn a sleepy bed into
+a snuggly, ready-for-the-day bed.
+      </div>
+    </div>
+
+    <div class="lt-column lt-right">
+      <div class="lt-badge" id="lt-bed-badge">Story Steps</div>
+      <div class="lt-mini-title" id="lt-bed-right-title">Warm, Fluffy Beginnings</div>
+      <div class="lt-text" id="lt-bed-right-text">
+When you make your bed, you give
+your room a hug. Each small step
+helps your space feel calm, happy,
+and ready for new adventures.
+      </div>
+      <div class="lt-try" id="lt-bed-try">TRY THIS: Smile at your bed and say, “Good morning, bed!”</div>
+    </div>
+  </div>
+
+  <div class="lt-nav-row">
+    <button class="lt-btn" id="lt-bed-prev">← Back</button>
+    <div class="lt-dots" id="lt-bed-dots"></div>
+    <button class="lt-btn" id="lt-bed-next">Next →</button>
+  </div>
+
+  <div class="lt-footnote">
+    Designed for gentle mornings. Grown-ups can read aloud or let little ones “read” the pictures and steps.
+  </div>
+</div>
+
+<script>
+(function(){
+  const pages = [
+    {
+      leftTitle:"Morning Magic",
+      icon:"🛏️",
+      leftText:"Welcome to your cozy morning!\nThis little story will show you\nhow to turn a sleepy bed into\na snuggly, ready-for-the-day bed.",
+      badge:"Story Steps",
+      rightTitle:"Warm, Fluffy Beginnings",
+      rightText:"When you make your bed, you give\nyour room a hug. Each small step\nhelps your space feel calm, happy,\nand ready for new adventures.",
+      tryText:"TRY THIS: Smile at your bed and say, “Good morning, bed!”"
+    },
+    {
+      leftTitle:"Step 1: Shake Out the Sleep",
+      icon:"🌤️",
+      leftText:"Gently pull your blanket and sheets\nall the way to the bottom of the bed.\nLet them breathe for a moment,\nas if they are stretching after sleep.",
+      badge:"Cozy Tip",
+      rightTitle:"Let the Morning In",
+      rightText:"Open your curtains just a little.\nA tiny bit of light makes it easier\nto see wrinkles and corners.\nBeds love morning sunshine.",
+      tryText:"TRY THIS: Take a big stretch, just like your blankets!"
+    },
+    {
+      leftTitle:"Step 2: Smooth the Sheet",
+      icon:"📜",
+      leftText:"Pull the bottom sheet tight.\nStart at the pillow side and glide\nyour hands all the way down.\nSmooth away any sleepy bumps.",
+      badge:"Hand Helper",
+      rightTitle:"Flat as a Pancake",
+      rightText:"Use your hands like gentle irons.\nIf you see a wrinkle, pat it flat.\nYour sheet doesn’t have to be perfect—\njust comfy and mostly smooth.",
+      tryText:"TRY THIS: Say, “Good job, sheet!” when it looks smooth."
+    },
+    {
+      leftTitle:"Step 3: Pull Up the Blanket",
+      icon:"🧣",
+      leftText:"Grab the blanket at the bottom.\nPull it up toward the pillows\nuntil it reaches the top edge\nof your sheet.",
+      badge:"Neat & Tidy",
+      rightTitle:"Line Up the Edges",
+      rightText:"Check the sides of your bed.\nAre the blanket and sheet hanging\nalmost the same on each side?\nIf not, give a gentle tug.",
+      tryText:"TRY THIS: March around the bed once and look at both sides."
+    },
+    {
+      leftTitle:"Step 4: Fluff the Pillows",
+      icon:"🛌",
+      leftText:"Pick up your pillow with two hands.\nGive it a gentle squish and a tiny hug.\nSet it near the top of your bed,\nright in the middle or side you like.",
+      badge:"Pillow Parade",
+      rightTitle:"Pillow Parade Time",
+      rightText:"If you have more than one pillow,\nstand them in a little row.\nEach pillow gets a spot, like\nfriends sitting together.",
+      tryText:"TRY THIS: Tap each pillow and say its name: “Top Pillow, Side Pillow…”"
+    },
+    {
+      leftTitle:"Step 5: Add Your Special Friend",
+      icon:"🧸",
+      leftText:"Now it’s time for your stuffed animal\nor special blanket.\nGive them a hug, then place them\non top of the bed.",
+      badge:"Comfort Corner",
+      rightTitle:"Their Cozy Spot",
+      rightText:"Choose a favorite place—\nat the pillow, near the middle,\nor guarding the foot of the bed.\nThey’ll watch over your room.",
+      tryText:"TRY THIS: Whisper, “Guard my dreams tonight, please.”"
+    },
+    {
+      leftTitle:"Step 6: The Bed Check",
+      icon:"✅",
+      leftText:"Stand back and look.\nThe sheet is smooth, the blanket is up,\nthe pillows are fluffed,\nand your friend is in place.",
+      badge:"You Did It!",
+      rightTitle:"A Bed to Be Proud Of",
+      rightText:"Your bed is ready!\nYou turned a pile of blankets\ninto a calm, comfy space.\nThat’s real morning magic.",
+      tryText:"TRY THIS: Give yourself a high-five and say,\n“I know how to make my bed!”"
+    }
+  ];
+
+  const app = document.getElementById("lt-bed-app");
+  const card = app.querySelector(".lt-book-card");
+  const pageLabel = app.querySelector("#lt-bed-page-label");
+  const leftTitle = app.querySelector("#lt-bed-left-title");
+  const iconBubble = app.querySelector("#lt-bed-icon");
+  const leftText = app.querySelector("#lt-bed-left-text");
+  const badge = app.querySelector("#lt-bed-badge");
+  const rightTitle = app.querySelector("#lt-bed-right-title");
+  const rightText = app.querySelector("#lt-bed-right-text");
+  const tryText = app.querySelector("#lt-bed-try");
+  const prevBtn = app.querySelector("#lt-bed-prev");
+  const nextBtn = app.querySelector("#lt-bed-next");
+  const dotsWrap = app.querySelector("#lt-bed-dots");
+
+  let current = 0;
+
+  function buildDots(){
+    dotsWrap.innerHTML = "";
+    pages.forEach((_,idx)=>{
+      const d = document.createElement("div");
+      d.className = "lt-dot" + (idx===0?" active":"");
+      dotsWrap.appendChild(d);
+    });
+  }
+
+  function render(){
+    const p = pages[current];
+    pageLabel.textContent = `Page ${current+1} of ${pages.length}`;
+    leftTitle.textContent = p.leftTitle;
+    iconBubble.textContent = p.icon;
+    leftText.textContent = p.leftText;
+    badge.textContent = p.badge;
+    rightTitle.textContent = p.rightTitle;
+    rightText.textContent = p.rightText;
+    tryText.textContent = p.tryText;
+
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === pages.length-1;
+
+    const dots = dotsWrap.querySelectorAll(".lt-dot");
+    dots.forEach((d,i)=>{
+      d.classList.toggle("active", i===current);
+    });
+  }
+
+  function go(delta){
+    const target = current + delta;
+    if(target < 0 || target >= pages.length) return;
+    card.classList.add("flip");
+    setTimeout(()=>{
+      current = target;
+      render();
+      card.classList.remove("flip");
+    },180);
+  }
+
+  prevBtn.addEventListener("click",()=>go(-1));
+  nextBtn.addEventListener("click",()=>go(1));
+
+  buildDots();
+  render();
+})();
+</script>
+</body>
+</html>
