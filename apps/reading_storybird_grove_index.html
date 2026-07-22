@@ -26,7 +26,7 @@
   }
 
   *{box-sizing:border-box}
-  html{min-height:99%;}
+  html{min-height:100%;}
   body{
     margin:0;
     min-height:100%;
@@ -42,7 +42,7 @@
   button{touch-action:manipulation}
 
   .sbg-app{
-    width:min(1111px,100%);
+    width:min(1180px,100%);
     margin:0 auto;
     padding:clamp(10px,2.5vw,20px);
   }
@@ -463,6 +463,79 @@
 
   .hidden-file{display:none}
 
+  /* Reader-focus upgrade: keep the finished sentence visible and compact. */
+  .story-card{
+    background:linear-gradient(145deg,#16251d,#25382e);
+    border-color:rgba(255,255,255,.14);
+    box-shadow:0 16px 38px rgba(22,37,29,.20);
+  }
+
+  .story-card .story-text{
+    margin:0 0 8px;
+    color:#ffffff;
+    font-size:clamp(1.12rem,2.5vw,1.42rem);
+    line-height:1.35;
+    letter-spacing:.01em;
+    text-wrap:balance;
+    text-shadow:0 1px 2px rgba(0,0,0,.22);
+  }
+
+  .story-card .meta{
+    color:rgba(255,255,255,.76);
+    margin:0 0 8px;
+  }
+
+  .story-card .status{
+    color:rgba(255,255,255,.82);
+    background:rgba(255,255,255,.08);
+    border-color:rgba(255,255,255,.12);
+  }
+
+  .story-card .btn.secondary{
+    color:#ffffff;
+    background:rgba(255,255,255,.10);
+    border-color:rgba(255,255,255,.18);
+  }
+
+  .story-card .btn.secondary:hover{background:rgba(255,255,255,.16)}
+
+  .story-card .illustration{
+    min-height:clamp(104px,16vw,160px);
+    margin-top:8px;
+    background:linear-gradient(135deg,#fff8f3,#f7fff8);
+  }
+
+  @media (min-width:961px) and (min-height:650px){
+    html,body{height:100svh;overflow:hidden;}
+    .sbg-app{height:100svh;display:grid;grid-template-rows:auto auto minmax(0,1fr) auto;}
+    .topbar{padding:9px 10px;}
+    .logo{width:50px;height:50px;border-radius:16px;}
+    .control-panel{margin-top:8px;padding:8px;gap:6px;}
+    .layout{min-height:0;margin-top:8px;grid-template-columns:minmax(0,1fr) minmax(270px,330px);}
+    .grove,.side{min-height:0;max-height:calc(100svh - 164px);overflow:hidden;}
+    .grove{display:flex;flex-direction:column;gap:8px;padding:10px;}
+    .note{margin:0;font-size:.85rem;line-height:1.3;}
+    .story-card{margin-top:0;padding:10px;}
+    .story-card .button-row{margin-top:8px!important;}
+    .story-card .status{min-height:0;padding:7px 9px;font-size:.8rem;}
+    .clusters{flex:1;min-height:0;}
+    .cluster{min-height:0;display:flex;flex-direction:column;padding:8px;}
+    .cluster-title{margin-bottom:6px;}
+    .spirit-grid{overflow:auto;max-height:clamp(145px,25vh,230px);padding-right:2px;}
+    .spirit{min-height:46px;padding:6px;}
+    .spirit-dot{width:28px;height:28px;border-radius:11px;font-size:16px;}
+    .spirit-name{font-size:.8rem;}
+    .slots{margin-top:0;}
+    .slot{min-height:38px;padding:6px;font-size:.8rem;}
+    .nest-list{max-height:calc(100svh - 318px);}
+    .footer{margin-top:8px;padding:6px 10px;font-size:.76rem;}
+  }
+
+  @media (max-width:720px){
+    .story-card{position:sticky;top:8px;z-index:5;}
+  }
+
+
   @media (max-width:960px){
     .control-panel{grid-template-columns:1fr 1fr}
     .button-row{grid-column:1/-1;justify-content:flex-start}
@@ -505,7 +578,7 @@
       <div class="logo" aria-hidden="true">🕊️</div>
       <div>
         <h1>Storybird Grove™</h1>
-        <div class="subtitle">A gentle story garden with playful prompts, cozy choices, and saved story nests.</div>
+        <div class="subtitle">A gentle story garden with 84 weeks of playful prompts.</div>
       </div>
     </div>
     <div class="privacy-pill">Private on this device</div>
@@ -528,7 +601,7 @@
         <option value="discovery">Discovery</option>
         <option value="friendship">Friendship</option>
         <option value="cozy">Cozy</option>
-        <option value="challenge">Brave Challenge</option>
+        <option value="challenge">Tiny Challenge</option>
       </select>
     </div>
     <div class="field">
@@ -547,7 +620,22 @@
 
   <div class="layout">
     <main class="card grove" id="grove">
-      <p class="note">Choose one spirit from each column, then press Weave. If you want a surprise, press Magic Weave and the grove will help choose a lovely story for you.</p>
+      <p class="note">Choose one spirit from each column, then press Weave. If you want a surprise, press Magic Weave and the grove will help choose a lovely combination for you.</p>
+
+
+      <section class="story-card" aria-live="polite">
+        <p class="story-text" id="storyText">Your tiny story will bloom here.</p>
+        <div class="meta" id="storyMeta"></div>
+        <div class="illustration" id="illustrationArea">🌿 Illustration</div>
+        <div class="button-row" style="justify-content:flex-start;margin-top:10px">
+          <button class="btn secondary tiny" id="previewBtn" type="button">Preview</button>
+          <button class="btn secondary tiny" id="speakBtn" type="button">Read Aloud</button>
+          <button class="btn secondary tiny" id="copyBtn" type="button">Copy</button>
+          <button class="btn secondary tiny" id="saveBtn" type="button">Save to Nest</button>
+          <button class="btn secondary tiny" id="clearBtn" type="button">Clear</button>
+        </div>
+        <div class="status" id="statusBox">Ready. Your stories stay private on this device.</div>
+      </section>
 
       <section class="clusters" aria-label="Spirit choices">
         <div class="cluster">
@@ -568,20 +656,6 @@
         <div class="slot" id="selChar">— character —</div>
         <div class="slot" id="selSet">— setting —</div>
         <div class="slot" id="selVerb">— action —</div>
-      </section>
-
-      <section class="story-card" aria-live="polite">
-        <div class="illustration" id="illustrationArea">🌿 Illustration</div>
-        <p class="story-text" id="storyText">Your tiny story will bloom here.</p>
-        <div class="meta" id="storyMeta"></div>
-        <div class="button-row" style="justify-content:flex-start;margin-top:10px">
-          <button class="btn secondary tiny" id="previewBtn" type="button">Preview</button>
-          <button class="btn secondary tiny" id="speakBtn" type="button">Read Aloud</button>
-          <button class="btn secondary tiny" id="copyBtn" type="button">Copy</button>
-          <button class="btn secondary tiny" id="saveBtn" type="button">Save to Nest</button>
-          <button class="btn secondary tiny" id="clearBtn" type="button">Clear</button>
-        </div>
-        <div class="status" id="statusBox">Ready. Your stories stay private on this device.</div>
       </section>
     </main>
 
@@ -1259,26 +1333,39 @@ const VERBS = [
 
   function toGerundWord(word){
     const w = String(word || "").toLowerCase();
-    if(!w) return "";
-    const irregular = { be:"being", see:"seeing", flee:"fleeing", lie:"lying", die:"dying", tie:"tying" };
-    if(irregular[w]) return irregular[w];
+    if(!w) return w;
+    const special = {
+      "be":"being","begin":"beginning","build":"building","catch":"catching","chase":"chasing",
+      "climb":"climbing","come":"coming","crawl":"crawling","dance":"dancing","discover":"discovering",
+      "draw":"drawing","dream":"dreaming","encourage":"encouraging","explore":"exploring",
+      "find":"finding","float":"floating","follow":"following","gather":"gathering","giggle":"giggling",
+      "glide":"gliding","greet":"greeting","guide":"guiding","hide":"hiding","hop":"hopping",
+      "hum":"humming","imagine":"imagining","lead":"leading","learn":"learning","listen":"listening",
+      "make":"making","meet":"meeting","observe":"observing","open":"opening","paint":"painting",
+      "peek":"peeking","pick":"picking","plant":"planting","protect":"protecting","race":"racing",
+      "rescue":"rescuing","rest":"resting","return":"returning","ride":"riding","search":"searching",
+      "share":"sharing","sing":"singing","skip":"skipping","smile":"smiling","solve":"solving",
+      "spin":"spinning","splash":"splashing","stack":"stacking","tiptoe":"tiptoeing","trace":"tracing",
+      "twirl":"twirling","visit":"visiting","wake":"waking","wander":"wandering","watch":"watching",
+      "water":"watering","wave":"waving","whistle":"whistling","wonder":"wondering"
+    };
+    if(special[w]) return special[w];
     if(w.endsWith("ie")) return w.slice(0,-2) + "ying";
     if(/[^aeiou]e$/.test(w) && !/(ee|oe|ye)$/.test(w)) return w.slice(0,-1) + "ing";
-    if(
-      /^[a-z]+[^aeiou][aeiou][bcdfghjklmnpqrstvz]$/.test(w) &&
-      !/(ck|sh|ch|th|ss|st|nd|nt|rt|rd|ng)$/.test(w)
-    ) return w + w.slice(-1) + "ing";
     return w + "ing";
   }
 
   function verbToPlainPhrase(verb){
-    return String(verb || "wonder").replace(/-/g, " ").trim();
+    return String(verb || "wonder").replace(/-/g, " ").replace(/\s+/g," ").trim();
   }
 
   function verbToGerundPhrase(verb){
     const phrase = verbToPlainPhrase(verb);
-    const words = phrase.split(/\s+/).filter(Boolean);
-    if(!words.length) return "wondering";
+    if(!phrase) return "wondering";
+    if(phrase.includes(" and ")){
+      return phrase.split(/\s+and\s+/).map(verbToGerundPhrase).join(" and ");
+    }
+    const words = phrase.split(/\s+/);
     words[0] = toGerundWord(words[0]);
     return words.join(" ");
   }
@@ -1323,12 +1410,13 @@ const VERBS = [
     return out;
   }
 
-  function getWeek(week){
+  function getWeek(week, round){
+    const cycle = clampInt(round ?? state.choiceRound ?? 0, 0, 999999);
     return {
       week,
-      characters: shuffleSeeded(CHARACTERS, "characters:" + week).slice(0,7),
-      settings: shuffleSeeded(SETTINGS, "settings:" + week).slice(0,7),
-      verbs: shuffleSeeded(VERBS, "verbs:" + week).slice(0,7)
+      characters: shuffleSeeded(CHARACTERS, "characters:" + week + ":" + cycle).slice(0,7),
+      settings: shuffleSeeded(SETTINGS, "settings:" + week + ":" + cycle).slice(0,7),
+      verbs: shuffleSeeded(VERBS, "verbs:" + week + ":" + cycle).slice(0,7)
     };
   }
 
@@ -1341,17 +1429,18 @@ const VERBS = [
   function loadState(){
     try{
       const raw = localStorage.getItem(STORAGE_KEY);
-      if(!raw) return { nest:[], lastWeek:1, settings:{tone:"gentle", runs:80} };
+      if(!raw) return { nest:[], lastWeek:1, choiceRound:0, settings:{tone:"gentle", runs:80} };
       return sanitizeState(JSON.parse(raw));
     }catch(e){
-      return { nest:[], lastWeek:1, settings:{tone:"gentle", runs:80} };
+      return { nest:[], lastWeek:1, choiceRound:0, settings:{tone:"gentle", runs:80} };
     }
   }
 
   function sanitizeState(input){
-    const safe = { nest:[], lastWeek:1, settings:{tone:"gentle", runs:80} };
+    const safe = { nest:[], lastWeek:1, choiceRound:0, settings:{tone:"gentle", runs:80} };
     if(input && typeof input === "object"){
       safe.lastWeek = clampInt(input.lastWeek || 1, 1, WEEK_COUNT);
+      safe.choiceRound = clampInt(input.choiceRound || 0, 0, 999999);
       if(input.settings && typeof input.settings === "object"){
         safe.settings.tone = TEMPLATES[input.settings.tone] ? input.settings.tone : "gentle";
         safe.settings.runs = clampInt(input.settings.runs || 80, 10, 200);
@@ -1388,6 +1477,7 @@ const VERBS = [
   function saveState(){
     try{
       state.lastWeek = currentWeek;
+      state.choiceRound = clampInt(state.choiceRound || 0, 0, 999999);
       state.settings.tone = els.toneSelect.value;
       state.settings.runs = clampInt(els.runsRange.value, 10, 200);
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -1400,7 +1490,7 @@ const VERBS = [
 
   function setStatus(msg, isError){
     els.statusBox.textContent = msg;
-    els.statusBox.style.color = isError ? "var(--danger)" : "var(--muted)";
+    els.statusBox.style.color = isError ? "#ffd1cd" : "";
   }
 
   function escapeHTML(str){
@@ -1427,15 +1517,16 @@ const VERBS = [
     els.weekSelect.value = String(currentWeek);
   }
 
-  function renderClusters(){
+  function renderClusters(options={}){
+    const keepStory = !!options.keepStory;
     const w = getWeek(currentWeek);
     renderSpiritList(els.charsList, w.characters, "character");
     renderSpiritList(els.setsList, w.settings, "setting");
     renderSpiritList(els.verbsList, w.verbs, "verb");
     selection = { character:null, setting:null, verb:null };
-    currentStory = null;
+    if(!keepStory) currentStory = null;
     updateSlots();
-    clearStory(false);
+    if(!keepStory) clearStory(false);
   }
 
   function renderSpiritList(container, items, type){
@@ -1488,29 +1579,18 @@ const VERBS = [
     previewStory(true);
   }
 
-  function decorateCharacter(character){
-    const base = String(character || "friend").trim();
-    const adj = choose(ADJECTIVES);
-    const lower = base.toLowerCase();
-    if(lower.includes(adj.toLowerCase())) return base;
-    return `${adj} ${base}`;
-  }
 
-  function pronounFor(character){
-    return PRONOUNS[hashString(character || "friend") % PRONOUNS.length] || PRONOUNS[2];
+  function shuffleChoicesForNextStory(){
+    state.choiceRound = clampInt((state.choiceRound || 0) + 1, 0, 999999);
+    const savedStory = currentStory;
+    saveState();
+    currentStory = savedStory;
+    renderClusters({keepStory:true});
   }
 
   function storyTextFor(sel,tone){
     const bank = TEMPLATES[tone] || TEMPLATES.gentle;
-    const character = decorateCharacter(sel.character);
-    const base = choose(bank)(character, sel.setting, sel.verb);
-    const p = pronounFor(sel.character);
-    const endings = [
-      `Before long, ${p.subject} tucked the memory safely into ${p.possessive} heart.`,
-      `The grove smiled, and ${p.subject} felt ready for one more little wonder.`,
-      `By sunset, ${p.subject} had learned something kind and new.`
-    ];
-    return base + " " + choose(endings);
+    return choose(bank)(sel.character, sel.setting, sel.verb);
   }
 
   function isComplete(sel=selection){
@@ -1543,7 +1623,8 @@ const VERBS = [
     };
     currentStory = record;
     showStory(record, false);
-    setStatus("Your story is ready. You can read it aloud, copy it, or save it to the Story Nest.");
+    shuffleChoicesForNextStory();
+    setStatus("Your story is ready. New choices are waiting below for the next story.");
   }
 
   function monteCarloWeave(){
@@ -1572,7 +1653,8 @@ const VERBS = [
     refreshSelectionVisuals();
     updateSlots();
     showStory(best, false);
-    setStatus(`Magic Weave picked a ${titleCase(tone)} story for you.`);
+    shuffleChoicesForNextStory();
+    setStatus(`Magic Weave picked a ${titleCase(tone)} story for you. New choices are waiting below.`);
   }
 
   function scoreCandidate(sel,text,tone){
@@ -1601,11 +1683,11 @@ const VERBS = [
       mystery:["strange","silent","hidden","clue","whisper","moon"],
       funny:["silliest","giggled","snack","opinions","parade"],
       poetic:["memory","rain","silver","dawn","quiet","wings"],
-      magical:["magic","sparkle","stars","secret","lantern","glowing"],
-      discovery:["noticed","discovered","hidden","clue","treasure","looked"],
+      magical:["magic","sparkle","stars","glowing","secret","lantern"],
+      discovery:["noticed","discovered","clue","surprise","treasure","hidden"],
       friendship:["friend","friends","kindness","teamwork","shared","together"],
-      cozy:["peaceful","soft","warm","quiet","comfort","sunlight"],
-      challenge:["brave","challenge","courage","tricky","continued","important"]
+      cozy:["peaceful","quiet","comfort","warm","soft","sunlight"],
+      challenge:["challenge","brave","courage","tricky","continued","learned"]
     }[tone] || [];
     toneWords.forEach(w => { if(lower.includes(w)) score += 3; });
 
@@ -1815,7 +1897,7 @@ const VERBS = [
 
   function copyCurrent(){
     const text = els.storyText.textContent || "";
-    if(!text || text.includes("will bloom")){
+    if(!text || /will (appear|bloom) here/i.test(text)){
       setStatus("There is no finished story to copy yet.", true);
       return;
     }
@@ -1840,7 +1922,7 @@ const VERBS = [
   }
 
   function exportStorybook(){
-    exportJSON({ app:"Storybird Grove", version:"tiny-story-garden-v2", exportedAt:new Date().toISOString(), ...state }, "storybird-grove-nest.json");
+    exportJSON({ app:"Storybird Grove", version:"sovereign-mc-v1", exportedAt:new Date().toISOString(), ...state }, "storybird-grove-nest.json");
   }
 
   function importStorybook(file){
@@ -1887,9 +1969,10 @@ const VERBS = [
     els.weekSelect.addEventListener("change", () => {
       currentWeek = clampInt(els.weekSelect.value, 1, WEEK_COUNT);
       state.lastWeek = currentWeek;
+      state.choiceRound = 0;
       saveState();
       renderClusters();
-      setStatus("New week opened. Choose three spirits and weave a story.");
+      setStatus("Week changed. This week will stay stable every time the app opens.");
     });
 
     els.toneSelect.addEventListener("change", () => {
