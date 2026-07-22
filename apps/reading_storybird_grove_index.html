@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Storybird Grove™ — Sovereign Monte Carlo Story Studio</title>
-<meta name="description" content="A private, offline, vanilla JavaScript story prompt studio for students. Local storage only.">
+<title>Storybird Grove™ — Tiny Story Garden</title>
+<meta name="description" content="A private story garden for young writers. Gentle prompts, playful choices, and stories saved on this device.">
 <style>
   :root{
     --bg:#fbf7f4;
@@ -505,10 +505,10 @@
       <div class="logo" aria-hidden="true">🕊️</div>
       <div>
         <h1>Storybird Grove™</h1>
-        <div class="subtitle">A private, offline story-weaving studio with 84 stable weeks and a Monte Carlo prompt engine.</div>
+        <div class="subtitle">A gentle story garden with 84 weeks of playful prompts.</div>
       </div>
     </div>
-    <div class="privacy-pill">Local storage only</div>
+    <div class="privacy-pill">Private on this device</div>
   </header>
 
   <section class="control-panel" aria-label="Story controls">
@@ -517,7 +517,7 @@
       <select id="weekSelect"></select>
     </div>
     <div class="field">
-      <label for="toneSelect">Tone</label>
+      <label for="toneSelect">Story Mood</label>
       <select id="toneSelect">
         <option value="gentle">Gentle</option>
         <option value="adventure">Adventure</option>
@@ -527,7 +527,7 @@
       </select>
     </div>
     <div class="field">
-      <label for="runsRange">Monte Carlo Runs</label>
+      <label for="runsRange">Magic Weave Strength</label>
       <div class="range-wrap">
         <input id="runsRange" type="range" min="10" max="200" step="10" value="80">
         <output id="runsOut">80</output>
@@ -535,14 +535,14 @@
     </div>
     <div class="button-row">
       <button class="btn secondary" id="randomBtn" type="button">Randomize</button>
-      <button class="btn gold" id="monteBtn" type="button">Monte Carlo Weave</button>
+      <button class="btn gold" id="monteBtn" type="button">Magic Weave</button>
       <button class="btn" id="weaveBtn" type="button">Weave</button>
     </div>
   </section>
 
   <div class="layout">
     <main class="card grove" id="grove">
-      <p class="note">Choose one spirit from each column, then weave a tiny story. The Monte Carlo button tests many combinations and selects the strongest prompt for the chosen tone.</p>
+      <p class="note">Choose one spirit from each column, then press Weave. If you want a surprise, press Magic Weave and the grove will help choose a lovely combination for you.</p>
 
       <section class="clusters" aria-label="Spirit choices">
         <div class="cluster">
@@ -567,7 +567,7 @@
 
       <section class="story-card" aria-live="polite">
         <div class="illustration" id="illustrationArea">🌿 Illustration</div>
-        <p class="story-text" id="storyText">Your tiny story will appear here when you weave the spirits.</p>
+        <p class="story-text" id="storyText">Your tiny story will bloom here.</p>
         <div class="meta" id="storyMeta"></div>
         <div class="button-row" style="justify-content:flex-start;margin-top:10px">
           <button class="btn secondary tiny" id="previewBtn" type="button">Preview</button>
@@ -576,17 +576,17 @@
           <button class="btn secondary tiny" id="saveBtn" type="button">Save to Nest</button>
           <button class="btn secondary tiny" id="clearBtn" type="button">Clear</button>
         </div>
-        <div class="status" id="statusBox">Ready. This app makes no network calls and keeps the story nest in this browser.</div>
+        <div class="status" id="statusBox">Ready. Your stories stay private on this device.</div>
       </section>
     </main>
 
     <aside class="card side" aria-label="Private story nest">
       <h2 class="side-title">The Story Nest</h2>
-      <p class="side-sub">Saved stories stay private on this device. Export a backup file before clearing browser storage.</p>
+      <p class="side-sub">Saved stories stay private on this device. You can export a backup whenever you like.</p>
 
       <div class="nest-tools">
-        <button class="btn secondary tiny" id="exportNest" type="button">Export JSON</button>
-        <button class="btn secondary tiny" id="importNest" type="button">Import JSON</button>
+        <button class="btn secondary tiny" id="exportNest" type="button">Export Nest</button>
+        <button class="btn secondary tiny" id="importNest" type="button">Import Nest</button>
         <button class="btn secondary tiny" id="printNest" type="button">Print</button>
         <button class="btn secondary tiny" id="clearNest" type="button">Clear</button>
       </div>
@@ -598,7 +598,7 @@
   </div>
 
   <footer class="footer">
-    Sovereign single-file HTML. Vanilla JavaScript. No external fonts, no trackers, no ads, no accounts. Local storage only.
+    Private, simple, and made with care. No ads. No trackers. No accounts. Stories stay on this device.
   </footer>
 </div>
 
@@ -890,29 +890,29 @@
 
   const TEMPLATES = {
     gentle: [
-      (c,s,v)=>`In ${s}, the ${c} began to ${v}, and the grove answered with a soft hush.`,
-      (c,s,v)=>`Once in ${s}, a ${c} tried to ${v} and found a tiny kindness waiting behind a leaf.`,
-      (c,s,v)=>`Every morning in ${s}, the ${c} would ${v}, and the light would grow a little warmer.`
+      (c,s,v)=>`In ${s}, the ${c} spent the morning ${verbToGerundPhrase(v)}, and the grove answered with a soft hush.`,
+      (c,s,v)=>`Once in ${s}, a ${c} went ${verbToGerundPhrase(v)} and found a tiny kindness behind a leaf.`,
+      (c,s,v)=>`Every morning in ${s}, the ${c} loved ${verbToGerundPhrase(v)}, and the light grew a little warmer.`
     ],
     adventure: [
-      (c,s,v)=>`At the edge of ${s}, the ${c} chose to ${v} before the last golden path disappeared.`,
-      (c,s,v)=>`The map trembled in ${s} as the ${c} prepared to ${v} into the unknown.`,
-      (c,s,v)=>`With one brave breath, the ${c} entered ${s} to ${v}, carrying courage like a lantern.`
+      (c,s,v)=>`At the edge of ${s}, the ${c} set off to ${verbToPlainPhrase(v)} before the last golden path disappeared.`,
+      (c,s,v)=>`A brave little ${c} hurried into ${s}, ready for ${verbToGerundPhrase(v)} and whatever came next.`,
+      (c,s,v)=>`With one deep breath, the ${c} entered ${s} to ${verbToPlainPhrase(v)}, carrying courage like a lantern.`
     ],
     mystery: [
-      (c,s,v)=>`A strange shimmer moved through ${s} when the ${c} began to ${v}.`,
-      (c,s,v)=>`No one knew why ${s} went silent until the ${c} decided to ${v} beneath the hidden moon.`,
-      (c,s,v)=>`In ${s}, the ${c} found a clue and had to ${v} before the whisper faded.`
+      (c,s,v)=>`A strange shimmer moved through ${s} when the ${c} started ${verbToGerundPhrase(v)}.`,
+      (c,s,v)=>`No one knew why ${s} went silent until the ${c} began ${verbToGerundPhrase(v)} beneath the hidden moon.`,
+      (c,s,v)=>`In ${s}, the ${c} found a clue and kept ${verbToGerundPhrase(v)} before the whisper faded.`
     ],
     funny: [
-      (c,s,v)=>`In ${s}, the ${c} tried to ${v} and accidentally started the silliest parade in the grove.`,
-      (c,s,v)=>`The ${c} marched into ${s} to ${v}, but a leaf with big opinions kept interrupting.`,
-      (c,s,v)=>`Everyone in ${s} giggled when the ${c} learned that to ${v} requires excellent snack planning.`
+      (c,s,v)=>`In ${s}, the ${c} tried ${verbToGerundPhrase(v)} and accidentally started the silliest parade in the grove.`,
+      (c,s,v)=>`The ${c} marched into ${s}, ready for ${verbToGerundPhrase(v)}, but a leaf with big opinions kept interrupting.`,
+      (c,s,v)=>`Everyone in ${s} giggled when the ${c} discovered that ${verbToGerundPhrase(v)} works best with excellent snack planning.`
     ],
     poetic: [
-      (c,s,v)=>`Within ${s}, the ${c} learned to ${v} where moss kept the memory of rain.`,
-      (c,s,v)=>`The ${c} moved through ${s} to ${v}, and each small step became a silver note.`,
-      (c,s,v)=>`In the breath of ${s}, the ${c} began to ${v}, soft as dawn on quiet wings.`
+      (c,s,v)=>`Within ${s}, the ${c} learned the art of ${verbToGerundPhrase(v)} where moss kept the memory of rain.`,
+      (c,s,v)=>`The ${c} moved through ${s} while ${verbToGerundPhrase(v)}, and each small step became a silver note.`,
+      (c,s,v)=>`In the breath of ${s}, the ${c} began ${verbToGerundPhrase(v)}, soft as dawn on quiet wings.`
     ]
   };
 
@@ -947,6 +947,51 @@
   let currentWeek = clampInt(state.lastWeek || 1, 1, WEEK_COUNT);
   let selection = { character:null, setting:null, verb:null };
   let currentStory = null;
+
+  function titleCase(str){
+    return String(str || "").replace(/\b[a-z]/g, ch => ch.toUpperCase());
+  }
+
+  function toGerundWord(word){
+    const w = String(word || "").toLowerCase();
+    if(!w) return w;
+    if(w.endsWith("ie")) return w.slice(0,-2) + "ying";
+    if(/[^aeiou]e$/.test(w) && !/(ee|oe|ye)$/.test(w)) return w.slice(0,-1) + "ing";
+    if(/^[a-z]{3,5}$/.test(w) && /[^aeiou][aeiou][^aeiouwxy]$/.test(w)) return w + w.slice(-1) + "ing";
+    return w + "ing";
+  }
+
+  function verbToPlainPhrase(verb){
+    return String(verb || "wonder").replace(/-/g, " ");
+  }
+
+  function verbToGerundPhrase(verb){
+    const phrase = verbToPlainPhrase(verb);
+    if(phrase.includes(" and ")){
+      return phrase.split(/\s+and\s+/).map(part => {
+        const words = part.trim().split(/\s+/);
+        if(!words.length) return part;
+        words[words.length-1] = toGerundWord(words[words.length-1]);
+        return words.join(" ");
+      }).join(" and ");
+    }
+    const words = phrase.trim().split(/\s+/);
+    if(!words.length) return "wondering";
+    words[words.length-1] = toGerundWord(words[words.length-1]);
+    return words.join(" ");
+  }
+
+  function emojiForWord(str, kind){
+    const s = String(str || "").toLowerCase();
+    const sets = {
+      character:[[/owl/,"🦉"],[/fox/,"🦊"],[/dragon|dinosaur/,"🐉"],[/rabbit|hare|bunny/,"🐇"],[/mouse|mole|rat|chipmunk/,"🐭"],[/kitten|cat|lynx|cougar/,"🐱"],[/wolf|coyote|dog/,"🐺"],[/moth|butterfly/,"🦋"],[/turtle/,"🐢"],[/deer|fawn|elk/,"🦌"],[/bear/,"🐻"],[/otter/,"🦦"],[/bat/,"🦇"],[/goat/,"🐐"],[/horse|pony/,"🐴"],[/lamb|sheep/,"🐑"],[/penguin/,"🐧"],[/frog/,"🐸"],[/bird|jay|crow|sparrow|goose|hawk|crane|chick/,"🐦"],[/seal/,"🦭"],[/whale/,"🐳"],[/monkey|lemur/,"🐒"],[/raccoon/,"🦝"]],
+      setting:[[/grove|forest|woods|willow|orchard/,"🌳"],[/pond|lake|spring|brook|river|shore|coast|cove|marsh|tide/,"💧"],[/hill|ridge|summit|plateau|highlands|range|cliff|canyon/,"⛰️"],[/meadow|field|garden|glade|clearing/,"🌼"],[/moon|star|sky|cloud|sun/,"🌙"],[/bridge|arch/,"🌉"],[/cave|hollow|palace|gate/,"🏡"]],
+      verb:[[/sing|hum|whistle/,"🎵"],[/dance|spin|bounce|flutter|glide|drift|float/,"💃"],[/discover|explore|seek|find|ponder|listen|gaze/,"🔍"],[/paint|sketch/,"🖌️"],[/dream|wish/,"💫"],[/gather|collect|sip/,"🧺"],[/shine|sparkle|glow/,"✨"],[/follow|wander|step|walk|tiptoe/,"🧭"]]
+    };
+    const pool = sets[kind] || [];
+    for(const [pattern,emoji] of pool){ if(pattern.test(s)) return emoji; }
+    return kind === "setting" ? "🌿" : kind === "verb" ? "✨" : "🕊️";
+  }
 
   function hashString(str){
     let h = 2166136261;
@@ -1159,8 +1204,8 @@
     const tone = els.toneSelect.value;
     const text = storyTextFor(sel, tone);
     showStory({ text, meta:{week:currentWeek, tone, selection:sel, score:null}, ts:Date.now() }, !isComplete());
-    setStatus(isComplete() ? "Preview ready. Save after weaving, or keep exploring." : "Preview used placeholders. Pick one spirit from each column before saving.");
-    if(fromRandom) setStatus("Random selection ready. Press Weave to make it official, or Monte Carlo Weave for the strongest prompt.");
+    setStatus(isComplete() ? "Preview ready. Save it after weaving, or keep exploring." : "Preview used placeholders. Pick one spirit from each column before saving.");
+    if(fromRandom) setStatus("Random choices are ready. Press Weave to tell the story, or Magic Weave for a little extra help.");
   }
 
   function weaveStory(){
@@ -1176,7 +1221,7 @@
     };
     currentStory = record;
     showStory(record, false);
-    setStatus("Story woven. You can read it aloud, copy it, or save it to the private Story Nest.");
+    setStatus("Your story is ready. You can read it aloud, copy it, or save it to the Story Nest.");
   }
 
   function monteCarloWeave(){
@@ -1205,7 +1250,7 @@
     refreshSelectionVisuals();
     updateSlots();
     showStory(best, false);
-    setStatus(`Monte Carlo tested ${runs} combinations and chose this ${tone} story seed. Score: ${best.meta.score}.`);
+    setStatus(`Magic Weave explored ${runs} playful combinations and picked a ${titleCase(tone)} story for you.`);
   }
 
   function scoreCandidate(sel,text,tone){
@@ -1247,8 +1292,7 @@
     els.storyText.textContent = record.text;
     els.storyMeta.textContent = [
       `Week ${record.meta.week}`,
-      record.meta.tone ? `Tone: ${record.meta.tone}` : "",
-      record.meta.score !== null ? `Monte Carlo score: ${record.meta.score}` : "",
+      record.meta.tone ? `Mood: ${titleCase(record.meta.tone)}` : "",
       isPreview ? "Preview only" : new Date(record.ts).toLocaleString()
     ].filter(Boolean).join(" • ");
     renderIllustration(sel, record.meta.tone || "gentle");
@@ -1260,10 +1304,10 @@
 
   function clearStory(resetCurrent=true){
     if(resetCurrent) currentStory = null;
-    els.storyText.textContent = "Your tiny story will appear here when you weave the spirits.";
+    els.storyText.textContent = "Your tiny story will bloom here.";
     els.storyMeta.textContent = "";
     els.illustrationArea.textContent = "🌿 Illustration";
-    setStatus("Cleared. Ready for a new story seed.");
+    setStatus("Cleared. Ready for a new story.");
   }
 
   function clearSelection(){
@@ -1287,28 +1331,53 @@
     const bg2 = colorFrom(sel.setting || "b", 70);
     const bg3 = colorFrom(sel.verb || "c", 150);
     const toneIcon = {gentle:"🌿",adventure:"🧭",mystery:"🌙",funny:"🍄",poetic:"✨"}[tone] || "🌿";
+    const charEmoji = emojiForWord(sel.character, "character");
+    const setEmoji = emojiForWord(sel.setting, "setting");
+    const verbEmoji = emojiForWord(sel.verb, "verb");
 
     els.illustrationArea.innerHTML = `
-      <svg width="100%" height="100%" viewBox="0 0 700 320" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Generated watercolor story card">
+      <svg width="100%" height="100%" viewBox="0 0 700 320" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Story picture">
         <defs>
           <linearGradient id="sbgBg" x1="0" y1="0" x2="1" y2="1">
             <stop offset="0" stop-color="#fff8f3"/>
             <stop offset="1" stop-color="#f4fff7"/>
           </linearGradient>
           <filter id="softBlur"><feGaussianBlur stdDeviation="18"/></filter>
+          <filter id="cardShadow" x="-20%" y="-20%" width="140%" height="140%">
+            <feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="rgba(44,62,52,.18)"/>
+          </filter>
         </defs>
         <rect width="700" height="320" rx="28" fill="url(#sbgBg)"/>
         <g filter="url(#softBlur)" opacity=".92">
-          <ellipse cx="150" cy="188" rx="150" ry="82" fill="${bg1}"/>
-          <ellipse cx="370" cy="115" rx="180" ry="90" fill="${bg2}"/>
-          <ellipse cx="575" cy="222" rx="145" ry="78" fill="${bg3}"/>
+          <ellipse cx="145" cy="94" rx="130" ry="70" fill="${bg1}"/>
+          <ellipse cx="388" cy="78" rx="190" ry="82" fill="${bg2}"/>
+          <ellipse cx="558" cy="182" rx="140" ry="74" fill="${bg3}"/>
         </g>
-        <path d="M45 260 C160 220 230 280 345 242 C455 207 535 247 660 218" fill="none" stroke="rgba(44,62,52,.26)" stroke-width="7" stroke-linecap="round"/>
-        <g font-family="system-ui, -apple-system, Segoe UI, sans-serif" text-anchor="middle" fill="#2c3e34">
-          <text x="350" y="56" font-size="34">${toneIcon}</text>
-          <text x="180" y="160" font-size="24" font-weight="850">${c}</text>
-          <text x="360" y="116" font-size="21" font-weight="750">${s}</text>
-          <text x="535" y="204" font-size="22" font-weight="800">${v}</text>
+        <circle cx="608" cy="64" r="28" fill="#fffaf0" opacity=".95"/>
+        <text x="608" y="74" font-size="26" text-anchor="middle">${toneIcon}</text>
+        <path d="M0 250 C90 210 160 210 250 244 C360 286 468 214 700 238 L700 320 L0 320 Z" fill="#d9ecdd" opacity=".9"/>
+        <path d="M0 270 C120 230 212 250 332 262 C468 276 560 232 700 252 L700 320 L0 320 Z" fill="#bfdabf" opacity=".95"/>
+        <g fill="#2c3e34" opacity=".26">
+          <circle cx="84" cy="58" r="3"/><circle cx="108" cy="42" r="2.5"/><circle cx="124" cy="62" r="2.5"/>
+          <circle cx="510" cy="46" r="3"/><circle cx="532" cy="30" r="2.5"/><circle cx="552" cy="52" r="2.5"/>
+        </g>
+        <g filter="url(#cardShadow)">
+          <rect x="58" y="146" width="176" height="108" rx="22" fill="rgba(255,255,255,.82)"/>
+          <rect x="262" y="118" width="176" height="108" rx="22" fill="rgba(255,255,255,.82)"/>
+          <rect x="468" y="162" width="176" height="108" rx="22" fill="rgba(255,255,255,.82)"/>
+        </g>
+        <g font-family="system-ui, -apple-system, Segoe UI, sans-serif" fill="#2c3e34" text-anchor="middle">
+          <text x="146" y="184" font-size="34">${charEmoji}</text>
+          <text x="146" y="216" font-size="18" font-weight="800">Character</text>
+          <text x="146" y="237" font-size="15">${c}</text>
+
+          <text x="350" y="156" font-size="34">${setEmoji}</text>
+          <text x="350" y="188" font-size="18" font-weight="800">Setting</text>
+          <text x="350" y="209" font-size="15">${s}</text>
+
+          <text x="556" y="200" font-size="34">${verbEmoji}</text>
+          <text x="556" y="232" font-size="18" font-weight="800">Action</text>
+          <text x="556" y="253" font-size="15">${v}</text>
         </g>
       </svg>`;
   }
@@ -1349,8 +1418,7 @@
       meta.className = "meta";
       meta.textContent = [
         `Week ${n.meta.week}`,
-        n.meta.tone ? `Tone: ${n.meta.tone}` : "",
-        n.meta.score !== null ? `Score: ${n.meta.score}` : "",
+        n.meta.tone ? `Mood: ${titleCase(n.meta.tone)}` : "",
         new Date(n.ts).toLocaleString()
       ].filter(Boolean).join(" • ");
 
@@ -1465,7 +1533,7 @@
         renderClusters();
         setStatus("Imported Story Nest safely.");
       }catch(e){
-        setStatus("Import failed. Please choose a Storybird Grove JSON export.", true);
+        setStatus("Import failed. Please choose a Storybird Grove nest file.", true);
       }
     };
     reader.readAsText(file);
@@ -1499,7 +1567,7 @@
 
     els.toneSelect.addEventListener("change", () => {
       saveState();
-      setStatus("Tone updated. Weave again to apply the new voice.");
+      setStatus("Story mood updated. Weave again to hear the new feeling.");
     });
 
     els.runsRange.addEventListener("input", () => {
