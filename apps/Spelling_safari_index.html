@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Spelling Safari – 1st Grade</title>
+
+<style>
+/* =====================
+   THEME VARIABLES
+===================== */
+:root{
+  --orange:#ff7f50;
+  --purple:#9b59b6;
+  --blue:#3498db;
+  --green:#2ecc71;
+  --bg:#e6f0ff;
+  --white:#fff;
+}
+
+/* =====================
+   GLOBAL LAYOUT
+===================== */
+html,body{
+  margin:0;
+  height:100%;
+  font-family:"Comic Sans MS","Poppins",system-ui,sans-serif;
+  background:linear-gradient(180deg,#cce0ff,#ffe0cc,#d6ccff);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+/* =====================
+   APP CONTAINER
+===================== */
+.app{
+  width:100%;
+  max-width:500px;
+  background:var(--bg);
+  border-radius:22px;
+  padding:18px 14px 28px;
+  box-shadow:0 12px 48px #0003;
+  text-align:center;
+  position:relative;
+}
+
+h1{margin:6px 0;color:var(--purple);font-size:2.3rem;}
+#subtitle{color:#555;margin-bottom:8px;}
+#boppi{font-size:3.5rem;position:absolute;top:-45px;right:20px;}
+#score{font-weight:bold;font-size:1.3rem;color:#444}
+
+/* =====================
+   PROGRESS
+===================== */
+.progress-bar{
+  height:11px;
+  width:88%;
+  margin:10px auto;
+  background:#9b59b633;
+  border-radius:9px;
+  overflow:hidden;
+}
+.progress-inner{
+  height:100%;
+  background:var(--purple);
+  width:0%;
+  transition:width .5s ease;
+}
+
+/* =====================
+   WORD AREA
+===================== */
+.soup-area{
+  width:320px;
+  height:140px;
+  margin:0 auto 14px;
+  background:#f0f0ff;
+  border-radius:40px 40px 130px 130px;
+  border:6px solid #fff;
+  box-shadow:0 6px 18px #b0a0ff54;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+#dropzone{display:flex;gap:6px}
+
+/* =====================
+   TILES
+===================== */
+.drop-tile{
+  width:55px;
+  height:55px;
+  font-size:2.3rem;
+  font-weight:800;
+  border-radius:14px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#fff;
+  border:2.5px dashed #bbb;
+}
+
+.drop-tile.right{background:#b0ffcc;border-color:var(--green);}
+.drop-tile.wrong{background:#ffd2d2;border-color:#ff4d4d;}
+
+.letters{
+  display:flex;
+  flex-wrap:wrap;
+  gap:14px;
+  justify-content:center;
+  margin:14px 0;
+}
+
+.letter{
+  width:58px;
+  height:58px;
+  border-radius:15px;
+  background:linear-gradient(135deg,var(--blue),var(--orange));
+  color:#fff;
+  font-size:2.1rem;
+  font-weight:700;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  cursor:grab;
+}
+
+.letter.disabled{opacity:.5;pointer-events:none}
+
+/* =====================
+   BUTTONS
+===================== */
+.btn{
+  border:none;
+  border-radius:14px;
+  padding:10px 20px;
+  font-size:1.1rem;
+  cursor:pointer;
+  background:var(--purple);
+  color:#fff;
+}
+.btn.secondary{background:var(--orange);color:#222}
+
+/* =====================
+   CONFETTI
+===================== */
+.confetti{
+  position:fixed;
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  animation:fall 1s ease forwards;
+}
+@keyframes fall{
+  to{transform:translateY(-120px) scale(.6);opacity:0}
+}
+
+/* =====================
+   QUIZ
+===================== */
+#quizOverlay{
+  position:fixed;
+  inset:0;
+  background:#000a;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  visibility:hidden;
+}
+
+#quizBox{
+  background:#fff;
+  border-radius:22px;
+  padding:20px;
+  max-width:360px;
+  width:90%;
+}
+
+.quiz-options{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+.quiz-options button{
+  flex:1 1 40%;
+  padding:12px;
+  border:none;
+  border-radius:14px;
+  font-weight:bold;
+  cursor:pointer;
+  background:linear-gradient(135deg,var(--orange),var(--green));
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+  <h1>Spelling Safari!</h1>
+  <div id="subtitle">Words are waiting… 🐾</div>
+  <div id="boppi">🦘</div>
+  <div id="score">Score: 0 ⭐</div>
+
+  <div class="progress-bar">
+    <div class="progress-inner" id="progress"></div>
+  </div>
+
+  <div class="soup-area">
+    <div id="dropzone"></div>
+  </div>
+
+  <div class="letters" id="letters"></div>
+
+  <div id="message">Drag or tap letters to spell the word!</div>
+
+  <div class="controls">
+    <button class="btn secondary" id="resetBtn">Start Over</button>
+    <button class="btn" id="volumeBtn">🔊</button>
+  </div>
+</div>
+
+<div id="quizOverlay">
+  <div id="quizBox">
+    <div id="quizQuestion"></div>
+    <div class="quiz-options" id="quizOptions"></div>
+  </div>
+</div>
+
+<script>
+/* =====================
+   DATA
+===================== */
+const WORDS = [
+  {word:"cat",img:"🐱",prompt:"A pet that says meow.",
+   quiz:[{q:"Starts with?",options:["C","B","D"],correct:0}]},
+  {word:"dog",img:"🐶",prompt:"A friend who barks.",
+   quiz:[{q:"Which one is a dog?",options:["🐶","🐱","🐷"],correct:0}]},
+  {word:"sun",img:"🌞",prompt:"Bright in the sky.",
+   quiz:[{q:"Starts with?",options:["S","B","C"],correct:0}]}
+];
+
+/* =====================
+   STATE
+===================== */
+let index = 0;
+let score = 0;
+let soundOn = true;
+let userLetters = [];
+
+/* =====================
+   ELEMENTS
+===================== */
+const dropzone = document.getElementById("dropzone");
+const lettersEl = document.getElementById("letters");
+const message = document.getElementById("message");
+const progress = document.getElementById("progress");
+const scoreEl = document.getElementById("score");
+const quizOverlay = document.getElementById("quizOverlay");
+const quizQuestion = document.getElementById("quizQuestion");
+const quizOptions = document.getElementById("quizOptions");
+
+/* =====================
+   UTILITIES
+===================== */
+const speak = txt => {
+  if(!soundOn) return;
+  speechSynthesis.cancel();
+  speechSynthesis.speak(new SpeechSynthesisUtterance(txt));
+};
+
+const shuffle = a => a.sort(()=>Math.random()-0.5);
+
+/* =====================
+   RENDER
+===================== */
+function renderWord(){
+  const {word,prompt} = WORDS[index];
+  userLetters = Array(word.length).fill("");
+
+  dropzone.innerHTML="";
+  lettersEl.innerHTML="";
+  message.textContent = prompt;
+  progress.style.width = `${(index/WORDS.length)*100}%`;
+
+  [...word].forEach(()=> {
+    const t=document.createElement("div");
+    t.className="drop-tile";
+    dropzone.appendChild(t);
+  });
+
+  shuffle([...word.toUpperCase()]).forEach(l=>{
+    const b=document.createElement("div");
+    b.className="letter";
+    b.textContent=l;
+    b.onclick=()=>placeLetter(l);
+    lettersEl.appendChild(b);
+  });
+
+  speak("Spell the word");
+}
+
+/* =====================
+   GAME LOGIC
+===================== */
+function placeLetter(l){
+  const pos = userLetters.indexOf("");
+  if(pos<0) return;
+
+  const correct = l.toLowerCase() === WORDS[index].word[pos];
+  const tile = dropzone.children[pos];
+
+  if(correct){
+    tile.textContent=l;
+    tile.classList.add("right");
+    userLetters[pos]=l;
+    score+=5;
+    scoreEl.textContent=`Score: ${score} ⭐`;
+
+    if(userLetters.join("").toLowerCase()===WORDS[index].word){
+      spawnConfetti();
+      setTimeout(showQuiz,600);
+    }
+  } else {
+    tile.classList.add("wrong");
+    setTimeout(()=>tile.classList.remove("wrong"),500);
+    speak("Try again");
+  }
+}
+
+/* =====================
+   QUIZ
+===================== */
+function showQuiz(){
+  const q = WORDS[index].quiz?.[0];
+  if(!q){ nextWord(); return; }
+
+  quizQuestion.textContent=q.q;
+  quizOptions.innerHTML="";
+
+  q.options.forEach((opt,i)=>{
+    const b=document.createElement("button");
+    b.textContent=opt;
+    b.onclick=()=>{
+      if(i===q.correct) score+=5;
+      scoreEl.textContent=`Score: ${score} ⭐`;
+      quizOverlay.style.visibility="hidden";
+      nextWord();
+    };
+    quizOptions.appendChild(b);
+  });
+
+  quizOverlay.style.visibility="visible";
+}
+
+/* =====================
+   FLOW
+===================== */
+function nextWord(){
+  index++;
+  if(index>=WORDS.length){
+    message.textContent="🎉 All done!";
+    speak("Great job!");
+    return;
+  }
+  renderWord();
+}
+
+/* =====================
+   EFFECTS
+===================== */
+function spawnConfetti(){
+  for(let i=0;i<12;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.background=`hsl(${Math.random()*360},100%,60%)`;
+    c.style.left=50+Math.random()*40+"%";
+    c.style.top="60%";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),900);
+  }
+}
+
+/* =====================
+   CONTROLS
+===================== */
+document.getElementById("resetBtn").onclick=()=>{
+  index=0; score=0;
+  scoreEl.textContent="Score: 0 ⭐";
+  renderWord();
+};
+
+document.getElementById("volumeBtn").onclick=()=>{
+  soundOn=!soundOn;
+  event.target.textContent=soundOn?"🔊":"🔈";
+};
+
+/* =====================
+   START
+===================== */
+renderWord();
+</script>
+</body>
+</html>
