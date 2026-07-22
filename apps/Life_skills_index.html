@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Little Tikes Life Skills — Sacred Book Hub</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <style>
+    :root {
+      /* PLERA Palette */
+      --parchment: #f7f3ea;
+      --parchment-soft: #f5efe3;
+      --parchment-deep: #f0e9dc;
+      --gold: #d9b878;
+      --gold-soft: #e8d5a4;
+      --gold-deep: #b89252;
+      --gold-root: #7a5a28;
+      --midnight: #0b1020;
+      --midnight-soft: #091020;
+      --ink: #322b23;
+
+      /* Sacred radii */
+      --r-card: 11px;
+      --r-pill: 21px;
+      --r-page: 11px;
+
+      /* Sacred font sizes */
+      --fs-xxs: 11px;
+      --fs-xs: 12px;
+      --fs-sm: 14px;
+      --fs-body: 15px;
+      --fs-body-lg: 18px;
+      --fs-h3: 21px;
+      --fs-h2: 27px;
+      --fs-h1: 33px;
+
+      --shadow-soft: 0 9px 27px rgba(0,0,0,0.12);
+      --shadow-card: 0 11px 33px rgba(0,0,0,0.16);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, "Segoe UI", serif;
+      background: radial-gradient(circle at top, #f9f7ef 0%, #f0e9dc 44%, #e3d3b6 100%);
+      color: var(--ink);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 21px 12px 27px;
+    }
+
+    #hubShell {
+      width: 100%;
+      max-width: 1080px;
+      background: rgba(247,243,234,0.97);
+      border-radius: var(--r-card);
+      box-shadow: var(--shadow-card);
+      border: 1px solid rgba(184,146,82,0.28);
+      padding: 21px;
+    }
+
+    /* Header */
+
+    .hub-pill {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 18px;
+      border-radius: var(--r-pill);
+      background: var(--gold-soft);
+      color: var(--gold-root);
+      font-size: var(--fs-xxs);
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      margin-bottom: 7px;
+    }
+
+    .hub-title {
+      margin: 0 0 4px;
+      font-size: var(--fs-h2);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      text-align: center;
+      color: var(--midnight-soft);
+    }
+
+    .hub-subtitle {
+      margin: 0 0 18px;
+      font-size: var(--fs-body);
+      color: #6b5c4a;
+      text-align: center;
+      max-width: 720px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Layout */
+
+    .hub-layout {
+      margin-top: 9px;
+      display: flex;
+      gap: 21px;
+      align-items: stretch;
+    }
+
+    /* Shelf (left) */
+
+    .shelf {
+      flex: 0 0 260px;
+      background: var(--parchment-soft);
+      border-radius: var(--r-card);
+      border: 1px solid rgba(50,43,35,0.08);
+      box-shadow: var(--shadow-soft);
+      padding: 14px 14px 18px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .shelf-title {
+      font-size: var(--fs-sm);
+      font-weight: 700;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gold-root);
+      margin-bottom: 7px;
+    }
+
+    .shelf-note {
+      font-size: var(--fs-xxs);
+      color: #6f6150;
+      margin-bottom: 11px;
+    }
+
+    .book-list {
+      flex: 1 1 auto;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+
+    .book-btn {
+      width: 100%;
+      text-align: left;
+      border: none;
+      border-radius: 9px;
+      padding: 7px 9px;
+      margin-bottom: 7px;
+      background: transparent;
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.12s ease, box-shadow 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .book-btn:hover {
+      background: rgba(255,255,255,0.7);
+      transform: translateY(-1px);
+      box-shadow: 0 7px 21px rgba(0,0,0,0.10);
+    }
+
+    .book-btn.active {
+      background: linear-gradient(135deg, #e8d5a4, #d9b878);
+      color: var(--midnight);
+      box-shadow: 0 9px 27px rgba(0,0,0,0.16);
+    }
+
+    .book-title {
+      font-size: var(--fs-sm);
+      font-weight: 600;
+    }
+
+    .book-tag {
+      font-size: var(--fs-xxs);
+      opacity: 0.9;
+    }
+
+    .shelf-footer {
+      font-size: var(--fs-xxs);
+      color: #7c6e5d;
+      margin-top: 11px;
+      border-top: 1px solid rgba(50,43,35,0.09);
+      padding-top: 7px;
+    }
+
+    /* Reader (right) */
+
+    .reader {
+      flex: 1 1 0;
+      background: var(--parchment);
+      border-radius: var(--r-card);
+      border: 1px solid rgba(50,43,35,0.09);
+      box-shadow: var(--shadow-soft);
+      padding: 14px 16px 18px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .reader-header {
+      margin-bottom: 12px;
+      border-bottom: 1px solid rgba(50,43,35,0.06);
+      padding-bottom: 9px;
+    }
+
+    .reader-label {
+      font-size: var(--fs-xxs);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold-root);
+      margin-bottom: 4px;
+    }
+
+    .reader-current-title {
+      margin: 0 0 2px;
+      font-size: var(--fs-h3);
+      color: var(--midnight);
+    }
+
+    .reader-current-tagline {
+      margin: 0;
+      font-size: var(--fs-sm);
+      color: #6e5f4f;
+    }
+
+    .book-wrap {
+      margin-top: 12px;
+      flex: 1 1 auto;
+      background: var(--parchment-soft);
+      border-radius: var(--r-card);
+      padding: 14px 14px 16px;
+      border: 1px solid rgba(50,43,35,0.06);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .book-inner {
+      display: flex;
+      gap: 18px;
+      align-items: stretch;
+      justify-content: center;
+      transition: transform 0.33s ease, box-shadow 0.33s ease;
+    }
+
+    .book-inner.page-turn {
+      transform: scale(0.99) rotateY(2deg);
+      box-shadow: 0 11px 33px rgba(0,0,0,0.25);
+    }
+
+    .page {
+      flex: 1 1 0;
+      background: var(--parchment);
+      border-radius: var(--r-page);
+      padding: 14px 14px 18px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(50,43,35,0.06);
+    }
+
+    .page-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+    }
+
+    .page-right {
+      text-align: left;
+    }
+
+    .page-label {
+      font-size: var(--fs-xxs);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--gold-root);
+      margin-bottom: 6px;
+    }
+
+    .page-title {
+      font-size: var(--fs-body-lg);
+      font-weight: 700;
+      margin: 2px 0 7px;
+    }
+
+    /* Scene graphic */
+
+    .scene-graphic {
+      margin-top: 9px;
+      width: 100%;
+      max-width: 240px;
+      aspect-ratio: 4 / 3;
+      border-radius: var(--r-card);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 9px 27px rgba(0,0,0,0.15);
+    }
+
+    .scene-icon-main {
+      width: 72px;
+      height: 72px;
+      border-radius: var(--r-card);
+      background: rgba(255,255,255,0.95);
+      box-shadow: 0 7px 21px rgba(0,0,0,0.18);
+    }
+
+    .scene-badge {
+      position: absolute;
+      bottom: 11px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 4px 14px;
+      border-radius: var(--r-pill);
+      background: rgba(255,255,255,0.94);
+      font-size: var(--fs-xxs);
+      font-weight: 600;
+      color: var(--gold-root);
+      white-space: nowrap;
+    }
+
+    .scene-dot {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.5;
+    }
+
+    .scene-dot.d1 { width: 21px; height: 21px; top: 11px; left: 11px; }
+    .scene-dot.d2 { width: 27px; height: 27px; top: 9px; right: 11px; }
+    .scene-dot.d3 { width: 27px; height: 27px; bottom: 7px; left: 7px; }
+    .scene-dot.d4 { width: 21px; height: 21px; bottom: 3px; right: 3px; }
+
+    /* Theme tints (gentle, still sacred) */
+
+    #hubShell[data-theme="kitchen"] .scene-graphic {
+      background: linear-gradient(135deg, #f5efe3, #e8d5a4);
+    }
+    #hubShell[data-theme="kitchen"] .scene-dot.d1 { background:#e1c48e; }
+    #hubShell[data-theme="kitchen"] .scene-dot.d2 { background:#f2ddaa; }
+    #hubShell[data-theme="kitchen"] .scene-dot.d3 { background:#d3b47a; }
+    #hubShell[data-theme="kitchen"] .scene-dot.d4 { background:#f0d39a; }
+
+    #hubShell[data-theme="bed"] .scene-graphic {
+      background: linear-gradient(135deg, #f5efe3, #d9e0f5);
+    }
+    #hubShell[data-theme="bed"] .scene-dot.d1 { background:#c2cce8; }
+    #hubShell[data-theme="bed"] .scene-dot.d2 { background:#e3e8f5; }
+    #hubShell[data-theme="bed"] .scene-dot.d3 { background:#cfd8f0; }
+    #hubShell[data-theme="bed"] .scene-dot.d4 { background:#b8c4ea; }
+
+    #hubShell[data-theme="dog"] .scene-graphic {
+      background: linear-gradient(135deg, #f5efe3, #d9ebd0);
+    }
+    #hubShell[data-theme="dog"] .scene-dot.d1 { background:#c3dfb8; }
+    #hubShell[data-theme="dog"] .scene-dot.d2 { background:#e1f0d7; }
+    #hubShell[data-theme="dog"] .scene-dot.d3 { background:#cee4c2; }
+    #hubShell[data-theme="dog"] .scene-dot.d4 { background:#b8d9ac; }
+
+    #hubShell[data-theme="school"] .scene-graphic {
+      background: linear-gradient(135deg, #f5efe3, #dbe7f4);
+    }
+    #hubShell[data-theme="school"] .scene-dot.d1 { background:#c2d7f0; }
+    #hubShell[data-theme="school"] .scene-dot.d2 { background:#e4eef7; }
+    #hubShell[data-theme="school"] .scene-dot.d3 { background:#cfe0f3; }
+    #hubShell[data-theme="school"] .scene-dot.d4 { background:#b2cbed; }
+
+    #hubShell[data-theme="feelings"] .scene-graphic {
+      background: linear-gradient(135deg, #f5efe3, #f0d3dd);
+    }
+    #hubShell[data-theme="feelings"] .scene-dot.d1 { background:#e4bccb; }
+    #hubShell[data-theme="feelings"] .scene-dot.d2 { background:#f2dbe5; }
+    #hubShell[data-theme="feelings"] .scene-dot.d3 { background:#e6c4d4; }
+    #hubShell[data-theme="feelings"] .scene-dot.d4 { background:#d9aabf; }
+
+    #hubShell[data-theme="friendship"] .scene-graphic {
+      background: linear-gradient(135deg, #f5efe3, #d6eadd);
+    }
+    #hubShell[data-theme="friendship"] .scene-dot.d1 { background:#b9ddc3; }
+    #hubShell[data-theme="friendship"] .scene-dot.d2 { background:#e0f0e4; }
+    #hubShell[data-theme="friendship"] .scene-dot.d3 { background:#c9e2ce; }
+    #hubShell[data-theme="friendship"] .scene-dot.d4 { background:#a9d3b5; }
+
+    /* Right page text */
+
+    .step-tag {
+      font-size: var(--fs-xs);
+      color: #7c6c5b;
+      margin-bottom: 7px;
+    }
+
+    .story-title {
+      font-size: var(--fs-body-lg);
+      font-weight: 700;
+      margin: 2px 0 7px;
+    }
+
+    .story-text {
+      font-size: var(--fs-body-lg);
+      line-height: 1.7;
+      margin: 2px 0 11px;
+    }
+
+    .story-tip {
+      font-size: var(--fs-sm);
+      color: #6d5f50;
+    }
+
+    .page-counter {
+      font-size: var(--fs-xxs);
+      color: #8b7b6c;
+      position: absolute;
+      bottom: 7px;
+      right: 11px;
+    }
+
+    /* Controls */
+
+    .controls-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 14px;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 11px;
+      align-items: center;
+      justify-content: center;
+    }
+
+    button.nav-btn {
+      border: none;
+      border-radius: var(--r-pill);
+      padding: 7px 18px;
+      font-size: var(--fs-xs);
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      background: linear-gradient(135deg, #e8d5a4, #d9b878);
+      color: var(--midnight);
+      box-shadow: 0 9px 27px rgba(0,0,0,0.18);
+      transition: transform 0.15s ease, box-shadow 0.15s ease, opacity 0.2s ease;
+    }
+
+    button.nav-btn:disabled {
+      opacity: 0.4;
+      cursor: default;
+      box-shadow: none;
+      transform: none;
+    }
+
+    button.nav-btn:not(:disabled):hover {
+      transform: translateY(-1px);
+      box-shadow: 0 11px 33px rgba(0,0,0,0.20);
+    }
+
+    .instructions {
+      flex: 1 1 220px;
+      font-size: var(--fs-sm);
+      color: #6f6154;
+      text-align: center;
+    }
+
+    .instructions strong {
+      font-weight: 600;
+    }
+
+    .mode-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 11px;
+      border-radius: var(--r-pill);
+      background: var(--parchment-deep);
+      font-size: var(--fs-xxs);
+      color: #5e5041;
+      border: 1px solid rgba(50,43,35,0.12);
+    }
+
+    .mode-pill input {
+      accent-color: var(--gold-root);
+    }
+
+    @media (max-width: 900px) {
+      .hub-layout {
+        flex-direction: column;
+      }
+      .shelf {
+        max-height: none;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .book-inner {
+        flex-direction: column;
+      }
+      .hub-title {
+        font-size: var(--fs-h3);
+      }
+      .story-text {
+        font-size: var(--fs-body);
+      }
+      button.nav-btn {
+        font-size: var(--fs-xxs);
+        padding: 6px 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="hubShell" data-theme="kitchen">
+    <div class="hub-pill">Little Tikes · Sacred Edition</div>
+    <h1 class="hub-title">Little Tikes Life Skills Hub</h1>
+    <p class="hub-subtitle">
+      Gentle everyday stories for tiny hearts — learning how to help, calm down, care for pets, and be a kind friend.
+    </p>
+
+    <div class="hub-layout">
+      <!-- Shelf -->
+      <aside class="shelf">
+        <div class="shelf-title">Story Shelf</div>
+        <div class="shelf-note">
+          Tap a book, then use <strong>Next / Back</strong> to turn pages at a calm, cozy pace.
+        </div>
+        <div id="bookList" class="book-list"></div>
+        <div class="shelf-footer">
+          Tip: Make a tiny ritual — one story after breakfast, one before bed, and one for big feelings.
+        </div>
+      </aside>
+
+      <!-- Reader -->
+      <section class="reader">
+        <div class="reader-header">
+          <div class="reader-label">Now Reading</div>
+          <h2 id="readerTitle" class="reader-current-title">Welcome to the Kitchen!</h2>
+          <p id="readerTagline" class="reader-current-tagline">
+            A helper story about joining the cooking team.
+          </p>
+        </div>
+
+        <div class="book-wrap">
+          <div id="bookInner" class="book-inner">
+            <!-- Left page -->
+            <div class="page page-left">
+              <div>
+                <div id="leftLabel" class="page-label">Kitchen Helper Story</div>
+                <div id="leftTitle" class="page-title">Welcome to the kitchen team!</div>
+              </div>
+
+              <div class="scene-graphic">
+                <div class="scene-icon-main"></div>
+                <div class="scene-dot d1"></div>
+                <div class="scene-dot d2"></div>
+                <div class="scene-dot d3"></div>
+                <div class="scene-dot d4"></div>
+                <div id="sceneTag" class="scene-badge">Kitchen Team</div>
+              </div>
+
+              <div id="leftPageCounter" class="page-counter">Page 1 of 5</div>
+            </div>
+
+            <!-- Right page -->
+            <div class="page page-right">
+              <div id="stepTag" class="step-tag">Step 1 · Clean hands</div>
+              <div id="storyTitle" class="story-title">First, we wash our hands.</div>
+              <div id="storyText" class="story-text">
+                Today I get to help in the kitchen! Before I touch any food, I roll up my sleeves and wash my hands with warm water and soap. I scrub, scrub, scrub, then rinse and dry. Now my hands are clean and ready to help.
+              </div>
+              <div id="storyTip" class="story-tip">
+                Grown-up note: Let your child practice turning on water, using soap, and drying hands with a small towel they can reach.
+              </div>
+              <div id="rightPageCounter" class="page-counter">Page 1 of 5</div>
+            </div>
+          </div>
+
+          <div class="controls-row">
+            <div class="nav-buttons">
+              <button id="prevBtn" class="nav-btn" type="button" disabled>&larr; Back</button>
+              <button id="nextBtn" class="nav-btn" type="button">Next &rarr;</button>
+            </div>
+            <div class="instructions">
+              <strong>How to use:</strong> Choose a book, flip pages slowly, and pause to act it out together.
+            </div>
+            <div class="mode-pill">
+              <input type="checkbox" id="quietMode" />
+              <label for="quietMode">Quiet Mode (no page chime)</label>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    // === Book Data (unchanged stories) ===
+    const BOOKS = [
+      {
+        id: "kitchen",
+        title: "Welcome to the Kitchen!",
+        tagline: "A helper story about joining the cooking team.",
+        shelfTag: "Helping at home",
+        theme: "kitchen",
+        leftLabel: "Kitchen Helper Story",
+        sceneTag: "Kitchen Team",
+        pages: [
+          {
+            leftTitle: "Welcome to the kitchen team!",
+            stepTag: "Step 1 · Clean hands",
+            storyTitle: "First, we wash our hands.",
+            text: "Today I get to help in the kitchen! Before I touch any food, I roll up my sleeves and wash my hands with warm water and soap. I scrub, scrub, scrub, then rinse and dry. Now my hands are clean and ready to help.",
+            tip: "Grown-up note: Let your child practice turning on water, using soap, and drying hands with a small towel they can reach."
+          },
+          {
+            leftTitle: "Kitchen safety first",
+            stepTag: "Step 2 · Look and listen",
+            storyTitle: "We look with our eyes and listen with our ears.",
+            text: "The kitchen can be a busy place. There are hot pans, sharp tools, and spilled water. I keep my feet on the floor, my hands to myself, and my ears open so I can hear what my grown-up says.",
+            tip: "Name safety rules gently: “Hot things, sharp things, and slippery floors — we move slow and stay close.”"
+          },
+          {
+            leftTitle: "My special job",
+            stepTag: "Step 3 · A job I can do",
+            storyTitle: "I get a helper job just for me.",
+            text: "My grown-up gives me a special job. I might wash veggies in a bowl, tear lettuce, stir something cool, or put napkins on the table. My job is important — it helps us all eat together.",
+            tip: "Offer simple choices: “Would you like to wash the veggies or lay out the forks?”"
+          },
+          {
+            leftTitle: "Working together",
+            stepTag: "Step 4 · Teamwork in the kitchen",
+            storyTitle: "We talk, laugh, and listen while we work.",
+            text: "As we cook, we talk about colors, shapes, and smells. We count how many carrots, or name the spices we use. The kitchen turns into a little classroom full of yummy smells and cozy sounds.",
+            tip: "Use simple questions: “What color is this? How many spoonfuls did we add?”"
+          },
+          {
+            leftTitle: "Time to enjoy",
+            stepTag: "Step 5 · Say thank you",
+            storyTitle: "We eat together and feel proud.",
+            text: "When the food is ready, we sit down to eat. I feel proud because I helped. I can say, “Thank you for cooking with me,” and my grown-up can say, “Thank you for helping!”",
+            tip: "Invite them to share the story at the table: “Tell everyone what job you did in the kitchen today.”"
+          }
+        ]
+      },
+      {
+        id: "bed",
+        title: "How to Make Your Bed",
+        tagline: "A cozy morning story.",
+        shelfTag: "Morning routine",
+        theme: "bed",
+        leftLabel: "Cozy Morning Story",
+        sceneTag: "Bedroom Ready",
+        pages: [
+          {
+            leftTitle: "Good morning, bed!",
+            stepTag: "Step 1 · Wake and stretch",
+            storyTitle: "We say hello to a new day.",
+            text: "When I wake up, I stretch my arms and legs like a big star. I sit up and give my pillow a little pat. My bed kept me safe and cozy all night — now we get ready for a brand-new day.",
+            tip: "Grown-up note: Create a simple “good morning” routine — stretch, pat the pillow, smile."
+          },
+          {
+            leftTitle: "Blanket flip",
+            stepTag: "Step 2 · Straighten the blanket",
+            storyTitle: "We smooth the covers.",
+            text: "I grab the blanket with both hands and pull it up to the top of the bed. I smooth it with my flat hands, pushing out little wrinkles. It doesn’t have to be perfect — just tidy and snug.",
+            tip: "If the blanket is big, fold it once so it’s easier for little arms to manage."
+          },
+          {
+            leftTitle: "Pillow puff",
+            stepTag: "Step 3 · Fix the pillows",
+            storyTitle: "We puff and place the pillows.",
+            text: "I pick up each pillow and give it a gentle squeeze-squeeze to make it fluffy. Then I place the pillows at the top of the bed, side by side, like they’re sitting up straight and smiling.",
+            tip: "Turn it into a game: “Can you make your pillow look extra fluffy?”"
+          },
+          {
+            leftTitle: "Special friends",
+            stepTag: "Step 4 · Arrange lovies and toys",
+            storyTitle: "Everyone gets their spot.",
+            text: "If I have a stuffed animal or special blanket, I give it a safe spot on my bed. Maybe at the pillow, maybe at the end, like a tiny guard watching over my room.",
+            tip: "Let your child decide where each “friend” sleeps — it builds ownership and joy."
+          },
+          {
+            leftTitle: "All done!",
+            stepTag: "Step 5 · Step back and admire",
+            storyTitle: "A made bed feels proud and calm.",
+            text: "When I’m done, I take one step back and look at my bed. The blanket is smooth, the pillows are ready, and my room feels calm. I did it — I made my own bed!",
+            tip: "Celebrate with a simple phrase: “You made your bed all by yourself. That’s awesome!”"
+          }
+        ]
+      },
+      {
+        id: "dog",
+        title: "How to Walk the Dog",
+        tagline: "Gentle steps for tiny hands and big hearts.",
+        shelfTag: "Caring for pets",
+        theme: "dog",
+        leftLabel: "Pet Care Story",
+        sceneTag: "Dog Walk",
+        pages: [
+          {
+            leftTitle: "Hello, furry friend!",
+            stepTag: "Step 1 · Get ready together",
+            storyTitle: "We start with gentle greetings.",
+            text: "Before we walk, I say hello to my dog with soft hands and a calm voice. I might scratch behind their ears or give a little chest rub. My dog wags or sniffs to say hello back.",
+            tip: "Grown-up note: Model gentle touch and a soft voice as you greet the dog together."
+          },
+          {
+            leftTitle: "Leash and collar",
+            stepTag: "Step 2 · Safe and secure",
+            storyTitle: "We clip the leash with care.",
+            text: "My grown-up clips the leash to my dog’s collar or harness. I can help by holding the leash handle with two hands. We check that it’s not too tight and not too loose — just right for a safe walk.",
+            tip: "Show them where the clip goes and explain why leashes keep both dog and people safe."
+          },
+          {
+            leftTitle: "Walking feet",
+            stepTag: "Step 3 · Calm steps outside",
+            storyTitle: "We walk, not run.",
+            text: "Outside, I keep my feet walking, not running, so I don’t pull or trip. I hold the leash with both hands and stay close to my grown-up. My job is to be a calm leader for my dog.",
+            tip: "Practice walking slowly together even without the dog so the rhythm feels natural."
+          },
+          {
+            leftTitle: "Stop and sniff",
+            stepTag: "Step 4 · Let the dog explore",
+            storyTitle: "We give time for sniffs.",
+            text: "Dogs love to sniff! When my dog stops to smell the grass or a tree, I pause too. Sniffing is how they read the world. We can wait a little, then gently say, “Okay, let’s go,” and keep walking.",
+            tip: "Teach a simple cue like “Let’s go” so your child can help move the walk along."
+          },
+          {
+            leftTitle: "Water and thanks",
+            stepTag: "Step 5 · End with care",
+            storyTitle: "We take care after the walk.",
+            text: "When we come home, my dog might need a drink of water and a little rest. I can help by checking the water bowl or giving a final gentle pat. I say, “Thank you for the walk, friend!”",
+            tip: "Let them help refill the water bowl and talk about how we care for tired bodies — dog and human."
+          }
+        ]
+      },
+      {
+        id: "school",
+        title: "How to Start Your Schoolwork",
+        tagline: "A “you can do it” routine.",
+        shelfTag: "Learning time",
+        theme: "school",
+        leftLabel: "Schoolwork Story",
+        sceneTag: "Study Time",
+        pages: [
+          {
+            leftTitle: "Find our spot",
+            stepTag: "Step 1 · Choose a work space",
+            storyTitle: "We pick a calm place to work.",
+            text: "When it’s time for schoolwork, I find a quiet spot — maybe a table, a desk, or a cozy tray on the couch. I sit with my feet on the floor or tucked on the chair and take a tiny breath in and out.",
+            tip: "Grown-up note: Help them find a consistent “school spot” so their body knows it’s time to focus."
+          },
+          {
+            leftTitle: "Gather supplies",
+            stepTag: "Step 2 · Tools ready",
+            storyTitle: "We get what we need first.",
+            text: "I gather my pencil, eraser, crayons, and any worksheets or books. I put them in a little stack so I don’t have to keep getting up. My tools are my helpers!",
+            tip: "Make a small basket or box labeled “School Tools” that stays near their work spot."
+          },
+          {
+            leftTitle: "Start with one thing",
+            stepTag: "Step 3 · Just the first step",
+            storyTitle: "We do the very first piece.",
+            text: "Sometimes the whole page can look big and busy. That’s okay. I choose just the first box, first line, or first problem. I tell myself, “I’ll do this one, then the next.”",
+            tip: "Point to the first task and say, “Let’s only look at this part for now.”"
+          },
+          {
+            leftTitle: "Little breaks",
+            stepTag: "Step 4 · Wiggle and breathe",
+            storyTitle: "We rest our brain and body.",
+            text: "After a little work, my brain and body might need a break. I can take a short wiggle, stretch my arms, or take three balloon breaths. Then I come back and keep going.",
+            tip: "Use a simple timer for short work and short breaks — for example, 5 minutes work, 2 minutes wiggle."
+          },
+          {
+            leftTitle: "Celebrate the try",
+            stepTag: "Step 5 · Be proud of effort",
+            storyTitle: "Trying is brave and beautiful.",
+            text: "When I finish my page — or even part of it — I can feel proud. Learning is not about being perfect. It’s about trying, asking for help, and growing little by little, every day.",
+            tip: "Use language like, “I saw you keep trying,” rather than only, “You got it right.”"
+          }
+        ]
+      },
+      {
+        id: "feelings",
+        title: "When My Feelings Get Big",
+        tagline: "A calm-down story for big emotions.",
+        shelfTag: "Calm-down skills",
+        theme: "feelings",
+        leftLabel: "Feelings Story",
+        sceneTag: "Big Feelings",
+        pages: [
+          {
+            leftTitle: "Sometimes feelings get big…",
+            stepTag: "Step 1 · Notice the big feeling",
+            storyTitle: "Big feelings live in small bodies.",
+            text: "Sometimes my feelings get very big inside my small body. My tummy wiggles, my face feels warm, or my hands make tight fists. Big feelings are not bad — they are just loud and need a little help.",
+            tip: "Grown-up note: Invite your child to point to where they feel big feelings — tummy, chest, face, hands."
+          },
+          {
+            leftTitle: "Give it a name",
+            stepTag: "Step 2 · Name the feeling",
+            storyTitle: "Is it mad, sad, or scared?",
+            text: "When my feelings get big, I can give them a name. I might say, “I feel mad,” “I feel sad,” or “I feel scared.” Naming my feeling helps it feel seen, like a friend you call by name.",
+            tip: "Offer choices: “Does it feel more like mad, sad, or worried today?” Honor whatever they choose."
+          },
+          {
+            leftTitle: "Pause like a statue",
+            stepTag: "Step 3 · Stop and freeze",
+            storyTitle: "We pause our body.",
+            text: "When my feeling is very loud, I can pause like a statue. I keep my feet on the ground and my hands by my sides. I take a little still moment so my body can listen.",
+            tip: "Practice a silly “freeze” game during calm times so this step feels familiar when feelings grow."
+          },
+          {
+            leftTitle: "Balloon breaths",
+            stepTag: "Step 4 · Breathe in and out",
+            storyTitle: "We help our body with breaths.",
+            text: "I can take slow balloon breaths. I breathe in through my nose while my belly gets big like a balloon. Then I breathe out through my mouth and let the balloon get soft again.",
+            tip: "Count together: “Smell the flower — 1, 2, 3. Blow the bubble — 1, 2, 3.”"
+          },
+          {
+            leftTitle: "Look around",
+            stepTag: "Step 5 · Find something safe",
+            storyTitle: "We remember where we are.",
+            text: "I look around the room and find three safe things I see. Maybe a pillow, a window, or my favorite toy. I remember: I am here, I am safe, I am not alone.",
+            tip: "Guide them: “Can you find 3 soft things? 2 round things? 1 thing you love?”"
+          },
+          {
+            leftTitle: "Ask for a helper",
+            stepTag: "Step 6 · Use your words",
+            storyTitle: "We can ask for help.",
+            text: "If my feeling is still big, I can use my words to ask for help. I can say, “My feelings are big,” or “Can you help me calm down?” Grown-ups are here to listen.",
+            tip: "Create a simple phrase they can remember, like “Big feelings, please help,” and practice it together."
+          },
+          {
+            leftTitle: "Feelings can shrink",
+            stepTag: "Step 7 · Feel proud",
+            storyTitle: "I took care of my big feeling.",
+            text: "Little by little, my big feeling gets smaller. My shoulders relax, my breath feels softer, and my heart feels lighter. I can feel proud — I took care of my big feeling in a kind way.",
+            tip: "Reflect: “You noticed your feeling, breathed, and asked for help. That was very brave.”"
+          }
+        ]
+      },
+      {
+        id: "friendship",
+        title: "Little Acts of Friendship",
+        tagline: "Ways to be a kind and caring friend.",
+        shelfTag: "Being a good friend",
+        theme: "friendship",
+        leftLabel: "Friendship Story",
+        sceneTag: "Friend Time",
+        pages: [
+          {
+            leftTitle: "What is a friend?",
+            stepTag: "Step 1 · Meet a friend",
+            storyTitle: "Friends are people we care about.",
+            text: "A friend is someone we like to be with. We feel safe, silly, or cozy near them. Friends can be kids, grown-ups, or even pets — anyone we care about and who cares about us.",
+            tip: "Grown-up note: Ask your child, “Who feels like a friend to you?” and let them name people, pets, or even stuffed animals."
+          },
+          {
+            leftTitle: "Saying hello",
+            stepTag: "Step 2 · Start with a hello",
+            storyTitle: "We can invite someone in.",
+            text: "Friendship can start with a simple hello. We can wave, smile, or say, “Hi, do you want to play?” Even a small hello can make someone feel less alone.",
+            tip: "Practice different friendly greetings together in a mirror or with stuffed animals."
+          },
+          {
+            leftTitle: "Sharing our space",
+            stepTag: "Step 3 · Share and take turns",
+            storyTitle: "We make room for others.",
+            text: "Friends share toys, games, and space. We might say, “You can have a turn,” or “Let’s build together.” Sharing doesn’t mean giving things away forever — it means letting someone enjoy them with us.",
+            tip: "Create a “turn-taking” phrase your child can use, like “Your turn, my turn.”"
+          },
+          {
+            leftTitle: "Kind words",
+            stepTag: "Step 4 · Use gentle words",
+            storyTitle: "Words can be hugs.",
+            text: "Kind words help friendships grow. We can say, “Thank you,” “I like playing with you,” or “Good job!” Our words can feel like little hugs for someone’s heart.",
+            tip: "Invite your child to think of one kind thing to say to a friend or sibling today."
+          },
+          {
+            leftTitle: "Listening ears",
+            stepTag: "Step 5 · Listen and look",
+            storyTitle: "We listen with our whole body.",
+            text: "Being a friend means listening. We can look at their face, keep our body calm, and let them finish their words. Listening says, “You matter to me.”",
+            tip: "Model it by kneeling to their level, making eye contact, and reflecting back their words."
+          },
+          {
+            leftTitle: "When we make mistakes",
+            stepTag: "Step 6 · Fixing hurt feelings",
+            storyTitle: "We can say sorry and try again.",
+            text: "Sometimes we bump, grab, or say something unkind. That happens to everyone. A good friend can say, “I’m sorry,” give space if needed, and try again with gentler hands and words.",
+            tip: "Practice simple repair phrases like “I’m sorry I grabbed. Can we try again?”"
+          },
+          {
+            leftTitle: "Being there",
+            stepTag: "Step 7 · Staying kind",
+            storyTitle: "Little acts make big friendship.",
+            text: "Friendship grows from many little acts: sharing a toy, sitting nearby, giving a hug, drawing a picture, or just staying close when someone feels sad. Small kindnesses can make a big, big difference.",
+            tip: "Ask, “What is one small kind thing you could do for a friend today?” and help them carry it out."
+          }
+        ]
+      }
+    ];
+
+    // === DOM hooks ===
+    const hubShell = document.getElementById('hubShell');
+    const bookListEl = document.getElementById('bookList');
+    const readerTitleEl = document.getElementById('readerTitle');
+    const readerTaglineEl = document.getElementById('readerTagline');
+    const leftLabelEl = document.getElementById('leftLabel');
+    const leftTitleEl = document.getElementById('leftTitle');
+    const sceneTagEl = document.getElementById('sceneTag');
+    const leftPageCounterEl = document.getElementById('leftPageCounter');
+    const stepTagEl = document.getElementById('stepTag');
+    const storyTitleEl = document.getElementById('storyTitle');
+    const storyTextEl = document.getElementById('storyText');
+    const storyTipEl = document.getElementById('storyTip');
+    const rightPageCounterEl = document.getElementById('rightPageCounter');
+    const bookInnerEl = document.getElementById('bookInner');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const quietModeEl = document.getElementById('quietMode');
+
+    let currentBookIndex = 0;
+    let currentPageIndex = 0;
+    let pageTurnSound = null;
+
+    function initSound(){
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        pageTurnSound = () => {
+          if (quietModeEl.checked) return;
+          const o = ctx.createOscillator();
+          const g = ctx.createGain();
+          o.type = 'triangle';
+          o.frequency.value = 880;
+          g.gain.setValueAtTime(0.025, ctx.currentTime);
+          g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.14);
+          o.connect(g);
+          g.connect(ctx.destination);
+          o.start();
+          o.stop(ctx.currentTime + 0.15);
+        };
+      } catch(e) {
+        pageTurnSound = () => {};
+      }
+    }
+
+    function renderShelf(){
+      bookListEl.innerHTML = '';
+      BOOKS.forEach((b, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'book-btn' + (idx === currentBookIndex ? ' active' : '');
+        btn.dataset.index = idx;
+        btn.innerHTML = `
+          <div class="book-title">${b.title}</div>
+          <div class="book-tag">${b.shelfTag}</div>
+        `;
+        btn.addEventListener('click', () => {
+          currentBookIndex = idx;
+          currentPageIndex = 0;
+          document.querySelectorAll('.book-btn').forEach(x => x.classList.remove('active'));
+          btn.classList.add('active');
+          renderCurrentBook();
+        });
+        bookListEl.appendChild(btn);
+      });
+    }
+
+    function renderCurrentBook(){
+      const book = BOOKS[currentBookIndex];
+      const pages = book.pages;
+      const total = pages.length;
+      const page = pages[currentPageIndex];
+
+      hubShell.setAttribute('data-theme', book.theme);
+
+      readerTitleEl.textContent = book.title;
+      readerTaglineEl.textContent = book.tagline;
+
+      leftLabelEl.textContent = book.leftLabel;
+      leftTitleEl.textContent = page.leftTitle;
+      sceneTagEl.textContent = book.sceneTag;
+      leftPageCounterEl.textContent = `Page ${currentPageIndex + 1} of ${total}`;
+
+      stepTagEl.textContent = page.stepTag;
+      storyTitleEl.textContent = page.storyTitle;
+      storyTextEl.textContent = page.text;
+      storyTipEl.textContent = page.tip;
+      rightPageCounterEl.textContent = `Page ${currentPageIndex + 1} of ${total}`;
+
+      prevBtn.disabled = currentPageIndex === 0;
+      nextBtn.disabled = currentPageIndex === total - 1;
+    }
+
+    function turnPage(direction){
+      const book = BOOKS[currentBookIndex];
+      const total = book.pages.length;
+      const newIndex = currentPageIndex + direction;
+      if (newIndex < 0 || newIndex >= total) return;
+      currentPageIndex = newIndex;
+
+      // Page-turn glow/tilt
+      bookInnerEl.classList.add('page-turn');
+      setTimeout(() => {
+        bookInnerEl.classList.remove('page-turn');
+      }, 240);
+
+      if (pageTurnSound) pageTurnSound();
+
+      renderCurrentBook();
+    }
+
+    prevBtn.addEventListener('click', () => turnPage(-1));
+    nextBtn.addEventListener('click', () => turnPage(1));
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') turnPage(1);
+      if (e.key === 'ArrowLeft') turnPage(-1);
+    });
+
+    renderShelf();
+    renderCurrentBook();
+    setTimeout(initSound, 500);
+  </script>
+</body>
+</html>
