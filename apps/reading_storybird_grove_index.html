@@ -505,7 +505,7 @@
       <div class="logo" aria-hidden="true">🕊️</div>
       <div>
         <h1>Storybird Grove™</h1>
-        <div class="subtitle">A gentle story garden with 84 weeks of playful prompts.</div>
+        <div class="subtitle">A gentle story garden with playful prompts, cozy choices, and saved story nests.</div>
       </div>
     </div>
     <div class="privacy-pill">Private on this device</div>
@@ -524,10 +524,15 @@
         <option value="mystery">Mystery</option>
         <option value="funny">Funny</option>
         <option value="poetic">Poetic</option>
+        <option value="magical">Magical</option>
+        <option value="discovery">Discovery</option>
+        <option value="friendship">Friendship</option>
+        <option value="cozy">Cozy</option>
+        <option value="challenge">Brave Challenge</option>
       </select>
     </div>
     <div class="field">
-      <label for="runsRange">Magic Weave Strength</label>
+      <label for="runsRange">Surprise Power</label>
       <div class="range-wrap">
         <input id="runsRange" type="range" min="10" max="200" step="10" value="80">
         <output id="runsOut">80</output>
@@ -542,7 +547,7 @@
 
   <div class="layout">
     <main class="card grove" id="grove">
-      <p class="note">Choose one spirit from each column, then press Weave. If you want a surprise, press Magic Weave and the grove will help choose a lovely combination for you.</p>
+      <p class="note">Choose one spirit from each column, then press Weave. If you want a surprise, press Magic Weave and the grove will help choose a lovely story for you.</p>
 
       <section class="clusters" aria-label="Spirit choices">
         <div class="cluster">
@@ -611,9 +616,9 @@
   "glowing fox",
   "gentle river sprite",
   "baby dragon",
-  "paintbird",
+  "painted songbird",
   "moon rabbit",
-  "sun cub",
+  "sun lion cub",
   "pocket mouse",
   "ember kitten",
   "rain-soft wolf pup",
@@ -623,17 +628,16 @@
   "starglow beetle",
   "lichen turtle",
   "honey-breath bear cub",
-  "dream-feather jay",
-  "glisten frog",
-  "shy vine serpent",
-  "sproutling deer",
+  "dream-feathered jay",
+  "glistening frog",
+  "vine serpent",
+  "sprout deer",
   "candlewing firefly",
   "puddle otter",
   "dew-cloud calf",
   "snowbud polar cub",
   "moss hedgehog",
   "pebble badger",
-  "root-gnaw squirrel",
   "fern foxling",
   "mist-veil ferret",
   "ember-toe raccoon",
@@ -641,247 +645,411 @@
   "pearl snail",
   "bloom fox",
   "willow lynx",
-  "plume sheep",
   "glowtail lemur",
   "thistle hare",
-  "solstice dog cub",
   "twilight chickadee",
   "marigold crow",
-  "wind-fall goose",
+  "windfall goose",
   "apricot bat",
   "seedling dinosaur",
-  "hollow-wing batling",
-  "soft-stone golem sprite",
-  "moon-beam monkey",
+  "hollow-winged batling",
+  "soft-stone golem",
+  "moonbeam monkey",
   "brook lion",
-  "drift-wisp porcupine",
-  "cricket engineer",
-  "star-hum turtle",
-  "marble panther",
-  "ink-fawn story elk",
+  "driftwisp porcupine",
+  "cricket inventor",
+  "star-humming turtle",
+  "storybook elk",
   "tinder pony",
-  "rootling pony",
   "orchid fox spirit",
-  "orchard sprite",
-  "little thunder-deer",
-  "gossamer pup",
-  "mild phoenix chick",
-  "warm-thought rat",
-  "cinnamon cub",
-  "peppermint fox",
-  "soft lantern yak calf",
-  "frill-lizard poet",
-  "prism monkey",
-  "chimney bird",
-  "marshmallow bearling",
-  "bubble beetle",
-  "prickle-puff hedgehog",
-  "flicker bunny",
-  "meltwater seal pup",
-  "riverglass otter",
-  "tiny cymbal turtle",
-  "berry-spoon mole",
-  "cricket painter",
-  "feather-ink jay",
-  "sapphire chick",
-  "wool cloud lamb",
-  "mist paw cougar cub",
-  "cedar wolf spirit",
-  "copper mouse",
-  "firefly otter",
-  "daisy horse",
-  "pillow dog",
-  "glimmer goat kid",
-  "twist-tail cat",
-  "storybook koala",
-  "petal-wing squirrel",
-  "berry foxling",
-  "whistle whale calf",
-  "moon-salt penguin",
-  "tangerine tigerlet",
-  "shimmer skunk",
-  "winter-thaw dogling",
-  "ember-wool camel calf",
-  "echo crane",
-  "hazel hawkling",
-  "cotton puff chick",
-  "shell-blush turtle",
-  "hollow-paw coyote cub",
-  "opal chipmunk",
-  "candy-cane alpaca",
-  "dream-hum frog",
-  "little starguide elk",
-  "pepper puff armadillo"
+  "morning robin",
+  "silver squirrel",
+  "golden finch",
+  "cloud lamb",
+  "meadow mouse",
+  "river beaver",
+  "acorn chipmunk",
+  "pine marten",
+  "snow hare",
+  "golden otter",
+  "bluebird messenger",
+  "cinnamon bunny",
+  "wildflower doe",
+  "misty owl",
+  "meadow badger",
+  "berry bear cub",
+  "golden dragonling",
+  "cloud dolphin",
+  "seafoam seal pup",
+  "coral turtle",
+  "starfish sprite",
+  "shell crab",
+  "rainbow hummingbird",
+  "firefly fairy",
+  "moonlight unicorn foal",
+  "forest unicorn",
+  "leaf sprite",
+  "mushroom gnome",
+  "acorn fairy",
+  "pinecone pixie",
+  "flower dragon",
+  "wind fox",
+  "echo wolf",
+  "snowy lynx",
+  "oak guardian",
+  "birch spirit",
+  "ivy rabbit",
+  "dandelion mouse",
+  "lavender lamb",
+  "maple bear",
+  "juniper fox",
+  "frost robin",
+  "sunbeam butterfly",
+  "raindrop duckling",
+  "comet kitten",
+  "aurora owl",
+  "glacier penguin",
+  "storm sparrow",
+  "horizon hawk",
+  "velvet mole",
+  "clover hedgehog",
+  "willow deer",
+  "honeysuckle hummingbird"
 ];
-  const SETTINGS = [
-  "the whispering grove",
-  "the starlit pond",
-  "the mossy hill",
-  "the crystal hollow",
-  "the lantern meadow",
-  "the rainbow nest",
-  "the silver marsh",
-  "the blossom ridge",
-  "the tiny canyon",
-  "the sapphire spring",
-  "the clover clearing",
-  "the echoing roots",
-  "the humming bridge",
-  "the feather dunes",
-  "the moonlit orchard",
-  "the ember lake",
-  "the cloud-valley bend",
-  "the prism shore",
-  "the glowing treetops",
-  "the lichen palace",
-  "the winding fern path",
-  "the amber sunpatch",
-  "the dewberry stones",
-  "the copper brook",
-  "the broomflower field",
-  "the pocket valley",
-  "the scattered star-pool",
-  "the velvet cliff",
-  "the tiny compass meadow",
-  "the warm pebble delta",
-  "the spirit-thorn archway",
-  "the secret thimble-woods",
-  "the dream-hollow spiral",
-  "the cotton-sky ridge",
-  "the lullaby meadows",
-  "the fog-soft garden",
-  "the pale honey glade",
-  "the deep lily bowl",
-  "the tidal lantern coast",
-  "the frozen bloom garden",
-  "the gentle storm plains",
-  "the willow shimmer gate",
-  "the prism-wing cliffs",
-  "the river’s turning breath",
-  "the orchard of soft bells",
-  "the evergreen pocket cave",
-  "the quartz whisper falls",
-  "the golden speckle dunes",
-  "the painted rivertrail",
-  "the quiet pomegranate grove",
-  "the drifting story bridge",
-  "the wide clover canyon",
-  "the bubble-stone tide",
-  "the tiny moss hollow",
-  "the moonspun arch",
-  "the vellum-sky ridge",
-  "the sweet mint valley",
-  "the warm spruce lanternwood",
-  "the milkglass marsh",
-  "the cinnamon summit",
-  "the violet-dream arches",
-  "the painted ash fields",
-  "the silent amber plateau",
-  "the glinting comb creek",
-  "the floating branch islands",
-  "the hollow moon-basin",
-  "the jade melody forest",
-  "the drifting pine avenues",
-  "the orchard sunbreak",
-  "the copper-snow glen",
-  "the braided willow ravine",
-  "the dotted fern lays",
-  "the murmuring kelp shore",
-  "the quilt-sky highlands",
-  "the star-murmur range",
-  "the warm mint cove",
-  "the oak-bud shore",
-  "the prism of breath hollow",
-  "the silver echo basin",
-  "the gentle lamp plateau",
-  "the tiny dusk gardens"
+ const SETTINGS = [
+  "the Whispering Grove",
+  "the Starlit Pond",
+  "the Mossy Hill",
+  "the Crystal Hollow",
+  "the Lantern Meadow",
+  "the Rainbow Nest",
+  "the Silver Marsh",
+  "the Blossom Ridge",
+  "the Tiny Canyon",
+  "the Sapphire Spring",
+  "the Clover Clearing",
+  "the Echoing Forest",
+  "the Humming Bridge",
+  "the Feather Dunes",
+  "the Moonlit Orchard",
+  "the Ember Lake",
+  "the Cloud Valley",
+  "the Prism Shore",
+  "the Glowing Treetops",
+  "the Lichen Palace",
+  "the Fern Path",
+  "the Amber Meadow",
+  "the Dewberry Glen",
+  "the Copper Brook",
+  "the Wildflower Field",
+  "the Pocket Valley",
+  "the Starlight Pool",
+  "the Velvet Cliffs",
+  "the Compass Meadow",
+  "the Pebble Delta",
+  "the Spirit Arch",
+  "the Secret Woods",
+  "the Dream Hollow",
+  "the Cotton Sky Ridge",
+  "the Lullaby Meadow",
+  "the Fog Garden",
+  "the Honey Glade",
+  "the Lily Pond",
+  "the Lantern Coast",
+  "the Frozen Garden",
+  "the Gentle Plains",
+  "the Willow Gate",
+  "the Prism Cliffs",
+  "the River Bend",
+  "the Bell Orchard",
+  "the Evergreen Cave",
+  "the Whispering Falls",
+  "the Golden Dunes",
+  "the Painted River",
+  "the Pomegranate Grove",
+  "the Story Bridge",
+  "the Clover Canyon",
+  "the Bubble Creek",
+  "the Moss Hollow",
+  "the Moon Arch",
+  "the Velvet Ridge",
+  "the Mint Valley",
+  "the Lantern Woods",
+  "the Milkglass Marsh",
+  "the Cinnamon Summit",
+  "the Violet Arches",
+  "the Painted Fields",
+  "the Amber Plateau",
+  "the Glimmer Creek",
+  "the Floating Islands",
+  "the Moon Basin",
+  "the Jade Forest",
+  "the Pine Trail",
+  "the Orchard Meadow",
+  "the Snow Glen",
+  "the Willow Ravine",
+  "the Fern Valley",
+  "the Kelp Shore",
+  "the Quilt Highlands",
+  "the Star Ridge",
+  "the Mint Cove",
+  "the Oak Shore",
+  "the Breathing Hollow",
+  "the Echo Basin",
+  "the Firefly Plateau",
+  "the Dusk Garden",
+  "the Sunbeam Meadow",
+  "the Butterfly Grove",
+  "the Rainbow Falls",
+  "the Mushroom Circle",
+  "the Acorn Woods",
+  "the Fairy Glen",
+  "the Crystal Cavern",
+  "the Singing Stones",
+  "the Golden Orchard",
+  "the Bluebell Valley",
+  "the Hidden Waterfall",
+  "the Dragonfly Marsh",
+  "the Shimmering Lake",
+  "the Cozy Burrow",
+  "the Snowflower Field",
+  "the Wishing Well",
+  "the Moonflower Garden",
+  "the Twinkling Forest",
+  "the Sunlit Clearing",
+  "the Secret Cove",
+  "the Gentle River"
 ];
-  const VERBS = [
+const VERBS = [
   "discover",
-  "follow",
-  "float",
-  "gather",
   "explore",
-  "listen",
-  "sing",
-  "dream",
+  "follow",
   "wander",
-  "flutter",
+  "search",
+  "climb",
+  "glide",
+  "float",
+  "hop",
+  "skip",
   "tiptoe",
-  "whisper",
-  "sparkle",
-  "shine",
-  "curious-wander",
-  "moon-dance",
-  "leaf-hop",
-  "story-seek",
-  "gentle-drift",
-  "puddle-skim",
-  "glimmer-step",
-  "tune-hum",
-  "wish-collect",
-  "breath-count",
-  "soft-bounce",
-  "sun-soak",
-  "shadow-play",
-  "rain-sip",
-  "stone-touch",
-  "cloud-gaze",
-  "hush-walk",
-  "circle-drift",
-  "echo-hop",
-  "wonder-chase",
-  "pattern-find",
-  "dream-dip",
-  "dip-and-drift",
-  "glow-smile",
-  "berry-gather",
-  "brush-nuzzle",
-  "forest-listen",
-  "tide-glide",
-  "sunbeam-follow",
-  "petal-spin",
-  "feather-roll",
-  "soft-ripple",
-  "hollow-peek",
-  "treetop-lean",
-  "sprout-step",
-  "nest-nuzzle",
-  "warm-breeze-dip",
-  "honey-sip",
-  "leaf-paint",
-  "story-trace",
-  "whistle-call",
-  "wind-dream",
-  "glow-cycle",
-  "field-sketch",
-  "marsh-tiptoe",
-  "pond-listen",
-  "wish-glide",
-  "river-ponder",
-  "drift-sing",
-  "night-soften",
-  "fog-wander",
-  "candle-stir",
-  "crystal-ponder",
-  "heart-chirp",
-  "twig-balance",
-  "seedling-roll",
-  "sky-bounce",
-  "branch-hold",
-  "glade-spin",
-  "hush-nod",
-  "tiny-dream",
-  "star-dip",
-  "flutter-glide",
-  "dew-sway",
-  "lake-think",
-  "moss-dream",
-  "ember-spin",
-  "story-hum",
-  "sunwarm-drift",
-  "shadow-hum",
-  "twilight-step"
+  "dance",
+  "twirl",
+  "spin",
+  "race",
+  "crawl",
+  "peek",
+  "hide",
+  "rest",
+  "listen",
+  "watch",
+  "observe",
+  "wonder",
+  "dream",
+  "imagine",
+  "sing",
+  "hum",
+  "whistle",
+  "laugh",
+  "giggle",
+  "smile",
+  "wave",
+  "greet",
+  "help",
+  "share",
+  "comfort",
+  "guide",
+  "lead",
+  "protect",
+  "encourage",
+  "gather berries",
+  "collect acorns",
+  "pick flowers",
+  "plant seeds",
+  "water flowers",
+  "build a nest",
+  "paint stones",
+  "draw in the sand",
+  "stack pebbles",
+  "catch fireflies",
+  "chase butterflies",
+  "watch clouds",
+  "count stars",
+  "follow footprints",
+  "cross a bridge",
+  "explore a cave",
+  "climb a tree",
+  "follow a stream",
+  "skip across stones",
+  "splash in puddles",
+  "float on a leaf",
+  "ride the breeze",
+  "watch the sunrise",
+  "watch the sunset",
+  "make a wish",
+  "find a treasure",
+  "solve a riddle",
+  "learn a lesson",
+  "meet a friend",
+  "help a neighbor",
+  "find a hidden path",
+  "follow a rainbow",
+  "trace the stars",
+  "collect shiny shells",
+  "gather glowing mushrooms",
+  "listen to the wind",
+  "follow birdsong",
+  "dance in the rain",
+  "build a tiny boat",
+  "blow dandelion seeds",
+  "catch snowflakes",
+  "watch falling leaves",
+  "make flower crowns",
+  "explore ancient ruins",
+  "follow glowing footprints",
+  "cross a sparkling river",
+  "search for moonflowers",
+  "visit a secret garden",
+  "discover a hidden waterfall",
+  "wake sleepy fireflies",
+  "help a lost friend",
+  "rescue a baby bird",
+  "collect colorful feathers",
+  "follow a friendly butterfly",
+  "find a magical key",
+  "open a secret door",
+  "plant a magical tree",
+  "befriend a woodland creature",
+  "solve a forest mystery",
+  "celebrate together",
+  "return home"
+];
+
+  const ADJECTIVES = [
+  "tiny",
+  "little",
+  "gentle",
+  "kind",
+  "friendly",
+  "brave",
+  "curious",
+  "cheerful",
+  "playful",
+  "happy",
+  "joyful",
+  "patient",
+  "clever",
+  "wise",
+  "helpful",
+  "caring",
+  "thoughtful",
+  "peaceful",
+  "calm",
+  "hopeful",
+  "glowing",
+  "shimmering",
+  "sparkling",
+  "twinkling",
+  "golden",
+  "silver",
+  "crystal",
+  "rainbow",
+  "moonlit",
+  "sunlit",
+  "starlit",
+  "misty",
+  "dewy",
+  "frosty",
+  "snowy",
+  "breezy",
+  "cloudy",
+  "velvety",
+  "soft",
+  "fluffy",
+  "cozy",
+  "warm",
+  "cool",
+  "smooth",
+  "silky",
+  "fuzzy",
+  "mossy",
+  "leafy",
+  "flowery",
+  "blooming",
+  "fragrant",
+  "wild",
+  "woodland",
+  "forest",
+  "meadow",
+  "river",
+  "ocean",
+  "mountain",
+  "hidden",
+  "secret",
+  "enchanted",
+  "magical",
+  "mysterious",
+  "ancient",
+  "timeless",
+  "whispering",
+  "singing",
+  "laughing",
+  "dancing",
+  "floating",
+  "soaring",
+  "glimmering",
+  "radiant",
+  "luminous",
+  "colorful",
+  "bright",
+  "vivid",
+  "pastel",
+  "rosy",
+  "emerald",
+  "sapphire",
+  "amber",
+  "violet",
+  "scarlet",
+  "turquoise",
+  "lavender",
+  "golden-hued",
+  "honey-sweet",
+  "berry-bright",
+  "dreamy",
+  "wonder-filled",
+  "storybook",
+  "whimsical",
+  "charming",
+  "delightful",
+  "gentle-hearted",
+  "adventurous",
+  "graceful",
+  "lively",
+  "quiet",
+  "sleepy"
+];
+
+  const PRONOUNS = [
+  {
+    subject: "he",
+    object: "him",
+    possessive: "his",
+    possessivePronoun: "his",
+    reflexive: "himself"
+  },
+  {
+    subject: "she",
+    object: "her",
+    possessive: "her",
+    possessivePronoun: "hers",
+    reflexive: "herself"
+  },
+  {
+    subject: "they",
+    object: "them",
+    possessive: "their",
+    possessivePronoun: "theirs",
+    reflexive: "themselves"
+  }
 ];
 
   const STORAGE_KEY = "storybird_grove_sovereign_mc_v1";
@@ -889,38 +1057,175 @@
   const WEEK_COUNT = 84;
 
   const TEMPLATES = {
-    gentle: [
-      (c,s,v)=>`In ${s}, the ${c} spent the morning ${verbToGerundPhrase(v)}, and the grove answered with a soft hush.`,
-      (c,s,v)=>`Once in ${s}, a ${c} went ${verbToGerundPhrase(v)} and found a tiny kindness behind a leaf.`,
-      (c,s,v)=>`Every morning in ${s}, the ${c} loved ${verbToGerundPhrase(v)}, and the light grew a little warmer.`
-    ],
-    adventure: [
-      (c,s,v)=>`At the edge of ${s}, the ${c} set off to ${verbToPlainPhrase(v)} before the last golden path disappeared.`,
-      (c,s,v)=>`A brave little ${c} hurried into ${s}, ready for ${verbToGerundPhrase(v)} and whatever came next.`,
-      (c,s,v)=>`With one deep breath, the ${c} entered ${s} to ${verbToPlainPhrase(v)}, carrying courage like a lantern.`
-    ],
-    mystery: [
-      (c,s,v)=>`A strange shimmer moved through ${s} when the ${c} started ${verbToGerundPhrase(v)}.`,
-      (c,s,v)=>`No one knew why ${s} went silent until the ${c} began ${verbToGerundPhrase(v)} beneath the hidden moon.`,
-      (c,s,v)=>`In ${s}, the ${c} found a clue and kept ${verbToGerundPhrase(v)} before the whisper faded.`
-    ],
-    funny: [
-      (c,s,v)=>`In ${s}, the ${c} tried ${verbToGerundPhrase(v)} and accidentally started the silliest parade in the grove.`,
-      (c,s,v)=>`The ${c} marched into ${s}, ready for ${verbToGerundPhrase(v)}, but a leaf with big opinions kept interrupting.`,
-      (c,s,v)=>`Everyone in ${s} giggled when the ${c} discovered that ${verbToGerundPhrase(v)} works best with excellent snack planning.`
-    ],
-    poetic: [
-      (c,s,v)=>`Within ${s}, the ${c} learned the art of ${verbToGerundPhrase(v)} where moss kept the memory of rain.`,
-      (c,s,v)=>`The ${c} moved through ${s} while ${verbToGerundPhrase(v)}, and each small step became a silver note.`,
-      (c,s,v)=>`In the breath of ${s}, the ${c} began ${verbToGerundPhrase(v)}, soft as dawn on quiet wings.`
-    ]
-  };
+  gentle: [
+    (c,s,v)=>`In ${s}, the ${c} spent the morning ${verbToGerundPhrase(v)}, while every breeze seemed to smile.`,
+    (c,s,v)=>`Each sunrise brought the ${c} back to ${s} for ${verbToGerundPhrase(v)} among the flowers.`,
+    (c,s,v)=>`The ${c} wandered through ${s}, happily ${verbToGerundPhrase(v)} as birds sang overhead.`,
+    (c,s,v)=>`Morning light wrapped around ${s} as the ${c} enjoyed ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`The quiet paths of ${s} welcomed the ${c}, who couldn't resist ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`A gentle breeze followed the ${c} through ${s} while ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`Every flower in ${s} seemed to bloom a little brighter whenever the ${c} went ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`The ${c} smiled softly while ${verbToGerundPhrase(v)} through ${s}, leaving tiny happy footprints behind.`,
+    (c,s,v)=>`In the peaceful heart of ${s}, the ${c} found joy in ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`The day felt wonderfully calm as the ${c} explored ${s} by ${verbToGerundPhrase(v)}.`
+  ],
+
+  adventure: [
+    (c,s,v)=>`With a brave heart, the ${c} entered ${s} to ${verbToPlainPhrase(v)}.`,
+    (c,s,v)=>`A winding trail led the ${c} toward ${s}, where it hoped to ${verbToPlainPhrase(v)}.`,
+    (c,s,v)=>`Everyone wondered what would happen when the ${c} decided to ${verbToPlainPhrase(v)} in ${s}.`,
+    (c,s,v)=>`Beyond the tallest trees, ${s} waited for the ${c} to ${verbToPlainPhrase(v)}.`,
+    (c,s,v)=>`The adventure began the moment the ${c} stepped into ${s} to ${verbToPlainPhrase(v)}.`,
+    (c,s,v)=>`A mysterious path invited the ${c} to ${verbToPlainPhrase(v)} deep inside ${s}.`,
+    (c,s,v)=>`The ${c} packed a tiny bag before heading to ${s} to ${verbToPlainPhrase(v)}.`,
+    (c,s,v)=>`One bold decision carried the ${c} straight into ${s} to ${verbToPlainPhrase(v)}.`,
+    (c,s,v)=>`Every adventure starts with one small step, and the ${c} took it in ${s} to ${verbToPlainPhrase(v)}.`,
+    (c,s,v)=>`The wind whispered, "Come along," as the ${c} hurried toward ${s} to ${verbToPlainPhrase(v)}.`
+  ],
+
+  mystery: [
+    (c,s,v)=>`Something unusual stirred in ${s} just as the ${c} began ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`The ${c} noticed tiny glowing footprints while ${verbToGerundPhrase(v)} through ${s}.`,
+    (c,s,v)=>`No one had ever seen ${s} so quiet until the ${c} started ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`A single sparkling feather appeared while the ${c} was ${verbToGerundPhrase(v)} in ${s}.`,
+    (c,s,v)=>`Every clue pointed deeper into ${s}, encouraging the ${c} to keep ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`The air shimmered with secrets as the ${c} continued ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`Who had left those tiny tracks in ${s}? The ${c} kept ${verbToGerundPhrase(v)} to find out.`,
+    (c,s,v)=>`Even the birds grew quiet when the ${c} began ${verbToGerundPhrase(v)} in ${s}.`,
+    (c,s,v)=>`Hidden beneath a fern, the first clue appeared while the ${c} was ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`A gentle mystery unfolded in ${s} as the ${c} continued ${verbToGerundPhrase(v)}.`
+  ],
+
+  funny: [
+    (c,s,v)=>`The ${c} tried ${verbToGerundPhrase(v)}, but a very curious squirrel insisted on helping.`,
+    (c,s,v)=>`Everyone laughed when the ${c} accidentally turned ${verbToGerundPhrase(v)} into a silly dance.`,
+    (c,s,v)=>`While ${verbToGerundPhrase(v)} in ${s}, the ${c} discovered that hiccups can be surprisingly magical.`,
+    (c,s,v)=>`The ${c} couldn't stop giggling after ${verbToGerundPhrase(v)} woke up three sleepy frogs.`,
+    (c,s,v)=>`A tiny bird gave the ${c} completely unnecessary advice about ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`Even the butterflies seemed amused as the ${c} kept ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`The funniest surprise of the day happened while the ${c} was ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`One little sneeze sent the ${c} spinning into the funniest adventure while ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`The ${c} expected an ordinary day, but ${verbToGerundPhrase(v)} quickly became delightfully ridiculous.`,
+    (c,s,v)=>`Nobody expected a parade of ducklings to join the ${c} while ${verbToGerundPhrase(v)}.`
+  ],
+
+  poetic: [
+    (c,s,v)=>`Morning dew shimmered like tiny stars as the ${c} began ${verbToGerundPhrase(v)} in ${s}.`,
+    (c,s,v)=>`The wind carried gentle songs while the ${c} wandered ${s}, ${verbToGerundPhrase(v)} with quiet wonder.`,
+    (c,s,v)=>`Every leaf seemed to remember the footsteps of the ${c} while ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`Sunlight painted golden paths through ${s}, inviting the ${c} to ${verbToPlainPhrase(v)}.`,
+    (c,s,v)=>`The gentle rhythm of nature surrounded the ${c} as ${verbToGerundPhrase(v)} became a peaceful dance.`,
+    (c,s,v)=>`The sky glowed softly above ${s} while the ${c} found beauty in ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`Tiny echoes of laughter drifted across ${s} as the ${c} continued ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`The forest held its breath while the ${c} quietly practiced ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`Every sparkling stream reflected the dreams of the ${c} while ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`In the quiet magic of ${s}, the ${c} discovered that ${verbToGerundPhrase(v)} could brighten even the smallest heart.`
+  ],
+  magical: [
+    (c,s,v)=>`A sprinkle of magic filled ${s} when the ${c} began ${verbToGerundPhrase(v)} beneath the glowing sky.`,
+    (c,s,v)=>`The ${c} discovered that ${s} held a secret waiting to be found through ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`Deep within ${s}, the ${c} followed a trail of sparkles while ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`The stars above ${s} seemed to guide the ${c} toward a new adventure of ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`A magical breeze carried the ${c} across ${s}, where it continued ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`The ${c} woke up with a feeling that today was perfect for ${verbToGerundPhrase(v)} in ${s}.`,
+    (c,s,v)=>`Hidden wonders appeared around ${s} as the ${c} spent the day ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`The smallest sparkle in ${s} became the beginning of the ${c}'s journey to ${verbToPlainPhrase(v)}.`,
+    (c,s,v)=>`Everyone in ${s} whispered about the ${c} and its magical way of ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`The ${c} carried a tiny lantern through ${s} while searching for a way to ${verbToPlainPhrase(v)}.`
+  ],
+
+  discovery: [
+    (c,s,v)=>`The ${c} noticed something unusual in ${s} while ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`Behind a hidden corner of ${s}, the ${c} discovered a reason to keep ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`A tiny surprise waited in ${s} when the ${c} decided to ${verbToPlainPhrase(v)}.`,
+    (c,s,v)=>`The ${c} had never seen anything like ${s} before beginning to ${verbToPlainPhrase(v)}.`,
+    (c,s,v)=>`A forgotten path appeared before the ${c} as it explored ${s} and began ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`The ${c} uncovered a hidden treasure while ${verbToGerundPhrase(v)} through ${s}.`,
+    (c,s,v)=>`Something wonderful was waiting in ${s}, and the ${c} was ready to discover it by ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`The first clue appeared near ${s}, leading the ${c} toward ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`The ${c} looked closely at every corner of ${s} before choosing to ${verbToPlainPhrase(v)}.`,
+    (c,s,v)=>`A new friendship began in ${s} when the ${c} spent time ${verbToGerundPhrase(v)}.`
+  ],
+
+  friendship: [
+    (c,s,v)=>`The ${c} learned that the best adventures in ${s} were shared with friends while ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`A new friend joined the ${c} in ${s}, making ${verbToGerundPhrase(v)} twice as wonderful.`,
+    (c,s,v)=>`The ${c} invited everyone in ${s} to join in the joy of ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`Together, the friends explored ${s} and discovered the happiness of ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`The ${c} showed kindness in ${s} by helping others while ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`A lonely corner of ${s} became cheerful when the ${c} arrived to ${verbToPlainPhrase(v)}.`,
+    (c,s,v)=>`The ${c} found that teamwork made ${verbToGerundPhrase(v)} much more fun in ${s}.`,
+    (c,s,v)=>`The creatures of ${s} gathered around the ${c} to celebrate ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`The ${c} shared a smile with every friend it met while ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`The biggest treasure in ${s} was not gold, but the friendships made while ${verbToGerundPhrase(v)}.`
+  ],
+
+  cozy: [
+    (c,s,v)=>`A peaceful afternoon arrived in ${s} as the ${c} enjoyed ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`The ${c} curled up near ${s}, spending a quiet moment ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`Soft sounds filled ${s} while the ${c} happily continued ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`The ${c} found the perfect little place in ${s} for ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`Warm sunlight rested over ${s} as the ${c} practiced ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`The ${c} treasured every peaceful moment spent ${verbToGerundPhrase(v)} in ${s}.`,
+    (c,s,v)=>`A gentle day unfolded in ${s} while the ${c} discovered the joy of ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`The quiet corners of ${s} welcomed the ${c} and its habit of ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`The ${c} found comfort in ${s} while enjoying a simple day of ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`Even the flowers of ${s} seemed happy when the ${c} spent time ${verbToGerundPhrase(v)}.`
+  ],
+
+  challenge: [
+    (c,s,v)=>`The ${c} faced a tiny challenge in ${s}, but bravely continued to ${verbToPlainPhrase(v)}.`,
+    (c,s,v)=>`Something unexpected happened in ${s}, and the ${c} had to find a way to ${verbToPlainPhrase(v)}.`,
+    (c,s,v)=>`The path through ${s} was difficult, but the ${c} never stopped ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`The ${c} wondered if it could succeed, then tried ${verbToGerundPhrase(v)} once more.`,
+    (c,s,v)=>`A storm of leaves swept through ${s}, testing the ${c} as it tried to ${verbToPlainPhrase(v)}.`,
+    (c,s,v)=>`The ${c} discovered courage while facing a new challenge in ${s}.`,
+    (c,s,v)=>`Although the journey through ${s} was tricky, the ${c} kept ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`The ${c} almost gave up in ${s}, until a small friend helped it continue ${verbToGerundPhrase(v)}.`,
+    (c,s,v)=>`A mysterious obstacle appeared in ${s}, and the ${c} prepared to ${verbToPlainPhrase(v)}.`,
+    (c,s,v)=>`The ${c} learned something important after trying to ${verbToPlainPhrase(v)} in ${s}.`
+  ]
+};
 
   const ICONS = {
-    character:["🦊","🦉","🐉","🐇","🐢","🦋","🐾","🕊️"],
-    setting:["🌲","🌙","🌿","🏞️","✨","🌊","🌸","⛰️"],
-    verb:["✨","🎵","🧭","🌟","🍃","💫","🖌️","🔍"]
-  };
+  character: [
+    "🦊","🦉","🐉","🐇","🐢","🦋","🐾","🕊️",
+    "🦌","🐻","🐺","🦝","🐿️","🦔","🦦","🦫",
+    "🦁","🐯","🐱","🐶","🐭","🐹","🐸","🦆",
+    "🦢","🦜","🦅","🦚","🦩","🐧","🦭","🐬",
+    "🐳","🐠","🐝","🐞","🦗","🪲","🐌","🦎",
+    "🦕","🦄","🐐","🦙","🐑","🫎","🦥","🐨"
+  ],
+
+  setting: [
+    "🌲","🌳","🌴","🌿","🍀","🍄","🌾","🌸",
+    "🌺","🌼","🌷","🪻","🌻","🌹","🍁","🍂",
+    "🌊","💧","🏞️","🏕️","⛰️","🪨","🏔️","🌋",
+    "🌙","🌞","⭐","✨","💫","🌈","☁️","🌤️",
+    "🌦️","🌧️","❄️","🌫️","🪵","🪺","🕯️","🏰",
+    "🌉","🌌","🛶","🧺","🪷","🌱","🌼","🍃"
+  ],
+
+  verb: [
+    "🧭","🔍","🗺️","🥾","🚶","🏃","🪽","🛶",
+    "✨","💫","⭐","🌟","🎵","🎶","🎨","🖌️",
+    "🪄","📖","📜","🗝️","🧩","💡","🌱","🌸",
+    "🍄","🍓","🫐","🪺","🪶","🍂","🍃","🌈",
+    "☀️","🌙","🔥","💖","🤝","🎁","🧺","🫧",
+    "🦋","🐾","🌊","🪨","🛤️","🌼","🔔","🎈"
+  ],
+
+  adjective: [
+    "✨","💫","⭐","🌟","🌈","🌸","🍃","🌿",
+    "🌼","🌺","🪷","🌙","☀️","❄️","🔥","💎",
+    "🍯","🪶","🦋","☁️","🌤️","💖","🎀","🫧",
+    "🌱","🍄","🌹","🍁","🕯️","🎨","🪄","🦄"
+  ],
+
+  pronoun: [
+    "👦","👧","🧒","👤","👥","💙","💜","💚"
+  ]
+};
 
   const els = {
     weekSelect: document.getElementById("weekSelect"),
@@ -954,30 +1259,27 @@
 
   function toGerundWord(word){
     const w = String(word || "").toLowerCase();
-    if(!w) return w;
+    if(!w) return "";
+    const irregular = { be:"being", see:"seeing", flee:"fleeing", lie:"lying", die:"dying", tie:"tying" };
+    if(irregular[w]) return irregular[w];
     if(w.endsWith("ie")) return w.slice(0,-2) + "ying";
     if(/[^aeiou]e$/.test(w) && !/(ee|oe|ye)$/.test(w)) return w.slice(0,-1) + "ing";
-    if(/^[a-z]{3,5}$/.test(w) && /[^aeiou][aeiou][^aeiouwxy]$/.test(w)) return w + w.slice(-1) + "ing";
+    if(
+      /^[a-z]+[^aeiou][aeiou][bcdfghjklmnpqrstvz]$/.test(w) &&
+      !/(ck|sh|ch|th|ss|st|nd|nt|rt|rd|ng)$/.test(w)
+    ) return w + w.slice(-1) + "ing";
     return w + "ing";
   }
 
   function verbToPlainPhrase(verb){
-    return String(verb || "wonder").replace(/-/g, " ");
+    return String(verb || "wonder").replace(/-/g, " ").trim();
   }
 
   function verbToGerundPhrase(verb){
     const phrase = verbToPlainPhrase(verb);
-    if(phrase.includes(" and ")){
-      return phrase.split(/\s+and\s+/).map(part => {
-        const words = part.trim().split(/\s+/);
-        if(!words.length) return part;
-        words[words.length-1] = toGerundWord(words[words.length-1]);
-        return words.join(" ");
-      }).join(" and ");
-    }
-    const words = phrase.trim().split(/\s+/);
+    const words = phrase.split(/\s+/).filter(Boolean);
     if(!words.length) return "wondering";
-    words[words.length-1] = toGerundWord(words[words.length-1]);
+    words[0] = toGerundWord(words[0]);
     return words.join(" ");
   }
 
@@ -1186,9 +1488,29 @@
     previewStory(true);
   }
 
+  function decorateCharacter(character){
+    const base = String(character || "friend").trim();
+    const adj = choose(ADJECTIVES);
+    const lower = base.toLowerCase();
+    if(lower.includes(adj.toLowerCase())) return base;
+    return `${adj} ${base}`;
+  }
+
+  function pronounFor(character){
+    return PRONOUNS[hashString(character || "friend") % PRONOUNS.length] || PRONOUNS[2];
+  }
+
   function storyTextFor(sel,tone){
     const bank = TEMPLATES[tone] || TEMPLATES.gentle;
-    return choose(bank)(sel.character, sel.setting, sel.verb);
+    const character = decorateCharacter(sel.character);
+    const base = choose(bank)(character, sel.setting, sel.verb);
+    const p = pronounFor(sel.character);
+    const endings = [
+      `Before long, ${p.subject} tucked the memory safely into ${p.possessive} heart.`,
+      `The grove smiled, and ${p.subject} felt ready for one more little wonder.`,
+      `By sunset, ${p.subject} had learned something kind and new.`
+    ];
+    return base + " " + choose(endings);
   }
 
   function isComplete(sel=selection){
@@ -1250,7 +1572,7 @@
     refreshSelectionVisuals();
     updateSlots();
     showStory(best, false);
-    setStatus(`Magic Weave explored ${runs} playful combinations and picked a ${titleCase(tone)} story for you.`);
+    setStatus(`Magic Weave picked a ${titleCase(tone)} story for you.`);
   }
 
   function scoreCandidate(sel,text,tone){
@@ -1278,7 +1600,12 @@
       adventure:["brave","map","edge","unknown","path","courage"],
       mystery:["strange","silent","hidden","clue","whisper","moon"],
       funny:["silliest","giggled","snack","opinions","parade"],
-      poetic:["memory","rain","silver","dawn","quiet","wings"]
+      poetic:["memory","rain","silver","dawn","quiet","wings"],
+      magical:["magic","sparkle","stars","secret","lantern","glowing"],
+      discovery:["noticed","discovered","hidden","clue","treasure","looked"],
+      friendship:["friend","friends","kindness","teamwork","shared","together"],
+      cozy:["peaceful","soft","warm","quiet","comfort","sunlight"],
+      challenge:["brave","challenge","courage","tricky","continued","important"]
     }[tone] || [];
     toneWords.forEach(w => { if(lower.includes(w)) score += 3; });
 
@@ -1330,7 +1657,7 @@
     const bg1 = colorFrom(sel.character || "a", 0);
     const bg2 = colorFrom(sel.setting || "b", 70);
     const bg3 = colorFrom(sel.verb || "c", 150);
-    const toneIcon = {gentle:"🌿",adventure:"🧭",mystery:"🌙",funny:"🍄",poetic:"✨"}[tone] || "🌿";
+    const toneIcon = {gentle:"🌿",adventure:"🧭",mystery:"🌙",funny:"🍄",poetic:"✨",magical:"🪄",discovery:"🔍",friendship:"🤝",cozy:"🕯️",challenge:"⭐"}[tone] || "🌿";
     const charEmoji = emojiForWord(sel.character, "character");
     const setEmoji = emojiForWord(sel.setting, "setting");
     const verbEmoji = emojiForWord(sel.verb, "verb");
@@ -1488,7 +1815,7 @@
 
   function copyCurrent(){
     const text = els.storyText.textContent || "";
-    if(!text || text.includes("will appear")){
+    if(!text || text.includes("will bloom")){
       setStatus("There is no finished story to copy yet.", true);
       return;
     }
@@ -1513,7 +1840,7 @@
   }
 
   function exportStorybook(){
-    exportJSON({ app:"Storybird Grove", version:"sovereign-mc-v1", exportedAt:new Date().toISOString(), ...state }, "storybird-grove-nest.json");
+    exportJSON({ app:"Storybird Grove", version:"tiny-story-garden-v2", exportedAt:new Date().toISOString(), ...state }, "storybird-grove-nest.json");
   }
 
   function importStorybook(file){
@@ -1562,7 +1889,7 @@
       state.lastWeek = currentWeek;
       saveState();
       renderClusters();
-      setStatus("Week changed. This week will stay stable every time the app opens.");
+      setStatus("New week opened. Choose three spirits and weave a story.");
     });
 
     els.toneSelect.addEventListener("change", () => {
