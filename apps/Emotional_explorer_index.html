@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Noetic Elementary – Psychology Basics</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #c7d2fe, #fef9c3, #bbf7d0);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .app {
+      background: #ffffff;
+      width: 100%;
+      max-width: 820px;
+      border-radius: 20px;
+      box-shadow: 0 20px 45px rgba(0,0,0,0.15);
+      padding: 28px 32px 36px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #4338ca;
+      font-size: 2.4rem;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      text-align: center;
+      color: #475569;
+      margin-bottom: 22px;
+      font-size: 1.15rem;
+    }
+
+    .question {
+      font-size: 1.4rem;
+      text-align: center;
+      margin-bottom: 20px;
+      color: #0f172a;
+    }
+
+    .answers {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+    }
+
+    .answers button {
+      padding: 16px;
+      font-size: 1.1rem;
+      border-radius: 14px;
+      border: none;
+      cursor: pointer;
+      background: #eef2ff;
+      transition: transform .15s ease, background .15s ease;
+    }
+
+    .answers button:hover { transform: scale(1.05); }
+    .answers button.correct { background: #bbf7d0; }
+    .answers button.wrong { background: #fecaca; }
+
+    .footer {
+      margin-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 1.05rem;
+      color: #334155;
+    }
+
+    .btn {
+      background: #4f46e5;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 10px 18px;
+      font-size: 1.05rem;
+      cursor: pointer;
+    }
+
+    .btn:hover { background: #4338ca; }
+    .hidden { display: none; }
+
+    .badge {
+      font-size: 2.8rem;
+      text-align: center;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="app">
+  <h1>Psychology Explorer</h1>
+  <div class="subtitle">Thoughts · Feelings · Choices (Grades 1–5)</div>
+
+  <div style="text-align:center; margin-bottom:18px;">
+    <label for="sessionSize" style="font-size:1rem; color:#334155; margin-right:8px;">Questions this session:</label>
+    <select id="sessionSize" style="padding:6px 10px; font-size:1rem; border-radius:8px;">
+      <option value="5" selected>5</option>
+      <option value="10">10</option>
+      <option value="15">15</option>
+    </select>
+  </div>
+
+  <div id="play">
+    <div id="badge" class="badge">🧠</div>
+    <div id="question" class="question"></div>
+    <div id="answers" class="answers"></div>
+    <div class="footer">
+      <span id="progress"></span>
+      <button id="nextBtn" class="btn hidden">Next</button>
+    </div>
+  </div>
+
+  <div id="end" class="hidden">
+    <h2 style="text-align:center; color:#4338ca;">Session Complete 🎉</h2>
+    <p id="result" style="text-align:center; font-size:1.3rem;"></p>
+    <div style="text-align:center; margin-top:20px;">
+      <button class="btn" onclick="startGame()">Play Again</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ---------------- QUESTION BANK (50) ---------------- */
+const QUESTIONS = [
+  {q:'What is something your brain helps you do?', icon:'🧠', a:['Think','Sleep only','Run shoes'], c:0},
+  {q:'If you feel nervous, what can help?', icon:'😟', a:['Take deep breaths','Yell','Hide'], c:0},
+  {q:'Which feeling is pleasant?', icon:'😊', a:['Happiness','Anger','Fear'], c:0},
+  {q:'If a friend is sad, what is a good choice?', icon:'🤝', a:['Comfort them','Laugh','Ignore'], c:0},
+  {q:'What does empathy mean?', icon:'❤️', a:['Understanding others','Winning','Being loud'], c:0},
+  {q:'If you make a mistake, what should you do?', icon:'🔁', a:['Try again','Give up','Blame others'], c:0},
+  {q:'Which part of you helps you think?', icon:'🧠', a:['Brain','Foot','Elbow'], c:0},
+  {q:'What helps you calm down?', icon:'🌬️', a:['Breathing slowly','Running away','Yelling'], c:0},
+  {q:'How do you feel when you help someone?', icon:'🌟', a:['Proud','Angry','Bored'], c:0},
+  {q:'What is a good way to solve a problem?', icon:'🧩', a:['Think it through','Quit','Get mad'], c:0},
+  {q:'Which feeling warns you of danger?', icon:'⚠️', a:['Fear','Joy','Excitement'], c:0},
+  {q:'If you are frustrated, what can help?', icon:'🧘', a:['Take a break','Throw things','Yell'], c:0},
+  {q:'Why do we have emotions?', icon:'💭', a:['To understand experiences','To confuse us','No reason'], c:0},
+  {q:'What should you do if you disagree?', icon:'🗣️', a:['Talk calmly','Hit','Run away'], c:0},
+  {q:'What helps build friendships?', icon:'🤝', a:['Kindness','Anger','Ignoring'], c:0},
+  {q:'If you feel excited, what might you do?', icon:'🎉', a:['Smile','Cry','Hide'], c:0},
+  {q:'Which action shows respect?', icon:'🎓', a:['Listening','Interrupting','Yelling'], c:0},
+  {q:'What helps you learn better?', icon:'📘', a:['Practice','Never trying','Giving up'], c:0},
+  {q:'What should you do if someone feels left out?', icon:'💛', a:['Include them','Ignore','Tease'], c:0},
+  {q:'Which emotion helps you feel safe?', icon:'🏠', a:['Calm','Anger','Fear'], c:0},
+  {q:'What is self-control?', icon:'🛑', a:['Managing actions','Doing anything','Yelling'], c:0},
+  {q:'What helps when learning is hard?', icon:'💪', a:['Effort','Quitting','Avoiding'], c:0},
+  {q:'What does your brain do when you sleep?', icon:'😴', a:['Rest and grow','Stop working','Forget everything'], c:0},
+  {q:'Which choice shows responsibility?', icon:'📋', a:['Doing homework','Ignoring rules','Blaming'], c:0},
+  {q:'Why is it good to understand feelings?', icon:'🧠', a:['To make better choices','To win games','No reason'], c:0},
+
+  {q:'What can help you remember things?', icon:'🧠', a:['Practice','Ignoring','Forgetting'], c:0},
+  {q:'If you feel angry, what is a safe choice?', icon:'🔥', a:['Use words','Hit','Break things'], c:0},
+  {q:'Which feeling means you like something?', icon:'❤️', a:['Joy','Fear','Anger'], c:0},
+  {q:'What should you do before making a big choice?', icon:'🤔', a:['Think first','Rush','Copy others'], c:0},
+  {q:'What helps you pay attention?', icon:'👀', a:['Listening','Daydreaming','Talking'], c:0},
+  {q:'What can help if you feel scared?', icon:'🛡️', a:['Ask for help','Hide forever','Yell'], c:0},
+  {q:'Why is sleep important?', icon:'🛏️', a:['It helps your brain','It is boring','It wastes time'], c:0},
+  {q:'What is a habit?', icon:'🔁', a:['Something you do often','A feeling','A rule'], c:0},
+  {q:'What helps you work with others?', icon:'🤝', a:['Cooperation','Arguing','Ignoring'], c:0},
+  {q:'What does it mean to focus?', icon:'🎯', a:['Pay attention','Run away','Be loud'], c:0},
+  {q:'Which feeling helps you try new things?', icon:'🚀', a:['Curiosity','Fear','Anger'], c:0},
+  {q:'What should you do if work feels hard?', icon:'🧗', a:['Keep trying','Quit','Blame'], c:0},
+  {q:'What helps you understand others?', icon:'👂', a:['Listening','Interrupting','Ignoring'], c:0},
+  {q:'What does your brain do all day?', icon:'⚙️', a:['Think and learn','Sleep only','Stop'], c:0},
+  {q:'What is a fair choice?', icon:'⚖️', a:['Treating people equally','Winning always','Ignoring rules'], c:0},
+  {q:'What can you do to feel proud?', icon:'🏆', a:['Try your best','Give up','Cheat'], c:0},
+  {q:'Why is kindness important?', icon:'💖', a:['It helps everyone','It is weak','It does nothing'], c:0},
+  {q:'What helps you solve arguments?', icon:'🕊️', a:['Talking calmly','Yelling','Walking away forever'], c:0},
+  {q:'What does learning mean?', icon:'📚', a:['Getting new skills','Forgetting','Being perfect'], c:0},
+  {q:'What helps your brain grow?', icon:'🌱', a:['Practice and rest','Nothing','Only games'], c:0}
+];
+
+/* ---------------- GAME LOGIC ---------------- */
+let questions = [];
+let index = 0;
+let score = 0;
+let locked = false;
+
+const qEl = document.getElementById('question');
+const badgeEl = document.getElementById('badge');
+const aEl = document.getElementById('answers');
+const progressEl = document.getElementById('progress');
+const nextBtn = document.getElementById('nextBtn');
+const playEl = document.getElementById('play');
+const endEl = document.getElementById('end');
+const resultEl = document.getElementById('result');
+
+function startGame() {
+  const sessionCount = parseInt(document.getElementById('sessionSize').value, 10);
+  questions = shuffle([...QUESTIONS]).slice(0, sessionCount);
+  index = 0;
+  score = 0;
+  playEl.classList.remove('hidden');
+  endEl.classList.add('hidden');
+  loadQuestion();
+}
+
+function loadQuestion() {
+  locked = false;
+  nextBtn.classList.add('hidden');
+  const q = questions[index];
+  badgeEl.textContent = q.icon;
+  qEl.textContent = q.q;
+  aEl.innerHTML = '';
+  q.a.forEach((text,i)=>{
+    const btn = document.createElement('button');
+    btn.textContent = text;
+    btn.onclick = ()=>selectAnswer(btn,i);
+    aEl.appendChild(btn);
+  });
+  progressEl.textContent = `Question ${index+1} of ${questions.length}`;
+}
+
+function selectAnswer(btn, i) {
+  if (locked) return;
+  locked = true;
+  const q = questions[index];
+  const buttons = aEl.querySelectorAll('button');
+  buttons[q.c].classList.add('correct');
+  if (i === q.c) score++;
+  else btn.classList.add('wrong');
+  nextBtn.classList.remove('hidden');
+}
+
+nextBtn.onclick = ()=>{
+  index++;
+  if (index < questions.length) loadQuestion();
+  else endGame();
+};
+
+function endGame() {
+  playEl.classList.add('hidden');
+  endEl.classList.remove('hidden');
+  resultEl.textContent = `You answered ${score} out of ${questions.length} correctly! ⭐`;
+}
+
+function shuffle(arr) {
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
+startGame();
+</script>
+
+</body>
+</html>
