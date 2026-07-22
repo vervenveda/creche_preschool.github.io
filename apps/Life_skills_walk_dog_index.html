@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Little Tikes Life Skills – How to Walk the Dog</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<style>
+  :root{
+    --parchment:#fdfcf5;
+    --parchment-soft:#fffef8;
+    --accent:#8fd3ff;
+    --accent-deep:#55baf7;
+    --ink:#2e3a42;
+    --radius-card:21px;
+    --shadow-card:0 18px 40px rgba(0,0,0,0.12);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:"Nunito","Segoe UI",system-ui,-apple-system,sans-serif;
+    background:radial-gradient(circle at top,#fdfcf5,#e2f4ff);
+    color:var(--ink);
+    padding:24px 12px;
+  }
+  .lt-shelf{max-width:520px;margin:0 auto;text-align:center;}
+  .lt-tagline{
+    font-size:18px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:#4b6a7a;
+    margin-bottom:4px;
+  }
+  .lt-title{font-size:27px;font-weight:800;margin-bottom:4px;}
+  .lt-sub{font-size:15px;color:#476170;margin-bottom:21px;}
+  .lt-book-card{
+    position:relative;
+    background:var(--parchment-soft);
+    border-radius:var(--radius-card);
+    box-shadow:var(--shadow-card);
+    padding:21px 21px 18px;
+    display:flex;
+    gap:18px;
+    justify-content:space-between;
+    align-items:stretch;
+    overflow:hidden;
+  }
+  .lt-book-card.flip{animation:lt-flip 260ms ease-out;}
+  @keyframes lt-flip{
+    0%{transform:scale(1) rotateY(0deg);}
+    50%{transform:scale(0.97) rotateY(-8deg);}
+    100%{transform:scale(1) rotateY(0deg);}
+  }
+  .lt-column{flex:1;min-width:0;}
+  .lt-page-label{
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:0.13em;
+    color:#607a88;
+    margin-bottom:6px;
+  }
+  .lt-mini-title{font-size:21px;font-weight:700;margin-bottom:6px;}
+  .lt-icon-bubble{
+    width:72px;height:72px;border-radius:999px;
+    margin:6px auto 10px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:33px;
+    background:linear-gradient(145deg,#d6f0ff,#a7dbff);
+    box-shadow:0 10px 18px rgba(0,0,0,0.12);
+  }
+  .lt-badge{
+    display:inline-block;
+    padding:3px 10px;
+    border-radius:999px;
+    background:rgba(143,211,255,0.18);
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.12em;
+    margin-bottom:6px;
+    color:#326683;
+  }
+  .lt-text{
+    font-size:15px;
+    line-height:1.55;
+    text-align:left;
+    white-space:pre-line;
+  }
+  .lt-try{
+    font-size:14px;
+    font-weight:600;
+    margin-top:10px;
+    color:#2f6d8f;
+  }
+  .lt-nav-row{
+    margin-top:15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    font-size:13px;
+    color:#476170;
+  }
+  .lt-btn{
+    border:none;border-radius:999px;
+    padding:6px 16px;
+    font-size:13px;font-weight:600;
+    cursor:pointer;
+    background:var(--accent);color:#123142;
+    box-shadow:0 6px 12px rgba(0,0,0,0.15);
+    transition:transform 120ms ease, box-shadow 120ms ease, background 120ms;
+  }
+  .lt-btn[disabled]{opacity:.4;cursor:default;box-shadow:none;}
+  .lt-btn:not([disabled]):hover{
+    transform:translateY(-1px);
+    box-shadow:0 9px 18px rgba(0,0,0,0.18);
+    background:var(--accent-deep);
+  }
+  .lt-dots{display:flex;gap:4px;align-items:center;justify-content:center;flex:1;}
+  .lt-dot{
+    width:7px;height:7px;border-radius:999px;
+    background:#cde7f7;
+  }
+  .lt-dot.active{width:16px;background:var(--accent-deep);}
+  .lt-footnote{
+    font-size:13px;
+    color:#476170;
+    margin-top:16px;
+  }
+  @media(max-width:600px){
+    .lt-book-card{flex-direction:column;}
+    .lt-mini-title{font-size:18px;}
+  }
+</style>
+</head>
+<body>
+<div class="lt-shelf" id="lt-dog-app">
+  <div class="lt-tagline">Little Tikes Life Skills</div>
+  <div class="lt-title">How to Walk the Dog</div>
+  <div class="lt-sub">Gentle steps for tiny hands & big hearts.</div>
+
+  <div class="lt-book-card">
+    <div class="lt-column">
+      <div class="lt-page-label" id="lt-dog-page-label">Page 1 of 7</div>
+      <div class="lt-mini-title" id="lt-dog-left-title">Best Friend Time</div>
+      <div class="lt-icon-bubble" id="lt-dog-icon">🐶</div>
+      <div class="lt-text" id="lt-dog-left-text">
+Going for a walk is more than a chore—
+it’s special time for you and your dog
+to explore the world together.
+      </div>
+    </div>
+    <div class="lt-column">
+      <div class="lt-badge" id="lt-dog-badge">Kindness First</div>
+      <div class="lt-mini-title" id="lt-dog-right-title">Walking With Love</div>
+      <div class="lt-text" id="lt-dog-right-text">
+Dogs don’t speak with words.
+They talk with tails, ears, and paws.
+This story shows how to walk gently,
+so your dog feels safe and loved.
+      </div>
+      <div class="lt-try" id="lt-dog-try">
+TRY THIS: Give your dog a gentle pat and say, “We’re a team!”
+      </div>
+    </div>
+  </div>
+
+  <div class="lt-nav-row">
+    <button class="lt-btn" id="lt-dog-prev">← Back</button>
+    <div class="lt-dots" id="lt-dog-dots"></div>
+    <button class="lt-btn" id="lt-dog-next">Next →</button>
+  </div>
+
+  <div class="lt-footnote">
+    Always walk with a grown-up. They handle big decisions; you handle kindness and care.
+  </div>
+</div>
+
+<script>
+(function(){
+  const pages = [
+    {
+      leftTitle:"Best Friend Time",
+      icon:"🐶",
+      leftText:"Going for a walk is more than a chore—\nit’s special time for you and your dog\nto explore the world together.",
+      badge:"Kindness First",
+      rightTitle:"Walking With Love",
+      rightText:"Dogs don’t speak with words.\nThey talk with tails, ears, and paws.\nThis story shows how to walk gently,\nso your dog feels safe and loved.",
+      tryText:"TRY THIS: Give your dog a gentle pat and say, “We’re a team!”"
+    },
+    {
+      leftTitle:"Step 1: Ask and Prepare",
+      icon:"🧑‍🦱👩‍🦱",
+      leftText:"First, ask your grown-up if it’s time\nfor a walk.\nThey can check the weather and street.",
+      badge:"Safety Check",
+      rightTitle:"Clip the Leash",
+      rightText:"Stand still while a grown-up clips\nthe leash to your dog’s collar.\nSay the dog’s name softly so they\nknow something good is happening.",
+      tryText:"TRY THIS: Practice saying, “Ready, buddy?” in a happy voice."
+    },
+    {
+      leftTitle:"Step 2: Gentle Start",
+      icon:"🚶‍♀️",
+      leftText:"Hold the leash with two hands—\none near you, one lower down\n(if your grown-up says it’s okay).",
+      badge:"Slow Steps",
+      rightTitle:"Walk, Don’t Race",
+      rightText:"Take slow, easy steps.\nIf your dog pulls, stop and wait.\nWhen they look back or come closer,\npraise them for walking nicely.",
+      tryText:"TRY THIS: Pretend you and your dog\nare in a quiet parade."
+    },
+    {
+      leftTitle:"Step 3: Street Smarts",
+      icon:"🚸",
+      leftText:"When you reach a street or driveway,\nstop at the edge.\nFeet together, leash still.",
+      badge:"Look & Listen",
+      rightTitle:"Check for Cars",
+      rightText:"Look left, then right, then left again.\nListen for cars or bikes.\nOnly cross when your grown-up says,\n“All clear.”",
+      tryText:"TRY THIS: Point left and right while you look with your grown-up."
+    },
+    {
+      leftTitle:"Step 4: Sniff & Explore",
+      icon:"🌳",
+      leftText:"Dogs love to sniff grass, trees,\nand posts.\nSniffing is how they read the news!",
+      badge:"Patience Practice",
+      rightTitle:"Give Them a Moment",
+      rightText:"Let your dog sniff for a little while.\nYou can count slowly to ten.\nThen say, “Let’s go,” and start\nwalking again together.",
+      tryText:"TRY THIS: While your dog sniffs,\nnotice three things you can see."
+    },
+    {
+      leftTitle:"Step 5: Clean-Up Hero",
+      icon:"💩",
+      leftText:"Sometimes your dog will need\na potty break.\nThat’s part of the walk too.",
+      badge:"Responsibility",
+      rightTitle:"Bag and Toss",
+      rightText:"A grown-up should handle the poop bag,\nbut you can help by holding\nthe extra bags or pointing to\ntrash cans along the way.",
+      tryText:"TRY THIS: Say, “Thank you for going\noutside, pup!”"
+    },
+    {
+      leftTitle:"Step 6: Home Again",
+      icon:"🏡",
+      leftText:"When you get home, wait while\na grown-up removes the leash.\nGive your dog a drink of water\nif they’re thirsty.",
+      badge:"Big-Hearted Walker",
+      rightTitle:"End With Gratitude",
+      rightText:"Kneel down to your dog’s level.\nGive a gentle hug or soft scratch.\nSay, “Thank you for the walk.”\nYou just cared for a living friend.",
+      tryText:"TRY THIS: Put a small paw-print\nsticker on a chart for every kind walk."
+    }
+  ];
+
+  const app = document.getElementById("lt-dog-app");
+  const card = app.querySelector(".lt-book-card");
+  const pageLabel = app.querySelector("#lt-dog-page-label");
+  const leftTitle = app.querySelector("#lt-dog-left-title");
+  const iconBubble = app.querySelector("#lt-dog-icon");
+  const leftText = app.querySelector("#lt-dog-left-text");
+  const badge = app.querySelector("#lt-dog-badge");
+  const rightTitle = app.querySelector("#lt-dog-right-title");
+  const rightText = app.querySelector("#lt-dog-right-text");
+  const tryText = app.querySelector("#lt-dog-try");
+  const prevBtn = app.querySelector("#lt-dog-prev");
+  const nextBtn = app.querySelector("#lt-dog-next");
+  const dotsWrap = app.querySelector("#lt-dog-dots");
+
+  let current = 0;
+
+  function buildDots(){
+    dotsWrap.innerHTML = "";
+    pages.forEach((_,idx)=>{
+      const d=document.createElement("div");
+      d.className="lt-dot"+(idx===0?" active":"");
+      dotsWrap.appendChild(d);
+    });
+  }
+
+  function render(){
+    const p=pages[current];
+    pageLabel.textContent=`Page ${current+1} of ${pages.length}`;
+    leftTitle.textContent=p.leftTitle;
+    iconBubble.textContent=p.icon;
+    leftText.textContent=p.leftText;
+    badge.textContent=p.badge;
+    rightTitle.textContent=p.rightTitle;
+    rightText.textContent=p.rightText;
+    tryText.textContent=p.tryText;
+    prevBtn.disabled=current===0;
+    nextBtn.disabled=current===pages.length-1;
+    const dots=dotsWrap.querySelectorAll(".lt-dot");
+    dots.forEach((d,i)=>d.classList.toggle("active",i===current));
+  }
+
+  function go(delta){
+    const target=current+delta;
+    if(target<0||target>=pages.length) return;
+    card.classList.add("flip");
+    setTimeout(()=>{
+      current=target;
+      render();
+      card.classList.remove("flip");
+    },180);
+  }
+
+  prevBtn.addEventListener("click",()=>go(-1));
+  nextBtn.addEventListener("click",()=>go(1));
+
+  buildDots();
+  render();
+})();
+</script>
+</body>
+</html>
