@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Little Tikes Life Skills – How to Start Your Schoolwork</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<style>
+  :root{
+    --parchment:#fffaf2;
+    --parchment-soft:#fffdf7;
+    --accent:#ffd76a;
+    --accent-deep:#ffc233;
+    --ink:#403322;
+    --radius-card:21px;
+    --shadow-card:0 18px 40px rgba(0,0,0,0.12);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:"Nunito","Segoe UI",system-ui,-apple-system,sans-serif;
+    background:radial-gradient(circle at top,#fffaf2,#ffe9c9);
+    color:var(--ink);
+    padding:24px 12px;
+  }
+  .lt-shelf{max-width:520px;margin:0 auto;text-align:center;}
+  .lt-tagline{
+    font-size:18px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:#7a5f2a;
+    margin-bottom:4px;
+  }
+  .lt-title{font-size:27px;font-weight:800;margin-bottom:4px;}
+  .lt-sub{font-size:15px;color:#7a5f2a;margin-bottom:21px;}
+  .lt-book-card{
+    position:relative;
+    background:var(--parchment-soft);
+    border-radius:var(--radius-card);
+    box-shadow:var(--shadow-card);
+    padding:21px 21px 18px;
+    display:flex;
+    gap:18px;
+    justify-content:space-between;
+    align-items:stretch;
+    overflow:hidden;
+  }
+  .lt-book-card.flip{animation:lt-flip 260ms ease-out;}
+  @keyframes lt-flip{
+    0%{transform:scale(1) rotateY(0deg);}
+    50%{transform:scale(0.97) rotateY(-8deg);}
+    100%{transform:scale(1) rotateY(0deg);}
+  }
+  .lt-column{flex:1;min-width:0;}
+  .lt-page-label{
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:0.13em;
+    color:#9a783b;
+    margin-bottom:6px;
+  }
+  .lt-mini-title{font-size:21px;font-weight:700;margin-bottom:6px;}
+  .lt-icon-bubble{
+    width:72px;height:72px;border-radius:999px;
+    margin:6px auto 10px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:33px;
+    background:linear-gradient(145deg,#ffeab2,#ffd26a);
+    box-shadow:0 10px 18px rgba(0,0,0,0.12);
+  }
+  .lt-badge{
+    display:inline-block;
+    padding:3px 10px;
+    border-radius:999px;
+    background:rgba(255,215,106,0.22);
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.12em;
+    margin-bottom:6px;
+    color:#a26d19;
+  }
+  .lt-text{
+    font-size:15px;
+    line-height:1.55;
+    text-align:left;
+    white-space:pre-line;
+  }
+  .lt-try{
+    font-size:14px;
+    font-weight:600;
+    margin-top:10px;
+    color:#a26d19;
+  }
+  .lt-nav-row{
+    margin-top:15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    font-size:13px;
+    color:#7a5f2a;
+  }
+  .lt-btn{
+    border:none;border-radius:999px;
+    padding:6px 16px;
+    font-size:13px;font-weight:600;
+    cursor:pointer;
+    background:var(--accent);color:#3a2d10;
+    box-shadow:0 6px 12px rgba(0,0,0,0.15);
+    transition:transform 120ms ease, box-shadow 120ms ease, background 120ms;
+  }
+  .lt-btn[disabled]{opacity:.4;cursor:default;box-shadow:none;}
+  .lt-btn:not([disabled]):hover{
+    transform:translateY(-1px);
+    box-shadow:0 9px 18px rgba(0,0,0,0.18);
+    background:var(--accent-deep);
+  }
+  .lt-dots{display:flex;gap:4px;align-items:center;justify-content:center;flex:1;}
+  .lt-dot{
+    width:7px;height:7px;border-radius:999px;
+    background:#ffe3a4;
+  }
+  .lt-dot.active{width:16px;background:var(--accent-deep);}
+  .lt-footnote{
+    font-size:13px;
+    color:#7a5f2a;
+    margin-top:16px;
+  }
+  @media(max-width:600px){
+    .lt-book-card{flex-direction:column;}
+    .lt-mini-title{font-size:18px;}
+  }
+</style>
+</head>
+<body>
+<div class="lt-shelf" id="lt-school-app">
+  <div class="lt-tagline">Little Tikes Life Skills</div>
+  <div class="lt-title">How to Start Your Schoolwork</div>
+  <div class="lt-sub">A “you can do it” routine for focused little learners.</div>
+
+  <div class="lt-book-card">
+    <div class="lt-column">
+      <div class="lt-page-label" id="lt-school-page-label">Page 1 of 7</div>
+      <div class="lt-mini-title" id="lt-school-left-title">Big Kid Moments</div>
+      <div class="lt-icon-bubble" id="lt-school-icon">📚</div>
+      <div class="lt-text" id="lt-school-left-text">
+Starting your work can feel big.
+This story gives you small, gentle steps
+so your brain, body, and heart
+can all say, “I’m ready.”
+      </div>
+    </div>
+    <div class="lt-column">
+      <div class="lt-badge" id="lt-school-badge">You’ve Got This</div>
+      <div class="lt-mini-title" id="lt-school-right-title">Tiny Steps, Big Courage</div>
+      <div class="lt-text" id="lt-school-right-text">
+You don’t have to finish everything at once.
+You just need to begin.
+Each little step is a brave choice,
+and brave choices add up.
+      </div>
+      <div class="lt-try" id="lt-school-try">
+TRY THIS: Put your hand on your heart and whisper, “I can start.”
+      </div>
+    </div>
+  </div>
+
+  <div class="lt-nav-row">
+    <button class="lt-btn" id="lt-school-prev">← Back</button>
+    <div class="lt-dots" id="lt-school-dots"></div>
+    <button class="lt-btn" id="lt-school-next">Next →</button>
+  </div>
+
+  <div class="lt-footnote">
+    Perfect before homework time or morning lessons. Grown-ups can read once, then let kids “teach back” the steps.
+  </div>
+</div>
+
+<script>
+(function(){
+  const pages = [
+    {
+      leftTitle:"Big Kid Moments",
+      icon:"📚",
+      leftText:"Starting your work can feel big.\nThis story gives you small, gentle steps\nso your brain, body, and heart\ncan all say, “I’m ready.”",
+      badge:"You’ve Got This",
+      rightTitle:"Tiny Steps, Big Courage",
+      rightText:"You don’t have to finish everything at once.\nYou just need to begin.\nEach little step is a brave choice,\nand brave choices add up.",
+      tryText:"TRY THIS: Put your hand on your heart and whisper, “I can start.”"
+    },
+    {
+      leftTitle:"Step 1: Find Your Spot",
+      icon:"🪑",
+      leftText:"Look for a quiet, comfy place:\na table, a desk, or a floor spot\nwith a firm surface for writing.",
+      badge:"Calm Corner",
+      rightTitle:"Sit With Intention",
+      rightText:"Plant your feet on the floor.\nSit tall, like a tree.\nTake one slow breath in…and out.\nNow your body knows it’s learning time.",
+      tryText:"TRY THIS: Wiggle your toes, then be very still for three seconds."
+    },
+    {
+      leftTitle:"Step 2: Gather Your Tools",
+      icon:"✏️",
+      leftText:"You might need pencils, crayons,\nnotebooks, and today’s worksheet\nor book.",
+      badge:"Ready Kit",
+      rightTitle:"Everything Within Reach",
+      rightText:"Place your tools in front of you:\npencil on the right or left,\npaper in the middle, eraser nearby.\nNo hunting needed once you begin.",
+      tryText:"TRY THIS: Count your tools out loud:\n“1 pencil, 1 paper, 1 eraser…”"
+    },
+    {
+      leftTitle:"Step 3: Read the Directions",
+      icon:"👀",
+      leftText:"Before writing anything,\nread or listen to the directions.\nAsk a grown-up to help if words\nfeel tricky.",
+      badge:"Brain Warm-Up",
+      rightTitle:"Say It Back",
+      rightText:"After hearing the directions,\nexplain them in your own words:\n“So I need to circle the animals\nand color two of them.”",
+      tryText:"TRY THIS: Pretend you are the teacher\nand tell a stuffed animal what to do."
+    },
+    {
+      leftTitle:"Step 4: Start With a Tiny Piece",
+      icon:"🧩",
+      leftText:"Big pages can feel huge.\nChoose just one part to begin—\nmaybe the first question\nor the top row.",
+      badge:"One Piece at a Time",
+      rightTitle:"Focus for a Short Time",
+      rightText:"Work on that tiny piece\nfor about five to ten minutes.\nIf your mind wanders,\ntake one deep breath and look again.",
+      tryText:"TRY THIS: Draw a tiny star beside the part\nyou’re working on right now."
+    },
+    {
+      leftTitle:"Step 5: Pause and Check",
+      icon:"🔍",
+      leftText:"When that piece is done,\nstop for a moment.\nLook it over slowly.",
+      badge:"Proud Review",
+      rightTitle:"Ask Two Questions",
+      rightText:"1) Did I follow the directions?\n2) Did I try my best for now?\nIf yes, give yourself a quiet cheer\nand move to the next piece.",
+      tryText:"TRY THIS: Whisper, “Nice work, brain.”"
+    },
+    {
+      leftTitle:"Step 6: Finish & Share",
+      icon:"⭐",
+      leftText:"When all the pieces are done,\nstack your papers neatly\nor tuck them into your folder.",
+      badge:"You Started!",
+      rightTitle:"Celebrate the Beginning",
+      rightText:"Tell your grown-up or teacher:\n“I started my work all by myself.”\nWhether you finished everything\nor just began, that start is a win.",
+      tryText:"TRY THIS: Add a sticker, star, or doodle\nto a “I Started My Work” chart."
+    }
+  ];
+
+  const app = document.getElementById("lt-school-app");
+  const card = app.querySelector(".lt-book-card");
+  const pageLabel = app.querySelector("#lt-school-page-label");
+  const leftTitle = app.querySelector("#lt-school-left-title");
+  const iconBubble = app.querySelector("#lt-school-icon");
+  const leftText = app.querySelector("#lt-school-left-text");
+  const badge = app.querySelector("#lt-school-badge");
+  const rightTitle = app.querySelector("#lt-school-right-title");
+  const rightText = app.querySelector("#lt-school-right-text");
+  const tryText = app.querySelector("#lt-school-try");
+  const prevBtn = app.querySelector("#lt-school-prev");
+  const nextBtn = app.querySelector("#lt-school-next");
+  const dotsWrap = app.querySelector("#lt-school-dots");
+
+  let current = 0;
+
+  function buildDots(){
+    dotsWrap.innerHTML="";
+    pages.forEach((_,idx)=>{
+      const d=document.createElement("div");
+      d.className="lt-dot"+(idx===0?" active":"");
+      dotsWrap.appendChild(d);
+    });
+  }
+
+  function render(){
+    const p=pages[current];
+    pageLabel.textContent=`Page ${current+1} of ${pages.length}`;
+    leftTitle.textContent=p.leftTitle;
+    iconBubble.textContent=p.icon;
+    leftText.textContent=p.leftText;
+    badge.textContent=p.badge;
+    rightTitle.textContent=p.rightTitle;
+    rightText.textContent=p.rightText;
+    tryText.textContent=p.tryText;
+    prevBtn.disabled=current===0;
+    nextBtn.disabled=current===pages.length-1;
+    const dots=dotsWrap.querySelectorAll(".lt-dot");
+    dots.forEach((d,i)=>d.classList.toggle("active",i===current));
+  }
+
+  function go(delta){
+    const target=current+delta;
+    if(target<0||target>=pages.length) return;
+    card.classList.add("flip");
+    setTimeout(()=>{
+      current=target;
+      render();
+      card.classList.remove("flip");
+    },180);
+  }
+
+  prevBtn.addEventListener("click",()=>go(-1));
+  nextBtn.addEventListener("click",()=>go(1));
+
+  buildDots();
+  render();
+})();
+</script>
+</body>
+</html>
