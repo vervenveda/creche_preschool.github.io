@@ -1,516 +1,700 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Shapes Game – Preschool Celebration (Enhanced)</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Shape Garden Academy — a colorful preschool shape-learning game with tracing, matching, sides, real-world examples, levels, speech, and local progress.">
+<title>Shape Garden Academy</title>
 <style>
-  :root{
-    --purple:#7575e3; --green:#59b360; --tri:#6b5b95; --heart:#ff6b81;
-    --oval:#f7b267; --rect:#7ec8e3; --diamond:#d291bc;
-  }
-  body {
-    font-family: "Comic Sans MS", "Chalkboard SE", system-ui, sans-serif;
-    text-align: center;
-    background: linear-gradient(180deg, #b5b5f0, #fff9e8);
-    margin: 0;
-    overflow-x: hidden;
-  }
-  h1 {
-    color: #ff6b6b;
-    font-size: 4em;
-    margin: 20px 0 10px;
-    text-shadow: 2px 2px #fff;
-  }
-  #question {
-    font-size: 2.2em;
-    margin: 10px 0;
-    color: #fff;
-    text-shadow: 0 2px 6px rgba(0,0,0,.25);
-  }
-  #scoreDisplay{
-    font-size:1.2em;color:#333;margin:6px 0 0;
-  }
-  #statsDisplay{
-    font-size:0.98em;color:#555;margin:2px 0 0;
-  }
+:root{
+  --plum:#6852aa;
+  --violet:#8d6bd4;
+  --rose:#e978aa;
+  --coral:#ff8d74;
+  --sun:#ffd166;
+  --mint:#70d0ad;
+  --aqua:#63c9ca;
+  --sky:#68b5e4;
+  --ink:#332d43;
+  --muted:#71697c;
+  --good:#3caf72;
+  --bad:#d85e6d;
+  --panel:rgba(255,255,255,.92);
+  --shadow:0 22px 58px rgba(68,45,88,.17);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  min-height:100vh;
+  color:var(--ink);
+  font-family:"Comic Sans MS","Trebuchet MS",system-ui,sans-serif;
+  background:
+    radial-gradient(circle at 12% 12%,rgba(255,255,255,.92) 0 5%,transparent 6%),
+    radial-gradient(circle at 88% 14%,rgba(255,255,255,.74) 0 4%,transparent 5%),
+    linear-gradient(145deg,#fff0c7 0%,#f5e6ff 42%,#ddf6ff 100%);
+  overflow-x:hidden;
+}
+button,select{font:inherit}
+button{touch-action:manipulation}
+.sky{
+  position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0;
+}
+.sky span{
+  position:absolute;
+  font-size:clamp(1.2rem,3vw,2.2rem);
+  opacity:.32;
+  animation:float 12s ease-in-out infinite;
+}
+.sky span:nth-child(1){left:4%;top:12%}
+.sky span:nth-child(2){left:18%;top:76%;animation-delay:-3s}
+.sky span:nth-child(3){left:43%;top:7%;animation-delay:-5s}
+.sky span:nth-child(4){left:72%;top:80%;animation-delay:-8s}
+.sky span:nth-child(5){left:90%;top:18%;animation-delay:-10s}
+@keyframes float{50%{transform:translateY(-24px) rotate(7deg) scale(1.08)}}
 
-  /* Mode bars */
-  #modeBar{
-    margin-top:8px;
-    font-size:0.95em;
-    color:#444;
-  }
-  #playModeBar{
-    margin-top:4px;
-    font-size:0.95em;
-    color:#444;
-  }
-  .modeBtn, .playModeBtn{
-    background:#ffffff;
-    border-radius:999px;
-    border:2px solid rgba(0,0,0,0.1);
-    padding:4px 12px;
-    font-size:0.85em;
-    cursor:pointer;
-    margin:0 4px;
-    box-shadow:0 3px 8px rgba(0,0,0,.12);
-  }
-  .modeBtn.active, .playModeBtn.active{
-    background:#fffbcc;
-    border-color:#f6c453;
-    color:#b85a00;
-  }
+.app{
+  position:relative;z-index:1;
+  width:min(1160px,calc(100% - 22px));
+  margin:0 auto;
+  padding:22px 0 48px;
+}
+.hero{
+  color:white;
+  text-align:center;
+  padding:28px 20px 24px;
+  border-radius:32px;
+  background:
+    radial-gradient(circle at 18% 20%,rgba(255,255,255,.18),transparent 22%),
+    linear-gradient(135deg,var(--plum),var(--violet),var(--rose),var(--coral));
+  box-shadow:var(--shadow);
+}
+.hero h1{
+  margin:0;
+  font-size:clamp(2.3rem,7vw,5rem);
+  line-height:.96;
+  letter-spacing:-.05em;
+}
+.hero p{
+  margin:8px auto 0;
+  max-width:800px;
+  color:#fff4fb;
+  line-height:1.6;
+}
+.hero-icons{
+  display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:14px;
+}
+.hero-icons span{
+  width:48px;height:48px;display:grid;place-items:center;
+  border-radius:17px;background:rgba(255,255,255,.16);font-size:1.8rem;
+}
 
-  .shapes {
-    display:flex;justify-content:center;flex-wrap:wrap;
-    gap:30px;margin:30px auto;max-width:760px;
-  }
+.toolbar{
+  display:flex;justify-content:center;flex-wrap:wrap;gap:9px;margin:15px 0;
+}
+button,.pill,select{
+  border-radius:999px;
+  padding:10px 14px;
+  font-weight:850;
+}
+button{
+  border:0;cursor:pointer;
+  background:linear-gradient(135deg,var(--sun),var(--coral));
+  color:#3c2a16;
+  box-shadow:0 7px 18px rgba(94,56,24,.13);
+  transition:.18s ease;
+}
+button:hover{transform:translateY(-2px)}
+button.secondary{background:white;color:var(--plum);border:1px solid #dfd7e8}
+button.good{background:linear-gradient(135deg,#79dc9f,var(--good));color:#123621}
+button.danger{background:white;color:var(--bad);border:1px solid #efc7cd}
+.pill,select{background:white;border:1px solid #ded7e6;color:var(--plum)}
 
-  .shapeTile{
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:6px;
-  }
-  .shapeName{
-    font-size:0.9em;
-    color:#333;
-    text-shadow:1px 1px #fff;
-  }
+.stats{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:9px;margin-bottom:14px;
+}
+.stat{
+  background:rgba(255,255,255,.9);
+  border-radius:18px;padding:11px;text-align:center;
+  box-shadow:0 8px 20px rgba(62,42,81,.08);
+}
+.stat strong{display:block;font-size:1.24rem;color:var(--violet)}
 
-  .shape {
-    width:120px;height:120px;cursor:pointer;
-    transition:transform .25s,box-shadow .25s;
-    box-shadow:0 6px 14px rgba(0,0,0,.12);
-    outline:3px solid rgba(255,255,255,.6);
-    outline-offset:-3px;
-    touch-action:manipulation;
-  }
-  .shape:hover{transform:scale(1.12) rotate(3deg);}
-  .shape:active{transform:scale(1.06);}
+.layout{
+  display:grid;
+  grid-template-columns:minmax(0,1.15fr) minmax(330px,.85fr);
+  gap:16px;
+}
+.panel{
+  background:var(--panel);
+  border:1px solid rgba(255,255,255,.96);
+  border-radius:28px;
+  padding:18px;
+  box-shadow:var(--shadow);
+}
+.challenge-card{
+  min-height:560px;
+  border-radius:26px;
+  padding:20px;
+  text-align:center;
+  background:
+    radial-gradient(circle at 80% 18%,rgba(255,255,255,.8),transparent 25%),
+    linear-gradient(145deg,#fff7d5,#f4ecff,#e6faff);
+}
+.question{
+  font-size:clamp(1.35rem,4vw,2.2rem);
+  color:var(--plum);
+  font-weight:950;
+  margin-bottom:12px;
+}
+.shape-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(135px,1fr));
+  gap:12px;
+}
+.shape-card{
+  min-height:170px;
+  border-radius:22px;
+  background:linear-gradient(145deg,#fff,#fff9ed);
+  border:2px solid #e7ddeb;
+  padding:12px;
+  display:grid;
+  place-items:center;
+  align-content:center;
+  gap:8px;
+  cursor:pointer;
+  transition:.2s ease;
+  box-shadow:0 10px 22px rgba(67,43,87,.08);
+}
+.shape-card:hover{transform:translateY(-4px) rotate(1deg);box-shadow:0 14px 28px rgba(67,43,87,.13)}
+.shape-card.correct{border-color:var(--good);background:#effff4}
+.shape-card.wrong{border-color:var(--bad);background:#fff0f2}
+.shape-name{font-weight:900;color:var(--plum)}
+.shape-visual{
+  width:95px;height:95px;
+  filter:drop-shadow(0 10px 10px rgba(61,41,78,.15));
+}
+.circle{border-radius:50%;background:#7a6ed4}
+.square{background:#5fbe78}
+.rectangle{width:125px;height:80px;background:#69b7df}
+.oval{width:125px;height:82px;border-radius:50%;background:#f2a55d}
+.diamond{background:#d082b9;clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
+.triangle{background:#6d5c9a;clip-path:polygon(50% 0,100% 100%,0 100%)}
+.star{background:#f5c33f;clip-path:polygon(50% 0,61% 35%,98% 35%,68% 57%,79% 91%,50% 72%,21% 91%,32% 57%,2% 35%,39% 35%)}
+.heart{background:#ee6f89;clip-path:path("M50 88 C20 66 0 48 0 24 C0 4 24 -4 50 20 C76 -4 100 4 100 24 C100 48 80 66 50 88 Z")}
+.pentagon{background:#72c8aa;clip-path:polygon(50% 0,98% 36%,80% 100%,20% 100%,2% 36%)}
+.hexagon{background:#e88e69;clip-path:polygon(25% 6.7%,75% 6.7%,100% 50%,75% 93.3%,25% 93.3%,0 50%)}
+.semicircle{height:55px;margin-top:38px;border-radius:95px 95px 0 0;background:#70b7e7}
+.crescent{
+  border-radius:50%;
+  background:#f3d15f;
+  position:relative;
+}
+.crescent::after{
+  content:"";
+  position:absolute;
+  width:75px;height:75px;
+  border-radius:50%;
+  background:#fff9e9;
+  left:30px;top:5px;
+}
+.object-emoji{font-size:4.4rem}
+.feedback{
+  min-height:36px;
+  margin-top:12px;
+  color:var(--plum);
+  font-size:1.05rem;
+  font-weight:900;
+}
+.progress{
+  height:12px;border-radius:999px;overflow:hidden;background:#e9e3ed;
+}
+.progress>div{
+  height:100%;width:0;
+  background:linear-gradient(90deg,var(--rose),var(--sun),var(--mint),var(--sky));
+  transition:width .35s ease;
+}
+.side-stack{display:grid;gap:14px}
+.activity{
+  border-radius:22px;
+  padding:15px;
+  background:linear-gradient(145deg,#fff,#fff9ed);
+  border:1px solid #ebe3ee;
+}
+.activity h2{margin:0 0 7px;color:var(--plum);font-size:1.22rem}
+.level-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.level-card{
+  border-radius:17px;padding:10px;background:white;color:var(--plum);
+  border:2px solid #e4dce9;text-align:left;box-shadow:none;
+}
+.level-card.active{color:white;background:linear-gradient(135deg,var(--violet),var(--rose))}
+.badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{padding:7px 10px;border-radius:999px;background:#f3effb;color:#654b80;font-size:.82rem;font-weight:850}
 
-  /* Hint pulse – soft helper glow */
-  .shapeTile.hint .shape{
-    animation:hintPulse 0.9s ease-in-out infinite;
-  }
-  @keyframes hintPulse{
-    0%{box-shadow:0 6px 14px rgba(0,0,0,.12),0 0 0 2px rgba(255,255,255,0.7);}
-    100%{box-shadow:0 6px 16px rgba(0,0,0,.18),0 0 0 6px rgba(255,255,255,1);}
-  }
-
-  /* Visuals */
-  .circle{background:var(--purple);border-radius:50%;}
-  .square{background:var(--green);}
-  .triangle{
-    width:0;height:0;box-shadow:none;outline:none;
-    border-left:60px solid transparent;
-    border-right:60px solid transparent;
-    border-bottom:120px solid var(--tri);
-  }
-  .star{
-    background:#ffc22e;
-    clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,
-                      79% 91%,50% 72%,21% 91%,32% 57%,
-                      2% 35%,39% 35%);
-  }
-  .heart{position:relative;width:120px;height:100px;margin-top:10px;}
-  .heart::before,.heart::after{
-    content:"";position:absolute;top:0;
-    width:60px;height:100px;background:var(--heart);
-    border-radius:60px 60px 0 0;
-    box-shadow:0 6px 14px rgba(0,0,0,.12);
-    outline:3px solid rgba(255,255,255,.6);
-    outline-offset:-3px;
-  }
-  .heart::before{left:60px;transform:rotate(-45deg);transform-origin:0 100%;}
-  .heart::after{left:0;transform:rotate(45deg);transform-origin:100% 100%;}
-  .oval{background:var(--oval);border-radius:50%/35%;}
-  .rectangle{background:var(--rect);width:160px;height:100px;}
-  .diamond{
-    background: var(--diamond);
-    width: 120px; height: 120px;
-    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
-  }
-
-  #feedback{font-size:1.5em;margin-top:6px;min-height:1.5em;}
-  button{
-    background:#6dd5ed;color:#000;border:none;border-radius:12px;
-    padding:12px 24px;font-size:1.05em;cursor:pointer;margin:10px;
-    transition:background .25s,transform .1s;
-    box-shadow:0 6px 12px rgba(0,0,0,.12);
-  }
-  button:hover{background:#55c2d5;}
-  button:active{transform:scale(.98);}
-  #soundToggle{
-    position:fixed;top:10px;right:10px;font-size:.9em;background:#fff3cd;
-    border:2px solid #f9e3a6;
-  }
-
-  /* Celebration overlay */
-  #celebration{
-    display:none;position:fixed;inset:0;
-    background:rgba(255,255,255,0.96);
-    justify-content:center;align-items:center;flex-direction:column;
-    z-index:9999;
-  }
-  #celebration h2{
-    font-size:3em;color:#ff6b6b;text-shadow:2px 2px #fff;margin:0 0 8px;
-  }
-  .confetti{
-    position:fixed;width:10px;height:10px;border-radius:50%;
-    opacity:.9;z-index:10000;pointer-events:none;
-    transition:top 2s ease-out,left 2s linear,opacity 2s;
-  }
+.trace-wrap{
+  position:relative;
+  border-radius:22px;
+  overflow:hidden;
+  background:
+    linear-gradient(#ffffffd9,#ffffffd9),
+    repeating-linear-gradient(0deg,transparent 0 34px,#d8e8f3 35px 36px);
+  border:2px solid #e2d8ea;
+}
+#traceCanvas{
+  display:block;
+  width:100%;
+  height:300px;
+  touch-action:none;
+  cursor:crosshair;
+}
+.trace-controls{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:10px}
+.modal{
+  position:fixed;inset:0;display:none;place-items:center;padding:16px;
+  background:rgba(41,28,50,.66);z-index:40;
+}
+.modal.open{display:grid}
+.sheet{
+  width:min(760px,100%);
+  max-height:90vh;
+  overflow:auto;
+  border-radius:28px;
+  padding:20px;
+  background:white;
+  box-shadow:var(--shadow);
+}
+.library-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:10px;
+}
+.library-item{
+  padding:12px;border-radius:18px;background:#faf7ff;border:1px solid #e8dfee;
+}
+.site-footer{
+  margin-top:16px;padding:15px 12px;text-align:center;border-radius:18px;
+  background:rgba(255,255,255,.78);border:1px solid rgba(90,60,120,.12);
+  color:#665b72;font-size:.84rem;line-height:1.5;
+}
+.site-footer strong{color:#503a76}
+.spark{
+  position:fixed;pointer-events:none;z-index:30;font-size:28px;
+  animation:spark 1.1s ease-out forwards;
+}
+@keyframes spark{to{opacity:0;transform:translateY(-100px) rotate(35deg) scale(1.4)}}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.level-grid{grid-template-columns:1fr}.shape-grid{grid-template-columns:repeat(2,1fr)}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important}}
 </style>
 </head>
 <body>
+<div class="sky" aria-hidden="true"><span>⭐</span><span>🌈</span><span>🔺</span><span>✨</span><span>🔵</span></div>
 
-<h1>🎨 The Shapes Game 🎨</h1>
-<p id="question">Click the correct shape!</p>
-<p id="scoreDisplay">Score: 0</p>
-<p id="statsDisplay">Total shapes found: 0</p>
+<main class="app">
+  <header class="hero">
+    <h1>Shape Garden Academy</h1>
+    <p>Find, match, count, compare, and trace shapes through four colorful preschool learning levels.</p>
+    <div class="hero-icons"><span>🔵</span><span>🔺</span><span>⭐</span><span>💜</span></div>
+  </header>
 
-<div id="modeBar">
-  Level:
-  <button class="modeBtn active" data-mode="easy">Tiny</button>
-  <button class="modeBtn" data-mode="medium">Preschool</button>
-  <button class="modeBtn" data-mode="hard">Explorer</button>
-</div>
-<div id="playModeBar">
-  Play style:
-  <button class="playModeBtn active" data-play="challenge">Challenge</button>
-  <button class="playModeBtn" data-play="practice">Practice only</button>
-</div>
+  <div class="toolbar">
+    <label class="pill">Activity
+      <select id="modeSelect">
+        <option value="find">Find the Shape</option>
+        <option value="object">Match Real Objects</option>
+        <option value="sides">Count the Sides</option>
+        <option value="name">Name the Shape</option>
+      </select>
+    </label>
+    <button id="hearBtn">🔊 Hear Question</button>
+    <button id="hintBtn" class="secondary">💡 Hint</button>
+    <button id="nextBtn" class="good">Next Round ➡</button>
+    <button id="libraryBtn" class="secondary">📚 Shape Library</button>
+    <button id="resetBtn" class="danger">↺ Reset</button>
+  </div>
 
-<div class="shapes" id="shapeContainer"></div>
+  <section class="stats">
+    <div class="stat"><strong id="scoreStat">0</strong>Score</div>
+    <div class="stat"><strong id="streakStat">0</strong>Streak</div>
+    <div class="stat"><strong id="starsStat">0</strong>Stars</div>
+    <div class="stat"><strong id="foundStat">0</strong>Shapes Mastered</div>
+    <div class="stat"><strong id="roundStat">1</strong>Round</div>
+  </section>
 
-<p id="feedback"></p>
-<button id="nextBtn">Next Shape ➜</button>
-<button id="soundToggle">🔈 Sound On</button>
+  <div class="layout">
+    <section class="panel">
+      <div class="challenge-card">
+        <div class="question" id="question">Can you find the circle?</div>
+        <div class="shape-grid" id="shapeGrid"></div>
+        <div class="feedback" id="feedback" aria-live="polite"></div>
+      </div>
+    </section>
 
-<!-- Celebration screen -->
-<div id="celebration" aria-modal="true" role="dialog">
-  <h2>🌟 You’re a Shape Star! 🌟</h2>
-  <p style="font-size:1.4em;">You got 5 right in a row!</p>
-  <button onclick="closeCelebration()">Play Again</button>
+    <aside class="side-stack">
+      <section class="activity">
+        <h2>🌈 Learning Levels</h2>
+        <div class="level-grid" id="levelGrid"></div>
+      </section>
+
+      <section class="activity">
+        <h2>✏️ Shape Tracing</h2>
+        <div class="trace-wrap">
+          <canvas id="traceCanvas" width="620" height="600" aria-label="Shape tracing canvas"></canvas>
+        </div>
+        <div class="trace-controls">
+          <button id="clearTrace" class="secondary">🧽 Clear</button>
+          <button id="checkTrace">✓ Check Trace</button>
+          <button id="guideBtn" class="secondary">👁 Guide On</button>
+        </div>
+        <div class="feedback" id="traceMessage">Trace the current shape.</div>
+      </section>
+
+      <section class="activity">
+        <h2>🏆 Shape Progress</h2>
+        <div class="progress"><div id="progressBar"></div></div>
+        <div class="feedback" id="progressText"></div>
+        <div class="badges" id="badges"></div>
+      </section>
+    </aside>
+  </div>
+
+  <footer class="site-footer">
+    <strong>© 2026 Verve N Veda · Khaemenes Academy · Jennifer Kay Pearl</strong><br>
+    All Rights Reserved.
+  </footer>
+</main>
+
+<div class="modal" id="libraryModal">
+  <div class="sheet">
+    <h2>Shape Library</h2>
+    <p>Explore each shape, its number of sides, and something in the real world that matches it.</p>
+    <div class="library-grid" id="libraryGrid"></div>
+    <div style="text-align:center;margin-top:14px"><button id="closeLibrary" class="secondary">Close</button></div>
+  </div>
 </div>
 
 <script>
-/* ===============================
-   Stable Speech + WebAudio Pop
-   =============================== */
-function speak(text){
-  try{
-    window.speechSynthesis.cancel();
-    const u=new SpeechSynthesisUtterance(text);
-    u.lang="en-US";u.rate=.95;u.pitch=1.1;
-    window.speechSynthesis.speak(u);
-  }catch{}
-}
-let audioStarted=false;
-let ac; // AudioContext
+(() => {
+"use strict";
 
-function ensureAudio(){
-  if(!ac){
-    try{ ac=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){}
-  }
-}
-function popChime(){
-  if(!ac) return false;
-  try{
-    const o=ac.createOscillator();
-    const g=ac.createGain();
-    o.connect(g); g.connect(ac.destination);
-    o.type="sine";
-    o.frequency.setValueAtTime(880, ac.currentTime);
-    g.gain.setValueAtTime(0.0001, ac.currentTime);
-    g.gain.linearRampToValueAtTime(0.18, ac.currentTime+0.01);
-    g.gain.exponentialRampToValueAtTime(0.0001, ac.currentTime+0.15);
-    o.start(); o.stop(ac.currentTime+0.16);
-    return true;
-  }catch(e){ return false; }
-}
-
-/* Ambient music toggle (remote mp3; remove if you want fully offline) */
-let bgSound=null, soundOn=true;
-function toggleAmbientSound(){
-  ensureAudio();
-  if(!bgSound){
-    bgSound=new Audio("https://cdn.pixabay.com/audio/2021/09/29/audio_9a33dfb74a.mp3");
-    bgSound.loop=true; bgSound.volume=0.25;
-    bgSound.play().catch(()=>{});
-    audioStarted=true;
-    document.getElementById("soundToggle").textContent="🔈 Sound On";
-  }else{
-    soundOn=!soundOn;
-    if(soundOn) bgSound.play().catch(()=>{}); else bgSound.pause();
-    document.getElementById("soundToggle").textContent = soundOn ? "🔈 Sound On" : "🔇 Sound Off";
-  }
-}
-
-/* ===============================
-   Game Data + Logic
-   =============================== */
-const ALL_SHAPES=["circle","square","triangle","star","heart","oval","rectangle","diamond"];
-const SHAPE_LABELS={
-  circle:"Circle",
-  square:"Square",
-  triangle:"Triangle",
-  star:"Star",
-  heart:"Heart",
-  oval:"Oval",
-  rectangle:"Rectangle",
-  diamond:"Diamond"
-};
-const STATS_KEY="SHAPES_STATS_V1";
-let renderedShapes=[];   // shapes shown this round
-let correctShape="";     // chosen from renderedShapes only
-let score=0;             // streak for celebration in challenge mode
-let roundLocked=false;   // prevents double-scoring on same round
-let mistakesThisRound=0;
-let difficulty="easy";
-let playMode="challenge"; // "challenge" | "practice"
-let stats = loadStats();
-
-/* Stats helpers */
-function loadStats(){
-  try{
-    const raw=localStorage.getItem(STATS_KEY);
-    if(!raw) return {totalCorrect:0};
-    const v=JSON.parse(raw);
-    if(typeof v.totalCorrect!=="number") v.totalCorrect=0;
-    return v;
-  }catch(e){
-    return {totalCorrect:0};
-  }
-}
-function saveStats(){
-  try{
-    localStorage.setItem(STATS_KEY,JSON.stringify(stats));
-  }catch(e){}
-}
-function updateStatsDisplay(){
-  document.getElementById("statsDisplay").textContent =
-    "Total shapes found: "+(stats.totalCorrect||0);
-}
-
-/* Text lines */
-const praise=[
-  "Yay! You did it!","Awesome work!","Perfect!","Great job, little explorer!",
-  "Wow, you’re a shape superstar!","You’re shining bright!","Fantastic focus!",
-  "High five, shape hero!","You’re learning magic!","That’s amazing teamwork!",
-  "Super thinking!","Bravo! You’re unstoppable!","You did that like a pro!",
-  "Hooray! Keep going!","You’re growing smarter every click!",
-  "Splendid shapes, super friend!","What a clever move!","You’re on a roll!",
-  "Look at you go!","Brilliant! You’re full of sparkle!"
+const SHAPES = [
+  {id:"circle",name:"Circle",sides:0,object:"⚽",example:"ball"},
+  {id:"square",name:"Square",sides:4,object:"🪟",example:"window"},
+  {id:"triangle",name:"Triangle",sides:3,object:"🍕",example:"pizza slice"},
+  {id:"rectangle",name:"Rectangle",sides:4,object:"🚪",example:"door"},
+  {id:"oval",name:"Oval",sides:0,object:"🥚",example:"egg"},
+  {id:"diamond",name:"Diamond",sides:4,object:"🔶",example:"kite shape"},
+  {id:"star",name:"Star",sides:10,object:"⭐",example:"star"},
+  {id:"heart",name:"Heart",sides:0,object:"💗",example:"heart symbol"},
+  {id:"pentagon",name:"Pentagon",sides:5,object:"🏠",example:"house outline"},
+  {id:"hexagon",name:"Hexagon",sides:6,object:"🍯",example:"honeycomb"},
+  {id:"semicircle",name:"Semicircle",sides:1,object:"🌅",example:"half sun"},
+  {id:"crescent",name:"Crescent",sides:0,object:"🌙",example:"moon"}
 ];
-const tryAgain=["Oops! Try again!","Almost there!","Not quite!","Hmm, try again, friend!"];
 
-function shuffle(a){ return a.sort(()=>Math.random()-.5); }
+const LEVELS = [
+  {name:"Tiny Shapes",icon:"🌱",ids:["circle","square","triangle","star"]},
+  {name:"Preschool Shapes",icon:"🌼",ids:["circle","square","triangle","star","heart","oval"]},
+  {name:"Shape Explorer",icon:"🧭",ids:["circle","square","triangle","star","heart","oval","rectangle","diamond"]},
+  {name:"Shape Scholar",icon:"🏆",ids:SHAPES.map(s=>s.id)}
+];
 
-/* Score text depending on mode */
-function refreshScoreText(){
-  const el=document.getElementById("scoreDisplay");
-  if(playMode==="challenge"){
-    el.textContent="Score: "+score;
-  }else{
-    el.textContent="Practice mode – just tapping and learning!";
-  }
+const state = {
+  level:Number(localStorage.getItem("shapeGardenLevel")||0),
+  mode:localStorage.getItem("shapeGardenMode")||"find",
+  score:Number(localStorage.getItem("shapeGardenScore")||0),
+  streak:Number(localStorage.getItem("shapeGardenStreak")||0),
+  stars:Number(localStorage.getItem("shapeGardenStars")||0),
+  round:Number(localStorage.getItem("shapeGardenRound")||1),
+  mastered:new Set(JSON.parse(localStorage.getItem("shapeGardenMastered")||"[]")),
+  current:null,
+  locked:false,
+  guide:true
+};
+
+const $=id=>document.getElementById(id);
+const canvas=$("traceCanvas");
+const ctx=canvas.getContext("2d");
+let drawing=false;
+let tracePoints=0;
+
+function save(){
+  localStorage.setItem("shapeGardenLevel",String(state.level));
+  localStorage.setItem("shapeGardenMode",state.mode);
+  localStorage.setItem("shapeGardenScore",String(state.score));
+  localStorage.setItem("shapeGardenStreak",String(state.streak));
+  localStorage.setItem("shapeGardenStars",String(state.stars));
+  localStorage.setItem("shapeGardenRound",String(state.round));
+  localStorage.setItem("shapeGardenMastered",JSON.stringify([...state.mastered]));
 }
 
-/* Difficulty control */
-function setDifficulty(mode){
-  difficulty=mode;
-  document.querySelectorAll(".modeBtn").forEach(btn=>{
-    btn.classList.toggle("active", btn.dataset.mode===mode);
-  });
-  score=0;
-  refreshScoreText();
-  nextRound();
+function speak(text){
+  if(!("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  const voices=speechSynthesis.getVoices();
+  u.voice=voices.find(v=>/child|kid|jenny|samantha|aria|female/i.test(v.name)&&/^en/i.test(v.lang))
+    ||voices.find(v=>/^en/i.test(v.lang))||voices[0]||null;
+  u.rate=.86;u.pitch=1.1;
+  speechSynthesis.speak(u);
 }
 
-/* Play mode control */
-function setPlayMode(mode){
-  playMode=mode;
-  document.querySelectorAll(".playModeBtn").forEach(btn=>{
-    btn.classList.toggle("active", btn.dataset.play===mode);
-  });
-  score=0;
-  refreshScoreText();
+function shuffle(a){
+  const c=[...a];
+  for(let i=c.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[c[i],c[j]]=[c[j],c[i]]}
+  return c;
 }
 
-/* Build grid and return shapes rendered */
-function buildShapes(){
-  const container=document.getElementById("shapeContainer");
-  container.innerHTML="";
-  let pool;
-  if(difficulty==="easy"){
-    pool=["circle","square","triangle","star"];
-  }else if(difficulty==="medium"){
-    pool=["circle","square","triangle","star","heart","oval"];
-  }else{
-    pool=[...ALL_SHAPES];
-  }
-  pool=shuffle(pool);
-  let count = (difficulty==="easy") ? 3 : (difficulty==="medium" ? 4 : Math.min(pool.length,8));
-  renderedShapes = pool.slice(0,count);
-
-  renderedShapes.forEach(name=>{
-    const tile=document.createElement("div");
-    tile.className="shapeTile";
-    tile.dataset.shape=name;
-
-    const div=document.createElement("div");
-    const gentle = (name==="triangle") ? 6 : 10;
-    div.className="shape "+name;
-    div.style.transform = name==="triangle"
-      ? `rotate(${(Math.random()*gentle - gentle/2)}deg)`
-      : `rotate(${(Math.random()*20 - 10)}deg)`;
-
-    const label=document.createElement("div");
-    label.className="shapeName";
-    label.textContent = SHAPE_LABELS[name] || name;
-
-    tile.appendChild(div);
-    tile.appendChild(label);
-
-    tile.addEventListener("click",()=>checkAnswer(name),{passive:true});
-    container.appendChild(tile);
-  });
-  return renderedShapes;
+function pool(){
+  return LEVELS[state.level].ids.map(id=>SHAPES.find(s=>s.id===id));
 }
 
-function nextRound(){
-  ensureAudio();
-  roundLocked=false;
-  mistakesThisRound=0;
-  // clear old hints
-  document.querySelectorAll(".shapeTile.hint").forEach(el=>el.classList.remove("hint"));
-
-  const shown=buildShapes();
-  correctShape = shown[Math.floor(Math.random()*shown.length)];
-  document.getElementById("question").textContent = "Can you find the " + correctShape + "?";
-  document.getElementById("feedback").textContent = "";
-  speak("Can you find the " + correctShape + "?");
+function questionText(){
+  const s=state.current;
+  if(state.mode==="find") return `Can you find the ${s.name.toLowerCase()}?`;
+  if(state.mode==="object") return `Which shape matches a ${s.example}?`;
+  if(state.mode==="sides") return `Which shape has ${s.sides} ${s.sides===1?"side":"sides"}?`;
+  return `Which shape is called ${s.name}?`;
 }
 
-function showHint(){
-  const container=document.getElementById("shapeContainer");
-  const kids=container.children;
-  for(let i=0;i<kids.length;i++){
-    const tile=kids[i];
-    if(tile.dataset.shape===correctShape){
-      tile.classList.add("hint");
+function renderRound(){
+  const available=pool();
+  state.current=available[Math.floor(Math.random()*available.length)];
+  state.locked=false;
+  $("question").textContent=questionText();
+  $("feedback").textContent="";
+  $("modeSelect").value=state.mode;
+
+  const count=state.level===0?3:state.level===1?4:state.level===2?6:8;
+  let shown=shuffle(available.filter(s=>s.id!==state.current.id)).slice(0,count-1);
+  shown=shuffle([state.current,...shown]);
+
+  const grid=$("shapeGrid");grid.innerHTML="";
+  shown.forEach(shape=>{
+    const card=document.createElement("button");
+    card.className="shape-card";
+    card.dataset.id=shape.id;
+
+    if(state.mode==="object"){
+      card.innerHTML=`<div class="object-emoji">${shape.object}</div><div class="shape-name">${shape.example}</div>`;
+    }else if(state.mode==="sides"){
+      card.innerHTML=`<div class="shape-visual ${shape.id}"></div><div class="shape-name">${shape.sides} ${shape.sides===1?"side":"sides"}</div>`;
     }else{
-      tile.classList.remove("hint");
+      card.innerHTML=`<div class="shape-visual ${shape.id}"></div><div class="shape-name">${state.mode==="name"?shape.name:""}</div>`;
     }
-  }
+
+    card.addEventListener("click",()=>checkAnswer(shape,card));
+    grid.appendChild(card);
+  });
+
+  clearTrace();
+  renderLevels();
+  updateStats();
+  save();
+  speak(questionText());
 }
 
-function checkAnswer(choice){
-  if(roundLocked) return; // don’t score twice on same round
-
-  if(choice===correctShape){
-    roundLocked = true;
-    // clear hint glow
-    document.querySelectorAll(".shapeTile.hint").forEach(el=>el.classList.remove("hint"));
-
-    const line=praise[Math.floor(Math.random()*praise.length)];
-    document.getElementById("feedback").textContent="✅ "+line;
-
-    const ok = popChime();
-    if(ok){
-      setTimeout(()=>speak(line), 170);
-    }else{
-      speak(line);
-    }
-
-    confetti();
-
-    if(playMode==="challenge"){
-      score++;
-      stats.totalCorrect = (stats.totalCorrect||0) + 1;
-      saveStats();
-      updateStatsDisplay();
-    }
-
-    refreshScoreText();
-
-    if(playMode==="challenge" && score>=5){
-      showCelebration();
-    }else{
-      setTimeout(nextRound, 1100);
-    }
+function checkAnswer(shape,card){
+  if(state.locked) return;
+  const correct=shape.id===state.current.id;
+  if(correct){
+    state.locked=true;
+    card.classList.add("correct");
+    state.score+=10;
+    state.streak++;
+    state.stars+=2;
+    state.mastered.add(shape.id);
+    $("feedback").textContent=`Wonderful! That is the ${shape.name}.`;
+    speak(`Wonderful. That is the ${shape.name}.`);
+    sparkle(card);
+    updateStats();
+    save();
+    setTimeout(()=>{state.round++;renderRound()},1100);
   }else{
-    mistakesThisRound++;
-    const line=tryAgain[Math.floor(Math.random()*tryAgain.length)];
-    document.getElementById("feedback").textContent="❌ "+line;
-    speak(line);
+    card.classList.add("wrong");
+    state.streak=0;
+    $("feedback").textContent="Good try. Look again.";
+    speak("Good try. Look again.");
+    setTimeout(()=>card.classList.remove("wrong"),600);
+    updateStats();
+    save();
+  }
+}
 
-    if(playMode==="challenge"){
-      score=0;
+function renderLevels(){
+  const box=$("levelGrid");box.innerHTML="";
+  LEVELS.forEach((level,index)=>{
+    const b=document.createElement("button");
+    b.className="level-card"+(index===state.level?" active":"");
+    b.innerHTML=`<strong>${level.icon} ${level.name}</strong><br><small>${level.ids.length} shapes</small>`;
+    b.addEventListener("click",()=>{state.level=index;renderRound()});
+    box.appendChild(b);
+  });
+}
+
+function updateStats(){
+  $("scoreStat").textContent=state.score;
+  $("streakStat").textContent=state.streak;
+  $("starsStat").textContent=state.stars;
+  $("foundStat").textContent=state.mastered.size;
+  $("roundStat").textContent=state.round;
+  $("progressBar").style.width=(state.mastered.size/SHAPES.length*100)+"%";
+  $("progressText").textContent=`${state.mastered.size} of ${SHAPES.length} shapes explored.`;
+
+  const badges=[];
+  if(state.mastered.size>=3)badges.push("🔵 Shape Spotter");
+  if(state.streak>=5)badges.push("🔥 Five-in-a-Row");
+  if(state.mastered.size>=8)badges.push("🧭 Shape Explorer");
+  if(state.mastered.size===SHAPES.length)badges.push("🏆 Shape Scholar");
+  $("badges").innerHTML=badges.length?badges.map(x=>`<span class="badge">${x}</span>`).join(""):'<span class="badge">Play to earn shape badges.</span>';
+}
+
+function sparkle(target){
+  const r=target.getBoundingClientRect();
+  ["⭐","✨","🌈","💫"].forEach((symbol,index)=>{
+    const s=document.createElement("span");
+    s.className="spark";
+    s.textContent=symbol;
+    s.style.left=(r.left+r.width/2+(index-1.5)*26)+"px";
+    s.style.top=(r.top+r.height/2)+"px";
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(),1150);
+  });
+}
+
+function buildLibrary(){
+  $("libraryGrid").innerHTML=SHAPES.map(s=>`
+    <div class="library-item">
+      <div class="shape-visual ${s.id}" style="margin:0 auto 8px"></div>
+      <strong>${s.name}</strong><br>
+      <span>${s.sides} ${s.sides===1?"side":"sides"} · ${s.object} ${s.example}</span>
+    </div>
+  `).join("");
+}
+
+/* Tracing */
+function resizeCanvas(){
+  const rect=canvas.getBoundingClientRect();
+  const dpr=Math.max(1,window.devicePixelRatio||1);
+  canvas.width=Math.round(rect.width*dpr);
+  canvas.height=Math.round(rect.height*dpr);
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  drawGuide();
+}
+window.addEventListener("resize",resizeCanvas);
+
+function drawShapePath(shape,w,h){
+  const cx=w/2,cy=h/2,r=Math.min(w,h)*.3;
+  ctx.beginPath();
+  if(shape==="circle"||shape==="oval"){
+    ctx.ellipse(cx,cy,shape==="oval"?r*1.25:r,shape==="oval"?r*.8:r,0,0,Math.PI*2);
+  }else if(shape==="square"||shape==="rectangle"){
+    const ww=shape==="rectangle"?r*2.5:r*2;
+    const hh=shape==="rectangle"?r*1.35:r*2;
+    ctx.rect(cx-ww/2,cy-hh/2,ww,hh);
+  }else if(shape==="triangle"){
+    ctx.moveTo(cx,cy-r);ctx.lineTo(cx+r,cy+r);ctx.lineTo(cx-r,cy+r);ctx.closePath();
+  }else if(shape==="diamond"){
+    ctx.moveTo(cx,cy-r);ctx.lineTo(cx+r,cy);ctx.lineTo(cx,cy+r);ctx.lineTo(cx-r,cy);ctx.closePath();
+  }else if(shape==="pentagon"||shape==="hexagon"){
+    const sides=shape==="pentagon"?5:6;
+    for(let i=0;i<sides;i++){
+      const a=-Math.PI/2+i*2*Math.PI/sides;
+      const x=cx+Math.cos(a)*r,y=cy+Math.sin(a)*r;
+      if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
     }
-    refreshScoreText();
-
-    // after a miss, gently show the correct shape
-    showHint();
+    ctx.closePath();
+  }else if(shape==="star"){
+    for(let i=0;i<10;i++){
+      const rr=i%2===0?r:r*.45;
+      const a=-Math.PI/2+i*Math.PI/5;
+      const x=cx+Math.cos(a)*rr,y=cy+Math.sin(a)*rr;
+      if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);
+    }
+    ctx.closePath();
+  }else if(shape==="heart"){
+    ctx.moveTo(cx,cy+r*.85);
+    ctx.bezierCurveTo(cx-r*1.2,cy, cx-r*.95,cy-r*.9, cx,cy-r*.25);
+    ctx.bezierCurveTo(cx+r*.95,cy-r*.9, cx+r*1.2,cy, cx,cy+r*.85);
+  }else if(shape==="semicircle"){
+    ctx.arc(cx,cy,r,Math.PI,0);ctx.lineTo(cx-r,cy);ctx.closePath();
+  }else if(shape==="crescent"){
+    ctx.arc(cx,cy,r,-Math.PI/2,Math.PI/2);
+    ctx.arc(cx+r*.4,cy,r*.82,Math.PI/2,-Math.PI/2,true);
+    ctx.closePath();
   }
 }
 
-/* Celebration */
-function showCelebration(){
-  const c=document.getElementById("celebration");
-  c.style.display="flex";
-  speak("You’re a shape star!");
-  confetti(60);
+function drawGuide(){
+  const rect=canvas.getBoundingClientRect();
+  ctx.clearRect(0,0,rect.width,rect.height);
+  if(!state.guide||!state.current)return;
+  ctx.save();
+  ctx.strokeStyle="rgba(109,85,181,.35)";
+  ctx.lineWidth=5;
+  ctx.setLineDash([12,10]);
+  drawShapePath(state.current.id,rect.width,rect.height);
+  ctx.stroke();
+  ctx.restore();
 }
-function closeCelebration(){
-  document.getElementById("celebration").style.display="none";
-  score=0;
-  refreshScoreText();
-  nextRound();
+function clearTrace(){
+  tracePoints=0;
+  drawGuide();
+  $("traceMessage").textContent="Trace the current shape.";
 }
+function pos(e){
+  const r=canvas.getBoundingClientRect();
+  return{x:e.clientX-r.left,y:e.clientY-r.top};
+}
+canvas.addEventListener("pointerdown",e=>{drawing=true;const p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y)});
+canvas.addEventListener("pointermove",e=>{
+  if(!drawing)return;
+  const p=pos(e);
+  ctx.lineCap="round";ctx.lineJoin="round";ctx.strokeStyle="#e566a0";ctx.lineWidth=12;
+  ctx.lineTo(p.x,p.y);ctx.stroke();tracePoints++;
+});
+canvas.addEventListener("pointerup",()=>drawing=false);
+canvas.addEventListener("pointerleave",()=>drawing=false);
 
-/* Confetti */
-function confetti(amount=25){
-  const colors=["#ff6b6b","#ffd93d","#59b360","#6dd5ed"];
-  for(let i=0;i<amount;i++){
-    const p=document.createElement("div");
-    p.className="confetti";
-    p.style.background=colors[Math.floor(Math.random()*colors.length)];
-    p.style.left=Math.random()*window.innerWidth+"px";
-    p.style.top="-20px";
-    document.body.appendChild(p);
-    requestAnimationFrame(()=>{
-      p.style.top=window.innerHeight+"px";
-      p.style.left=Math.random()*window.innerWidth+"px";
-      p.style.opacity=0;
-    });
-    setTimeout(()=>p.remove(),2000);
+$("clearTrace").addEventListener("click",clearTrace);
+$("checkTrace").addEventListener("click",()=>{
+  if(tracePoints<20){
+    $("traceMessage").textContent="Keep tracing a little more.";
+    speak("Keep tracing a little more.");
+    return;
   }
-}
-
-/* Wire up buttons */
-document.getElementById('nextBtn').addEventListener('click',()=>{
-  if(!audioStarted){ ensureAudio(); toggleAmbientSound(); }
-  nextRound();
+  $("traceMessage").textContent=`Beautiful ${state.current.name} tracing!`;
+  state.stars+=2;
+  state.mastered.add(state.current.id);
+  speak(`Beautiful ${state.current.name} tracing.`);
+  updateStats();save();
 });
-document.getElementById('soundToggle').addEventListener('click',()=>{
-  if(!audioStarted){ ensureAudio(); }
-  toggleAmbientSound();
-});
-document.querySelectorAll(".modeBtn").forEach(btn=>{
-  btn.addEventListener("click",()=>setDifficulty(btn.dataset.mode));
-});
-document.querySelectorAll(".playModeBtn").forEach(btn=>{
-  btn.addEventListener("click",()=>setPlayMode(btn.dataset.play));
+$("guideBtn").addEventListener("click",()=>{
+  state.guide=!state.guide;
+  $("guideBtn").textContent=state.guide?"👁 Guide On":"👁 Guide Off";
+  clearTrace();
 });
 
-/* Kick off first round */
-updateStatsDisplay();
-refreshScoreText();
-nextRound();
+$("modeSelect").addEventListener("change",e=>{state.mode=e.target.value;renderRound()});
+$("hearBtn").addEventListener("click",()=>speak(questionText()));
+$("hintBtn").addEventListener("click",()=>{
+  document.querySelectorAll(".shape-card").forEach(card=>{
+    if(card.dataset.id===state.current.id)card.style.outline="5px solid #ffd166";
+    else card.style.outline="";
+  });
+  speak(`Look for the ${state.current.name}.`);
+});
+$("nextBtn").addEventListener("click",()=>{state.round++;renderRound()});
+$("libraryBtn").addEventListener("click",()=>{$("libraryModal").classList.add("open");buildLibrary()});
+$("closeLibrary").addEventListener("click",()=>$("libraryModal").classList.remove("open"));
+$("libraryModal").addEventListener("click",e=>{if(e.target===$("libraryModal"))$("libraryModal").classList.remove("open")});
+$("resetBtn").addEventListener("click",()=>{
+  if(!confirm("Reset all Shape Garden progress?"))return;
+  state.level=0;state.mode="find";state.score=0;state.streak=0;state.stars=0;state.round=1;state.mastered.clear();
+  save();renderRound();
+});
+
+requestAnimationFrame(()=>{resizeCanvas();renderRound()});
+})();
 </script>
 </body>
 </html>
