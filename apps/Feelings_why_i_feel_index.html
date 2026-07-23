@@ -1,1025 +1,194 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Little Tikes Life Skills — When My Feelings Get Big</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <style>
-    :root{
-      --bg:#fefaf3;
-      --ink:#2c2430;
-      --accent:#ff9fb8;
-      --accent-soft:#ffe3ec;
-      --soft-blue:#d7ecff;
-      --soft-lilac:#e4dcff;
-      --radius:21px;
-      --shadow:0 14px 33px rgba(0,0,0,0.12);
-    }
-
-    *{box-sizing:border-box;}
-
-    body{
-      margin:0;
-      min-height:100vh;
-      font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
-      background:radial-gradient(circle at top,#fffdf8 0%,#fbeff7 40%,#f3def1 100%);
-      color:var(--ink);
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      padding:24px 12px 40px;
-    }
-
-    .app-shell{
-      width:100%;
-      max-width:980px;
-      text-align:center;
-    }
-
-    .lt-badge{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding:6px 16px;
-      border-radius:999px;
-      background:var(--accent-soft);
-      color:#8c365a;
-      font-size:13px;
-      letter-spacing:0.08em;
-      text-transform:uppercase;
-      margin-bottom:8px;
-    }
-
-    h1.app-title{
-      margin:4px 0 2px;
-      font-size:27px;
-      letter-spacing:0.08em;
-      text-transform:uppercase;
-    }
-
-    .app-subtitle{
-      margin:0 0 18px;
-      font-size:15px;
-      color:#6c5c6f;
-    }
-
-    /* Book layout */
-
-    .book-wrap{
-      margin:0 auto;
-      margin-top:10px;
-      max-width:920px;
-      background:#fffdf8;
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      padding:18px 18px 22px;
-      border:1px solid rgba(255,159,184,0.5);
-    }
-
-    .book-inner{
-      display:flex;
-      gap:18px;
-      align-items:stretch;
-      justify-content:center;
-      transition:transform 0.4s ease, box-shadow 0.4s ease;
-    }
-
-    .book-inner.page-turn{
-      transform:scale(0.99) rotateY(2deg);
-      box-shadow:0 10px 30px rgba(0,0,0,0.18);
-    }
-
-    .page{
-      flex:1 1 0;
-      background:#fffcf5;
-      border-radius:16px;
-      padding:18px 16px 20px;
-      position:relative;
-      overflow:hidden;
-      border:1px solid rgba(0,0,0,0.04);
-    }
-
-    .page-left{
-      background:linear-gradient(145deg,#ffeaf6,#fff7fd);
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-      align-items:center;
-      text-align:center;
-    }
-
-    .page-right{
-      background:#fffcf5;
-      text-align:left;
-    }
-
-    .page-label{
-      font-size:11px;
-      letter-spacing:0.14em;
-      text-transform:uppercase;
-      color:#a05a7a;
-      margin-bottom:6px;
-    }
-
-    .page-title{
-      font-size:20px;
-      font-weight:700;
-      margin:4px 0 8px;
-    }
-
-    /* Feelings graphic */
-
-    .feelings-graphic{
-      margin-top:8px;
-      width:100%;
-      max-width:220px;
-      aspect-ratio:4/3;
-      border-radius:18px;
-      background:radial-gradient(circle at 20% 20%,#ffd1e3 0,#ffd1e3 22%,transparent 40%),
-                 radial-gradient(circle at 70% 30%,#d7ecff 0,#d7ecff 25%,transparent 45%),
-                 radial-gradient(circle at 50% 70%,#e4dcff 0,#e4dcff 30%,transparent 52%),
-                 linear-gradient(145deg,#ffb9d3,#ffe6f2);
-      position:relative;
-      overflow:hidden;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-
-    .feeling-face{
-      width:90px;
-      height:90px;
-      border-radius:50%;
-      background:#fffdf8;
-      border:3px solid rgba(214,116,140,0.9);
-      box-shadow:0 6px 16px rgba(0,0,0,0.12);
-      position:relative;
-    }
-
-    .face-eye{
-      width:11px;
-      height:15px;
-      border-radius:999px;
-      border:3px solid #4c3044;
-      border-top:none;
-      position:absolute;
-      top:28px;
-    }
-
-    .face-eye.left{left:26px;}
-    .face-eye.right{right:26px;}
-
-    .face-mouth{
-      position:absolute;
-      left:50%;
-      top:56px;
-      width:42px;
-      height:22px;
-      border-radius:0 0 42px 42px;
-      border:3px solid #4c3044;
-      border-top:none;
-      transform:translateX(-50%);
-    }
-
-    .calm-cloud{
-      position:absolute;
-      bottom:-10px;
-      right:-4px;
-      width:70px;
-      height:40px;
-      background:#ffffff;
-      border-radius:50px;
-      box-shadow:0 4px 10px rgba(0,0,0,0.1);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:10px;
-      font-weight:600;
-      color:#a05a7a;
-      padding:6px;
-    }
-
-    .step-tag{
-      font-size:11px;
-      color:#9b8a9e;
-      margin-bottom:6px;
-    }
-
-    .story-text{
-      font-size:17px;
-      line-height:1.7;
-      margin:2px 0 12px;
-    }
-
-    .story-tip{
-      font-size:14px;
-      color:#7b6b7c;
-    }
-
-    .page-counter{
-      font-size:12px;
-      color:#a38f9e;
-      position:absolute;
-      bottom:8px;
-      right:14px;
-    }
-
-    /* Controls + instructions */
-
-    .controls-row{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-top:16px;
-      gap:14px;
-      flex-wrap:wrap;
-    }
-
-    .nav-buttons{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      justify-content:center;
-    }
-
-    button.nav-btn{
-      border:none;
-      border-radius:999px;
-      padding:8px 18px;
-      font-size:14px;
-      font-weight:600;
-      letter-spacing:0.08em;
-      text-transform:uppercase;
-      cursor:pointer;
-      background:linear-gradient(135deg,#ff9fb8,#ff729c);
-      color:#3b1830;
-      box-shadow:0 10px 20px rgba(0,0,0,0.18);
-      transition:transform 0.15s ease, box-shadow 0.15s ease, opacity 0.2s ease;
-    }
-
-    button.nav-btn:disabled{
-      opacity:0.4;
-      cursor:default;
-      box-shadow:none;
-      transform:none;
-    }
-
-    button.nav-btn:not(:disabled):hover{
-      transform:translateY(-1px);
-      box-shadow:0 13px 26px rgba(0,0,0,0.22);
-    }
-
-    .instructions{
-      flex:1 1 200px;
-      font-size:14px;
-      color:#6e5c72;
-      text-align:center;
-    }
-
-    .instructions strong{
-      font-weight:600;
-    }
-
-    .mode-pill{
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      padding:6px 11px;
-      border-radius:999px;
-      background:#f6e5f1;
-      font-size:12px;
-      color:#675268;
-    }
-
-    .mode-pill input{
-      accent-color:#ff729c;
-    }
-
-    @media (max-width:800px){
-      .book-inner{
-        flex-direction:column;
-      }
-    }
-
-    @media (max-width:520px){
-      h1.app-title{font-size:22px;}
-      .story-text{font-size:16px;}
-      button.nav-btn{font-size:12px;padding:7px 14px;}
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="A gentle, private life-skills storybook for young children about big feelings, calming, friendship, kindness, and repair.">
+<title>Little Tikes Life Skills — Emotions & Friendship Garden</title>
+<style>
+:root{
+  --ink:#352d3f;--muted:#756a7f;--paper:#fffdf9;--panel:rgba(255,255,255,.84);
+  --rose:#f39ab9;--rose-deep:#b64f7b;--sky:#8ed8ff;--sky-deep:#2d91bd;
+  --mint:#91dfbf;--mint-deep:#338c6a;--gold:#ffd978;--lilac:#d7c8ff;
+  --accent:var(--rose);--accent-deep:var(--rose-deep);--soft:#ffe8f0;
+  --shadow:0 22px 60px rgba(73,47,88,.15);--radius:30px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;min-height:100vh;color:var(--ink);
+  font-family:"Trebuchet MS","Avenir Next Rounded","Arial Rounded MT Bold","Comic Sans MS",system-ui,sans-serif;
+  background:
+    radial-gradient(circle at 10% 12%,rgba(255,255,255,.95) 0 5%,transparent 6%),
+    radial-gradient(circle at 88% 18%,rgba(255,255,255,.72) 0 4%,transparent 5%),
+    linear-gradient(145deg,#fff4d8,#ffe3ef 44%,#e5f8f1);
+  padding:28px 14px 44px;overflow-x:hidden;
+}
+body.friendship{--accent:var(--sky);--accent-deep:var(--sky-deep);--soft:#e4f7ff}
+button,select,input{font:inherit}
+button{touch-action:manipulation}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:4px solid #6b55d955;outline-offset:3px}
+.bg-decor{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:-1}
+.orb{position:absolute;border-radius:50%;opacity:.25;animation:float 8s ease-in-out infinite}
+.o1{width:150px;height:150px;background:#fff;left:2%;top:13%}.o2{width:90px;height:90px;background:var(--gold);right:8%;top:24%;animation-delay:-2s}.o3{width:190px;height:190px;background:#fff;right:-35px;bottom:5%;animation-delay:-5s}.o4{width:76px;height:76px;background:var(--mint);left:12%;bottom:15%;animation-delay:-3s}
+@keyframes float{50%{transform:translateY(-18px) scale(1.05)}}
+.shell{max-width:1120px;margin:auto}
+.hero{text-align:center;margin-bottom:16px}
+.brand{display:inline-flex;gap:8px;align-items:center;padding:8px 14px;border-radius:999px;background:#ffffffbd;box-shadow:0 8px 22px rgba(67,45,79,.11);font-size:13px;font-weight:900;color:var(--accent-deep)}
+h1{margin:11px 0 5px;font-size:clamp(2.3rem,6vw,4.8rem);line-height:.96;letter-spacing:-.045em;color:var(--accent-deep)}
+.hero p{max-width:760px;margin:8px auto 0;color:var(--muted);line-height:1.55;font-size:1rem}
+.app{background:var(--panel);backdrop-filter:blur(15px);border:1px solid #ffffffc9;border-radius:var(--radius);box-shadow:var(--shadow);padding:18px}
+.topbar{display:flex;justify-content:center;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:14px}
+.pill{border:1px solid color-mix(in srgb,var(--accent) 38%,white);background:#fff;color:var(--ink);border-radius:999px;padding:10px 14px;font-weight:900;cursor:pointer;box-shadow:0 6px 14px rgba(52,37,66,.08);transition:.18s}
+.pill:hover{transform:translateY(-2px)}.pill.active{color:#fff;background:linear-gradient(135deg,var(--accent),var(--accent-deep));border-color:transparent}
+.progress-wrap{max-width:780px;margin:0 auto 16px;display:flex;align-items:center;gap:10px}
+.track{height:11px;flex:1;background:#fff;border:1px solid #eee5ed;border-radius:999px;overflow:hidden}.bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--gold));transition:width .35s ease}.progress-text{font-size:12px;color:var(--muted);min-width:84px;text-align:right}
+.book{display:grid;grid-template-columns:.92fr 1.18fr;gap:14px;background:#fff;border-radius:27px;padding:14px;box-shadow:0 15px 38px rgba(73,47,88,.13);transform-origin:center;overflow:hidden}
+.book.turn{animation:turn .42s ease}@keyframes turn{0%{transform:none}45%{transform:perspective(1100px) rotateY(-6deg) scale(.992)}100%{transform:none}}
+.page{min-height:430px;border-radius:22px;padding:19px;position:relative;overflow:hidden}
+.scene-page{display:flex;flex-direction:column;justify-content:space-between;text-align:center;background:linear-gradient(155deg,var(--soft),#fffdf8)}
+.story-page{background:linear-gradient(155deg,#fff,#fffaf2)}
+.label{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent-deep);font-weight:900}.page-title{font-size:clamp(1.35rem,3vw,1.9rem);font-weight:950;margin:7px 0;color:var(--accent-deep)}
+.scene{height:235px;border-radius:24px;display:grid;place-items:center;position:relative;overflow:hidden;background:linear-gradient(145deg,var(--accent),var(--lilac),var(--gold))}
+.scene-emoji{font-size:96px;filter:drop-shadow(0 12px 12px rgba(49,34,59,.17));animation:bob 2.8s ease-in-out infinite}@keyframes bob{50%{transform:translateY(-8px) rotate(2deg)}}
+.scene-word{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);background:#ffffffdc;padding:7px 13px;border-radius:999px;font-weight:950;color:var(--accent-deep);font-size:13px;white-space:nowrap}
+.step{font-size:12px;color:var(--muted);font-weight:850}.story-text{font-size:clamp(1rem,2.4vw,1.16rem);line-height:1.72;margin:12px 0;color:#3f3448}.story-text strong{color:var(--accent-deep)}
+.tip{padding:13px;border-radius:16px;background:var(--soft);border:1px dashed var(--accent);font-size:13px;line-height:1.5;color:#62576a}
+.action-row,.nav-row{display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:13px}
+.action,.nav{border:0;border-radius:15px;padding:10px 13px;font-weight:900;cursor:pointer}.action{background:#fff;color:var(--accent-deep);box-shadow:0 5px 14px rgba(65,43,75,.09)}.nav{background:var(--soft);color:var(--accent-deep)}.nav:disabled{opacity:.38;cursor:default}
+.page-count{font-size:12px;color:var(--muted);text-align:center;flex:1;min-width:150px}
+.dot-row{display:flex;justify-content:center;flex-wrap:wrap;gap:6px;margin:13px 0 0}.dot-row button{width:13px;height:13px;border-radius:50%;border:0;background:#d9cfdd;cursor:pointer}.dot-row button.active{background:var(--accent-deep);transform:scale(1.25)}
+.practice-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:15px}
+.practice{background:#fff;border-radius:22px;padding:15px;box-shadow:0 9px 22px rgba(63,43,73,.09);border:1px solid #f0e6ef}
+.practice h3{margin:0 0 6px;color:var(--accent-deep);font-size:17px}.practice p{margin:0;color:var(--muted);font-size:13px;line-height:1.45}
+.feeling-choices{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:10px}.feeling-choice{border:2px solid #e7dce9;background:#fff;border-radius:15px;padding:10px 5px;cursor:pointer;font-weight:900;font-size:20px}.feeling-choice span{display:block;font-size:11px;margin-top:4px;color:var(--muted)}.feeling-choice.selected{background:var(--soft);border-color:var(--accent)}
+.breathe-wrap{display:grid;place-items:center;margin-top:12px}.breath-ball{width:92px;height:92px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,var(--accent),var(--lilac));font-weight:950;color:#fff;box-shadow:0 10px 25px rgba(72,47,85,.16)}.breath-ball.breathing{animation:breathe 6s ease-in-out 3}@keyframes breathe{0%,100%{transform:scale(.84)}50%{transform:scale(1.16)}}
+.choice-grid{display:grid;gap:7px;margin-top:10px}.choice-btn{border:2px solid #e7dce9;background:#fff;border-radius:14px;padding:9px;cursor:pointer;font-weight:850}.choice-btn.correct{background:#e9fff2;border-color:#65c791}.choice-btn.wrong{background:#fff0f3;border-color:#da6b7c}
+.feedback{min-height:23px;margin-top:8px;font-size:12px;font-weight:900;color:var(--accent-deep);text-align:center}
+.reward-row{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-top:14px}.reward{background:#fff;border-radius:999px;padding:8px 12px;font-size:13px;box-shadow:0 5px 14px rgba(63,43,73,.08)}
+.footer{margin-top:16px;padding:14px;text-align:center;background:#ffffffa8;border-radius:18px;color:var(--muted);font-size:12px;line-height:1.5}.footer strong{color:var(--accent-deep)}
+.celebrate{position:fixed;inset:0;pointer-events:none;z-index:20;overflow:hidden}.confetti{position:absolute;top:-40px;font-size:25px;animation:fall 1.8s ease-out forwards}@keyframes fall{to{transform:translate(var(--dx),100vh) rotate(540deg);opacity:0}}
+@media(max-width:840px){.book{grid-template-columns:1fr}.page{min-height:0}.practice-grid{grid-template-columns:1fr}.scene{height:210px}}
+@media(max-width:560px){body{padding:18px 8px 30px}.app{padding:11px}.book{padding:9px}.page{padding:15px}.feeling-choices{grid-template-columns:repeat(2,1fr)}.nav{padding:9px 11px}.scene-emoji{font-size:82px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.001ms!important}}
+</style>
 </head>
 <body>
-  <div class="app-shell">
-    <div class="lt-badge">Little Tikes Life Skills</div>
-    <h1 class="app-title">When My Feelings Get Big</h1>
-    <p class="app-subtitle">
-      A calm-down story to help little hearts notice, name, and gently shrink big feelings.
-    </p>
-
-    <div class="book-wrap">
-      <div id="feelBookInner" class="book-inner">
-        <!-- Left page (scene) -->
-        <div class="page page-left">
-          <div>
-            <div class="page-label">Feelings Story</div>
-            <h2 id="feelLeftTitle" class="page-title">Sometimes feelings get big…</h2>
-          </div>
-
-          <div class="feelings-graphic">
-            <div class="feeling-face">
-              <div class="face-eye left"></div>
-              <div class="face-eye right"></div>
-              <div class="face-mouth"></div>
-            </div>
-            <div class="calm-cloud">We can calm down.</div>
-          </div>
-
-          <div class="page-counter" id="feelPageCounterLeft">Page 1 of 7</div>
-        </div>
-
-        <!-- Right page (text) -->
-        <div class="page page-right">
-          <div class="step-tag" id="feelStepTag">Step 1 · Notice the big feeling</div>
-          <div class="page-title" id="feelRightTitle">Big feelings live in small bodies.</div>
-          <div class="story-text" id="feelStoryText">
-            Sometimes my feelings get <strong>very big</strong> inside my small body.  
-            My tummy wiggles, my face feels warm, or my hands make tight fists.  
-            Big feelings are not bad — they are just loud and need a little help.
-          </div>
-          <div class="story-tip" id="feelStoryTip">
-            Grown-up note: Invite your child to point to where they feel big feelings — tummy, chest, face, hands.
-          </div>
-          <div class="page-counter" id="feelPageCounterRight">Page 1 of 7</div>
-        </div>
-      </div>
-
-      <div class="controls-row">
-        <div class="nav-buttons">
-          <button id="feelPrevBtn" class="nav-btn" type="button" disabled>&larr; Back</button>
-          <button id="feelNextBtn" class="nav-btn" type="button">Next &rarr;</button>
-        </div>
-        <div class="instructions">
-          <strong>How to read:</strong> Tap <em>Next</em> to turn the pages,  
-          pause to breathe together, and let your child share what they feel.
-        </div>
-        <div class="mode-pill">
-          <input type="checkbox" id="feelQuietMode" />
-          <label for="feelQuietMode">Quiet Mode (no page sounds)</label>
-        </div>
-      </div>
-    </div>
+<div class="bg-decor" aria-hidden="true"><span class="orb o1"></span><span class="orb o2"></span><span class="orb o3"></span><span class="orb o4"></span></div>
+<div id="celebrate" class="celebrate"></div>
+<main class="shell">
+<header class="hero">
+  <div class="brand">🌷 Khaemenes Academy · Crechè Life Skills</div>
+  <h1>Little Hearts Story Garden</h1>
+  <p>Two gentle, interactive storybooks that help young children notice feelings, calm their bodies, build friendships, use kind words, and ask trusted grown-ups for help.</p>
+</header>
+<section class="app" aria-label="Little Hearts Story Garden">
+  <div class="topbar">
+    <button class="pill active" id="feelingsTab">💗 Big Feelings</button>
+    <button class="pill" id="friendshipTab">🤝 Friendship</button>
+    <button class="pill active" id="soundBtn">🔊 Read-Aloud <span id="soundState">On</span></button>
+    <button class="pill" id="quietBtn">🔔 Page Sound <span id="quietState">On</span></button>
+    <button class="pill" id="saveBtn">🔖 Save Page</button>
   </div>
+  <div class="progress-wrap"><div class="track"><div id="bar" class="bar"></div></div><div id="progressText" class="progress-text"></div></div>
 
-  <script>
-    // Story data: 7 gentle steps
-    const feelPages = [
-      {
-        leftTitle: "Sometimes feelings get big…",
-        stepTag: "Step 1 · Notice the big feeling",
-        rightTitle: "Big feelings live in small bodies.",
-        text: "Sometimes my feelings get very big inside my small body. My tummy wiggles, my face feels warm, or my hands make tight fists. Big feelings are not bad — they are just loud and need a little help.",
-        tip: "Grown-up note: Invite your child to point to where they feel big feelings — tummy, chest, face, hands."
-      },
-      {
-        leftTitle: "Give it a name",
-        stepTag: "Step 2 · Name the feeling",
-        rightTitle: "Is it mad, sad, or scared?",
-        text: "When my feelings get big, I can give them a name. I might say, “I feel mad,” “I feel sad,” or “I feel scared.” Naming my feeling helps it feel seen, like a friend you call by name.",
-        tip: "Offer choices: “Does it feel more like mad, sad, or worried today?” Honor whatever they choose."
-      },
-      {
-        leftTitle: "Pause like a statue",
-        stepTag: "Step 3 · Stop and freeze",
-        rightTitle: "We pause our body.",
-        text: "When my feeling is very loud, I can pause like a statue. I keep my feet on the ground and my hands by my sides. I take a little still moment so my body can listen.",
-        tip: "Practice a silly “freeze” game during calm times so this step feels familiar when feelings grow."
-      },
-      {
-        leftTitle: "Balloon breaths",
-        stepTag: "Step 4 · Breathe in and out",
-        rightTitle: "We help our body with breaths.",
-        text: "I can take slow balloon breaths. I breathe in through my nose while my belly gets big like a balloon. Then I breathe out through my mouth and let the balloon get soft again.",
-        tip: "Count together: “Smell the flower — 1, 2, 3. Blow the bubble — 1, 2, 3.”"
-      },
-      {
-        leftTitle: "Look around",
-        stepTag: "Step 5 · Find something safe",
-        rightTitle: "We remember where we are.",
-        text: "I look around the room and find three safe things I see. Maybe a pillow, a window, or my favorite toy. I remember: I am here, I am safe, I am not alone.",
-        tip: "Guide them: “Can you find 3 soft things? 2 round things? 1 thing you love?”"
-      },
-      {
-        leftTitle: "Ask for a helper",
-        stepTag: "Step 6 · Use your words",
-        rightTitle: "We can ask for help.",
-        text: "If my feeling is still big, I can use my words to ask for help. I can say, “My feelings are big,” or “Can you help me calm down?” Grown-ups are here to listen.",
-        tip: "Create a simple phrase they can remember, like “Big feelings, please help,” and practice it together."
-      },
-      {
-        leftTitle: "Feelings can shrink",
-        stepTag: "Step 7 · Feel proud",
-        rightTitle: "I took care of my big feeling.",
-        text: "Little by little, my big feeling gets smaller. My shoulders relax, my breath feels softer, and my heart feels lighter. I can feel proud — I took care of my big feeling in a kind way.",
-        tip: "Reflect: “You noticed your feeling, breathed, and asked for help. That was very brave.”"
-      }
-    ];
+  <article class="book" id="book">
+    <section class="page scene-page">
+      <div><div id="bookLabel" class="label"></div><h2 id="leftTitle" class="page-title"></h2></div>
+      <div class="scene"><div id="sceneEmoji" class="scene-emoji" aria-hidden="true"></div><div id="sceneWord" class="scene-word"></div></div>
+      <div class="action-row"><button class="action" id="sayTitle">🔊 Hear the page</button><button class="action" id="doAction">🌱 Try the action</button></div>
+    </section>
+    <section class="page story-page">
+      <div id="stepTag" class="step"></div>
+      <h2 id="rightTitle" class="page-title"></h2>
+      <div id="storyText" class="story-text"></div>
+      <div id="storyTip" class="tip"></div>
+      <div class="nav-row"><button class="nav" id="prevBtn">◀ Back</button><div id="pageCount" class="page-count"></div><button class="nav" id="nextBtn">Next ▶</button></div>
+    </section>
+  </article>
+  <div id="dots" class="dot-row" aria-label="Story pages"></div>
 
-    const feelBookInner = document.getElementById('feelBookInner');
-    const feelLeftTitleEl = document.getElementById('feelLeftTitle');
-    const feelStepTagEl = document.getElementById('feelStepTag');
-    const feelRightTitleEl = document.getElementById('feelRightTitle');
-    const feelStoryTextEl = document.getElementById('feelStoryText');
-    const feelStoryTipEl = document.getElementById('feelStoryTip');
-    const feelPageCounterLeftEl = document.getElementById('feelPageCounterLeft');
-    const feelPageCounterRightEl = document.getElementById('feelPageCounterRight');
-    const feelPrevBtn = document.getElementById('feelPrevBtn');
-    const feelNextBtn = document.getElementById('feelNextBtn');
-    const feelQuietModeEl = document.getElementById('feelQuietMode');
+  <section class="practice-grid" aria-label="Practice activities">
+    <article class="practice">
+      <h3>🌈 How Do I Feel?</h3>
+      <p>Choose a feeling. There are no wrong feelings.</p>
+      <div class="feeling-choices" id="feelingChoices"></div>
+      <div id="feelingFeedback" class="feedback">Tap the feeling that is closest today.</div>
+    </article>
+    <article class="practice">
+      <h3>🎈 Three Balloon Breaths</h3>
+      <p>Breathe in as the circle grows. Breathe out as it becomes small.</p>
+      <div class="breathe-wrap"><button id="breathBall" class="breath-ball">Start</button></div>
+      <div id="breathFeedback" class="feedback">Ready when you are.</div>
+    </article>
+    <article class="practice">
+      <h3 id="practiceTitle">🧩 What Could Help?</h3>
+      <p id="practicePrompt"></p>
+      <div id="choiceGrid" class="choice-grid"></div>
+      <div id="choiceFeedback" class="feedback"></div>
+    </article>
+  </section>
 
-    let feelCurrentPage = 0;
-    let feelPageTurnSound = null;
-
-    function feelInitSound(){
-      const ctx = new (window.AudioContext || window.webkitAudioContext)();
-      feelPageTurnSound = () => {
-        if(feelQuietModeEl.checked) return;
-        const o = ctx.createOscillator();
-        const g = ctx.createGain();
-        o.type = 'triangle';
-        o.frequency.value = 880;
-        g.gain.setValueAtTime(0.03, ctx.currentTime);
-        g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.15);
-        o.connect(g);
-        g.connect(ctx.destination);
-        o.start();
-        o.stop(ctx.currentTime + 0.16);
-      };
-    }
-
-    function feelRenderPage(){
-      const total = feelPages.length;
-      const p = feelPages[feelCurrentPage];
-      feelLeftTitleEl.textContent = p.leftTitle;
-      feelStepTagEl.textContent = p.stepTag;
-      feelRightTitleEl.textContent = p.rightTitle;
-      feelStoryTextEl.textContent = p.text;
-      feelStoryTipEl.textContent = p.tip;
-      feelPageCounterLeftEl.textContent = `Page ${feelCurrentPage+1} of ${total}`;
-      feelPageCounterRightEl.textContent = `Page ${feelCurrentPage+1} of ${total}`;
-      feelPrevBtn.disabled = feelCurrentPage === 0;
-      feelNextBtn.disabled = feelCurrentPage === total - 1;
-    }
-
-    function feelTurnPage(direction){
-      const total = feelPages.length;
-      let newPage = feelCurrentPage + direction;
-      if(newPage < 0 || newPage >= total) return;
-      feelCurrentPage = newPage;
-
-      feelBookInner.classList.add('page-turn');
-      setTimeout(() => {
-        feelBookInner.classList.remove('page-turn');
-      }, 260);
-
-      if(feelPageTurnSound){
-        feelPageTurnSound();
-      }
-
-      feelRenderPage();
-    }
-
-    feelPrevBtn.addEventListener('click', () => feelTurnPage(-1));
-    feelNextBtn.addEventListener('click', () => feelTurnPage(1));
-
-    document.addEventListener('keydown',(e)=>{
-      if(e.key === 'ArrowRight') feelTurnPage(1);
-      if(e.key === 'ArrowLeft') feelTurnPage(-1);
-    });
-
-    feelRenderPage();
-    setTimeout(feelInitSound, 400);
-  </script>
-</body>
-</html>
-2️⃣ “Little Acts of Friendship” – Friendship Flip Book
-html
-Copy code
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <title>Little Tikes Life Skills — Little Acts of Friendship</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <style>
-    :root{
-      --bg:#fefaf3;
-      --ink:#243036;
-      --accent:#7fd3ff;
-      --accent-soft:#d9f1ff;
-      --soft-green:#dff7d7;
-      --soft-gold:#ffeab5;
-      --radius:21px;
-      --shadow:0 14px 33px rgba(0,0,0,0.12);
-    }
-
-    *{box-sizing:border-box;}
-
-    body{
-      margin:0;
-      min-height:100vh;
-      font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
-      background:radial-gradient(circle at top,#ffffff 0%,#e9f7ff 40%,#dbf4e0 100%);
-      color:var(--ink);
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      padding:24px 12px 40px;
-    }
-
-    .app-shell{
-      width:100%;
-      max-width:980px;
-      text-align:center;
-    }
-
-    .lt-badge{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      padding:6px 16px;
-      border-radius:999px;
-      background:var(--accent-soft);
-      color:#135779;
-      font-size:13px;
-      letter-spacing:0.08em;
-      text-transform:uppercase;
-      margin-bottom:8px;
-    }
-
-    h1.app-title{
-      margin:4px 0 2px;
-      font-size:27px;
-      letter-spacing:0.08em;
-      text-transform:uppercase;
-    }
-
-    .app-subtitle{
-      margin:0 0 18px;
-      font-size:15px;
-      color:#4e5c63;
-    }
-
-    .book-wrap{
-      margin:0 auto;
-      margin-top:10px;
-      max-width:920px;
-      background:#fdfdfb;
-      border-radius:var(--radius);
-      box-shadow:var(--shadow);
-      padding:18px 18px 22px;
-      border:1px solid rgba(127,211,255,0.5);
-    }
-
-    .book-inner-friend{
-      display:flex;
-      gap:18px;
-      align-items:stretch;
-      justify-content:center;
-      transition:transform 0.4s ease, box-shadow 0.4s ease;
-    }
-
-    .book-inner-friend.page-turn{
-      transform:scale(0.99) rotateY(2deg);
-      box-shadow:0 10px 30px rgba(0,0,0,0.18);
-    }
-
-    .page{
-      flex:1 1 0;
-      background:#fffcf5;
-      border-radius:16px;
-      padding:18px 16px 20px;
-      position:relative;
-      overflow:hidden;
-      border:1px solid rgba(0,0,0,0.04);
-    }
-
-    .page-left{
-      background:linear-gradient(145deg,#dff7d7,#f8ffe6);
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-      align-items:center;
-      text-align:center;
-    }
-
-    .page-right{
-      background:#fffcf5;
-      text-align:left;
-    }
-
-    .page-label{
-      font-size:11px;
-      letter-spacing:0.14em;
-      text-transform:uppercase;
-      color:#2b7a53;
-      margin-bottom:6px;
-    }
-
-    .page-title{
-      font-size:20px;
-      font-weight:700;
-      margin:4px 0 8px;
-    }
-
-    /* Friendship graphic */
-
-    .friend-graphic{
-      margin-top:8px;
-      width:100%;
-      max-width:220px;
-      aspect-ratio:4/3;
-      border-radius:18px;
-      background:linear-gradient(135deg,#7fd3ff,#ffeab5);
-      position:relative;
-      overflow:hidden;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-    }
-
-    .friend-char{
-      width:72px;
-      height:72px;
-      border-radius:50%;
-      background:#fffcf5;
-      border:3px solid rgba(26,117,159,0.9);
-      box-shadow:0 6px 16px rgba(0,0,0,0.12);
-      position:absolute;
-      top:26px;
-    }
-
-    .friend-char.left{left:30px;}
-    .friend-char.right{right:30px;}
-
-    .friend-char::before{
-      content:"";
-      position:absolute;
-      bottom:-8px;
-      left:50%;
-      transform:translateX(-50%);
-      width:46px;
-      height:22px;
-      border-radius:999px;
-      background:#7fd3ff;
-      opacity:0.8;
-    }
-
-    .friend-eye{
-      width:9px;
-      height:9px;
-      border-radius:50%;
-      background:#28323b;
-      position:absolute;
-      top:26px;
-    }
-
-    .friend-char.left .friend-eye:nth-child(1){left:20px;}
-    .friend-char.left .friend-eye:nth-child(2){right:20px;}
-
-    .friend-char.right .friend-eye:nth-child(1){left:20px;}
-    .friend-char.right .friend-eye:nth-child(2){right:20px;}
-
-    .friend-smile{
-      position:absolute;
-      left:50%;
-      top:40px;
-      width:32px;
-      height:18px;
-      border-radius:0 0 32px 32px;
-      border:3px solid #28323b;
-      border-top:none;
-      transform:translateX(-50%);
-    }
-
-    .friend-heart{
-      position:absolute;
-      bottom:12px;
-      left:50%;
-      transform:translateX(-50%);
-      width:26px;
-      height:22px;
-      background:#ff7da5;
-      transform-origin:center center;
-      clip-path:polygon(50% 82%, 0 35%, 13% 0, 50% 22%, 87% 0, 100% 35%);
-      animation:pulse 1.8s ease-in-out infinite;
-    }
-
-    @keyframes pulse{
-      0%{transform:translateX(-50%) scale(1);}
-      50%{transform:translateX(-50%) scale(1.08);}
-      100%{transform:translateX(-50%) scale(1);}
-    }
-
-    .step-tag{
-      font-size:11px;
-      color:#5b6c60;
-      margin-bottom:6px;
-    }
-
-    .story-text{
-      font-size:17px;
-      line-height:1.7;
-      margin:2px 0 12px;
-    }
-
-    .story-tip{
-      font-size:14px;
-      color:#6b756b;
-    }
-
-    .page-counter{
-      font-size:12px;
-      color:#76847a;
-      position:absolute;
-      bottom:8px;
-      right:14px;
-    }
-
-    .controls-row{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-top:16px;
-      gap:14px;
-      flex-wrap:wrap;
-    }
-
-    .nav-buttons{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      justify-content:center;
-    }
-
-    button.nav-btn{
-      border:none;
-      border-radius:999px;
-      padding:8px 18px;
-      font-size:14px;
-      font-weight:600;
-      letter-spacing:0.08em;
-      text-transform:uppercase;
-      cursor:pointer;
-      background:linear-gradient(135deg,#7fd3ff,#1c94d4);
-      color:#0f2733;
-      box-shadow:0 10px 20px rgba(0,0,0,0.18);
-      transition:transform 0.15s ease, box-shadow 0.15s ease, opacity 0.2s ease;
-    }
-
-    button.nav-btn:disabled{
-      opacity:0.4;
-      cursor:default;
-      box-shadow:none;
-      transform:none;
-    }
-
-    button.nav-btn:not(:disabled):hover{
-      transform:translateY(-1px);
-      box-shadow:0 13px 26px rgba(0,0,0,0.22);
-    }
-
-    .instructions{
-      flex:1 1 200px;
-      font-size:14px;
-      color:#516169;
-      text-align:center;
-    }
-
-    .instructions strong{
-      font-weight:600;
-    }
-
-    .mode-pill{
-      display:inline-flex;
-      align-items:center;
-      gap:6px;
-      padding:6px 11px;
-      border-radius:999px;
-      background:#e1f5ff;
-      font-size:12px;
-      color:#365566;
-    }
-
-    .mode-pill input{
-      accent-color:#1c94d4;
-    }
-
-    @media (max-width:800px){
-      .book-inner-friend{
-        flex-direction:column;
-      }
-    }
-
-    @media (max-width:520px){
-      h1.app-title{font-size:22px;}
-      .story-text{font-size:16px;}
-      button.nav-btn{font-size:12px;padding:7px 14px;}
-    }
-  </style>
-</head>
-<body>
-  <div class="app-shell">
-    <div class="lt-badge">Little Tikes Life Skills</div>
-    <h1 class="app-title">Little Acts of Friendship</h1>
-    <p class="app-subtitle">
-      A gentle story about saying hello, sharing, listening, and being there for the friends we love.
-    </p>
-
-    <div class="book-wrap">
-      <div id="friendBookInner" class="book-inner-friend">
-        <!-- Left page (scene) -->
-        <div class="page page-left">
-          <div>
-            <div class="page-label">Friendship Story</div>
-            <h2 id="friendLeftTitle" class="page-title">What is a friend?</h2>
-          </div>
-
-          <div class="friend-graphic">
-            <div class="friend-char left">
-              <div class="friend-eye"></div>
-              <div class="friend-eye"></div>
-              <div class="friend-smile"></div>
-            </div>
-            <div class="friend-char right">
-              <div class="friend-eye"></div>
-              <div class="friend-eye"></div>
-              <div class="friend-smile"></div>
-            </div>
-            <div class="friend-heart"></div>
-          </div>
-
-          <div class="page-counter" id="friendPageCounterLeft">Page 1 of 7</div>
-        </div>
-
-        <!-- Right page (text) -->
-        <div class="page page-right">
-          <div class="step-tag" id="friendStepTag">Step 1 · Meet a friend</div>
-          <div class="page-title" id="friendRightTitle">Friends are people we care about.</div>
-          <div class="story-text" id="friendStoryText">
-            A friend is someone we like to be with. We feel safe, silly, or cozy near them.  
-            Friends can be kids, grown-ups, or even pets — anyone we care about and who cares about us.
-          </div>
-          <div class="story-tip" id="friendStoryTip">
-            Grown-up note: Ask your child, “Who feels like a friend to you?” and let them name people, pets, or even stuffed animals.
-          </div>
-          <div class="page-counter" id="friendPageCounterRight">Page 1 of 7</div>
-        </div>
-      </div>
-
-      <div class="controls-row">
-        <div class="nav-buttons">
-          <button id="friendPrevBtn" class="nav-btn" type="button" disabled>&larr; Back</button>
-          <button id="friendNextBtn" class="nav-btn" type="button">Next &rarr;</button>
-        </div>
-        <div class="instructions">
-          <strong>How to read:</strong> Tap <em>Next</em> to turn pages and pause to share  
-          real-life examples of kindness and friendship.
-        </div>
-        <div class="mode-pill">
-          <input type="checkbox" id="friendQuietMode" />
-          <label for="friendQuietMode">Quiet Mode (no page sounds)</label>
-        </div>
-      </div>
-    </div>
+  <div class="reward-row">
+    <div class="reward">📖 Pages explored: <strong id="visitedCount">0</strong></div>
+    <div class="reward">⭐ Kindness stars: <strong id="stars">0</strong></div>
+    <div class="reward">🔖 Saved pages: <strong id="savedCount">0</strong></div>
   </div>
+</section>
+<footer class="footer"><strong>© 2026 Verve N Veda · Khaemenes Academy · Jennifer Kay Pearl</strong><br>All Rights Reserved. · Private, local, child-friendly learning.</footer>
+</main>
+<script>
+const stories={
+feelings:{label:'Feelings Story',title:'When My Feelings Get Big',pages:[
+{left:'Sometimes feelings get big…',right:'Big feelings live in small bodies.',step:'Step 1 · Notice the feeling',emoji:'💗',word:'NOTICE',text:'Sometimes my feelings get <strong>very big</strong> inside my small body. My tummy may wiggle, my face may feel warm, or my hands may squeeze tight. Big feelings are not bad. They are messages that need care.',tip:'Grown-up note: Invite your child to point to where the feeling shows up—tummy, chest, face, hands, or shoulders.',action:'Put one hand on your tummy and one hand on your heart.',quiz:'What is one helpful first step when a feeling gets big?',choices:['Notice what your body is telling you','Pretend the feeling does not exist','Hurt something'],correct:0,explain:'Noticing the body helps us understand what the feeling may need.'},
+{left:'Give it a name',right:'A name helps a feeling feel understood.',step:'Step 2 · Name the feeling',emoji:'🎭',word:'NAME IT',text:'I can say, “I feel mad,” “I feel sad,” “I feel worried,” or “I feel excited.” Sometimes I feel more than one feeling at once. Every feeling is allowed, even when some actions are not safe.',tip:'Offer gentle choices without deciding for the child: “Does it feel closer to sad, worried, frustrated, or something else?”',action:'Say: “I feel…” and choose one feeling word.',quiz:'Which sentence names a feeling?',choices:['I feel worried','You are bad','I will break it'],correct:0,explain:'“I feel worried” tells what is happening inside without blaming anyone.'},
+{left:'Pause like a statue',right:'A pause gives my body time to choose.',step:'Step 3 · Pause safely',emoji:'🗿',word:'PAUSE',text:'When a feeling is loud, I can pause like a statue. I keep my feet on the ground and my hands safe. A small pause helps my thinking brain catch up with my feeling brain.',tip:'Practice playful freeze games during calm moments so pausing feels familiar later.',action:'Freeze your body gently for three slow counts.',quiz:'What can a pause help you do?',choices:['Choose a safer next step','Make the feeling disappear forever','Win every disagreement'],correct:0,explain:'A pause creates space to choose what to do next.'},
+{left:'Balloon breaths',right:'Slow breaths help my body soften.',step:'Step 4 · Breathe slowly',emoji:'🎈',word:'BREATHE',text:'I breathe in through my nose while my belly grows like a balloon. Then I breathe out slowly and let the balloon become soft. I do not have to force the feeling away. I am helping my body feel steadier.',tip:'Try: “Smell the flower—1, 2, 3. Cool the cocoa—1, 2, 3.”',action:'Take one slow balloon breath together.',quiz:'How should a calming breath feel?',choices:['Slow and gentle','Fast and forced','Like holding your breath forever'],correct:0,explain:'Slow, comfortable breathing can help the nervous system settle.'},
+{left:'Look around',right:'I can notice what is safe right now.',step:'Step 5 · Ground in the room',emoji:'👀',word:'LOOK',text:'I look around and notice things I can see, hear, or touch. I might find a soft pillow, a familiar voice, or my favorite toy. Looking around reminds my body where I am right now.',tip:'Avoid promising “you are safe” when that is uncertain. Try: “I am here with you. Let’s notice what is around us.”',action:'Find three colors in the room.',quiz:'What is grounding?',choices:['Noticing the present moment','Ignoring every problem','Never asking for help'],correct:0,explain:'Grounding brings attention back to the body and surroundings.'},
+{left:'Ask for a helper',right:'Trusted grown-ups can help carry big feelings.',step:'Step 6 · Ask for support',emoji:'🫶',word:'ASK',text:'If my feeling is still big, I can say, “My feelings are big,” “I need space,” or “Please help me.” I can tell a trusted grown-up if I feel unsafe, confused, or unable to calm down alone.',tip:'Choose a short family phrase such as “Big feeling, please help,” and practice it together.',action:'Practice saying: “Please help me calm down.”',quiz:'Who should a child tell when a feeling feels too big to manage alone?',choices:['A trusted grown-up','No one ever','Only a toy'],correct:0,explain:'Trusted adults can help children stay safe and find support.'},
+{left:'Feelings can change',right:'I cared for my feeling with kindness.',step:'Step 7 · Notice what changed',emoji:'🌤️',word:'RECOVER',text:'Little by little, my feeling may become smaller, quieter, or simply easier to carry. My shoulders may loosen and my breath may feel softer. I can feel proud of using safe and kind tools.',tip:'The goal is not instant calm. Praise noticing, asking for help, and choosing safety.',action:'Roll your shoulders slowly and notice your breath.',quiz:'What is a successful calm-down?',choices:['Using safe tools and support','Never feeling upset again','Hiding every feeling'],correct:0,explain:'Success means caring for the feeling safely, not making emotions disappear forever.'}
+]},
+friendship:{label:'Friendship Story',title:'Little Acts of Friendship',pages:[
+{left:'What is a friend?',right:'Friendship includes care, safety, and respect.',step:'Step 1 · Notice caring connections',emoji:'🤝',word:'CARE',text:'A friend is someone we enjoy being with and who treats us with care. Friends can be playful, quiet, different from us, or still learning. Healthy friendship includes kindness, respect, and room to say no.',tip:'Let children name people, pets, or stuffed animals while also teaching that not every person must become a close friend.',action:'Name one person or pet you care about.',quiz:'What belongs in a healthy friendship?',choices:['Kindness and respect','Being forced to share everything','Keeping unsafe secrets'],correct:0,explain:'Healthy friendship respects feelings, safety, and boundaries.'},
+{left:'Start with hello',right:'A small greeting can open a door.',step:'Step 2 · Invite without pressure',emoji:'👋',word:'HELLO',text:'Friendship can begin with a wave, a smile, or “Would you like to play?” The other person may say yes, no, or maybe later. A kind invitation respects every answer.',tip:'Practice both inviting and responding: “Yes, please,” “Not right now,” and “Maybe later.”',action:'Practice a friendly wave and hello.',quiz:'What should you do if someone says they do not want to play?',choices:['Respect their answer','Keep demanding','Call them mean'],correct:0,explain:'Respecting a no is part of being kind and safe.'},
+{left:'Share and take turns',right:'We can make room for each other.',step:'Step 3 · Cooperate fairly',emoji:'🧸',word:'TAKE TURNS',text:'Friends may share toys, ideas, and space. Sharing does not mean giving away everything or ignoring our own needs. We can use a timer, trade, build together, or choose a different activity.',tip:'Use concrete language: “Two more minutes, then we switch,” or “Which toy can you share comfortably?”',action:'Say: “Your turn, then my turn.”',quiz:'Which is a fair way to take turns?',choices:['Use a timer or agree on an order','Grab the toy','Never let anyone use it'],correct:0,explain:'Clear turn-taking helps children know what to expect.'},
+{left:'Kind and honest words',right:'Words can be gentle and truthful.',step:'Step 4 · Speak with care',emoji:'💬',word:'KIND WORDS',text:'We can say, “Thank you,” “I like playing with you,” or “Please stop. I do not like that.” Kind words are not only compliments. Honest boundary words can also protect a friendship.',tip:'Teach that kindness does not require agreeing, hugging, or staying in an uncomfortable situation.',action:'Practice one compliment and one boundary phrase.',quiz:'Which phrase is a kind boundary?',choices:['Please stop. I need space.','You are the worst.','I have to do anything you say.'],correct:0,explain:'Clear, respectful boundaries are part of healthy friendship.'},
+{left:'Listening in many ways',right:'We show that another person matters.',step:'Step 5 · Listen and notice',emoji:'👂',word:'LISTEN',text:'Listening can mean looking toward someone, keeping our hands busy quietly, or asking them to repeat something. People listen in different ways. We try not to interrupt and we check that we understood.',tip:'Avoid requiring eye contact. Some children listen better while looking nearby or using a fidget.',action:'Listen to one sentence, then repeat the main idea.',quiz:'Does good listening always require eye contact?',choices:['No, people listen in different ways','Yes, always','Only grown-ups can listen'],correct:0,explain:'Attention can look different across children and cultures.'},
+{left:'Repair after mistakes',right:'A real apology includes care and change.',step:'Step 6 · Repair hurt',emoji:'🩹',word:'REPAIR',text:'Everyone makes mistakes. I can say what I did, notice the hurt, apologize without excuses, and ask how to help. The other person may need time or space. Saying sorry does not force them to feel better immediately.',tip:'Try: “I grabbed the toy. That hurt you. I am sorry. I will ask next time.”',action:'Practice a repair sentence with a pretend example.',quiz:'What makes an apology stronger?',choices:['Naming the action and trying to change it','Demanding forgiveness','Blaming the other person'],correct:0,explain:'Repair includes responsibility, care, and a safer next step.'},
+{left:'Little acts grow trust',right:'Friendship grows through many small choices.',step:'Step 7 · Keep practicing kindness',emoji:'🌱',word:'GROW',text:'Friendship grows through small acts: making room, remembering what someone likes, checking in, helping, laughing together, and respecting space. We do not have to be perfect. We can keep learning how to be caring friends.',tip:'Ask: “What is one kind action that feels comfortable and safe for you today?”',action:'Choose one small act of kindness for today.',quiz:'How does trust usually grow?',choices:['Through repeated caring and respectful actions','From one grand promise','By never making mistakes'],correct:0,explain:'Trust develops over time through dependable behavior and repair.'}
+]}}
 
-  <script>
-    const friendPages = [
-      {
-        leftTitle: "What is a friend?",
-        stepTag: "Step 1 · Meet a friend",
-        rightTitle: "Friends are people we care about.",
-        text: "A friend is someone we like to be with. We feel safe, silly, or cozy near them. Friends can be kids, grown-ups, or even pets — anyone we care about and who cares about us.",
-        tip: "Grown-up note: Ask your child, “Who feels like a friend to you?” and let them name people, pets, or even stuffed animals."
-      },
-      {
-        leftTitle: "Saying hello",
-        stepTag: "Step 2 · Start with a hello",
-        rightTitle: "We can invite someone in.",
-        text: "Friendship can start with a simple hello. We can wave, smile, or say, “Hi, do you want to play?” Even a small hello can make someone feel less alone.",
-        tip: "Practice different friendly greetings together in a mirror or with stuffed animals."
-      },
-      {
-        leftTitle: "Sharing our space",
-        stepTag: "Step 3 · Share and take turns",
-        rightTitle: "We make room for others.",
-        text: "Friends share toys, games, and space. We might say, “You can have a turn,” or “Let’s build together.” Sharing doesn’t mean giving things away forever — it means letting someone enjoy them with us.",
-        tip: "Create a “turn-taking” phrase your child can use, like “Your turn, my turn.”"
-      },
-      {
-        leftTitle: "Kind words",
-        stepTag: "Step 4 · Use gentle words",
-        rightTitle: "Words can be hugs.",
-        text: "Kind words help friendships grow. We can say, “Thank you,” “I like playing with you,” or “Good job!” Our words can feel like little hugs for someone’s heart.",
-        tip: "Invite your child to think of one kind thing to say to a friend or sibling today."
-      },
-      {
-        leftTitle: "Listening ears",
-        stepTag: "Step 5 · Listen and look",
-        rightTitle: "We listen with our whole body.",
-        text: "Being a friend means listening. We can look at their face, keep our body calm, and let them finish their words. Listening says, “You matter to me.”",
-        tip: "Model it by kneeling to their level, making eye contact, and reflecting back their words."
-      },
-      {
-        leftTitle: "When we make mistakes",
-        stepTag: "Step 6 · Fixing hurt feelings",
-        rightTitle: "We can say sorry and try again.",
-        text: "Sometimes we bump, grab, or say something unkind. That happens to everyone. A good friend can say, “I’m sorry,” give space if needed, and try again with gentler hands and words.",
-        tip: "Practice simple repair phrases like “I’m sorry I grabbed. Can we try again?”"
-      },
-      {
-        leftTitle: "Being there",
-        stepTag: "Step 7 · Staying kind",
-        rightTitle: "Little acts make big friendship.",
-        text: "Friendship grows from many little acts: sharing a toy, sitting nearby, giving a hug, drawing a picture, or just staying close when someone feels sad. Small kindnesses can make a big, big difference.",
-        tip: "Ask, “What is one small kind thing you could do for a friend today?” and help them carry it out."
-      }
-    ];
-
-    const friendBookInner = document.getElementById('friendBookInner');
-    const friendLeftTitleEl = document.getElementById('friendLeftTitle');
-    const friendStepTagEl = document.getElementById('friendStepTag');
-    const friendRightTitleEl = document.getElementById('friendRightTitle');
-    const friendStoryTextEl = document.getElementById('friendStoryText');
-    const friendStoryTipEl = document.getElementById('friendStoryTip');
-    const friendPageCounterLeftEl = document.getElementById('friendPageCounterLeft');
-    const friendPageCounterRightEl = document.getElementById('friendPageCounterRight');
-    const friendPrevBtn = document.getElementById('friendPrevBtn');
-    const friendNextBtn = document.getElementById('friendNextBtn');
-    const friendQuietModeEl = document.getElementById('friendQuietMode');
-
-    let friendCurrentPage = 0;
-    let friendPageTurnSound = null;
-
-    function friendInitSound(){
-      const ctx = new (window.AudioContext || window.webkitAudioContext)();
-      friendPageTurnSound = () => {
-        if(friendQuietModeEl.checked) return;
-        const o = ctx.createOscillator();
-        const g = ctx.createGain();
-        o.type = 'triangle';
-        o.frequency.value = 880;
-        g.gain.setValueAtTime(0.03, ctx.currentTime);
-        g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.15);
-        o.connect(g);
-        g.connect(ctx.destination);
-        o.start();
-        o.stop(ctx.currentTime + 0.16);
-      };
-    }
-
-    function friendRenderPage(){
-      const total = friendPages.length;
-      const p = friendPages[friendCurrentPage];
-      friendLeftTitleEl.textContent = p.leftTitle;
-      friendStepTagEl.textContent = p.stepTag;
-      friendRightTitleEl.textContent = p.rightTitle;
-      friendStoryTextEl.textContent = p.text;
-      friendStoryTipEl.textContent = p.tip;
-      friendPageCounterLeftEl.textContent = `Page ${friendCurrentPage+1} of ${total}`;
-      friendPageCounterRightEl.textContent = `Page ${friendCurrentPage+1} of ${total}`;
-      friendPrevBtn.disabled = friendCurrentPage === 0;
-      friendNextBtn.disabled = friendCurrentPage === total - 1;
-    }
-
-    function friendTurnPage(direction){
-      const total = friendPages.length;
-      let newPage = friendCurrentPage + direction;
-      if(newPage < 0 || newPage >= total) return;
-      friendCurrentPage = newPage;
-
-      friendBookInner.classList.add('page-turn');
-      setTimeout(() => {
-        friendBookInner.classList.remove('page-turn');
-      }, 260);
-
-      if(friendPageTurnSound){
-        friendPageTurnSound();
-      }
-
-      friendRenderPage();
-    }
-
-    friendPrevBtn.addEventListener('click', () => friendTurnPage(-1));
-    friendNextBtn.addEventListener('click', () => friendTurnPage(1));
-
-    document.addEventListener('keydown',(e)=>{
-      if(e.key === 'ArrowRight') friendTurnPage(1);
-      if(e.key === 'ArrowLeft') friendTurnPage(-1);
-    });
-
-    friendRenderPage();
-    setTimeout(friendInitSound, 400);
-  </script>
+const feelings=['😊 Happy','😢 Sad','😠 Mad','😟 Worried','😴 Tired','🤩 Excited'];
+const state={
+ story:localStorage.getItem('little-hearts-story')||'feelings',
+ index:Number(localStorage.getItem('little-hearts-index')||0),
+ sound:localStorage.getItem('little-hearts-sound')!=='false',
+ pageSound:localStorage.getItem('little-hearts-page-sound')!=='false',
+ stars:Number(localStorage.getItem('little-hearts-stars')||0),
+ visited:new Set(JSON.parse(localStorage.getItem('little-hearts-visited')||'[]')),
+ saved:new Set(JSON.parse(localStorage.getItem('little-hearts-saved')||'[]'))
+};
+const $=id=>document.getElementById(id);let voice=null,audioCtx=null;
+function currentStory(){return stories[state.story]}function currentPage(){return currentStory().pages[state.index]}function key(){return `${state.story}:${state.index}`}
+function save(){localStorage.setItem('little-hearts-story',state.story);localStorage.setItem('little-hearts-index',state.index);localStorage.setItem('little-hearts-sound',state.sound);localStorage.setItem('little-hearts-page-sound',state.pageSound);localStorage.setItem('little-hearts-stars',state.stars);localStorage.setItem('little-hearts-visited',JSON.stringify([...state.visited]));localStorage.setItem('little-hearts-saved',JSON.stringify([...state.saved]))}
+function chooseVoice(){if(!('speechSynthesis'in window))return;const v=speechSynthesis.getVoices();voice=v.find(x=>/^en/i.test(x.lang)&&/samantha|jenny|aria|female|child/i.test(x.name))||v.find(x=>/^en/i.test(x.lang))||v[0]||null}if('speechSynthesis'in window){chooseVoice();speechSynthesis.onvoiceschanged=chooseVoice}
+function speak(text){if(!state.sound||!('speechSynthesis'in window))return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text.replace(/<[^>]*>/g,''));if(voice)u.voice=voice;u.rate=.88;u.pitch=1.08;speechSynthesis.speak(u)}
+function pageChime(){if(!state.pageSound)return;try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type='sine';o.frequency.value=640;g.gain.setValueAtTime(.025,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+.13);o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+.14)}catch(e){}}
+function celebrate(){const h=$('celebrate'),bits=['⭐','🌈','💗','🌱','✨'];for(let i=0;i<18;i++){const s=document.createElement('span');s.className='confetti';s.textContent=bits[i%bits.length];s.style.left=Math.random()*100+'vw';s.style.setProperty('--dx',(Math.random()*180-90)+'px');s.style.animationDelay=Math.random()*.3+'s';h.appendChild(s);setTimeout(()=>s.remove(),2100)}}
+function markVisited(){if(!state.visited.has(key())){state.visited.add(key());state.stars++;if(state.stars%5===0)celebrate()}}
+function renderDots(){const d=$('dots');d.innerHTML='';currentStory().pages.forEach((_,i)=>{const b=document.createElement('button');b.className=i===state.index?'active':'';b.setAttribute('aria-label',`Go to page ${i+1}`);b.onclick=()=>{state.index=i;render(true)};d.appendChild(b)})}
+function renderChoices(){const p=currentPage(),grid=$('choiceGrid');$('practicePrompt').textContent=p.quiz;$('choiceFeedback').textContent='';grid.innerHTML='';p.choices.forEach((text,i)=>{const b=document.createElement('button');b.className='choice-btn';b.textContent=text;b.onclick=()=>{[...grid.children].forEach(x=>x.disabled=true);if(i===p.correct){b.classList.add('correct');$('choiceFeedback').textContent='✓ '+p.explain;state.stars++;celebrate();speak('Correct. '+p.explain)}else{b.classList.add('wrong');grid.children[p.correct].classList.add('correct');$('choiceFeedback').textContent='Good try. '+p.explain;speak('Good try. '+p.explain)}$('stars').textContent=state.stars;save()};grid.appendChild(b)})}
+function render(flip=false){const s=currentStory();state.index=Math.max(0,Math.min(state.index,s.pages.length-1));const p=currentPage();document.body.classList.toggle('friendship',state.story==='friendship');if(flip){$('book').classList.remove('turn');void $('book').offsetWidth;$('book').classList.add('turn')}markVisited();$('bookLabel').textContent=s.label;$('leftTitle').textContent=p.left;$('rightTitle').textContent=p.right;$('stepTag').textContent=p.step;$('sceneEmoji').textContent=p.emoji;$('sceneWord').textContent=p.word;$('storyText').innerHTML=p.text;$('storyTip').textContent=p.tip;$('pageCount').textContent=`Page ${state.index+1} of ${s.pages.length}`;$('prevBtn').disabled=state.index===0;$('nextBtn').disabled=state.index===s.pages.length-1;$('bar').style.width=((state.index+1)/s.pages.length*100)+'%';$('progressText').textContent=`${state.index+1} of ${s.pages.length}`;$('feelingsTab').classList.toggle('active',state.story==='feelings');$('friendshipTab').classList.toggle('active',state.story==='friendship');$('saveBtn').textContent=state.saved.has(key())?'🔖 Page Saved':'🔖 Save Page';$('visitedCount').textContent=state.visited.size;$('stars').textContent=state.stars;$('savedCount').textContent=state.saved.size;renderDots();renderChoices();save()}
+function go(dir){const n=state.index+dir;if(n<0||n>=currentStory().pages.length)return;state.index=n;pageChime();render(true)}
+$('prevBtn').onclick=()=>go(-1);$('nextBtn').onclick=()=>go(1);$('feelingsTab').onclick=()=>{state.story='feelings';state.index=0;render(true)};$('friendshipTab').onclick=()=>{state.story='friendship';state.index=0;render(true)};
+$('sayTitle').onclick=()=>{const p=currentPage();speak(`${p.left}. ${p.right}. ${p.text}`)};$('doAction').onclick=()=>speak(currentPage().action);
+$('soundBtn').onclick=()=>{state.sound=!state.sound;$('soundState').textContent=state.sound?'On':'Off';$('soundBtn').classList.toggle('active',state.sound);if(!state.sound&&'speechSynthesis'in window)speechSynthesis.cancel();save()};
+$('quietBtn').onclick=()=>{state.pageSound=!state.pageSound;$('quietState').textContent=state.pageSound?'On':'Off';$('quietBtn').classList.toggle('active',state.pageSound);save()};
+$('saveBtn').onclick=()=>{if(state.saved.has(key()))state.saved.delete(key());else state.saved.add(key());render(false)};
+const fc=$('feelingChoices');feelings.forEach(item=>{const [emoji,...rest]=item.split(' '),b=document.createElement('button');b.className='feeling-choice';b.innerHTML=`${emoji}<span>${rest.join(' ')}</span>`;b.onclick=()=>{[...fc.children].forEach(x=>x.classList.remove('selected'));b.classList.add('selected');$('feelingFeedback').textContent=`Thank you for noticing. ${rest.join(' ')} is allowed.`;speak(`${rest.join(' ')} is allowed. Thank you for noticing your feeling.`)};fc.appendChild(b)});
+$('breathBall').onclick=()=>{const b=$('breathBall');b.classList.remove('breathing');void b.offsetWidth;b.classList.add('breathing');b.textContent='Breathe';$('breathFeedback').textContent='In gently… and out slowly…';speak('Breathe in gently. Breathe out slowly. Let us do three balloon breaths.');setTimeout(()=>{b.textContent='Again';$('breathFeedback').textContent='You gave your body a calm moment.';state.stars++;$('stars').textContent=state.stars;save()},18000)};
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1)});let swipe=0;$('book').addEventListener('pointerdown',e=>swipe=e.clientX);$('book').addEventListener('pointerup',e=>{const d=e.clientX-swipe;if(Math.abs(d)>55)go(d<0?1:-1)});
+$('soundState').textContent=state.sound?'On':'Off';$('quietState').textContent=state.pageSound?'On':'Off';$('soundBtn').classList.toggle('active',state.sound);$('quietBtn').classList.toggle('active',state.pageSound);render(false);
+</script>
 </body>
 </html>
