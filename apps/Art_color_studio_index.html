@@ -271,6 +271,74 @@ input[type="range"]{width:100%;accent-color:var(--violet)}
   color:#665b72;font-size:.84rem;line-height:1.5;
 }
 .site-footer strong{color:#503a76}
+
+.brush-preview-wrap{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:10px;
+  color:var(--muted);
+  font-weight:850;
+}
+.brush-preview{
+  width:22px;
+  height:22px;
+  max-width:68px;
+  max-height:68px;
+  border-radius:50%;
+  background:var(--plum);
+  border:2px solid white;
+  box-shadow:0 4px 10px rgba(61,43,78,.18);
+  transition:width .15s ease,height .15s ease,background .15s ease,opacity .15s ease;
+}
+.gallery-note{
+  margin:0 0 9px;
+  color:var(--muted);
+  font-size:.88rem;
+  line-height:1.4;
+}
+.mini-gallery{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
+}
+.gallery-item{
+  position:relative;
+  min-height:92px;
+  border-radius:15px;
+  overflow:hidden;
+  background:#f3eef7;
+  border:2px solid #e3d9e9;
+  cursor:pointer;
+}
+.gallery-item img{
+  width:100%;
+  height:90px;
+  display:block;
+  object-fit:cover;
+  background:white;
+}
+.gallery-item span{
+  display:block;
+  padding:5px 6px;
+  background:white;
+  color:var(--plum);
+  font-size:.72rem;
+  font-weight:850;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.gallery-empty{
+  grid-column:1/-1;
+  padding:14px;
+  border-radius:15px;
+  background:#f8f4fb;
+  color:var(--muted);
+  text-align:center;
+}
+
 @media(max-width:930px){
   .layout{grid-template-columns:1fr}
   .stats{grid-template-columns:repeat(2,1fr)}
@@ -329,6 +397,7 @@ input[type="range"]{width:100%;accent-color:var(--violet)}
           <button class="tool-btn active" data-tool="brush">🖌 Brush</button>
           <button class="tool-btn" data-tool="marker">🖍 Marker</button>
           <button class="tool-btn" data-tool="pencil">✏ Pencil</button>
+          <button class="tool-btn" data-tool="crayon">🧁 Crayon</button>
           <button class="tool-btn" data-tool="spray">🌫 Spray</button>
           <button class="tool-btn" data-tool="eraser">🩹 Eraser</button>
           <button class="tool-btn" data-tool="stamp">✨ Stamp</button>
@@ -347,11 +416,19 @@ input[type="range"]{width:100%;accent-color:var(--violet)}
       </section>
 
       <section class="activity">
-        <h2>🖋 Brush Size</h2>
-        <div class="slider-row">
-          <input id="sizeRange" type="range" min="1" max="40" value="10">
-          <output id="sizeOut">10</output>
+        <h2>🖋 Resize Tools</h2>
+        <div class="brush-preview-wrap">
+          <span>Brush preview</span>
+          <div id="brushPreview" class="brush-preview" aria-hidden="true"></div>
         </div>
+        <label class="slider-row">
+          <span>Brush size</span>
+          <span><input id="sizeRange" type="range" min="1" max="60" value="10"> <output id="sizeOut">10</output></span>
+        </label>
+        <label class="slider-row" style="margin-top:8px">
+          <span>Sticker size</span>
+          <span><input id="stampSizeRange" type="range" min="24" max="120" value="48"> <output id="stampSizeOut">48</output></span>
+        </label>
         <label class="slider-row" style="margin-top:8px">
           <span>Opacity</span>
           <input id="opacityRange" type="range" min="10" max="100" value="100">
@@ -389,6 +466,16 @@ input[type="range"]{width:100%;accent-color:var(--violet)}
         <div class="tool-grid" style="margin-top:8px">
           <button id="speakPrompt" class="tool-btn">🔊 Read</button>
           <button id="guideBtn" class="tool-btn">👁 Guide</button>
+        </div>
+      </section>
+
+      <section class="activity">
+        <h2>🖼️ My Mini Gallery</h2>
+        <p class="gallery-note">The five most recent saved artworks stay privately on this device. Tap one to reload it.</p>
+        <div id="miniGallery" class="mini-gallery"></div>
+        <div class="tool-grid" style="margin-top:8px">
+          <button id="clearGallery" class="tool-btn">Clear Gallery</button>
+          <button id="galleryInfo" class="tool-btn">About Saving</button>
         </div>
       </section>
 
@@ -441,6 +528,7 @@ const state={
   opacity:1,
   shape:"circle",
   stamp:"⭐",
+  stampSize:48,
   mirrorX:false,
   mirrorY:false,
   strokes:Number(localStorage.getItem("colorStudioStrokes")||0),
@@ -518,6 +606,10 @@ function toolDefaults(){
   ctx.lineWidth=state.size;
   if(state.tool==="marker")ctx.globalAlpha=Math.min(.65,state.opacity);
   if(state.tool==="pencil")ctx.lineWidth=Math.max(1,state.size*.25);
+  if(state.tool==="crayon"){
+    ctx.lineWidth=Math.max(5,state.size*1.25);
+    ctx.globalAlpha=Math.min(.48,state.opacity);
+  }
   if(state.tool==="eraser")ctx.lineWidth=Math.max(18,state.size*1.8);
 }
 
@@ -622,7 +714,7 @@ function finishStroke(){
 function drawStamp(p){
   ctx.save();
   ctx.globalAlpha=state.opacity;
-  ctx.font=`${Math.max(28,state.size*3)}px sans-serif`;
+  ctx.font=`${state.stampSize}px sans-serif`;
   ctx.textAlign="center";
   ctx.textBaseline="middle";
   mirroredPoints(p).forEach(pt=>ctx.fillText(state.stamp,pt.x,pt.y));
@@ -669,7 +761,7 @@ function renderPalette(){
     b.className="swatch"+(state.color===color?" selected":"");
     b.style.background=color;
     b.setAttribute("aria-label",`Choose color ${color}`);
-    b.addEventListener("click",()=>{state.color=color;$("customColor").value=color;renderPalette()});
+    b.addEventListener("click",()=>{state.color=color;$("customColor").value=color;renderPalette();updateBrushPreview()});
     box.appendChild(b);
   });
 }
@@ -693,6 +785,7 @@ function setTool(tool){
   state.tool=tool;
   document.querySelectorAll(".tool-btn[data-tool]").forEach(b=>b.classList.toggle("active",b.dataset.tool===tool));
   $("toolStat").textContent=tool[0].toUpperCase()+tool.slice(1);
+  updateBrushPreview();
 }
 
 function newPrompt(){
@@ -714,6 +807,69 @@ function speak(text){
   speechSynthesis.speak(u);
 }
 
+
+function sanitizeFilename(name){
+  const cleaned=String(name||"")
+    .trim()
+    .replace(/[\\/:*?"<>|]+/g,"")
+    .replace(/\s+/g,"_")
+    .slice(0,45);
+  return cleaned||"Color_Studio_Artwork";
+}
+
+function loadGallery(){
+  try{
+    const value=JSON.parse(localStorage.getItem("colorStudioGallery")||"[]");
+    return Array.isArray(value)?value:[];
+  }catch{
+    return [];
+  }
+}
+
+function saveToGallery(image,title){
+  const gallery=loadGallery();
+  gallery.unshift({image,title:String(title||"Untitled").slice(0,60),savedAt:Date.now()});
+  const trimmed=gallery.slice(0,5);
+  try{
+    localStorage.setItem("colorStudioGallery",JSON.stringify(trimmed));
+  }catch{
+    alert("The artwork downloaded, but this browser did not have enough local space for another gallery thumbnail.");
+  }
+  renderGallery();
+}
+
+function renderGallery(){
+  const box=$("miniGallery");
+  const gallery=loadGallery();
+  box.innerHTML="";
+  if(!gallery.length){
+    box.innerHTML='<div class="gallery-empty">Saved artwork thumbnails will appear here.</div>';
+    return;
+  }
+  gallery.forEach(item=>{
+    const wrap=document.createElement("button");
+    wrap.className="gallery-item";
+    wrap.type="button";
+    wrap.title=`Reload ${item.title}`;
+    wrap.innerHTML=`<img src="${item.image}" alt="${item.title}"><span>${item.title}</span>`;
+    wrap.addEventListener("click",()=>{
+      pushHistory();
+      restore(item.image);
+    });
+    box.appendChild(wrap);
+  });
+}
+
+function updateBrushPreview(){
+  const preview=$("brushPreview");
+  const size=Math.max(5,Math.min(58,state.size));
+  preview.style.width=size+"px";
+  preview.style.height=size+"px";
+  preview.style.background=state.tool==="eraser"?"#ffffff":state.color;
+  preview.style.opacity=String(state.opacity);
+  preview.style.borderColor=state.tool==="eraser"?"#cfc7d5":"#ffffff";
+}
+
 function updateStats(){
   $("strokeStat").textContent=state.strokes;
   $("saveStat").textContent=state.saves;
@@ -730,9 +886,10 @@ document.querySelectorAll(".shape-btn").forEach(b=>b.addEventListener("click",()
   document.querySelectorAll(".shape-btn").forEach(x=>x.classList.toggle("active",x===b));
 }));
 
-$("customColor").addEventListener("input",e=>{state.color=e.target.value;renderPalette()});
-$("sizeRange").addEventListener("input",e=>{state.size=Number(e.target.value);$("sizeOut").textContent=e.target.value});
-$("opacityRange").addEventListener("input",e=>state.opacity=Number(e.target.value)/100);
+$("customColor").addEventListener("input",e=>{state.color=e.target.value;renderPalette();updateBrushPreview()});
+$("sizeRange").addEventListener("input",e=>{state.size=Number(e.target.value);$("sizeOut").textContent=e.target.value;updateBrushPreview()});
+$("stampSizeRange").addEventListener("input",e=>{state.stampSize=Number(e.target.value);$("stampSizeOut").textContent=e.target.value});
+$("opacityRange").addEventListener("input",e=>{state.opacity=Number(e.target.value)/100;updateBrushPreview()});
 $("mirrorX").addEventListener("click",e=>{state.mirrorX=!state.mirrorX;e.currentTarget.classList.toggle("active",state.mirrorX)});
 $("mirrorY").addEventListener("click",e=>{state.mirrorY=!state.mirrorY;e.currentTarget.classList.toggle("active",state.mirrorY)});
 $("newPromptBtn").addEventListener("click",newPrompt);
@@ -759,14 +916,28 @@ $("redoBtn").addEventListener("click",()=>{
   restore(state.redo.pop());
 });
 $("saveBtn").addEventListener("click",()=>{
+  const title=prompt("Title your artwork:","My Color Studio Art");
+  if(title===null)return;
+  const image=canvas.toDataURL("image/png");
   const a=document.createElement("a");
-  a.href=canvas.toDataURL("image/png");
-  a.download="Color-Studio-Garden-Art.png";
+  a.href=image;
+  a.download=`${sanitizeFilename(title)}_${new Date().toISOString().slice(0,10)}.png`;
   a.click();
+  saveToGallery(image,title||"Untitled Artwork");
   state.saves++;
   saveStats();
   updateStats();
 });
+
+$("clearGallery").addEventListener("click",()=>{
+  if(!confirm("Clear all five locally saved gallery thumbnails?"))return;
+  localStorage.removeItem("colorStudioGallery");
+  renderGallery();
+});
+$("galleryInfo").addEventListener("click",()=>{
+  alert("The mini gallery stores only the five newest thumbnail copies in this browser. Saving a PNG also downloads the full artwork to your device.");
+});
+
 $("backgroundBtn").addEventListener("click",()=>{
   const backgrounds=["#ffffff","#fff7dc","#eef9ff","#fff0f6","#effff6","#f4efff"];
   state.backgroundIndex=(state.backgroundIndex+1)%backgrounds.length;
@@ -784,6 +955,8 @@ requestAnimationFrame(()=>{
   pushHistory();
   renderPalette();
   renderStamps();
+  renderGallery();
+  updateBrushPreview();
   updateStats();
 });
 })();
