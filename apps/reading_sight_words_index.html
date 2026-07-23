@@ -1,584 +1,882 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Pre K Sight Words - Spelling Soup!</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Pre-K Sight Words Spelling Soup — a colorful, local-only sight-word spelling game.">
+<title>Pre-K Sight Words — Spelling Soup</title>
 <style>
 :root{
-  --red:#ff3b30; --yellow:#ffd100; --blue:#007aff; --green:#34c759;
-  --white:#ffffff; --bg:#fff7e0;
+  --tomato:#e9685d;
+  --carrot:#f39a4b;
+  --corn:#f4cf62;
+  --pea:#69bd78;
+  --mint:#73d0b0;
+  --blue:#6eb6df;
+  --plum:#7b5ca8;
+  --cream:#fff8e5;
+  --paper:#fffdf8;
+  --ink:#352f3d;
+  --muted:#746c7b;
+  --good:#42b978;
+  --bad:#d75f6d;
+  --shadow:0 20px 55px rgba(75,49,69,.17);
 }
-html,body{
-  margin:0; height:100%;
-  font-family:"Comic Sans MS","Poppins",sans-serif;
-  background: linear-gradient(180deg,#ffd700 0%,#ffafaf 50%,#63c2ff 100%);
-  display:flex; justify-content:center; align-items:center;
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  min-height:100vh;
+  color:var(--ink);
+  font-family:"Comic Sans MS","Trebuchet MS",system-ui,sans-serif;
+  background:
+    radial-gradient(circle at 12% 14%,rgba(255,255,255,.86) 0 5%,transparent 6%),
+    radial-gradient(circle at 87% 14%,rgba(255,255,255,.7) 0 4%,transparent 5%),
+    linear-gradient(145deg,#fff1cf 0%,#ffe3df 42%,#e6f8f0 100%);
 }
-.app {
-  width:100%; max-width:460px; background:var(--bg); border-radius:20px; padding:15px 12px 25px;
-  box-shadow:0 12px 44px #0002; text-align:center; position:relative;
+button,select{font:inherit}
+button{touch-action:manipulation}
+.app{
+  width:min(1120px,calc(100% - 22px));
+  margin:0 auto;
+  padding:22px 0 48px;
 }
-h1{margin:4px 0 5px; font-size:2.2rem; color:var(--blue);}
-#subtitle{color:#555;font-size:1rem;margin-bottom:6px;}
-.word-img{font-size:3rem;margin:8px 0 5px;}
-#boppi{
-  font-size:3rem; position:absolute; top:-40px; right:20px;
-  transition: transform 0.3s;
+.hero{
+  position:relative;
+  overflow:hidden;
+  text-align:center;
+  color:white;
+  padding:28px 20px 24px;
+  border-radius:32px;
+  background:
+    radial-gradient(circle at 20% 20%,rgba(255,255,255,.16),transparent 22%),
+    linear-gradient(135deg,var(--tomato),var(--carrot),var(--plum));
+  box-shadow:var(--shadow);
 }
-#score{font-size:1.2rem; margin-bottom:6px; font-weight:bold; color:#444;}
-.progress-bar{height:10px; width:85%; margin:7px auto 9px; background:#ffd10033; border-radius:8px; overflow:hidden;}
-.progress-bar-inner{height:100%; background:#ffd100; border-radius:8px; transition:width .6s;}
-.soup-area{
-  margin:0 auto 12px; width:300px; height:130px; background:#fff3d2;
-  border-radius:35px 35px 120px 120px/35px 35px 90px 90px;
-  border:7px solid #fff; box-shadow:0 5px 16px #ffb86054, 0 1px 0 #fff;
-  display:flex; align-items:center; justify-content:center; position:relative;
+.hero h1{
+  margin:0;
+  font-size:clamp(2.3rem,7vw,5rem);
+  line-height:.96;
+  letter-spacing:-.05em;
 }
-#dropzone{width:90%; min-height:54px; min-width:140px; display:flex; justify-content:center;}
+.hero p{
+  max-width:760px;
+  margin:8px auto 0;
+  color:#fff7f2;
+  line-height:1.6;
+}
+.hero-icons{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:15px;
+}
+.hero-icons span{
+  width:48px;height:48px;
+  display:grid;place-items:center;
+  border-radius:17px;
+  background:rgba(255,255,255,.15);
+  font-size:1.8rem;
+  animation:bob 3s ease-in-out infinite;
+}
+.hero-icons span:nth-child(2){animation-delay:-.4s}
+.hero-icons span:nth-child(3){animation-delay:-.8s}
+.hero-icons span:nth-child(4){animation-delay:-1.2s}
+@keyframes bob{50%{transform:translateY(-7px) rotate(3deg)}}
+.toolbar{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:9px;
+  margin:15px 0;
+}
+button,.pill,select{
+  border-radius:999px;
+  padding:10px 14px;
+  font-weight:850;
+}
+button{
+  border:0;
+  cursor:pointer;
+  background:linear-gradient(135deg,var(--corn),var(--carrot));
+  color:#3c2a16;
+  box-shadow:0 7px 18px rgba(94,56,24,.13);
+  transition:.18s ease;
+}
+button:hover{transform:translateY(-2px)}
+button.secondary{
+  background:white;
+  color:var(--plum);
+  border:1px solid #e0d7e8;
+}
+button.good{
+  background:linear-gradient(135deg,#76da9d,var(--good));
+  color:#123621;
+}
+button.danger{
+  background:white;
+  color:var(--bad);
+  border:1px solid #efc6cd;
+}
+.pill,select{
+  background:white;
+  border:1px solid #e0d9e8;
+  color:var(--plum);
+}
+.stats{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:9px;
+  margin-bottom:14px;
+}
+.stat{
+  background:rgba(255,255,255,.9);
+  border-radius:18px;
+  padding:11px;
+  text-align:center;
+  box-shadow:0 8px 20px rgba(67,44,78,.08);
+}
+.stat strong{
+  display:block;
+  font-size:1.23rem;
+  color:var(--plum);
+}
+.game-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1.1fr) minmax(320px,.9fr);
+  gap:16px;
+}
+.panel{
+  background:rgba(255,255,255,.92);
+  border:1px solid rgba(255,255,255,.96);
+  border-radius:28px;
+  padding:18px;
+  box-shadow:var(--shadow);
+}
+.kitchen-card{
+  min-height:500px;
+  border-radius:26px;
+  padding:20px;
+  text-align:center;
+  display:grid;
+  place-items:center;
+  align-content:center;
+  background:
+    radial-gradient(circle at 82% 18%,rgba(255,255,255,.8),transparent 24%),
+    linear-gradient(145deg,#fff7d8,#ffe9e1,#e8fbf3);
+}
+.word-img{
+  font-size:clamp(4.8rem,13vw,8.5rem);
+  filter:drop-shadow(0 12px 12px rgba(74,45,66,.14));
+}
+.word-title{
+  margin-top:4px;
+  color:var(--plum);
+  font-size:clamp(1.5rem,4vw,2.2rem);
+  font-weight:950;
+}
+.clue{
+  color:var(--muted);
+  margin-top:5px;
+}
+.soup-bowl{
+  width:min(560px,100%);
+  min-height:150px;
+  margin:18px auto 12px;
+  border:7px solid white;
+  border-radius:42px 42px 150px 150px/42px 42px 100px 100px;
+  background:linear-gradient(180deg,#fff8de,#f8dca6);
+  box-shadow:0 12px 28px rgba(132,83,45,.14);
+  display:grid;
+  place-items:center;
+  padding:24px 14px 30px;
+}
+.dropzone{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:8px;
+}
 .drop-tile{
-  display:inline-block; background:#ffe066; color:#333;
-  font-size:2.2rem; font-weight:800; margin:0 4px; padding:8px 0 4px;
-  width:50px; height:50px; border-radius:12px; border:2.5px solid #e6c144;
-  box-shadow:0 3px 8px #ffdb0090; transition: background .2s, border .2s; text-align:center;
-  user-select:none;
+  width:clamp(50px,7vw,68px);
+  aspect-ratio:1;
+  border-radius:18px;
+  display:grid;
+  place-items:center;
+  background:white;
+  border:3px dashed #cabdce;
+  color:var(--plum);
+  font-size:clamp(1.55rem,4vw,2.2rem);
+  font-weight:950;
+  transition:.18s ease;
 }
-.drop-tile.empty{background:#fff6c1;color:#bbb;border-style:dashed;}
-.drop-tile.wrong{background:#ffd2d2;border-color:#ff7d7d;}
-.drop-tile.right{background:#c1ffda;border-color:#36cc8a;}
-.letters{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin:14px 0;}
+.drop-tile.active{
+  border-color:var(--blue);
+  background:#eef9ff;
+  transform:scale(1.04);
+}
+.drop-tile.right{
+  border-style:solid;
+  border-color:var(--good);
+  background:#eafff1;
+}
+.drop-tile.wrong{
+  border-style:solid;
+  border-color:var(--bad);
+  background:#fff0f2;
+}
+.letters{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:10px;
+}
 .letter-tile{
-  background:linear-gradient(135deg,var(--blue) 50%,var(--yellow) 100%);
-  color:#fff; font-size:2rem; font-weight:700; width:55px; height:55px;
-  border-radius:14px; box-shadow:0 3px 10px #a9dfff64;
-  display:flex; align-items:center; justify-content:center;
-  cursor:grab; user-select:none; border:2.3px solid #b1cdf0;
-  transition:background .14s,box-shadow .13s, transform .2s;
+  width:clamp(52px,7vw,70px);
+  aspect-ratio:1;
+  border-radius:18px;
+  display:grid;
+  place-items:center;
+  color:white;
+  font-size:clamp(1.55rem,4vw,2.15rem);
+  font-weight:950;
+  cursor:pointer;
+  user-select:none;
+  box-shadow:
+    inset -8px -10px 16px rgba(0,0,0,.11),
+    inset 8px 9px 14px rgba(255,255,255,.2),
+    0 10px 20px rgba(59,40,74,.14);
 }
-.letter-tile:active{background:var(--red); transform: scale(1.1);}
-.letter-tile.disabled{opacity:0.5; pointer-events:none;}
-#message{font-size:1.2rem; font-weight:bold; color:#444; margin:7px 0 6px; min-height:30px;}
-.controls{margin-top:8px;}
-.btn{
-  background:var(--blue); color:var(--white); border:none; padding:10px 20px; border-radius:12px;
-  font-size:1.15rem; cursor:pointer; box-shadow:0 5px 10px #a9dfff34; margin:0 5px;
+.letter-tile.used{opacity:.28;pointer-events:none}
+.message{
+  min-height:32px;
+  margin-top:10px;
+  font-weight:900;
+  color:var(--plum);
 }
-.btn.secondary{background:var(--yellow); color:#222;}
-.confetti{
-  position:fixed; width:10px; height:10px; border-radius:50%; pointer-events:none; opacity:0.93;
-  animation:confetti-fall 900ms cubic-bezier(.2,.8,.2,1) forwards;
+.side-stack{display:grid;gap:14px}
+.activity{
+  border-radius:22px;
+  padding:15px;
+  background:linear-gradient(145deg,#fff,#fff9ed);
+  border:1px solid #ece4ee;
 }
-@keyframes confetti-fall{
-  0%{ transform:translate(-50%,-50%) scale(1); opacity:1;}
-  100%{ transform:translate(-50%,-120%) scale(.6); opacity:0;}
+.activity h2{
+  margin:0 0 6px;
+  color:var(--plum);
+  font-size:1.24rem;
 }
-#quizOverlay{
-  position:fixed; top:0; left:0; width:100%; height:100%; background:#000000aa;
-  display:flex; justify-content:center; align-items:center; visibility:hidden; opacity:0;
-  transition:opacity .3s;
+.progress{
+  height:12px;
+  border-radius:999px;
+  overflow:hidden;
+  background:#ebe4ed;
 }
-#quizBox{
-  background:#fff; border-radius:20px; padding:20px 15px; width:90%; max-width:350px; text-align:center;
-  box-shadow:0 8px 20px #0004;
+.progress > div{
+  height:100%;
+  width:0;
+  background:linear-gradient(90deg,var(--tomato),var(--corn),var(--pea),var(--blue));
+  transition:width .35s ease;
 }
-.quiz-question{font-size:1.2rem; margin-bottom:12px;}
-.quiz-options{display:flex; flex-wrap:wrap; gap:12px; justify-content:center;}
+.level-map{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
+}
+.level-card{
+  border-radius:18px;
+  padding:10px;
+  background:white;
+  border:2px solid #e5ddeb;
+  text-align:left;
+  box-shadow:none;
+}
+.level-card strong{display:block;color:var(--plum)}
+.level-card.active{
+  border-color:var(--mint);
+  background:#effff9;
+}
+.badge-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+}
+.badge{
+  padding:7px 10px;
+  border-radius:999px;
+  background:#f4effb;
+  color:#654c80;
+  font-size:.82rem;
+  font-weight:850;
+}
+.quiz-overlay{
+  position:fixed;
+  inset:0;
+  display:none;
+  place-items:center;
+  padding:16px;
+  background:rgba(40,28,43,.65);
+  z-index:30;
+}
+.quiz-overlay.open{display:grid}
+.quiz-box{
+  width:min(430px,100%);
+  border-radius:26px;
+  padding:20px;
+  background:white;
+  text-align:center;
+  box-shadow:var(--shadow);
+}
+.quiz-options{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:9px;
+  margin-top:12px;
+}
 .quiz-options button{
-  flex:1 1 40%; padding:10px; font-size:1rem; border-radius:12px; border:none; cursor:pointer;
-  background:linear-gradient(135deg,var(--yellow),var(--green)); color:#222; font-weight:bold;
-  transition: transform .15s, background .2s;
+  min-height:58px;
+  background:linear-gradient(135deg,var(--corn),var(--mint));
 }
-.quiz-options button:hover{transform:scale(1.05); background:linear-gradient(135deg,var(--green),var(--yellow));}
+.reward{
+  position:fixed;
+  z-index:40;
+  pointer-events:none;
+  font-size:28px;
+  animation:reward 1.1s ease-out forwards;
+}
+@keyframes reward{
+  to{opacity:0;transform:translateY(-105px) rotate(40deg) scale(1.4)}
+}
+.site-footer{
+  margin-top:16px;
+  padding:15px 12px;
+  text-align:center;
+  border-radius:18px;
+  background:rgba(255,255,255,.78);
+  border:1px solid rgba(90,60,120,.12);
+  color:#665b72;
+  font-size:.84rem;
+  line-height:1.5;
+}
+.site-footer strong{color:#503a76}
+@media(max-width:900px){
+  .game-grid{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:520px){
+  .level-map,.quiz-options{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.001ms!important;
+    animation-iteration-count:1!important;
+    scroll-behavior:auto!important;
+  }
+}
 </style>
 </head>
 <body>
-<div class="app" role="application" aria-label="Spelling Soup kindergarten game">
-  <h1>Pre K Sight Words - Spelling Soup!!</h1>
-  <div id="subtitle">Let’s spell fun words together! 🍲</div>
-  <div id="boppi">🦘</div>
-  <div id="score">Score: 0 ⭐</div>
-  <div class="word-img" id="wordImg"></div>
-  <div class="progress-bar"><div class="progress-bar-inner" id="progress"></div></div>
-  <div class="soup-area">
-    <div id="dropzone"></div>
-  </div>
-  <div class="letters" id="lettersArea"></div>
-  <div id="message">Tap a letter to hear it, or drag it into the soup!</div>
-  <div class="controls">
-    <button id="resetBtn" class="btn secondary">Start Over</button>
-    <button id="volumeBtn" class="btn">🔊</button>
-  </div>
-</div>
+<main class="app">
+  <header class="hero">
+    <h1>Pre-K Sight Words — Spelling Soup</h1>
+    <p>Stir letters into the bowl, learn common sight words, and unlock new kitchen levels as reading skills grow.</p>
+    <div class="hero-icons" aria-hidden="true">
+      <span>🍲</span><span>🥕</span><span>🌽</span><span>🦘</span>
+    </div>
+  </header>
 
-<div id="quizOverlay">
-  <div id="quizBox">
-    <div class="quiz-question" id="quizQuestion"></div>
+  <div class="toolbar">
+    <label class="pill">Level
+      <select id="levelSelect"></select>
+    </label>
+    <button id="hearBtn">🔊 Hear Word</button>
+    <button id="hintBtn" class="secondary">💡 Hint</button>
+    <button id="clearBtn" class="secondary">🧽 Clear</button>
+    <button id="nextBtn" class="good">Next Word ▶</button>
+    <button id="soundBtn" class="secondary">🔊 Sound On</button>
+    <button id="resetBtn" class="danger">↺ Reset Progress</button>
+  </div>
+
+  <section class="stats">
+    <div class="stat"><strong id="scoreStat">0</strong>Score</div>
+    <div class="stat"><strong id="streakStat">0</strong>Streak</div>
+    <div class="stat"><strong id="levelStat">1</strong>Level</div>
+    <div class="stat"><strong id="wordStat">1/12</strong>Word</div>
+    <div class="stat"><strong id="starsStat">0</strong>Stars</div>
+  </section>
+
+  <div class="game-grid">
+    <section class="panel">
+      <div class="kitchen-card">
+        <div class="word-img" id="wordImg">🅰️</div>
+        <div class="word-title" id="wordTitle">Spell the sight word</div>
+        <div class="clue" id="clue"></div>
+
+        <div class="soup-bowl">
+          <div class="dropzone" id="dropzone"></div>
+        </div>
+
+        <div class="letters" id="lettersArea"></div>
+        <div class="message" id="message">Tap the letters in order.</div>
+      </div>
+    </section>
+
+    <aside class="side-stack">
+      <section class="activity">
+        <h2>🥣 Soup Levels</h2>
+        <div class="level-map" id="levelMap"></div>
+      </section>
+
+      <section class="activity">
+        <h2>🏆 Level Progress</h2>
+        <div class="progress"><div id="progressBar"></div></div>
+        <div class="message" id="progressMessage"></div>
+      </section>
+
+      <section class="activity">
+        <h2>🎖️ Kitchen Badges</h2>
+        <div class="badge-row" id="badgeRow"></div>
+      </section>
+    </aside>
+  </div>
+
+  <footer class="site-footer">
+    <strong>© 2026 Verve N Veda · Khaemenes Academy · Jennifer Kay Pearl</strong><br>
+    All Rights Reserved.
+  </footer>
+</main>
+
+<div class="quiz-overlay" id="quizOverlay">
+  <div class="quiz-box">
+    <h2 id="quizQuestion">Quick Sight-Word Quiz</h2>
     <div class="quiz-options" id="quizOptions"></div>
   </div>
 </div>
 
 <script>
-// ===== Data =====
-const WORDS = [
-  { word:"a", img:"🅰️", prompt:"The first letter, it’s just “a”.", quiz:[
-      {q:"Which letter does this word start with?", options:["A","B","C"], correct:0},
-      {q:"Is the word ‘a’ a single letter word?", options:["Yes","No"], correct:0}
-  ]},
-  { word:"and", img:"➕", prompt:"Means plus or together.", quiz:[
-      {q:"Which word means together?", options:["and","but","so"], correct:0},
-      {q:"Which symbol looks like ‘and’?", options:["➕","➖","✖"], correct:0}
-  ]},
-  { word:"away", img:"🏃‍♀️", prompt:"Go somewhere else, away you go.", quiz:[
-      {q:"Which word means ‘go far’?", options:["away","stay","come"], correct:0},
-      {q:"Which action shows away?", options:["🏃‍♀️","🛑","🚶"], correct:0}
-  ]},
-  { word:"big", img:"🦁", prompt:"Large size, like a big lion.", quiz:[
-      {q:"Which word means large?", options:["big","small","tiny"], correct:0},
-      {q:"Which animal looks big?", options:["🦁","🐭","🐤"], correct:0}
-  ]},
-  { word:"blue", img:"🔵", prompt:"The color of the sky on a clear day.", quiz:[
-      {q:"Which color word is this?", options:["blue","red","yellow"], correct:0},
-      {q:"Which circle is blue?", options:["🔵","🔴","🟡"], correct:0}
-  ]},
-  { word:"can", img:"🥫", prompt:"You can do it! Or a tin can.", quiz:[
-      {q:"Which word helps you do something?", options:["can","will","may"], correct:0},
-      {q:"Which object is a can?", options:["🥫","📦","🍪"], correct:0}
-  ]},
-  { word:"come", img:"🚶", prompt:"Move toward someone – come here.", quiz:[
-      {q:"Which word means ‘move toward’?", options:["come","go","leave"], correct:0},
-      {q:"Which icon means come?", options:["🚶","🚫","🏃"], correct:0}
-  ]},
-  { word:"down", img:"⬇️", prompt:"Go down toward the ground.", quiz:[
-      {q:"Which word means toward the ground?", options:["down","up","side"], correct:0},
-      {q:"Which arrow points down?", options:["⬇️","⬆️","➡️"], correct:0}
-  ]},
-  { word:"find", img:"🔍", prompt:"Look and find what you need.", quiz:[
-      {q:"Which word means search for?", options:["find","lose","throw"], correct:0},
-      {q:"Which icon shows finding?", options:["🔍","💤","🏠"], correct:0}
-  ]},
-  { word:"for", img:"🎁", prompt:"This gift is for you.", quiz:[
-      {q:"Which word means intended for?", options:["for","at","by"], correct:0},
-      {q:"Which object is a gift for you?", options:["🎁","📚","🚗"], correct:0}
-  ]},
-  { word:"funny", img:"😂", prompt:"Something that makes you laugh is funny.", quiz:[
-      {q:"Which word means laugh out loud?", options:["funny","sad","nice"], correct:0},
-      {q:"Which emoji is for funny?", options:["😂","😢","😐"], correct:0}
-  ]},
-  { word:"go", img:"🏁", prompt:"Time to go, let’s move!", quiz:[
-      {q:"Which word means move now?", options:["go","stop","wait"], correct:0},
-      {q:"Which flag means go?", options:["🏁","🚫","🛑"], correct:0}
-  ]},
-  { word:"help", img:"🆘", prompt:"Ask for help when you need it.", quiz:[
-      {q:"Which word means ask for aid?", options:["help","hurt","hard"], correct:0},
-      {q:"Which icon shows help?", options:["🆘","📌","✅"], correct:0}
-  ]},
-  { word:"here", img:"📍", prompt:"You are right here.", quiz:[
-      {q:"Which word means this place?", options:["here","there","away"], correct:0},
-      {q:"Which icon shows your spot?", options:["📍","📦","🔓"], correct:0}
-  ]},
-  { word:"I", img:"👤", prompt:"That’s me. The word I means myself.", quiz:[
-      {q:"Which word means myself?", options:["I","you","we"], correct:0},
-      {q:"Which icon shows me?", options:["👤","👥","👧"], correct:0}
-  ]},
-  { word:"in", img:"📦", prompt:"Put it in the box.", quiz:[
-      {q:"Which word means inside?", options:["in","out","on"], correct:0},
-      {q:"Which object shows something inside?", options:["📦","📂","🗑"], correct:0}
-  ]},
-  { word:"is", img:"✅", prompt:"This word tells you is or isn’t.", quiz:[
-      {q:"Which word links subject and verb?", options:["is","are","was"], correct:0},
-      {q:"Which symbol shows yes/is?", options:["✅","❌","🟧"], correct:0}
-  ]},
-  { word:"it", img:"🐛", prompt:"Look at it, the little bug.", quiz:[
-      {q:"Which word refers to a thing?", options:["it","this","that"], correct:0},
-      {q:"Which insect is ‘it’ in the picture?", options:["🐛","🐞","🐝"], correct:0}
-  ]},
-  { word:"jump", img:"🤸", prompt:"Jump up high in the air!", quiz:[
-      {q:"Which word means leap?", options:["jump","run","sit"], correct:0},
-      {q:"Which emoji shows jumping?", options:["🤸","🚶","🛋"], correct:0}
-  ]},
-  { word:"little", img:"🐇", prompt:"Tiny bunny is little.", quiz:[
-      {q:"Which word means small?", options:["little","big","large"], correct:0},
-      {q:"Which animal is little here?", options:["🐇","🦏","🦒"], correct:0}
-  ]},
-  { word:"look", img:"👀", prompt:"Look with your eyes.", quiz:[
-      {q:"Which word means see?", options:["look","see","watch"], correct:0},
-      {q:"Which emoji means look?", options:["👀","👁‍🗨","🥽"], correct:0}
-  ]},
-  { word:"make", img:"🛠️", prompt:"Make something with tools.", quiz:[
-      {q:"Which word means create?", options:["make","break","take"], correct:0},
-      {q:"Which icon means tools?", options:["🛠️","📋","✂️"], correct:0}
-  ]},
-  { word:"me", img:"🙋", prompt:"That me raising my hand.", quiz:[
-      {q:"Which word means myself?", options:["me","you","them"], correct:0},
-      {q:"Which emoji shows me?", options:["🙋","🙇","🙌"], correct:0}
-  ]},
-  { word:"my", img:"🎒", prompt:"My bag is mine.", quiz:[
-      {q:"Which word shows belonging?", options:["my","your","their"], correct:0},
-      {q:"Which object is mine?", options:["🎒","📦","📌"], correct:0}
-  ]},
-  { word:"not", img:"🚫", prompt:"Not means no or not allowed.", quiz:[
-      {q:"Which word means no?", options:["not","yes","maybe"], correct:0},
-      {q:"Which sign means not allowed?", options:["🚫","✅","➕"], correct:0}
-  ]},
-  { word:"one", img:"1️⃣", prompt:"One means just one item.", quiz:[
-      {q:"Which word means single?", options:["one","two","three"], correct:0},
-      {q:"Which icon shows one?", options:["1️⃣","2️⃣","3️⃣"], correct:0}
-  ]},
-  { word:"play", img:"🎮", prompt:"Time to play games and have fun.", quiz:[
-      {q:"Which word means have fun?", options:["play","work","sleep"], correct:0},
-      {q:"Which icon is for games?", options:["🎮","📚","🛌"], correct:0}
-  ]},
-  { word:"red", img:"🔴", prompt:"The color red like an apple.", quiz:[
-      {q:"Which color is this word?", options:["red","blue","yellow"], correct:0},
-      {q:"Which circle is red?", options:["🔴","🔵","🟡"], correct:0}
-  ]},
-  { word:"run", img:"🏃", prompt:"Run fast like a cheetah.", quiz:[
-      {q:"Which word means move fast?", options:["run","walk","jump"], correct:0},
-      {q:"Which emoji shows running?", options:["🏃","🚶","🥱"], correct:0}
-  ]},
-  { word:"see", img:"👁️", prompt:"See with your eyes.", quiz:[
-      {q:"Which word means view?", options:["see","look","watch"], correct:0},
-      {q:"Which emoji means see?", options:["👁️","👀","🧠"], correct:0}
-  ]},
-  { word:"the", img:"📢", prompt:"The is a common little word.", quiz:[
-      {q:"Which word is very common?", options:["the","and","but"], correct:0},
-      {q:"Which icon means ‘announce’?", options:["📢","🔊","☎️"], correct:0},
-    { word:"a", img:"🅰️", prompt:"The first letter, it’s just “a”.", quiz:[
-      {q:"Which letter does this word start with?", options:["A","B","C"], correct:0},
-      {q:"Is the word ‘a’ a single letter word?", options:["Yes","No"], correct:0}
-  ]},
-  { word:"and", img:"➕", prompt:"Means plus or together.", quiz:[
-      {q:"Which word means together?", options:["and","but","so"], correct:0},
-      {q:"Which symbol looks like ‘and’?", options:["➕","➖","✖"], correct:0}
-  ]},
-  { word:"away", img:"🏃‍♀️", prompt:"Go somewhere else, away you go.", quiz:[
-      {q:"Which word means ‘go far’?", options:["away","stay","come"], correct:0},
-      {q:"Which action shows away?", options:["🏃‍♀️","🛑","🚶"], correct:0}
-  ]},
-  { word:"big", img:"🦁", prompt:"Large size, like a big lion.", quiz:[
-      {q:"Which word means large?", options:["big","small","tiny"], correct:0},
-      {q:"Which animal looks big?", options:["🦁","🐭","🐤"], correct:0}
-  ]},
-  { word:"blue", img:"🔵", prompt:"The color of the sky on a clear day.", quiz:[
-      {q:"Which color word is this?", options:["blue","red","yellow"], correct:0},
-      {q:"Which circle is blue?", options:["🔵","🔴","🟡"], correct:0}
-  ]},
-  { word:"can", img:"🥫", prompt:"You can do it! Or a tin can.", quiz:[
-      {q:"Which word helps you do something?", options:["can","will","may"], correct:0},
-      {q:"Which object is a can?", options:["🥫","📦","🍪"], correct:0}
-  ]},
-  { word:"come", img:"🚶", prompt:"Move toward someone – come here.", quiz:[
-      {q:"Which word means ‘move toward’?", options:["come","go","leave"], correct:0},
-      {q:"Which icon means come?", options:["🚶","🚫","🏃"], correct:0}
-  ]},
-  { word:"down", img:"⬇️", prompt:"Go down toward the ground.", quiz:[
-      {q:"Which word means toward the ground?", options:["down","up","side"], correct:0},
-      {q:"Which arrow points down?", options:["⬇️","⬆️","➡️"], correct:0}
-  ]},
-  { word:"find", img:"🔍", prompt:"Look and find what you need.", quiz:[
-      {q:"Which word means search for?", options:["find","lose","throw"], correct:0},
-      {q:"Which icon shows finding?", options:["🔍","💤","🏠"], correct:0}
-  ]},
-  { word:"for", img:"🎁", prompt:"This gift is for you.", quiz:[
-      {q:"Which word means intended for?", options:["for","at","by"], correct:0},
-      {q:"Which object is a gift for you?", options:["🎁","📚","🚗"], correct:0}
-  ]},
-  { word:"funny", img:"😂", prompt:"Something that makes you laugh is funny.", quiz:[
-      {q:"Which word means laugh out loud?", options:["funny","sad","nice"], correct:0},
-      {q:"Which emoji is for funny?", options:["😂","😢","😐"], correct:0}
-  ]},
-  { word:"go", img:"🏁", prompt:"Time to go, let’s move!", quiz:[
-      {q:"Which word means move now?", options:["go","stop","wait"], correct:0},
-      {q:"Which flag means go?", options:["🏁","🚫","🛑"], correct:0}
-  ]},
-  { word:"help", img:"🆘", prompt:"Ask for help when you need it.", quiz:[
-      {q:"Which word means ask for aid?", options:["help","hurt","hard"], correct:0},
-      {q:"Which icon shows help?", options:["🆘","📌","✅"], correct:0}
-  ]},
-  { word:"here", img:"📍", prompt:"You are right here.", quiz:[
-      {q:"Which word means this place?", options:["here","there","away"], correct:0},
-      {q:"Which icon shows your spot?", options:["📍","📦","🔓"], correct:0}
-  ]},
-  { word:"I", img:"👤", prompt:"That’s me. The word I means myself.", quiz:[
-      {q:"Which word means myself?", options:["I","you","we"], correct:0},
-      {q:"Which icon shows me?", options:["👤","👥","👧"], correct:0}
-  ]},
-  { word:"in", img:"📦", prompt:"Put it in the box.", quiz:[
-      {q:"Which word means inside?", options:["in","out","on"], correct:0},
-      {q:"Which object shows something inside?", options:["📦","📂","🗑"], correct:0}
-  ]},
-  { word:"is", img:"✅", prompt:"This word tells you is or isn’t.", quiz:[
-      {q:"Which word links subject and verb?", options:["is","are","was"], correct:0},
-      {q:"Which symbol shows yes/is?", options:["✅","❌","🟧"], correct:0}
-  ]},
-  { word:"it", img:"🐛", prompt:"Look at it, the little bug.", quiz:[
-      {q:"Which word refers to a thing?", options:["it","this","that"], correct:0},
-      {q:"Which insect is ‘it’ in the picture?", options:["🐛","🐞","🐝"], correct:0}
-  ]},
-  { word:"jump", img:"🤸", prompt:"Jump up high in the air!", quiz:[
-      {q:"Which word means leap?", options:["jump","run","sit"], correct:0},
-      {q:"Which emoji shows jumping?", options:["🤸","🚶","🛋"], correct:0}
-  ]},
-  { word:"little", img:"🐇", prompt:"Tiny bunny is little.", quiz:[
-      {q:"Which word means small?", options:["little","big","large"], correct:0},
-      {q:"Which animal is little here?", options:["🐇","🦏","🦒"], correct:0}
-  ]},
-  { word:"look", img:"👀", prompt:"Look with your eyes.", quiz:[
-      {q:"Which word means see?", options:["look","see","watch"], correct:0},
-      {q:"Which emoji means look?", options:["👀","👁‍🗨","🥽"], correct:0}
-  ]},
-  { word:"make", img:"🛠️", prompt:"Make something with tools.", quiz:[
-      {q:"Which word means create?", options:["make","break","take"], correct:0},
-      {q:"Which icon means tools?", options:["🛠️","📋","✂️"], correct:0}
-  ]},
-  { word:"me", img:"🙋", prompt:"That me raising my hand.", quiz:[
-      {q:"Which word means myself?", options:["me","you","them"], correct:0},
-      {q:"Which emoji shows me?", options:["🙋","🙇","🙌"], correct:0}
-  ]},
-  { word:"my", img:"🎒", prompt:"My bag is mine.", quiz:[
-      {q:"Which word shows belonging?", options:["my","your","their"], correct:0},
-      {q:"Which object is mine?", options:["🎒","📦","📌"], correct:0}
-  ]},
-  { word:"not", img:"🚫", prompt:"Not means no or not allowed.", quiz:[
-      {q:"Which word means no?", options:["not","yes","maybe"], correct:0},
-      {q:"Which sign means not allowed?", options:["🚫","✅","➕"], correct:0}
-  ]},
-  { word:"one", img:"1️⃣", prompt:"One means just one item.", quiz:[
-      {q:"Which word means single?", options:["one","two","three"], correct:0},
-      {q:"Which icon shows one?", options:["1️⃣","2️⃣","3️⃣"], correct:0}
-  ]},
-  { word:"play", img:"🎮", prompt:"Time to play games and have fun.", quiz:[
-      {q:"Which word means have fun?", options:["play","work","sleep"], correct:0},
-      {q:"Which icon is for games?", options:["🎮","📚","🛌"], correct:0}
-  ]},
-  { word:"red", img:"🔴", prompt:"The color red like an apple.", quiz:[
-      {q:"Which color is this word?", options:["red","blue","yellow"], correct:0},
-      {q:"Which circle is red?", options:["🔴","🔵","🟡"], correct:0}
-  ]},
-  { word:"run", img:"🏃", prompt:"Run fast like a cheetah.", quiz:[
-      {q:"Which word means move fast?", options:["run","walk","jump"], correct:0},
-      {q:"Which emoji shows running?", options:["🏃","🚶","🥱"], correct:0}
-  ]},
-  { word:"see", img:"👁️", prompt:"See with your eyes.", quiz:[
-      {q:"Which word means view?", options:["see","look","watch"], correct:0},
-      {q:"Which emoji means see?", options:["👁️","👀","🧠"], correct:0}
-  ]},
-  { word:"the", img:"📢", prompt:"The is a common little word.", quiz:[
-      {q:"Which word is very common?", options:["the","and","but"], correct:0},
-      {q:"Which icon means ‘announce’?", options:["📢","🔊","☎️"], correct:0}
-  ]},
-  { word:"to", img:"➡️", prompt:"Move to there.", quiz:[
-      {q:"Which word shows direction?", options:["to","from","on"], correct:0},
-      {q:"Which arrow shows movement?", options:["➡️","⬅️","↕️"], correct:0}
-  ]},
-  { word:"two", img:"2️⃣", prompt:"Two means a pair.", quiz:[
-      {q:"Which word means pair?", options:["two","one","three"], correct:0},
-      {q:"Which icon shows two?", options:["2️⃣","1️⃣","3️⃣"], correct:0}
-  ]},
-  { word:"up", img:"⬆️", prompt:"Move upward, up you go!", quiz:[
-      {q:"Which word means move high?", options:["up","down","left"], correct:0},
-      {q:"Which arrow shows up?", options:["⬆️","⬇️","⬅️"], correct:0}
-  ]},
-  { word:"we", img:"👩‍👩‍👧‍👦", prompt:"We means all of us together.", quiz:[
-      {q:"Which word means all of us?", options:["we","I","me"], correct:0},
-      {q:"Which icon shows a group?", options:["👩‍👩‍👧‍👦","👤","🙋"], correct:0}
-  ]},
-  { word:"where", img:"❓", prompt:"Where is it? Find the place.", quiz:[
-      {q:"Which word asks location?", options:["where","here","there"], correct:0},
-      {q:"Which symbol asks a question?", options:["❓","❗","✅"], correct:0}
-  ]},
-  { word:"yellow", img:"🟡", prompt:"Yellow like the sun.", quiz:[
-      {q:"Which color is yellow?", options:["yellow","blue","red"], correct:0},
-      {q:"Which circle is yellow?", options:["🟡","🔵","🔴"], correct:0}
-  ]},
-  { word:"you", img:"👧", prompt:"You are special!", quiz:[
-      {q:"Which word means the person you are talking to?", options:["you","me","they"], correct:0},
-      {q:"Which emoji shows a child?", options:["👧","👦","👶"], correct:0}
-  ]}
-  ]},
-  { word:"to", img:"➡️", prompt:"Move to there.", quiz:[
-      {q:"Which word shows direction?", options:["to","from","on"], correct:0},
-      {q:"Which arrow shows movement?", options:["➡️","⬅️","↕️"], correct:0}
-  ]}
-];
+(() => {
+  "use strict";
 
-let idx = 0, userLetters = [], soundOn = true, score = 0;
-const dropzone = document.getElementById('dropzone');
-const lettersArea = document.getElementById('lettersArea');
-const message = document.getElementById('message');
-const wordImg = document.getElementById('wordImg');
-const progressBar = document.getElementById('progress');
-const boppi = document.getElementById('boppi');
-const scoreDisplay = document.getElementById('score');
-const quizOverlay = document.getElementById('quizOverlay');
-const quizQuestion = document.getElementById('quizQuestion');
-const quizOptions = document.getElementById('quizOptions');
-
-function speak(text){
-  if(!soundOn) return;
-  const u = new SpeechSynthesisUtterance(text);
-  u.lang = 'en-US';
-  u.rate = 0.96; u.pitch = 1.11;
-  const v = speechSynthesis.getVoices().find(v=>v.name.match(/child|female|Samantha|Google US/i))||speechSynthesis.getVoices()[0];
-  if(v) u.voice = v; speechSynthesis.cancel(); speechSynthesis.speak(u);
-}
-
-// Shuffle helper
-function shuffle(arr){let a=arr.slice(); for(let i=a.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a;}
-
-// ===== Render Word =====
-function renderWord(){
-  let {word,img,prompt} = WORDS[idx];
-  userLetters = Array(word.length).fill("");
-  wordImg.innerHTML = img;
-  dropzone.innerHTML='';
-  progressBar.style.width = `${(idx/WORDS.length)*100}%`;
-
-  // Drop tiles
-  for(let i=0;i<word.length;i++){
-    const tile = document.createElement('div');
-    tile.className='drop-tile empty'; tile.dataset.pos=i;
-    tile.setAttribute('aria-label','Blank letter slot');
-    dropzone.appendChild(tile);
-  }
-
-  // Letter tiles
-  const shuffled = shuffle(word.toUpperCase().split(''));
-  lettersArea.innerHTML='';
-  shuffled.forEach((l,n)=>{
-    const tile = document.createElement('div');
-    tile.className='letter-tile'; tile.textContent=l;
-    tile.setAttribute('draggable','true'); tile.setAttribute('aria-label','Letter '+l);
-    tile.addEventListener('dragstart',ev=>{ ev.dataTransfer.setData('text/plain',l+"|"+n); setTimeout(()=>tile.classList.add('disabled'),0); });
-    tile.addEventListener('dragend',()=>tile.classList.remove('disabled'));
-    tile.addEventListener('click',()=>placeLetter(l,n));
-    tile.addEventListener('dblclick',()=>speak(l));
-    lettersArea.appendChild(tile);
-  });
-
-  message.textContent=prompt;
-  speak("Let's spell. "+prompt);
-}
-
-// ===== Place Letter =====
-function placeLetter(ltr,tileIdx){
-  let empty=[...dropzone.children].findIndex(d=>d.classList.contains('empty'));
-  if(empty<0) return;
-  let {word} = WORDS[idx];
-  let correct = ltr.toLowerCase() === word[empty];
-
-  if(correct){
-    dropzone.children[empty].textContent=ltr;
-    dropzone.children[empty].className='drop-tile right';
-    userLetters[empty]=ltr;
-    [...lettersArea.children][tileIdx].classList.add('disabled');
-    spawnBoppi('jump');
-    score += 5;
-    scoreDisplay.textContent="Score: "+score+" ⭐";
-
-    if(userLetters.join('').toLowerCase()===word){
-      message.textContent="Great job! You spelled "+word.toUpperCase()+"!";
-      speak("Great job! You spelled "+word+"!");
-      spawnConfetti();
-      setTimeout(showQuiz,800);
+  const LEVELS = [
+    {
+      name:"Tiny Tastes",
+      icon:"🥄",
+      description:"1–2 letter words",
+      words:[
+        ["a","🅰️","The word a points to one thing."],
+        ["I","👤","The word I means myself."],
+        ["in","📦","Inside something."],
+        ["is","✅","A word that tells what something is."],
+        ["it","🐛","A word for a thing."],
+        ["me","🙋","A word that means myself."],
+        ["my","🎒","A word that shows something belongs to me."],
+        ["to","➡️","A word that shows direction."],
+        ["up","⬆️","Toward a higher place."],
+        ["we","👥","All of us together."],
+        ["go","🏁","Move or begin."],
+        ["no","🚫","The opposite of yes."]
+      ]
+    },
+    {
+      name:"Little Ladles",
+      icon:"🥣",
+      description:"3-letter words",
+      words:[
+        ["and","➕","A word that joins things together."],
+        ["big","🦁","Large in size."],
+        ["can","🥫","Able to do something, or a metal container."],
+        ["for","🎁","Made or meant for someone."],
+        ["not","🚫","A word that means no."],
+        ["one","1️⃣","The number one."],
+        ["red","🔴","A bright color."],
+        ["run","🏃","Move quickly on your feet."],
+        ["see","👁️","Notice with your eyes."],
+        ["the","📢","A very common word before a noun."],
+        ["two","2️⃣","The number two."],
+        ["you","🧒","The person being spoken to."]
+      ]
+    },
+    {
+      name:"Tasty Bowls",
+      icon:"🍲",
+      description:"4-letter words",
+      words:[
+        ["away","🏃‍♀️","Far from this place."],
+        ["blue","🔵","The color of a clear sky."],
+        ["come","🚶","Move toward someone or somewhere."],
+        ["down","⬇️","Toward the ground."],
+        ["find","🔍","Look for and discover something."],
+        ["help","🆘","Give or ask for support."],
+        ["here","📍","This place."],
+        ["jump","🤸","Push off the ground into the air."],
+        ["look","👀","Use your eyes to notice."],
+        ["make","🛠️","Create or build something."],
+        ["play","🎮","Have fun with a game or activity."],
+        ["said","💬","Spoke some words."]
+      ]
+    },
+    {
+      name:"Super Soup",
+      icon:"👩‍🍳",
+      description:"5–6 letter words",
+      words:[
+        ["funny","😂","Something that makes people laugh."],
+        ["little","🐇","Small in size."],
+        ["where","❓","A word that asks about a place."],
+        ["yellow","🟡","A bright sunny color."],
+        ["there","📍","A place away from here."],
+        ["three","3️⃣","The number three."],
+        ["under","⬇️","Below something."],
+        ["again","🔁","One more time."],
+        ["please","🙏","A polite word used when asking."],
+        ["friend","🤝","Someone you like and trust."],
+        ["school","🏫","A place for learning."],
+        ["family","👨‍👩‍👧‍👦","People who care for one another."]
+      ]
     }
-  } else {
-    dropzone.children[empty].classList.add('wrong');
-    message.textContent="Try again!";
-    speak("Try again!");
-    spawnBoppi('shake');
-    setTimeout(()=>dropzone.children[empty].classList.remove('wrong'),700);
+  ].map((level,li)=>({
+    ...level,
+    words:level.words.map(([word,img,prompt],wi)=>({
+      word,img,prompt,id:`${li}-${wi}`
+    }))
+  }));
+
+  const COLORS=[
+    ["#e9685d","#c94f50"],
+    ["#f39a4b","#dc7434"],
+    ["#69bd78","#469d59"],
+    ["#6eb6df","#4d8fbd"],
+    ["#7b5ca8","#5e4387"],
+    ["#e97ea8","#c85d8b"]
+  ];
+
+  const state={
+    level:Number(localStorage.getItem("soupLevel")||0),
+    index:Number(localStorage.getItem("soupIndex")||0),
+    score:Number(localStorage.getItem("soupScore")||0),
+    streak:Number(localStorage.getItem("soupStreak")||0),
+    stars:Number(localStorage.getItem("soupStars")||0),
+    sound:localStorage.getItem("soupSound")!=="false",
+    completed:new Set(JSON.parse(localStorage.getItem("soupCompleted")||"[]")),
+    placed:[],
+    finished:false
+  };
+
+  const $=id=>document.getElementById(id);
+
+  function save(){
+    localStorage.setItem("soupLevel",String(state.level));
+    localStorage.setItem("soupIndex",String(state.index));
+    localStorage.setItem("soupScore",String(state.score));
+    localStorage.setItem("soupStreak",String(state.streak));
+    localStorage.setItem("soupStars",String(state.stars));
+    localStorage.setItem("soupSound",String(state.sound));
+    localStorage.setItem("soupCompleted",JSON.stringify([...state.completed]));
   }
-}
 
-// Drag & Drop
-dropzone.addEventListener('dragover',e=>e.preventDefault());
-dropzone.addEventListener('drop',e=>{
-  e.preventDefault();
-  const data = e.dataTransfer.getData('text/plain');
-  if(!data) return;
-  const [ltr,tileIdx]=data.split('|');
-  placeLetter(ltr, Number(tileIdx));
-});
+  function currentLevel(){return LEVELS[state.level]}
+  function currentWord(){return currentLevel().words[state.index]}
 
-// ===== Reset / Start Over =====
-document.getElementById('resetBtn').onclick = ()=>{
-  idx=0; score=0;
-  scoreDisplay.textContent="Score: 0 ⭐";
-  renderWord();
-  progressBar.style.width="0%";
-  message.textContent="Ready? Let's spell!";
-  speak("Let's play Spelling Soup!");
-};
-document.getElementById('volumeBtn').onclick=()=>{
-  soundOn=!soundOn;
-  document.getElementById('volumeBtn').textContent = soundOn ? "🔊":"🔈";
-};
-
-// ===== Next Word =====
-function nextWord(){
-  idx++;
-  if(idx >= WORDS.length){
-    progressBar.style.width="100%";
-    message.textContent="Yay! You finished all words! 🎉";
-    speak("Yay! You finished all the words!");
-    setTimeout(()=>{ idx=0; renderWord(); message.textContent="Ready for more?"; speak("Let's play again!"); },2500);
-    return;
+  function speak(text){
+    if(!state.sound || !("speechSynthesis" in window)) return;
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(text);
+    const voices=speechSynthesis.getVoices();
+    u.voice=voices.find(v=>/child|kid|jenny|samantha|aria|female/i.test(v.name)&&/^en/i.test(v.lang))
+      ||voices.find(v=>/^en/i.test(v.lang))
+      ||voices[0]
+      ||null;
+    u.rate=.84;
+    u.pitch=1.12;
+    speechSynthesis.speak(u);
   }
-  renderWord();
-}
 
-// ===== Confetti =====
-function spawnConfetti(){
-  const colors=['#ff3b30','#ffd100','#007aff','#34c759','#ff69b4','#ff8c00'];
-  for(let i=0;i<14;i++){
-    const c=document.createElement('div');
-    c.className='confetti';
-    c.style.background=colors[Math.floor(Math.random()*colors.length)];
-    const app=document.querySelector('.app').getBoundingClientRect();
-    const sx=app.left+app.width/2+(Math.random()-0.5)*(app.width*0.7);
-    const sy=app.top+app.height/2+(Math.random()-0.5)*(app.height*0.2);
-    c.style.left=sx+'px'; c.style.top=sy+'px';
-    const s=6+Math.random()*10; c.style.width=s+'px'; c.style.height=s+'px';
-    document.body.appendChild(c);
-    setTimeout(()=>c.remove(),1000);
+  function shuffle(array){
+    const copy=[...array];
+    for(let i=copy.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      [copy[i],copy[j]]=[copy[j],copy[i]];
+    }
+    return copy;
   }
-}
 
-// ===== Boppi Animations =====
-function spawnBoppi(action){
-  if(action==='jump'){
-    boppi.style.transform='translateY(-25px)'; 
-    setTimeout(()=>boppi.style.transform='translateY(0px)',300);
-  } else if(action==='shake'){
-    boppi.style.transform='rotate(-15deg)';
-    setTimeout(()=>boppi.style.transform='rotate(15deg)',100);
-    setTimeout(()=>boppi.style.transform='rotate(0deg)',200);
+  function extras(count){
+    const alpha="abcdefghijklmnopqrstuvwxyz";
+    return Array.from({length:count},()=>alpha[Math.floor(Math.random()*alpha.length)]);
   }
-}
 
-// ===== Quiz =====
-function showQuiz(){
-  const qlist=WORDS[idx].quiz;
-  if(!qlist || qlist.length===0){ nextWord(); return; }
-  const q = qlist[0]; // pick first quiz for simplicity
-  quizQuestion.textContent=q.q;
-  quizOptions.innerHTML='';
-  q.options.forEach((opt,i)=>{
-    const btn=document.createElement('button'); btn.textContent=opt;
-    btn.onclick=()=>{
-      if(i===q.correct){ score+=5; spawnBoppi('jump'); speak("Correct!"); message.textContent="Correct! +5 points"; }
-      else { spawnBoppi('shake'); speak("Oops! Try next time."); message.textContent="Oops!"; }
-      scoreDisplay.textContent="Score: "+score+" ⭐";
-      quizOverlay.style.opacity=0; setTimeout(()=>{ quizOverlay.style.visibility='hidden'; nextWord(); },300);
-    };
-    quizOptions.appendChild(btn);
-  });
-  quizOverlay.style.visibility='visible'; quizOverlay.style.opacity=1;
-}
+  function buildPool(word){
+    const count=state.level===0?1:state.level===1?2:3;
+    return shuffle([...word.toLowerCase().split(""),...extras(count)]);
+  }
 
-// ===== Start =====
-renderWord();
+  function reward(target,symbol="⭐"){
+    const r=target.getBoundingClientRect();
+    for(let i=0;i<5;i++){
+      const el=document.createElement("span");
+      el.className="reward";
+      el.textContent=symbol;
+      el.style.left=(r.left+r.width/2+(Math.random()*60-30))+"px";
+      el.style.top=(r.top+r.height/2)+"px";
+      document.body.appendChild(el);
+      setTimeout(()=>el.remove(),1150);
+    }
+  }
+
+  function updateStats(){
+    $("scoreStat").textContent=state.score;
+    $("streakStat").textContent=state.streak;
+    $("levelStat").textContent=state.level+1;
+    $("wordStat").textContent=`${state.index+1}/${currentLevel().words.length}`;
+    $("starsStat").textContent=state.stars;
+    $("soundBtn").textContent=state.sound?"🔊 Sound On":"🔇 Sound Off";
+
+    const ids=currentLevel().words.map(w=>w.id);
+    const done=ids.filter(id=>state.completed.has(id)).length;
+    $("progressBar").style.width=(done/ids.length*100)+"%";
+    $("progressMessage").textContent=
+      done===ids.length
+        ?"This soup level is complete! 🏆"
+        :`${ids.length-done} sight words remain in this level.`;
+  }
+
+  function renderLevelControls(){
+    $("levelSelect").innerHTML="";
+    $("levelMap").innerHTML="";
+
+    LEVELS.forEach((level,i)=>{
+      const option=document.createElement("option");
+      option.value=i;
+      option.textContent=`Level ${i+1} — ${level.name}`;
+      $("levelSelect").appendChild(option);
+
+      const done=level.words.filter(w=>state.completed.has(w.id)).length;
+      const b=document.createElement("button");
+      b.className="level-card"+(i===state.level?" active":"");
+      b.innerHTML=`<strong>${level.icon} Level ${i+1}: ${level.name}</strong><span>${level.description} • ${done}/${level.words.length}</span>`;
+      b.onclick=()=>{
+        state.level=i;
+        state.index=0;
+        render();
+      };
+      $("levelMap").appendChild(b);
+    });
+
+    $("levelSelect").value=String(state.level);
+  }
+
+  function renderBadges(){
+    const badges=[];
+    if(state.completed.size>=5) badges.push("🥄 First Five");
+    if(state.completed.size>=12) badges.push("🥣 Tiny Tastes Complete");
+    if(state.stars>=40) badges.push("⭐ Star Chef");
+    if(state.streak>=5) badges.push("🔥 Five-Word Streak");
+    if(state.completed.size>=24) badges.push("🍲 Sight-Word Cook");
+    if(state.completed.size>=48) badges.push("👩‍🍳 Super Soup Scholar");
+    $("badgeRow").innerHTML=badges.length
+      ?badges.map(x=>`<span class="badge">${x}</span>`).join("")
+      :'<span class="badge">Complete words to earn badges.</span>';
+  }
+
+  function render(){
+    state.index=Math.max(0,Math.min(state.index,currentLevel().words.length-1));
+    state.placed=[];
+    state.finished=false;
+
+    const item=currentWord();
+    $("wordImg").textContent=item.img;
+    $("wordTitle").textContent="Spell the sight word";
+    $("clue").textContent=item.prompt;
+    $("message").textContent="Tap the letters in order.";
+
+    const dz=$("dropzone");
+    dz.innerHTML="";
+    item.word.split("").forEach((_,i)=>{
+      const tile=document.createElement("button");
+      tile.className="drop-tile";
+      tile.dataset.index=i;
+      tile.setAttribute("aria-label",`Letter space ${i+1}`);
+      tile.onclick=()=>removeFrom(i);
+      dz.appendChild(tile);
+    });
+
+    const letters=$("lettersArea");
+    letters.innerHTML="";
+    buildPool(item.word).forEach((letter,i)=>{
+      const b=document.createElement("button");
+      b.className="letter-tile";
+      b.textContent=letter.toUpperCase();
+      b.dataset.letter=letter;
+      const palette=COLORS[i%COLORS.length];
+      b.style.background=`linear-gradient(145deg,${palette[0]},${palette[1]})`;
+      b.onclick=()=>placeLetter(b);
+      letters.appendChild(b);
+    });
+
+    highlightNext();
+    renderLevelControls();
+    renderBadges();
+    updateStats();
+    save();
+  }
+
+  function highlightNext(){
+    document.querySelectorAll(".drop-tile").forEach(x=>x.classList.remove("active"));
+    const next=document.querySelector(`.drop-tile[data-index="${state.placed.length}"]`);
+    if(next&&!state.finished) next.classList.add("active");
+  }
+
+  function placeLetter(button){
+    if(state.finished||button.classList.contains("used")) return;
+    const item=currentWord();
+    const pos=state.placed.length;
+    if(pos>=item.word.length) return;
+
+    const letter=button.dataset.letter;
+    const tile=document.querySelector(`.drop-tile[data-index="${pos}"]`);
+    state.placed.push({letter,button});
+    tile.textContent=letter.toUpperCase();
+    button.classList.add("used");
+
+    if(letter===item.word.toLowerCase()[pos]){
+      tile.classList.add("right");
+      speak(letter);
+      state.score+=2;
+      $("message").textContent="Correct letter!";
+    }else{
+      tile.classList.add("wrong");
+      state.streak=0;
+      $("message").textContent="That letter does not fit there. Try again.";
+      speak("Try again");
+      updateStats();
+      save();
+      setTimeout(()=>removeFrom(pos),650);
+      return;
+    }
+
+    highlightNext();
+    if(state.placed.length===item.word.length) finishWord();
+  }
+
+  function removeFrom(index){
+    if(state.finished||index<0||index>=state.placed.length) return;
+    const removed=state.placed.splice(index);
+    removed.forEach(item=>item.button.classList.remove("used"));
+
+    document.querySelectorAll(".drop-tile").forEach((tile,i)=>{
+      tile.textContent="";
+      tile.className="drop-tile";
+      if(i<state.placed.length){
+        tile.textContent=state.placed[i].letter.toUpperCase();
+        tile.classList.add("right");
+      }
+    });
+
+    $("message").textContent="Choose the next letter.";
+    highlightNext();
+  }
+
+  function finishWord(){
+    const item=currentWord();
+    state.finished=true;
+    state.score+=10;
+    state.streak++;
+    state.stars+=3;
+    state.completed.add(item.id);
+    $("message").textContent=`Wonderful! You spelled ${item.word.toUpperCase()}!`;
+    speak(`Wonderful. You spelled ${item.word}.`);
+    reward($("wordImg"),"🌟");
+    updateStats();
+    renderBadges();
+    save();
+    setTimeout(showQuiz,700);
+  }
+
+  function showQuiz(){
+    const item=currentWord();
+    const correct=item.word.toLowerCase();
+    const pool=currentLevel().words.map(w=>w.word.toLowerCase()).filter(w=>w!==correct);
+    const options=shuffle([correct,...shuffle(pool).slice(0,3)]);
+    $("quizQuestion").textContent=`Which word matches this clue: “${item.prompt}”`;
+    $("quizOptions").innerHTML="";
+    options.forEach(opt=>{
+      const b=document.createElement("button");
+      b.textContent=opt;
+      b.onclick=()=>{
+        if(opt===correct){
+          state.score+=5;
+          state.stars++;
+          reward(b,"⭐");
+          speak("Correct");
+        }else{
+          state.streak=0;
+          speak("Good try");
+        }
+        save();
+        $("quizOverlay").classList.remove("open");
+        nextWord();
+      };
+      $("quizOptions").appendChild(b);
+    });
+    $("quizOverlay").classList.add("open");
+  }
+
+  function nextWord(){
+    state.index++;
+    if(state.index>=currentLevel().words.length){
+      state.index=0;
+      if(state.level<LEVELS.length-1) state.level++;
+    }
+    render();
+  }
+
+  $("hearBtn").onclick=()=>{
+    const item=currentWord();
+    speak(`${item.word}. ${item.prompt}`);
+  };
+  $("hintBtn").onclick=()=>{
+    const item=currentWord();
+    $("clue").textContent=`Hint: ${item.prompt} It begins with ${item.word[0].toUpperCase()}.`;
+    speak(item.prompt);
+  };
+  $("clearBtn").onclick=()=>{
+    state.placed.forEach(item=>item.button.classList.remove("used"));
+    state.placed=[];
+    state.finished=false;
+    document.querySelectorAll(".drop-tile").forEach(tile=>{
+      tile.textContent="";
+      tile.className="drop-tile";
+    });
+    $("message").textContent="The soup bowl is ready to try again.";
+    highlightNext();
+  };
+  $("nextBtn").onclick=nextWord;
+  $("soundBtn").onclick=()=>{
+    state.sound=!state.sound;
+    updateStats();
+    save();
+  };
+  $("levelSelect").onchange=e=>{
+    state.level=Number(e.target.value);
+    state.index=0;
+    render();
+  };
+  $("resetBtn").onclick=()=>{
+    if(!confirm("Reset all saved Spelling Soup progress?")) return;
+    state.level=0;
+    state.index=0;
+    state.score=0;
+    state.streak=0;
+    state.stars=0;
+    state.completed.clear();
+    save();
+    render();
+  };
+
+  render();
+})();
 </script>
 </body>
 </html>
