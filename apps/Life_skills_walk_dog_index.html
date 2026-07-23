@@ -1,304 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<title>Little Tikes Life Skills – How to Walk the Dog</title>
-<meta name="viewport" content="width=device-width,initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Little Tikes Life Skills — Walking With a Dog Safely, a private child-friendly learning story.">
+<title>Little Tikes Life Skills — Walking With a Dog Safely</title>
 <style>
-  :root{
-    --parchment:#fdfcf5;
-    --parchment-soft:#fffef8;
-    --accent:#8fd3ff;
-    --accent-deep:#55baf7;
-    --ink:#2e3a42;
-    --radius-card:21px;
-    --shadow-card:0 18px 40px rgba(0,0,0,0.12);
-  }
-  *{box-sizing:border-box;margin:0;padding:0;}
-  body{
-    font-family:"Nunito","Segoe UI",system-ui,-apple-system,sans-serif;
-    background:radial-gradient(circle at top,#fdfcf5,#e2f4ff);
-    color:var(--ink);
-    padding:24px 12px;
-  }
-  .lt-shelf{max-width:520px;margin:0 auto;text-align:center;}
-  .lt-tagline{
-    font-size:18px;
-    letter-spacing:0.08em;
-    text-transform:uppercase;
-    color:#4b6a7a;
-    margin-bottom:4px;
-  }
-  .lt-title{font-size:27px;font-weight:800;margin-bottom:4px;}
-  .lt-sub{font-size:15px;color:#476170;margin-bottom:21px;}
-  .lt-book-card{
-    position:relative;
-    background:var(--parchment-soft);
-    border-radius:var(--radius-card);
-    box-shadow:var(--shadow-card);
-    padding:21px 21px 18px;
-    display:flex;
-    gap:18px;
-    justify-content:space-between;
-    align-items:stretch;
-    overflow:hidden;
-  }
-  .lt-book-card.flip{animation:lt-flip 260ms ease-out;}
-  @keyframes lt-flip{
-    0%{transform:scale(1) rotateY(0deg);}
-    50%{transform:scale(0.97) rotateY(-8deg);}
-    100%{transform:scale(1) rotateY(0deg);}
-  }
-  .lt-column{flex:1;min-width:0;}
-  .lt-page-label{
-    font-size:12px;
-    text-transform:uppercase;
-    letter-spacing:0.13em;
-    color:#607a88;
-    margin-bottom:6px;
-  }
-  .lt-mini-title{font-size:21px;font-weight:700;margin-bottom:6px;}
-  .lt-icon-bubble{
-    width:72px;height:72px;border-radius:999px;
-    margin:6px auto 10px;
-    display:flex;align-items:center;justify-content:center;
-    font-size:33px;
-    background:linear-gradient(145deg,#d6f0ff,#a7dbff);
-    box-shadow:0 10px 18px rgba(0,0,0,0.12);
-  }
-  .lt-badge{
-    display:inline-block;
-    padding:3px 10px;
-    border-radius:999px;
-    background:rgba(143,211,255,0.18);
-    font-size:11px;
-    text-transform:uppercase;
-    letter-spacing:0.12em;
-    margin-bottom:6px;
-    color:#326683;
-  }
-  .lt-text{
-    font-size:15px;
-    line-height:1.55;
-    text-align:left;
-    white-space:pre-line;
-  }
-  .lt-try{
-    font-size:14px;
-    font-weight:600;
-    margin-top:10px;
-    color:#2f6d8f;
-  }
-  .lt-nav-row{
-    margin-top:15px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:12px;
-    font-size:13px;
-    color:#476170;
-  }
-  .lt-btn{
-    border:none;border-radius:999px;
-    padding:6px 16px;
-    font-size:13px;font-weight:600;
-    cursor:pointer;
-    background:var(--accent);color:#123142;
-    box-shadow:0 6px 12px rgba(0,0,0,0.15);
-    transition:transform 120ms ease, box-shadow 120ms ease, background 120ms;
-  }
-  .lt-btn[disabled]{opacity:.4;cursor:default;box-shadow:none;}
-  .lt-btn:not([disabled]):hover{
-    transform:translateY(-1px);
-    box-shadow:0 9px 18px rgba(0,0,0,0.18);
-    background:var(--accent-deep);
-  }
-  .lt-dots{display:flex;gap:4px;align-items:center;justify-content:center;flex:1;}
-  .lt-dot{
-    width:7px;height:7px;border-radius:999px;
-    background:#cde7f7;
-  }
-  .lt-dot.active{width:16px;background:var(--accent-deep);}
-  .lt-footnote{
-    font-size:13px;
-    color:#476170;
-    margin-top:16px;
-  }
-  @media(max-width:600px){
-    .lt-book-card{flex-direction:column;}
-    .lt-mini-title{font-size:18px;}
-  }
+:root{
+  --plum:#5d3f91;--lav:#9478d8;--rose:#ee8db5;--coral:#ff9a86;--gold:#ffd66b;
+  --mint:#9de4c1;--sky:#91d9f8;--ink:#342d40;--muted:#6c6475;--paper:#fffdf8;
+  --panel:rgba(255,255,255,.9);--shadow:0 24px 58px rgba(65,44,82,.16)
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;min-height:100vh;padding:26px 14px 48px;color:var(--ink);
+  font-family:"Avenir Next Rounded","Trebuchet MS","Arial Rounded MT Bold","Comic Sans MS",system-ui,sans-serif;
+  background:
+    radial-gradient(circle at 10% 12%,rgba(255,255,255,.94) 0 5%,transparent 6%),
+    linear-gradient(145deg,#eefaff,#fff3dd 46%,#f7eaff);
+}
+button,select{font:inherit}
+button{touch-action:manipulation}
+.decor{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:-1}
+.orb{position:absolute;border-radius:50%;opacity:.25;animation:float 8s ease-in-out infinite}
+.o1{width:150px;height:150px;background:#fff;left:2%;top:10%}
+.o2{width:90px;height:90px;background:var(--gold);right:7%;top:18%;animation-delay:-2s}
+.o3{width:185px;height:185px;background:#fff;right:-30px;bottom:4%;animation-delay:-4s}
+.o4{width:80px;height:80px;background:var(--mint);left:10%;bottom:10%;animation-delay:-6s}
+@keyframes float{50%{transform:translateY(-16px) scale(1.04)}}
+.wrap{width:min(1080px,100%);margin:auto}
+.hero{text-align:center;margin-bottom:18px}
+.badge{display:inline-flex;gap:8px;align-items:center;padding:8px 14px;border-radius:999px;background:#ffffffcc;border:1px solid #fff;box-shadow:0 8px 22px rgba(67,45,84,.08);font-size:.86rem;font-weight:900;color:var(--plum)}
+h1{margin:12px 0 5px;font-size:clamp(2.35rem,7vw,4.8rem);line-height:.96;letter-spacing:-.04em;color:var(--plum)}
+.subtitle{max-width:780px;margin:0 auto;color:var(--muted);line-height:1.6}
+.app{background:var(--panel);border:1px solid #ffffffdc;border-radius:32px;padding:18px;box-shadow:var(--shadow);backdrop-filter:blur(14px)}
+.safety{padding:13px 15px;border-radius:18px;background:#fff7d7;border:1px solid #edda92;color:#65552e;line-height:1.5;font-size:.91rem}
+.book{display:grid;grid-template-columns:.78fr 1.22fr;gap:15px;margin-top:14px}
+.scene,.story{border-radius:26px;padding:18px;min-height:470px}
+.scene{background:linear-gradient(150deg,#eaf9ff,#f5efff);display:flex;flex-direction:column;align-items:center;justify-content:space-between;text-align:center;overflow:hidden;position:relative}
+.scene::after{content:"";position:absolute;inset:auto -40px -65px;height:175px;background:radial-gradient(circle,#fff 0 51%,transparent 52%);opacity:.35}
+.step{position:relative;z-index:1;padding:7px 12px;border-radius:999px;background:#fff;color:var(--plum);font-size:.8rem;font-weight:900}
+.icon{position:relative;z-index:1;font-size:clamp(6rem,18vw,10rem);filter:drop-shadow(0 12px 12px rgba(68,45,86,.15));animation:bob 3s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-8px) rotate(2deg)}}
+.scene-text{position:relative;z-index:1;color:var(--muted);line-height:1.55}
+.story{background:#fffdf8;border:1px solid rgba(91,61,135,.08);display:flex;flex-direction:column}
+.story h2{margin:0;color:var(--plum);font-size:clamp(1.6rem,4vw,2.3rem)}
+.story-text{font-size:1.08rem;line-height:1.7;margin:16px 0;color:#44394f}
+.practice,.adult-note{padding:12px 14px;border-radius:17px;line-height:1.5}
+.practice{background:#edfaff;border:1px solid #cbeafa;color:#315c70}
+.adult-note{margin-top:10px;background:#fff0f4;border:1px solid #f0c8d5;color:#6f4253}
+.progress-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;margin:14px 0}
+.progress-track{height:12px;border-radius:999px;background:#eee7f2;overflow:hidden}
+.progress-bar{height:100%;width:0;background:linear-gradient(90deg,var(--rose),var(--gold),var(--mint),var(--sky));transition:.3s}
+.progress-text{font-size:.82rem;color:var(--muted);font-weight:900}
+.check{margin-top:12px;padding:14px;border-radius:18px;background:#f8f3fb}
+.check h3{margin:0 0 9px;color:var(--plum)}
+.options{display:grid;gap:8px;margin-top:10px}
+.option{border:2px solid #e4dbe8;border-radius:14px;padding:11px;background:#fff;text-align:left;cursor:pointer;font-weight:800}
+.option.correct{background:#eafff2;border-color:#60c78d}.option.wrong{background:#fff0f3;border-color:#e47b89}
+.feedback{min-height:28px;margin-top:8px;color:var(--muted);font-weight:800}
+.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:auto;padding-top:16px}
+.btn{border:0;border-radius:15px;padding:11px 15px;cursor:pointer;font-weight:900;background:#fff;color:var(--plum);box-shadow:0 6px 15px rgba(65,43,80,.1)}
+.btn.primary{color:white;background:linear-gradient(135deg,var(--lav),var(--plum));margin-left:auto}
+.btn.sunny{background:linear-gradient(135deg,var(--gold),var(--coral));color:#5c3919}
+.btn:disabled{opacity:.42;cursor:default}
+.dots{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin-top:14px}
+.dot{width:10px;height:10px;border:0;border-radius:999px;background:#d9cfe1;cursor:pointer;padding:0}
+.dot.active{width:26px;background:var(--lav)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.stat{background:#fff;border-radius:18px;padding:11px;text-align:center;border:1px solid rgba(91,61,135,.08)}
+.stat strong{display:block;font-size:1.3rem;color:var(--plum)}
+footer{margin-top:16px;text-align:center;color:var(--muted);font-size:.82rem;line-height:1.55}footer strong{color:var(--plum)}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+@media(max-width:820px){.book{grid-template-columns:1fr}.scene,.story{min-height:0}}
+@media(max-width:540px){.stats{grid-template-columns:1fr}.btn.primary{margin-left:0}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
 </style>
 </head>
 <body>
-<div class="lt-shelf" id="lt-dog-app">
-  <div class="lt-tagline">Little Tikes Life Skills</div>
-  <div class="lt-title">How to Walk the Dog</div>
-  <div class="lt-sub">Gentle steps for tiny hands & big hearts.</div>
+<div class="decor" aria-hidden="true"><span class="orb o1"></span><span class="orb o2"></span><span class="orb o3"></span><span class="orb o4"></span></div>
+<main class="wrap">
+<header class="hero">
+  <div class="badge">🐾 Little Tikes Life Skills</div>
+  <h1>Walking With a Dog Safely</h1>
+  <p class="subtitle">A gentle story about preparation, kindness, body language, traffic awareness, and caring for a dog with a trusted grown-up.</p>
+</header>
 
-  <div class="lt-book-card">
-    <div class="lt-column">
-      <div class="lt-page-label" id="lt-dog-page-label">Page 1 of 7</div>
-      <div class="lt-mini-title" id="lt-dog-left-title">Best Friend Time</div>
-      <div class="lt-icon-bubble" id="lt-dog-icon">🐶</div>
-      <div class="lt-text" id="lt-dog-left-text">
-Going for a walk is more than a chore—
-it’s special time for you and your dog
-to explore the world together.
+<section class="app" aria-label="Walking with a dog safely story">
+  <div class="safety"><strong>Important:</strong> A young child should never walk a dog alone or remain responsible for controlling the leash. A trusted adult handles the leash, traffic, route, weather, greetings, and emergencies. Children help by observing, listening, and practicing kindness.</div>
+
+  <div class="progress-row"><div class="progress-track"><div class="progress-bar" id="progressBar"></div></div><div class="progress-text" id="progressText"></div></div>
+
+  <div class="book" id="book">
+    <section class="scene">
+      <div class="step" id="step"></div>
+      <div class="icon" id="icon" aria-hidden="true"></div>
+      <div class="scene-text" id="scene"></div>
+    </section>
+
+    <section class="story">
+      <h2 id="title" tabindex="-1"></h2>
+      <div class="story-text" id="storyText"></div>
+      <div class="practice"><strong>Try together:</strong> <span id="practice"></span></div>
+      <div class="adult-note"><strong>Grown-up guide:</strong> <span id="adult"></span></div>
+
+      <div class="check">
+        <h3>🌟 Quick Safety Check</h3>
+        <div id="checkQuestion"></div>
+        <div class="options" id="options"></div>
+        <div class="feedback" id="feedback" role="status" aria-live="polite"></div>
       </div>
-    </div>
-    <div class="lt-column">
-      <div class="lt-badge" id="lt-dog-badge">Kindness First</div>
-      <div class="lt-mini-title" id="lt-dog-right-title">Walking With Love</div>
-      <div class="lt-text" id="lt-dog-right-text">
-Dogs don’t speak with words.
-They talk with tails, ears, and paws.
-This story shows how to walk gently,
-so your dog feels safe and loved.
+
+      <div class="actions">
+        <button class="btn" id="backBtn">← Back</button>
+        <button class="btn" id="hearBtn">🔊 Read Page</button>
+        <button class="btn sunny" id="favoriteBtn">☆ Favorite</button>
+        <button class="btn primary" id="nextBtn">Next →</button>
       </div>
-      <div class="lt-try" id="lt-dog-try">
-TRY THIS: Give your dog a gentle pat and say, “We’re a team!”
-      </div>
-    </div>
+    </section>
   </div>
 
-  <div class="lt-nav-row">
-    <button class="lt-btn" id="lt-dog-prev">← Back</button>
-    <div class="lt-dots" id="lt-dog-dots"></div>
-    <button class="lt-btn" id="lt-dog-next">Next →</button>
-  </div>
+  <div class="dots" id="dots"></div>
 
-  <div class="lt-footnote">
-    Always walk with a grown-up. They handle big decisions; you handle kindness and care.
+  <div class="stats">
+    <div class="stat"><strong id="visitedStat">0</strong>Pages explored</div>
+    <div class="stat"><strong id="correctStat">0</strong>Safety checks learned</div>
+    <div class="stat"><strong id="favoriteStat">0</strong>Favorite pages</div>
   </div>
-</div>
+</section>
+
+<footer><strong>© 2026 Verve N Veda · Khaemenes Academy · Jennifer Kay Pearl</strong><br>All Rights Reserved. · Local, private, and child-friendly.</footer>
+</main>
 
 <script>
-(function(){
-  const pages = [
-    {
-      leftTitle:"Best Friend Time",
-      icon:"🐶",
-      leftText:"Going for a walk is more than a chore—\nit’s special time for you and your dog\nto explore the world together.",
-      badge:"Kindness First",
-      rightTitle:"Walking With Love",
-      rightText:"Dogs don’t speak with words.\nThey talk with tails, ears, and paws.\nThis story shows how to walk gently,\nso your dog feels safe and loved.",
-      tryText:"TRY THIS: Give your dog a gentle pat and say, “We’re a team!”"
-    },
-    {
-      leftTitle:"Step 1: Ask and Prepare",
-      icon:"🧑‍🦱👩‍🦱",
-      leftText:"First, ask your grown-up if it’s time\nfor a walk.\nThey can check the weather and street.",
-      badge:"Safety Check",
-      rightTitle:"Clip the Leash",
-      rightText:"Stand still while a grown-up clips\nthe leash to your dog’s collar.\nSay the dog’s name softly so they\nknow something good is happening.",
-      tryText:"TRY THIS: Practice saying, “Ready, buddy?” in a happy voice."
-    },
-    {
-      leftTitle:"Step 2: Gentle Start",
-      icon:"🚶‍♀️",
-      leftText:"Hold the leash with two hands—\none near you, one lower down\n(if your grown-up says it’s okay).",
-      badge:"Slow Steps",
-      rightTitle:"Walk, Don’t Race",
-      rightText:"Take slow, easy steps.\nIf your dog pulls, stop and wait.\nWhen they look back or come closer,\npraise them for walking nicely.",
-      tryText:"TRY THIS: Pretend you and your dog\nare in a quiet parade."
-    },
-    {
-      leftTitle:"Step 3: Street Smarts",
-      icon:"🚸",
-      leftText:"When you reach a street or driveway,\nstop at the edge.\nFeet together, leash still.",
-      badge:"Look & Listen",
-      rightTitle:"Check for Cars",
-      rightText:"Look left, then right, then left again.\nListen for cars or bikes.\nOnly cross when your grown-up says,\n“All clear.”",
-      tryText:"TRY THIS: Point left and right while you look with your grown-up."
-    },
-    {
-      leftTitle:"Step 4: Sniff & Explore",
-      icon:"🌳",
-      leftText:"Dogs love to sniff grass, trees,\nand posts.\nSniffing is how they read the news!",
-      badge:"Patience Practice",
-      rightTitle:"Give Them a Moment",
-      rightText:"Let your dog sniff for a little while.\nYou can count slowly to ten.\nThen say, “Let’s go,” and start\nwalking again together.",
-      tryText:"TRY THIS: While your dog sniffs,\nnotice three things you can see."
-    },
-    {
-      leftTitle:"Step 5: Clean-Up Hero",
-      icon:"💩",
-      leftText:"Sometimes your dog will need\na potty break.\nThat’s part of the walk too.",
-      badge:"Responsibility",
-      rightTitle:"Bag and Toss",
-      rightText:"A grown-up should handle the poop bag,\nbut you can help by holding\nthe extra bags or pointing to\ntrash cans along the way.",
-      tryText:"TRY THIS: Say, “Thank you for going\noutside, pup!”"
-    },
-    {
-      leftTitle:"Step 6: Home Again",
-      icon:"🏡",
-      leftText:"When you get home, wait while\na grown-up removes the leash.\nGive your dog a drink of water\nif they’re thirsty.",
-      badge:"Big-Hearted Walker",
-      rightTitle:"End With Gratitude",
-      rightText:"Kneel down to your dog’s level.\nGive a gentle hug or soft scratch.\nSay, “Thank you for the walk.”\nYou just cared for a living friend.",
-      tryText:"TRY THIS: Put a small paw-print\nsticker on a chart for every kind walk."
-    }
-  ];
-
-  const app = document.getElementById("lt-dog-app");
-  const card = app.querySelector(".lt-book-card");
-  const pageLabel = app.querySelector("#lt-dog-page-label");
-  const leftTitle = app.querySelector("#lt-dog-left-title");
-  const iconBubble = app.querySelector("#lt-dog-icon");
-  const leftText = app.querySelector("#lt-dog-left-text");
-  const badge = app.querySelector("#lt-dog-badge");
-  const rightTitle = app.querySelector("#lt-dog-right-title");
-  const rightText = app.querySelector("#lt-dog-right-text");
-  const tryText = app.querySelector("#lt-dog-try");
-  const prevBtn = app.querySelector("#lt-dog-prev");
-  const nextBtn = app.querySelector("#lt-dog-next");
-  const dotsWrap = app.querySelector("#lt-dog-dots");
-
-  let current = 0;
-
-  function buildDots(){
-    dotsWrap.innerHTML = "";
-    pages.forEach((_,idx)=>{
-      const d=document.createElement("div");
-      d.className="lt-dot"+(idx===0?" active":"");
-      dotsWrap.appendChild(d);
-    });
-  }
-
-  function render(){
-    const p=pages[current];
-    pageLabel.textContent=`Page ${current+1} of ${pages.length}`;
-    leftTitle.textContent=p.leftTitle;
-    iconBubble.textContent=p.icon;
-    leftText.textContent=p.leftText;
-    badge.textContent=p.badge;
-    rightTitle.textContent=p.rightTitle;
-    rightText.textContent=p.rightText;
-    tryText.textContent=p.tryText;
-    prevBtn.disabled=current===0;
-    nextBtn.disabled=current===pages.length-1;
-    const dots=dotsWrap.querySelectorAll(".lt-dot");
-    dots.forEach((d,i)=>d.classList.toggle("active",i===current));
-  }
-
-  function go(delta){
-    const target=current+delta;
-    if(target<0||target>=pages.length) return;
-    card.classList.add("flip");
-    setTimeout(()=>{
-      current=target;
-      render();
-      card.classList.remove("flip");
-    },180);
-  }
-
-  prevBtn.addEventListener("click",()=>go(-1));
-  nextBtn.addEventListener("click",()=>go(1));
-
-  buildDots();
-  render();
-})();
+const PAGES=[{"step": "Welcome", "title": "Walking Together", "icon": "🐶", "scene": "A dog walk is time to move, explore, sniff, and practice caring for a living friend.", "story": "Dogs communicate with their whole bodies. Tails, ears, eyes, posture, breathing, and movement can all give clues about comfort or stress.", "practice": "Look at your dog from a comfortable distance. Does the body look loose and relaxed, or stiff and worried?", "adult": "A grown-up remains responsible for the leash, route, traffic decisions, weather, and interactions with other animals and people.", "check": {"q": "Who is responsible for the big safety decisions on a dog walk?", "answers": ["A trusted grown-up", "The youngest child", "The dog alone"], "correct": 0, "why": "Children can help with kindness and observation, while a trusted adult handles safety and control."}}, {"step": "Step 1", "title": "Ask, Check, Prepare", "icon": "🧢", "scene": "Before leaving, ask a grown-up and help with a quick safety check.", "story": "Check the weather, daylight, route, leash, collar or harness, identification tag, waste bags, and water. Hot pavement, storms, smoke, extreme cold, or poor visibility may mean choosing a shorter walk or staying home.", "practice": "Place the back of an adult hand on the pavement for several seconds. If it feels too hot, protect the dog’s paws and choose another time or surface.", "adult": "Use equipment that fits correctly. A harness may be safer for some dogs, but the best choice depends on the dog and veterinary guidance.", "check": {"q": "What should happen before the walk begins?", "answers": ["A grown-up checks weather, route, and equipment", "Run outside immediately", "Let the dog choose any street"], "correct": 0, "why": "Planning helps protect the child, the dog, and everyone nearby."}}, {"step": "Step 2", "title": "Leash Safety", "icon": "🦮", "scene": "A trusted adult clips and controls the leash.", "story": "Young children should not be responsible for holding a dog’s leash by themselves. Even a small dog can pull suddenly. A child may walk beside the adult, carry empty bags, or hold a second training loop only when the adult remains in full control.", "practice": "Practice walking next to a grown-up without a dog first: stop, start, turn, and stay on the safe side away from traffic.", "adult": "Never wrap a leash around a hand, wrist, waist, stroller, or child. Keep fingers away from clips and retractable-leash mechanisms.", "check": {"q": "How should a young child help with the leash?", "answers": ["Walk beside the adult while the adult stays in control", "Wrap it around their wrist", "Hold it alone near traffic"], "correct": 0, "why": "The adult must be able to control unexpected pulling or sudden movement."}}, {"step": "Step 3", "title": "Start Calmly", "icon": "🚶", "scene": "Begin with slow steps and plenty of space.", "story": "Leave through the doorway calmly. Pause if the dog rushes, jumps, or pulls. A grown-up can guide the dog back to a manageable pace and reward calm movement.", "practice": "Try a quiet parade: walk, stop, look, and breathe. Keep your body beside the adult rather than in front of the dog.", "adult": "Do not yank, drag, or punish the dog. Use humane guidance and seek a qualified trainer when pulling, fear, or reactivity is difficult to manage.", "check": {"q": "What is a safe way to begin?", "answers": ["Slowly, with space and adult guidance", "By racing out the door", "By pulling hard on the leash"], "correct": 0, "why": "A calm beginning lowers excitement and makes the walk easier to manage."}}, {"step": "Step 4", "title": "Street and Driveway Safety", "icon": "🚸", "scene": "Stop well before every driveway, parking lot, and street edge.", "story": "Stand beside the grown-up. Look left, right, and left again. Listen for cars, bicycles, scooters, and reversing vehicles. Cross only when the adult says it is safe.", "practice": "Practice pointing left, right, and left again while standing in a safe place away from traffic.", "adult": "The adult should position themselves between the child and moving traffic whenever possible.", "check": {"q": "When may the group cross?", "answers": ["When the grown-up says it is clear", "Whenever the dog starts walking", "As soon as a child looks once"], "correct": 0, "why": "Traffic safety requires adult judgment and repeated checking."}}, {"step": "Step 5", "title": "Read the Dog’s Body", "icon": "👀", "scene": "Notice when the dog looks comfortable, excited, worried, or tired.", "story": "A loose body, soft eyes, and easy movement may show comfort. A stiff body, tucked tail, repeated lip licking, yawning, hiding, growling, or trying to move away can signal stress. Give space and tell the adult.", "practice": "Choose one clue to watch for: tail position, ear position, breathing, or whether the body looks loose or stiff.", "adult": "Never punish a growl. Growling is communication. Increase distance and seek professional guidance when needed.", "check": {"q": "What should you do if the dog looks stiff or tries to move away?", "answers": ["Give space and tell the grown-up", "Move closer and hug", "Pull the dog toward the problem"], "correct": 0, "why": "Distance and adult support can help prevent fear from becoming a bite or escape risk."}}, {"step": "Step 6", "title": "Sniffing Is Learning", "icon": "🌳", "scene": "Dogs explore much of the world through smell.", "story": "Sniffing can be calming and mentally enriching. When the area is safe, the adult may allow a short sniff break before continuing.", "practice": "While the dog sniffs, quietly name three things you can see, two sounds you can hear, and one thing you can feel.", "adult": "Keep dogs away from unknown food, chemicals, broken glass, wildlife, standing water, and plants that may be unsafe.", "check": {"q": "Why might a dog stop to sniff?", "answers": ["Smell helps dogs learn about the area", "The dog forgot how to walk", "The leash stopped working"], "correct": 0, "why": "Sniffing is normal canine exploration and can make a walk more satisfying."}}, {"step": "Step 7", "title": "Meeting People and Dogs", "icon": "🤝", "scene": "Not every dog wants to greet.", "story": "Ask the grown-up before approaching anyone. Keep distance from unfamiliar dogs unless both adults agree and the dogs appear comfortable. Never run toward, reach over, corner, or hug an unfamiliar dog.", "practice": "Practice saying, “May we say hello?” and accepting “No” kindly.", "adult": "Avoid on-leash greetings when either dog is tense, barking, lunging, hiding, or unable to move away comfortably.", "check": {"q": "What should happen before greeting another dog?", "answers": ["Both adults agree and the dogs appear comfortable", "The child runs over", "The dogs are pulled nose-to-nose"], "correct": 0, "why": "Consent, distance, and body-language checks help keep greetings safer."}}, {"step": "Step 8", "title": "Clean-Up Care", "icon": "🧤", "scene": "Cleaning up protects neighbors, animals, and waterways.", "story": "A grown-up should pick up waste and tie the bag. A child can help by reminding the adult, carrying unused bags, or spotting a proper trash bin.", "practice": "Count how many unused bags are packed before leaving.", "adult": "Wash hands after the walk. Keep used waste bags away from children’s hands, faces, food, and personal items.", "check": {"q": "Who should handle dog waste?", "answers": ["A grown-up", "A young child with bare hands", "No one"], "correct": 0, "why": "Dog waste can carry germs and should be handled and disposed of carefully."}}, {"step": "Step 9", "title": "Weather, Water, and Rest", "icon": "💧", "scene": "Dogs can become hot, cold, thirsty, sore, or tired.", "story": "Watch for heavy panting, slowing down, limping, seeking shade, lifting paws, shivering, or refusing to continue. Tell the adult right away.", "practice": "Find a shady resting place or point out where water could be offered safely.", "adult": "Seek veterinary help for collapse, trouble breathing, severe weakness, repeated vomiting, blue or very pale gums, or suspected heat illness.", "check": {"q": "What should happen if the dog is limping or struggling to breathe?", "answers": ["Stop and get adult or veterinary help", "Make the dog keep going", "Ignore it"], "correct": 0, "why": "Pain, breathing trouble, and heat illness can be emergencies."}}, {"step": "Step 10", "title": "Home Again", "icon": "🏡", "scene": "Finish calmly and give the dog space to settle.", "story": "Wait while the grown-up removes the leash. Offer water if appropriate, check paws for irritation or debris, and allow the dog to rest.", "practice": "Say, “Thank you for walking with us,” and choose a gentle wave, soft scratch, or quiet praise based on what the dog enjoys.", "adult": "Do not require a hug. Many dogs prefer space, a scratch, praise, or a treat approved by the adult.", "check": {"q": "How can a child thank the dog safely?", "answers": ["Use a gentle greeting the dog enjoys", "Force a hug", "Climb on the dog"], "correct": 0, "why": "Affection should respect the dog’s comfort and body language."}}];
+const $=id=>document.getElementById(id);
+const KEY='little-tikes-dog-walk-safety-v2';
+function loadState(){try{const x=JSON.parse(localStorage.getItem(KEY)||'{}');return{visited:Array.isArray(x.visited)?x.visited:[],correct:Array.isArray(x.correct)?x.correct:[],favorites:Array.isArray(x.favorites)?x.favorites:[]}}catch{return{visited:[],correct:[],favorites:[]}}}
+let state=loadState(),index=0;
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch{}}
+function speak(t){if(!('speechSynthesis'in window))return;speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.rate=.88;u.pitch=1.05;speechSynthesis.speak(u)}
+function render(){
+  const p=PAGES[index];
+  $('step').textContent=p.step;$('icon').textContent=p.icon;$('scene').textContent=p.scene;$('title').textContent=p.title;$('storyText').textContent=p.story;$('practice').textContent=p.practice;$('adult').textContent=p.adult;
+  $('progressBar').style.width=`${((index+1)/PAGES.length)*100}%`;$('progressText').textContent=`Page ${index+1} of ${PAGES.length}`;
+  $('backBtn').disabled=index===0;$('nextBtn').textContent=index===PAGES.length-1?'Finish ✓':'Next →';
+  if(!state.visited.includes(index))state.visited.push(index);
+  save();renderCheck();renderDots();updateStats();updateFavorite();$('title').focus();
+}
+function renderCheck(){
+  const p=PAGES[index];$('checkQuestion').textContent=p.check.q;$('options').innerHTML='';$('feedback').textContent='';
+  const pairs=p.check.answers.map((text,i)=>({text,correct:i===p.check.correct})).sort(()=>Math.random()-.5);
+  pairs.forEach((x,i)=>{const b=document.createElement('button');b.className='option';b.textContent=x.text;b.onclick=()=>{[...$('options').children].forEach(n=>n.disabled=true);b.classList.add(x.correct?'correct':'wrong');if(!x.correct){const r=pairs.findIndex(v=>v.correct);$('options').children[r].classList.add('correct');$('feedback').textContent='Good try. '+p.check.why}else{$('feedback').textContent='That fits. '+p.check.why;if(!state.correct.includes(index))state.correct.push(index)}save();updateStats()};$('options').appendChild(b)})
+}
+function renderDots(){
+  $('dots').innerHTML='';PAGES.forEach((_,i)=>{const b=document.createElement('button');b.className='dot'+(i===index?' active':'');b.setAttribute('aria-label',`Go to page ${i+1}`);b.onclick=()=>{index=i;render()};$('dots').appendChild(b)})
+}
+function updateStats(){$('visitedStat').textContent=state.visited.length;$('correctStat').textContent=state.correct.length;$('favoriteStat').textContent=state.favorites.length}
+function updateFavorite(){const on=state.favorites.includes(index);$('favoriteBtn').textContent=on?'★ Favorited':'☆ Favorite'}
+function go(d){const n=index+d;if(n<0)return;if(n>=PAGES.length){speak('You finished the dog walking safety story. Great caring and careful thinking.');return}index=n;render()}
+$('backBtn').onclick=()=>go(-1);$('nextBtn').onclick=()=>go(1);$('hearBtn').onclick=()=>{const p=PAGES[index];speak(`${p.title}. ${p.story}. Try together. ${p.practice}. Grown-up guide. ${p.adult}`)};
+$('favoriteBtn').onclick=()=>{const i=state.favorites.indexOf(index);if(i>=0)state.favorites.splice(i,1);else state.favorites.push(index);save();updateFavorite();updateStats()};
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1)});
+render();
 </script>
 </body>
 </html>
