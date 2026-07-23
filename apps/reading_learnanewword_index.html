@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>LeArnA nEw WoRd — Kids Edition</title>
+<title>Learn a New Word — Enchanted Word Garden</title>
 <style>
   :root{
     --bg:#fdf5e6;
@@ -260,20 +260,259 @@
     font-size:0.75rem;
     font-weight:600;
   }
+
+  /* ==============================
+     ENCHANTED WORD GARDEN THEME
+     ============================== */
+  :root{
+    --bg:#f6efff;
+    --panel:rgba(255,253,248,.94);
+    --ink:#342a49;
+    --muted:#756c83;
+    --accent:#8664d2;
+    --accent-soft:#eadfff;
+    --success:#3eb276;
+    --glass:rgba(64,44,88,.08);
+    --radius:28px;
+    --pad:18px;
+    --rose:#e975a4;
+    --mint:#70d1af;
+    --sky:#6dbfe5;
+    --gold:#f2ca63;
+  }
+
+  html,body{
+    min-height:100%;
+    height:auto;
+  }
+
+  body{
+    background:
+      radial-gradient(circle at 12% 13%,rgba(255,255,255,.92) 0 5%,transparent 6%),
+      radial-gradient(circle at 87% 14%,rgba(255,255,255,.74) 0 4%,transparent 5%),
+      linear-gradient(145deg,#f8edff 0%,#e8f8ff 43%,#fff2d2 100%);
+  }
+
+  .app{
+    max-width:1050px;
+    margin:22px auto;
+    padding:16px;
+  }
+
+  header{
+    position:relative;
+    overflow:hidden;
+    padding:22px;
+    border-radius:30px;
+    color:white;
+    background:
+      radial-gradient(circle at 18% 22%,rgba(255,255,255,.18),transparent 22%),
+      linear-gradient(135deg,#503a83,#8664d2,#d7659c);
+    box-shadow:0 20px 50px rgba(62,42,86,.18);
+  }
+
+  header::after{
+    content:"🌸  ✨  🌿  📚";
+    position:absolute;
+    right:20px;
+    bottom:12px;
+    font-size:1.25rem;
+    opacity:.7;
+    letter-spacing:.3rem;
+  }
+
+  .logo{
+    flex:0 0 auto;
+    background:conic-gradient(from 210deg,#f1ca62,#e975a4,#70d1af,#6dbfe5,#9d77de,#f1ca62);
+    box-shadow:0 12px 28px rgba(31,20,49,.22);
+  }
+
+  .logo-inner{
+    background:#fffdf8;
+    color:#654293;
+  }
+
+  h1{
+    font-size:clamp(1.6rem,4vw,2.45rem);
+    letter-spacing:-.02em;
+  }
+
+  .lead{
+    color:#f4edff;
+    font-size:.98rem;
+  }
+
+  .grid{
+    grid-template-columns:minmax(0,1.6fr) minmax(290px,.85fr);
+    gap:16px;
+  }
+
+  .card{
+    border-radius:28px;
+    border:1px solid rgba(255,255,255,.95);
+    box-shadow:0 18px 44px rgba(59,39,79,.13);
+    backdrop-filter:blur(8px);
+  }
+
+  .word-top{
+    padding:14px;
+    border-radius:22px;
+    background:
+      radial-gradient(circle at 85% 20%,rgba(255,255,255,.8),transparent 26%),
+      linear-gradient(145deg,#fff7d7,#f2ebff,#e7fbf5);
+  }
+
+  .word-main{
+    min-width:0;
+  }
+
+  .word-emoji{
+    font-size:4.6rem;
+    line-height:1;
+    margin-bottom:8px;
+    filter:drop-shadow(0 10px 10px rgba(75,52,96,.14));
+  }
+
+  .word-title{
+    color:#5c3d8e;
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:clamp(2.25rem,7vw,4.3rem);
+    font-weight:800;
+    overflow-wrap:anywhere;
+  }
+
+  .pron{
+    color:#9161aa;
+    font-weight:700;
+  }
+
+  .definition{
+    margin-top:16px;
+    padding:14px;
+    border-radius:18px;
+    background:#fffaf0;
+    border-left:6px solid var(--gold);
+    font-size:1.02rem;
+    line-height:1.55;
+  }
+
+  .simple{
+    padding:12px 14px;
+    border-radius:18px;
+    background:#effcf7;
+    border-left:6px solid var(--mint);
+    line-height:1.5;
+  }
+
+  .example{
+    padding:12px 14px;
+    border-radius:18px;
+    background:#eef8ff;
+    border-left:6px solid var(--sky);
+    line-height:1.5;
+  }
+
+  .chip{
+    background:#fff;
+    border:1px solid #e6dcef;
+    color:#6a4f82;
+    font-weight:700;
+  }
+
+  button.btn{
+    border-radius:999px;
+    padding:9px 13px;
+    font-weight:750;
+    transition:transform .18s ease,box-shadow .18s ease;
+  }
+
+  button.btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 9px 20px rgba(56,37,78,.14);
+  }
+
+  button.btn.primary{
+    background:linear-gradient(135deg,#8664d2,#d7659c);
+  }
+
+  .side h3{
+    color:#5b3e82;
+    font-size:1.05rem;
+  }
+
+  .searchbox{
+    padding:10px 13px;
+    border:2px solid #e2d9ec;
+    outline:none;
+  }
+
+  .searchbox:focus{
+    border-color:var(--sky);
+    box-shadow:0 0 0 4px rgba(109,191,229,.16);
+  }
+
+  .results{
+    border-radius:16px;
+  }
+
+  .result-item:hover{
+    background:#f6efff;
+  }
+
+  .quiz-option{
+    border-radius:16px;
+    padding:10px 12px;
+    line-height:1.4;
+  }
+
+  footer{
+    margin-top:16px;
+    padding:15px 12px;
+    border-radius:18px;
+    background:rgba(255,255,255,.78);
+    border:1px solid rgba(90,60,120,.1);
+    color:#665b72;
+    line-height:1.5;
+  }
+
+  footer strong{
+    color:#503a76;
+  }
+
+  @media(max-width:700px){
+    header{
+      text-align:center;
+      flex-direction:column;
+    }
+    header::after{
+      position:static;
+      display:block;
+      margin-top:10px;
+    }
+    .word-top{
+      flex-direction:column;
+      align-items:center;
+      text-align:center;
+    }
+    .word-top > div:last-child{
+      text-align:center!important;
+    }
+  }
+
 </style>
 </head>
 <body>
-<div class="app" role="application" aria-label="LeArnA nEw WoRd Kids Edition">
+<div class="app" role="application" aria-label="Learn a New Word Enchanted Word Garden">
   <header>
     <div class="logo">
-      <div class="logo-inner">
-        <div style="font-size:13px;">LeArnA</div>
-        <div style="font-size:10px;">Kids</div>
+      <div class="logo-inner" aria-hidden="true">
+        <div style="font-size:30px;line-height:1;">🌿</div>
+        <div style="font-size:10px;">WORDS</div>
       </div>
     </div>
     <div>
-      <h1>LeArnA nEw WoRd — Kids Edition</h1>
-      <p class="lead">One magical, gentle, challenging word each day.</p>
+      <h1>Learn a New Word — Enchanted Word Garden</h1>
+      <p class="lead">Discover one beautiful, curious, and imaginative word at a time.</p>
     </div>
   </header>
 
@@ -282,6 +521,7 @@
     <section class="card" id="mainCard" aria-live="polite">
       <div class="word-top">
         <div class="word-main">
+          <div class="word-emoji" id="wordEmoji" aria-hidden="true">✨</div>
           <div class="word-title" id="wordText">—</div>
           <div class="pron" id="pronText"></div>
           <div class="word-id" id="wordIdLine"></div>
@@ -366,7 +606,8 @@
   </main>
 
   <footer>
-    LeArnA nEw WoRd — Kids Edition · For Khaemenes Academy readers 💛
+    <strong>© 2026 Verve N Veda · Khaemenes Academy · Jennifer Kay Pearl</strong><br>
+    All Rights Reserved.
   </footer>
 </div>
 
@@ -685,6 +926,28 @@ const KIDS_MAGIC_WORDS = [
   }
 ];
 
+
+/* Friendly visual symbols for the enchanted word garden */
+const WORD_EMOJIS = {
+  petrichor:"🌧️", psithurism:"🍃", susurrus:"🌊", alpenglow:"🏔️",
+  lambent:"🕯️", serendipity:"🎁", mellifluous:"🎵", gossamer:"🕸️",
+  diaphanous:"🪽", euphony:"🎶", auroral:"🌌", sylvan:"🌲",
+  opalescent:"🫧", lucent:"✨", stelliferous:"🌟", niveous:"❄️",
+  whimsy:"🪄", zephyr:"🌬️", daydream:"☁️", luminous:"🌙",
+  twinkle:"⭐", cosmic:"🪐", buoyant:"🎈", hush:"🤫", glimmer:"💫"
+};
+
+function emojiForWord(item){
+  if(WORD_EMOJIS[item.word]) return WORD_EMOJIS[item.word];
+  const tags=(item.tags||[]).join(" ").toLowerCase();
+  if(tags.includes("forest")||tags.includes("nature")) return "🌿";
+  if(tags.includes("space")||tags.includes("sky")) return "🌌";
+  if(tags.includes("sound")||tags.includes("music")) return "🎵";
+  if(tags.includes("light")||tags.includes("color")) return "✨";
+  if(tags.includes("water")) return "🌊";
+  return "📚";
+}
+
 /* ============== State ============== */
 let state = {
   bank: KIDS_MAGIC_WORDS.slice(),
@@ -696,6 +959,7 @@ let currentIndex = 0;
 let voicesList = [];
 
 /* ============== UI refs ============== */
+const wordEmoji = document.getElementById('wordEmoji');
 const wordText = document.getElementById('wordText');
 const pronText = document.getElementById('pronText');
 const wordIdLine = document.getElementById('wordIdLine');
@@ -825,6 +1089,7 @@ function renderWord(idx){
   if(currentIndex>=state.bank.length) currentIndex = state.bank.length-1;
   const w = state.bank[currentIndex];
 
+  wordEmoji.textContent = emojiForWord(w);
   wordText.textContent = w.word || "—";
   pronText.textContent = w.pronunciation ? "/"+w.pronunciation+"/" : "";
   wordIdLine.textContent = w.id ? "Word ID: "+w.id : "";
