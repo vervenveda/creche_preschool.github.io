@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Storybird Grove™ — Tiny Story Garden</title>
-<meta name="description" content="A private story garden for young writers. Gentle prompts, playful choices, and stories saved on this device.">
+<title>Storybird Grove™ — Enchanted Story Garden</title>
+<meta name="description" content="A bright, private story garden for young writers with playful prompts, magical story weaving, illustrations, and local-only saving.">
 <style>
   :root{
     --bg:#fbf7f4;
@@ -569,16 +569,322 @@
     .grove{page-break-after:always}
     .nest-list{max-height:none;overflow:visible}
   }
+
+  /* =========================================================
+     BRIGHT ENCHANTED GROVE UPGRADE
+     ========================================================= */
+  :root{
+    --bg:#fff7df;
+    --bg2:#f5efff;
+    --card:#fffdf9;
+    --ink:#2f2941;
+    --muted:#70677d;
+    --line:rgba(91,65,120,.13);
+    --moss:#68c98b;
+    --moss2:#4d3b83;
+    --petal:#fff0f7;
+    --gold:#f5c85f;
+    --sky:#dff6ff;
+    --good:#32aa69;
+    --danger:#bd3851;
+    --shadow:0 22px 55px rgba(79,50,108,.15);
+    --rose:#ed78aa;
+    --coral:#ff8f78;
+    --aqua:#63d1ca;
+    --blue:#65afe8;
+    --violet:#8a68d4;
+  }
+
+  body{
+    position:relative;
+    overflow-x:hidden;
+    background:
+      radial-gradient(circle at 12% 8%,rgba(255,255,255,.95) 0 5%,transparent 6%),
+      radial-gradient(circle at 89% 11%,rgba(255,255,255,.76) 0 4%,transparent 5%),
+      radial-gradient(circle at 20% 85%,rgba(99,209,202,.22),transparent 30rem),
+      radial-gradient(circle at 87% 78%,rgba(237,120,170,.20),transparent 27rem),
+      linear-gradient(145deg,#fff4c7 0%,#f9e8ff 42%,#dff8ff 100%);
+    background-attachment:fixed;
+  }
+
+  .garden-sparkles{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+    overflow:hidden;
+  }
+
+  .garden-sparkles span{
+    position:absolute;
+    font-size:clamp(1.1rem,2.5vw,2rem);
+    opacity:.34;
+    filter:drop-shadow(0 5px 8px rgba(70,43,96,.13));
+    animation:groveFloat 12s ease-in-out infinite;
+  }
+
+  .garden-sparkles span:nth-child(1){left:4%;top:14%;animation-delay:-1s}
+  .garden-sparkles span:nth-child(2){left:13%;top:70%;animation-delay:-5s}
+  .garden-sparkles span:nth-child(3){left:26%;top:5%;animation-delay:-8s}
+  .garden-sparkles span:nth-child(4){left:43%;top:83%;animation-delay:-3s}
+  .garden-sparkles span:nth-child(5){left:64%;top:8%;animation-delay:-7s}
+  .garden-sparkles span:nth-child(6){left:76%;top:72%;animation-delay:-10s}
+  .garden-sparkles span:nth-child(7){left:88%;top:22%;animation-delay:-4s}
+  .garden-sparkles span:nth-child(8){left:94%;top:85%;animation-delay:-9s}
+
+  @keyframes groveFloat{
+    0%,100%{transform:translateY(0) rotate(-4deg) scale(1)}
+    50%{transform:translateY(-26px) rotate(7deg) scale(1.12)}
+  }
+
+  .sbg-app{
+    position:relative;
+    z-index:1;
+  }
+
+  .topbar{
+    color:white;
+    border:1px solid rgba(255,255,255,.38);
+    background:
+      radial-gradient(circle at 18% 22%,rgba(255,255,255,.18),transparent 24%),
+      linear-gradient(135deg,#4e3a82,#8563d2,#e36d9f,#f09b6b);
+    box-shadow:0 24px 58px rgba(65,41,93,.22);
+  }
+
+  .topbar h1{
+    color:#fff;
+    text-shadow:0 2px 4px rgba(41,25,58,.2);
+  }
+
+  .topbar .subtitle{
+    color:#fff1f8;
+  }
+
+  .logo{
+    background:
+      radial-gradient(circle at 32% 28%,rgba(255,255,255,.35),transparent 25%),
+      linear-gradient(145deg,#f8d565,#eb79ac,#68d2b4,#6ab5e7);
+    box-shadow:
+      inset 0 0 0 2px rgba(255,255,255,.35),
+      0 14px 30px rgba(42,27,62,.25);
+    animation:logoPulse 4s ease-in-out infinite;
+  }
+
+  @keyframes logoPulse{
+    50%{transform:translateY(-3px) rotate(2deg);box-shadow:inset 0 0 0 2px rgba(255,255,255,.45),0 18px 34px rgba(42,27,62,.28)}
+  }
+
+  .privacy-pill{
+    color:#49325e;
+    background:linear-gradient(90deg,#fff6c9,#ffe2f1,#dff8f2);
+    border-color:rgba(255,255,255,.72);
+    box-shadow:0 7px 18px rgba(49,30,69,.12);
+  }
+
+  .control-panel{
+    border-color:rgba(255,255,255,.9);
+    background:rgba(255,255,255,.86);
+    box-shadow:0 17px 40px rgba(72,46,96,.1);
+  }
+
+  select,.range-wrap{
+    border:2px solid #e6ddef;
+    background:#fff;
+  }
+
+  select:focus,.range-wrap:focus-within{
+    outline:none;
+    border-color:var(--blue);
+    box-shadow:0 0 0 4px rgba(101,175,232,.16);
+  }
+
+  input[type="range"]{
+    accent-color:var(--violet);
+  }
+
+  .btn{
+    background:linear-gradient(135deg,var(--violet),var(--rose));
+    box-shadow:0 10px 24px rgba(109,66,153,.18);
+    transition:transform .18s ease,filter .18s ease,box-shadow .18s ease;
+  }
+
+  .btn:hover{
+    filter:brightness(1.04);
+    transform:translateY(-2px);
+    box-shadow:0 14px 28px rgba(109,66,153,.22);
+  }
+
+  .btn.gold{
+    color:#3f2d14;
+    background:linear-gradient(135deg,#f6d56d,#ffad62);
+  }
+
+  .btn.secondary{
+    color:#563b78;
+    background:linear-gradient(145deg,#fff,#faf5ff);
+    border-color:#e3d8ec;
+  }
+
+  .card{
+    border-color:rgba(255,255,255,.96);
+    background:rgba(255,255,255,.91);
+    box-shadow:var(--shadow);
+  }
+
+  .grove{
+    background:
+      radial-gradient(circle at 8% 8%,rgba(245,200,95,.13),transparent 22rem),
+      radial-gradient(circle at 92% 10%,rgba(99,209,202,.14),transparent 20rem),
+      rgba(255,255,255,.91);
+  }
+
+  .grove:before{
+    height:210px;
+    background:
+      radial-gradient(circle at 18% 52%,rgba(104,201,139,.35),transparent 90px),
+      radial-gradient(circle at 50% 44%,rgba(245,200,95,.28),transparent 100px),
+      radial-gradient(circle at 78% 48%,rgba(237,120,170,.25),transparent 90px);
+  }
+
+  .cluster{
+    border-color:#eadff0;
+    background:
+      radial-gradient(circle at 90% 10%,rgba(255,255,255,.85),transparent 24%),
+      linear-gradient(150deg,#fff,#fff7ed,#f6efff);
+    box-shadow:0 10px 24px rgba(65,42,86,.08);
+  }
+
+  .cluster:nth-child(1){border-top:5px solid var(--rose)}
+  .cluster:nth-child(2){border-top:5px solid var(--mint)}
+  .cluster:nth-child(3){border-top:5px solid var(--gold)}
+
+  .cluster-title{
+    color:#553a78;
+  }
+
+  .spirit{
+    border-color:#e7dceb;
+    background:
+      radial-gradient(circle at 84% 18%,rgba(255,255,255,.9),transparent 27%),
+      linear-gradient(145deg,#fff,#fff9ee);
+    transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;
+  }
+
+  .spirit:hover{
+    transform:translateY(-3px);
+    border-color:#cbb6dd;
+    box-shadow:0 12px 23px rgba(74,48,96,.13);
+  }
+
+  .spirit.selected{
+    color:#fff;
+    background:linear-gradient(135deg,#5a428e,#8a68d4,#df6fa5);
+    box-shadow:0 12px 24px rgba(94,58,130,.22);
+  }
+
+  .spirit-dot{
+    background:linear-gradient(135deg,#fff2bc,#ffdcec,#d8f8f0);
+    box-shadow:inset 0 0 0 1px rgba(255,255,255,.75);
+  }
+
+  .slot{
+    border-color:#d8c9e3;
+    background:linear-gradient(145deg,#fff0f7,#f4efff,#eafaff);
+    color:#5d4672;
+  }
+
+  .story-card{
+    border-color:rgba(255,255,255,.15);
+    background:
+      radial-gradient(circle at 85% 15%,rgba(255,255,255,.10),transparent 27%),
+      linear-gradient(145deg,#39295d,#4e3b78,#285c58);
+    box-shadow:0 20px 46px rgba(45,31,66,.25);
+  }
+
+  .story-card .story-text{
+    color:#fff;
+    font-family:Georgia,"Times New Roman",serif;
+    font-size:clamp(1.16rem,2.7vw,1.52rem);
+    line-height:1.45;
+  }
+
+  .story-card .meta{
+    color:rgba(255,255,255,.78);
+  }
+
+  .story-card .illustration{
+    border:2px solid rgba(255,255,255,.28);
+    background:
+      radial-gradient(circle at 25% 18%,rgba(255,255,255,.9),transparent 24%),
+      linear-gradient(135deg,#fff4c9,#ffe4f0,#dff8f0,#e3efff);
+    box-shadow:inset 0 0 30px rgba(255,255,255,.45);
+  }
+
+  .story-card .status{
+    color:#f6f0ff;
+    background:rgba(255,255,255,.10);
+    border-color:rgba(255,255,255,.18);
+  }
+
+  .side{
+    background:
+      radial-gradient(circle at 90% 8%,rgba(245,200,95,.14),transparent 18rem),
+      rgba(255,255,255,.92);
+  }
+
+  .side-title{
+    color:#513977;
+    font-size:1.25rem;
+  }
+
+  .growth{
+    color:#49355d;
+    background:linear-gradient(90deg,#e8fff1,#fff4ca,#ffe7f2);
+    border-color:#e5d9eb;
+  }
+
+  .nest-item{
+    border-color:#e5dbea;
+    background:linear-gradient(145deg,#fff,#fff8ec);
+    box-shadow:0 8px 18px rgba(71,46,91,.07);
+  }
+
+  .status{
+    background:#fff8ed;
+  }
+
+  .site-footer{
+    padding:14px 12px;
+    color:#665b72;
+    background:rgba(255,255,255,.78);
+    border:1px solid rgba(90,60,120,.12);
+    line-height:1.55;
+  }
+
+  .site-footer strong{
+    display:inline-block;
+    margin-top:4px;
+    color:#503a76;
+  }
+
+  @media(prefers-reduced-motion:reduce){
+    .garden-sparkles span,.logo{animation:none!important}
+  }
+
 </style>
 </head>
 <body>
+<div class="garden-sparkles" aria-hidden="true">
+  <span>✨</span><span>🌸</span><span>🦋</span><span>⭐</span>
+  <span>🍃</span><span>💫</span><span>🌼</span><span>🕊️</span>
+</div>
 <div class="sbg-app" data-app="storybird-grove">
   <header class="topbar">
     <div class="brand">
       <div class="logo" aria-hidden="true">🕊️</div>
       <div>
         <h1>Storybird Grove™</h1>
-        <div class="subtitle">A gentle story garden with 84 weeks of playful prompts.</div>
+        <div class="subtitle">A bright, magical story garden with 84 weeks of playful prompts.</div>
       </div>
     </div>
     <div class="privacy-pill">Private on this device</div>
@@ -676,8 +982,10 @@
     </aside>
   </div>
 
-  <footer class="footer">
-    Private, simple, and made with care. No ads. No trackers. No accounts. Stories stay on this device.
+  <footer class="footer site-footer">
+    <div>Private on this device · No ads · No trackers · No accounts</div>
+    <strong>© 2026 Verve N Veda · Khaemenes Academy · Jennifer Kay Pearl</strong><br>
+    All Rights Reserved.
   </footer>
 </div>
 
