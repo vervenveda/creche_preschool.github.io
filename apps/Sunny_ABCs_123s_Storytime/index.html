@@ -2,142 +2,110 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Sunny ABCs & 123s — Storytime</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="Sunny ABCs & 123s Storytime — a private, offline-first preschool storybook with letters, numbers, tracing, spelling, matching, movement, narration, favorites, and local progress.">
+<title>Sunny ABCs &amp; 123s — Storytime</title>
 <style>
 :root{
-  --sky:#7fd8ff;--sun:#ffd45c;--coral:#ff8f7c;--berry:#ec6fa7;--mint:#82dfbd;
-  --ink:#302a3a;--muted:#6e6680;--paper:#fffdf8;--panel:rgba(255,255,255,.82);
-  --accent:#ff9f43;--accent2:#ffcf5a;--deep:#e66f22;--soft:#fff1c9;
-  --shadow:0 20px 55px rgba(56,39,73,.16);--radius:28px;
+  --sun:#ffd45c;--coral:#ff8f7c;--berry:#ec6fa7;--mint:#82dfbd;--sky:#7fd8ff;
+  --ink:#332d43;--muted:#6e6680;--paper:#fffdf9;--panel:rgba(255,255,255,.88);
+  --accent:#ff9f43;--accent2:#ffcf5a;--deep:#d95f14;--soft:#fff1c9;
+  --good:#32a96b;--bad:#c65363;--ring:#47315f;--shadow:0 20px 55px rgba(56,39,73,.15);
+  --radius:28px;--font:"Comic Sans MS","Chalkboard SE","Segoe Print","Trebuchet MS",system-ui,sans-serif;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
-  margin:0;min-height:100vh;color:var(--ink);
-  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  margin:0;min-height:100vh;color:var(--ink);font-family:var(--font);overflow-x:hidden;
   background:
-    radial-gradient(circle at 14% 14%,rgba(255,255,255,.9) 0 5%,transparent 6%),
-    radial-gradient(circle at 88% 18%,rgba(255,255,255,.7) 0 4%,transparent 5%),
+    radial-gradient(circle at 12% 10%,rgba(255,255,255,.92) 0 4%,transparent 5%),
+    radial-gradient(circle at 87% 16%,rgba(255,255,255,.7) 0 3%,transparent 4%),
     linear-gradient(145deg,#fff4c8 0%,#ffe6cb 42%,#ffd6e8 100%);
-  overflow-x:hidden;
+  transition:background .35s ease,color .25s ease;
 }
-body.theme-sunny{--accent:#ff9f43;--accent2:#ffd15c;--deep:#e56d21;--soft:#fff1c9}
-body.theme-sky{
-  --accent:#49baf2;--accent2:#85dbff;--deep:#187dc0;--soft:#dff5ff;
-  background:linear-gradient(145deg,#e7f8ff,#d7eeff,#e7e0ff);
-}
-body.theme-berry{
-  --accent:#ed6b9e;--accent2:#ffabc7;--deep:#b93d72;--soft:#ffe4ef;
-  background:linear-gradient(145deg,#fff0f5,#ffdce9,#f4ddff);
-}
-body.theme-mint{
-  --accent:#4fc69d;--accent2:#8de2c5;--deep:#218c6b;--soft:#ddf8ee;
-  background:linear-gradient(145deg,#e8fff7,#d9f5ef,#e7f7ff);
-}
-button,select{font:inherit}
-button{touch-action:manipulation}
+body.theme-sunny{--accent:#ff9f43;--accent2:#ffd15c;--deep:#d95f14;--soft:#fff1c9}
+body.theme-sky{--accent:#49baf2;--accent2:#85dbff;--deep:#126fae;--soft:#dff5ff;background:linear-gradient(145deg,#e7f8ff,#d7eeff,#e7e0ff)}
+body.theme-berry{--accent:#ed6b9e;--accent2:#ffabc7;--deep:#a92d63;--soft:#ffe4ef;background:linear-gradient(145deg,#fff0f5,#ffdce9,#f4ddff)}
+body.theme-mint{--accent:#4fc69d;--accent2:#8de2c5;--deep:#197b5d;--soft:#ddf8ee;background:linear-gradient(145deg,#e8fff7,#d9f5ef,#e7f7ff)}
+body.large-text{font-size:118%}
+body.high-contrast{--ink:#111;--muted:#292929;--panel:#fff;--soft:#fff3a8;--deep:#7a2100;--ring:#000}
+body.no-motion *,body.no-motion *::before,body.no-motion *::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+button,input,select{font:inherit}
+button{touch-action:manipulation;min-height:44px}
+button:focus-visible,input:focus-visible,select:focus-visible,[tabindex]:focus-visible{outline:4px solid color-mix(in srgb,var(--ring) 72%,white);outline-offset:3px}
+button:disabled{opacity:.42;cursor:not-allowed;transform:none!important}
 .decor{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:-1}
-.bubble{position:absolute;border-radius:50%;opacity:.2;animation:float 8s ease-in-out infinite}
-.b1{width:130px;height:130px;background:#fff;left:3%;top:12%}
-.b2{width:80px;height:80px;background:#ffd35a;right:8%;top:26%;animation-delay:-2s}
-.b3{width:170px;height:170px;background:#fff;right:1%;bottom:8%;animation-delay:-5s}
+.bubble{position:absolute;border-radius:50%;opacity:.22;animation:float 8s ease-in-out infinite}
+.b1{width:140px;height:140px;background:#fff;left:2%;top:10%}.b2{width:90px;height:90px;background:#ffd35a;right:7%;top:25%;animation-delay:-2s}.b3{width:180px;height:180px;background:#fff;right:1%;bottom:5%;animation-delay:-5s}
+.cloud{position:absolute;font-size:clamp(2rem,6vw,4rem);opacity:.3;animation:drift 18s linear infinite}.c1{top:5%;left:-10%}.c2{top:48%;left:-18%;animation-delay:-9s}
 @keyframes float{50%{transform:translateY(-18px) scale(1.05)}}
-.page-wrap{max-width:1120px;margin:auto;padding:32px 16px 56px}
-.hero{text-align:center;margin-bottom:18px}
-.hero-badge{display:inline-flex;gap:8px;align-items:center;padding:7px 13px;border-radius:999px;background:#ffffffb8;box-shadow:0 8px 24px #634d6b18;font-size:13px}
-.hero h1{margin:10px 0 2px;font-size:clamp(38px,7vw,68px);line-height:.95;color:var(--deep);letter-spacing:-2px}
-.hero p{margin:8px auto 0;max-width:680px;color:var(--muted);font-size:15px}
-.app-shell{background:var(--panel);backdrop-filter:blur(14px);border:1px solid #ffffffc7;border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
-.app-header{text-align:center}
-.app-header h2{margin:0;font-size:25px}
-#modeLabel{color:var(--muted);font-size:13px}
-.top-controls{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:13px}
-.pill-btn{
-  border:1px solid color-mix(in srgb,var(--accent) 32%,white);
-  background:#fff;border-radius:999px;padding:8px 13px;color:var(--ink);font-weight:700;
-  cursor:pointer;box-shadow:0 5px 12px rgba(48,32,60,.08);transition:.2s ease;
+@keyframes drift{to{transform:translateX(125vw)}}
+.page-wrap{max-width:1180px;margin:auto;padding:24px 14px 56px}
+.hero{text-align:center;margin-bottom:16px}.hero-badge{display:inline-flex;gap:8px;align-items:center;padding:8px 14px;border-radius:999px;background:#ffffffc7;box-shadow:0 8px 24px #634d6b18;font-size:.83rem;font-weight:800}
+.hero h1{margin:11px 0 3px;font-size:clamp(2.35rem,7vw,4.8rem);line-height:.95;color:var(--deep);letter-spacing:-.045em}.hero p{margin:9px auto 0;max-width:760px;color:var(--muted);font-size:.98rem;line-height:1.55}
+.app-shell{background:var(--panel);backdrop-filter:blur(14px);border:1px solid #ffffffd6;border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+.app-header{text-align:center}.app-header h2{margin:0;font-size:clamp(1.4rem,4vw,1.8rem)}#modeLabel{color:var(--muted);font-size:.85rem;font-weight:800}
+.top-controls,.narration-controls{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:13px}
+.pill-btn,.action-btn,.nav-btn,.choice-btn,.practice-btn,.adult-btn{
+  border:1px solid color-mix(in srgb,var(--accent) 30%,white);background:#fff;border-radius:999px;padding:9px 14px;color:var(--ink);font-weight:900;cursor:pointer;box-shadow:0 5px 12px rgba(48,32,60,.08);transition:.18s ease;
 }
-.pill-btn:hover{transform:translateY(-2px)}
-.pill-btn.active{color:white;background:linear-gradient(135deg,var(--accent),var(--deep));border-color:transparent}
-.progress-wrap{max-width:720px;margin:15px auto 4px;display:flex;align-items:center;gap:10px}
-.progress-track{height:10px;flex:1;background:#fff;border-radius:999px;overflow:hidden;border:1px solid #eee}
-.progress-bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .35s ease}
-.progress-text{font-size:12px;color:var(--muted);min-width:80px;text-align:right}
-.book-row{margin-top:18px;display:flex;justify-content:center}
-.book-card{
-  width:100%;max-width:760px;display:grid;grid-template-columns:1fr 1.12fr;gap:12px;
-  background:#fff;border-radius:26px;padding:14px;box-shadow:0 15px 40px rgba(76,54,80,.15);
-  position:relative;overflow:hidden;transform-origin:center;transition:.25s;
-}
-.book-card.flip{animation:pageFlip .42s ease}
-@keyframes pageFlip{0%{transform:perspective(1100px) rotateY(0)}45%{transform:perspective(1100px) rotateY(-7deg) scale(.99)}100%{transform:none}}
-.book-page{min-height:390px;border-radius:20px;padding:18px;background:linear-gradient(160deg,#fffdf7,#fff8ec);position:relative;overflow:hidden}
-.book-page.right{background:linear-gradient(160deg,#fff,#fff8fb)}
-.page-sparkle{position:absolute;font-size:34px;opacity:.15;animation:spin 14s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.page-label{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:#8b8197}
-.symbol-wrap{display:grid;place-items:center;margin-top:10px}
-.page-emoji{font-size:72px;line-height:1;filter:drop-shadow(0 9px 8px #5b3e5e25);animation:bob 2.8s ease-in-out infinite}
-@keyframes bob{50%{transform:translateY(-8px) rotate(2deg)}}
-.page-main-symbol{font-size:80px;line-height:1;font-weight:900;color:var(--deep);text-shadow:0 4px 0 #fff}
-.page-word{text-align:center;font-size:18px;font-weight:900;letter-spacing:3px;margin-top:8px}
-.letter-prompt{margin-top:18px;padding:13px;border-radius:16px;background:var(--soft);text-align:center;font-size:14px;border:1px dashed var(--accent)}
-.action-row{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin-top:13px}
-.action-btn{border:0;border-radius:14px;padding:9px 12px;background:#fff;color:var(--deep);font-weight:800;cursor:pointer;box-shadow:0 4px 12px #51374f15}
-.story-title{font-size:18px;font-weight:900;text-align:center;color:var(--deep);margin:12px 0 3px}
-.story-subtitle{font-size:12px;text-align:center;color:var(--muted);margin-bottom:10px}
-.rhyme-lines{list-style:none;padding:0;margin:0;display:grid;gap:7px}
-.rhyme-line{padding:9px 11px;border-radius:12px;font-size:14px;line-height:1.4;cursor:pointer;transition:.2s;background:#ffffff8a}
-.rhyme-line:hover{background:var(--soft);transform:translateX(3px)}
-.rhyme-line.active{background:linear-gradient(90deg,var(--soft),#fff);color:#20182a;box-shadow:0 0 0 2px var(--accent) inset}
-.nav-row{margin-top:14px;display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center}
-.nav-btn{border:0;border-radius:14px;padding:9px 12px;background:var(--soft);color:var(--deep);font-weight:900;cursor:pointer}
-.nav-btn:disabled{opacity:.35;cursor:default}
-.page-indicator{font-size:12px;color:var(--muted);text-align:center}
-.dot-row{display:flex;justify-content:center;flex-wrap:wrap;gap:5px;margin-top:13px;max-height:70px;overflow:auto;padding:3px}
-.dot-row button{width:11px;height:11px;border-radius:50%;border:0;background:#d8cfdb;cursor:pointer}
-.dot-row button.active{background:var(--deep);transform:scale(1.25)}
-.reward-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:14px}
-.reward{background:#fff;border-radius:999px;padding:7px 12px;font-size:13px;box-shadow:0 5px 14px #5f42551a}
-.instructions,.footer-note{text-align:center;color:var(--muted);font-size:12px;max-width:700px;margin:16px auto 0}
-.celebration{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:10}
-.confetti{position:absolute;font-size:24px;animation:fall 1.8s ease-out forwards}
-@keyframes fall{to{transform:translate(var(--dx),100vh) rotate(540deg);opacity:0}}
-@media(max-width:760px){
-  .page-wrap{padding-top:20px}
-  .book-card{grid-template-columns:1fr}
-  .book-page{min-height:0}
-  .dot-row{max-height:90px}
-}
-@media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}
-}
+.pill-btn:hover,.action-btn:hover,.nav-btn:hover,.choice-btn:hover,.practice-btn:hover,.adult-btn:hover{transform:translateY(-2px)}
+.pill-btn.active,.practice-btn.active{color:#fff;background:linear-gradient(135deg,var(--accent),var(--deep));border-color:transparent}
+.favorite.active{background:linear-gradient(135deg,#ffdc64,#ff8f7c);color:#542b17}
+.progress-wrap{max-width:760px;margin:15px auto 4px;display:flex;align-items:center;gap:10px}.progress-track{height:12px;flex:1;background:#fff;border-radius:999px;overflow:hidden;border:1px solid #eee}.progress-bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2),var(--mint));transition:width .35s ease}.progress-text{font-size:.78rem;color:var(--muted);min-width:85px;text-align:right;font-weight:800}
+.book-row{margin-top:18px;display:flex;justify-content:center}.book-card{width:100%;max-width:850px;display:grid;grid-template-columns:1fr 1.12fr;gap:12px;background:#fff;border-radius:28px;padding:14px;box-shadow:0 15px 40px rgba(76,54,80,.15);position:relative;overflow:hidden;transform-origin:center;transition:.25s}.book-card::after{content:"";position:absolute;top:14px;bottom:14px;left:calc(47.2% - 1px);width:2px;background:linear-gradient(transparent,#e8dfe9,transparent);pointer-events:none}
+.book-card.flip{animation:pageFlip .42s ease}@keyframes pageFlip{0%{transform:perspective(1100px) rotateY(0)}45%{transform:perspective(1100px) rotateY(-7deg) scale(.99)}100%{transform:none}}
+.book-page{min-height:430px;border-radius:21px;padding:19px;background:linear-gradient(160deg,#fffdf7,#fff8ec);position:relative;overflow:hidden}.book-page.right{background:linear-gradient(160deg,#fff,#fff8fb)}
+.page-sparkle{position:absolute;font-size:34px;opacity:.16;animation:spin 14s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+.page-label{font-size:.72rem;text-transform:uppercase;letter-spacing:1.2px;color:#7f748d;font-weight:900}.symbol-wrap{display:grid;place-items:center;margin-top:8px}.page-emoji{font-size:78px;line-height:1;filter:drop-shadow(0 9px 8px #5b3e5e25);animation:bob 2.8s ease-in-out infinite}.spoken-pop{animation:spokenPop .5s ease}@keyframes bob{50%{transform:translateY(-8px) rotate(2deg)}}@keyframes spokenPop{50%{transform:scale(1.12) rotate(-2deg)}}
+.page-main-symbol{font-size:clamp(4.3rem,12vw,6.1rem);line-height:1;font-weight:1000;color:var(--deep);text-shadow:0 4px 0 #fff;text-align:center}.page-word{text-align:center;font-size:1.15rem;font-weight:1000;letter-spacing:3px;margin-top:8px}.letter-prompt{margin-top:15px;padding:13px;border-radius:17px;background:var(--soft);text-align:center;font-size:.92rem;border:2px dashed color-mix(in srgb,var(--accent) 72%,white);line-height:1.45}.action-row{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin-top:12px}.action-btn{border-radius:15px;color:var(--deep);padding:9px 12px}
+.quantity-grid{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:5px;max-width:320px;margin:10px auto 0;min-height:54px}.quantity-item{font-size:clamp(1.4rem,5vw,2rem);animation:quantityIn .35s ease both}.quantity-item.counting{filter:drop-shadow(0 0 7px var(--accent));transform:scale(1.25)}@keyframes quantityIn{from{opacity:0;transform:translateY(8px) scale(.75)}}
+.story-title{font-size:1.22rem;font-weight:1000;text-align:center;color:var(--deep);margin:11px 0 3px}.story-subtitle{font-size:.78rem;text-align:center;color:var(--muted);margin-bottom:10px}.rhyme-lines{list-style:none;padding:0;margin:0;display:grid;gap:7px}.rhyme-line{padding:10px 12px;border-radius:13px;font-size:.94rem;line-height:1.45;cursor:pointer;transition:.18s;background:#ffffff9e;border:1px solid transparent}.rhyme-line:hover{background:var(--soft);transform:translateX(3px)}.rhyme-line.active{background:linear-gradient(90deg,var(--soft),#fff);color:#20182a;box-shadow:0 0 0 3px var(--accent) inset}.nav-row{margin-top:14px;display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center}.nav-btn{border-radius:15px;background:var(--soft);color:var(--deep)}.page-indicator{font-size:.78rem;color:var(--muted);text-align:center;font-weight:800}
+.narration-strip{max-width:850px;margin:13px auto 0;padding:10px 12px;border-radius:18px;background:#ffffffb0;border:1px solid #eee}.narration-controls{margin:0}.narration-controls label{display:flex;align-items:center;gap:6px;background:#fff;border:1px solid #e6dde8;border-radius:999px;padding:5px 10px;font-size:.78rem;font-weight:800}.narration-controls select{border:0;background:transparent;color:var(--deep);font-weight:900}.narration-status{text-align:center;margin-top:7px;color:var(--muted);font-size:.78rem;min-height:1.2em}
+.dot-row{display:flex;justify-content:center;flex-wrap:wrap;gap:6px;margin:13px auto 0;max-width:760px;max-height:54px;overflow:auto;padding:4px}.dot-row button{width:13px;height:13px;min-height:13px;padding:0;border-radius:50%;border:0;background:#d8cfdb;cursor:pointer}.dot-row button.active{background:var(--deep);transform:scale(1.25)}.dot-row button.visited{box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 60%,white)}.dot-row button.favorite-dot{background:#f2b632}
+.practice-studio{max-width:850px;margin:15px auto 0;background:#fff;border-radius:24px;padding:14px;box-shadow:0 10px 28px rgba(72,49,82,.1)}.practice-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.practice-head h3{margin:0;color:var(--deep);font-size:1.2rem}.practice-tabs{display:flex;flex-wrap:wrap;gap:7px}.practice-panel{margin-top:12px;padding:14px;border-radius:19px;background:linear-gradient(145deg,#fffdf8,var(--soft));border:1px solid #eee}.practice-panel[hidden]{display:none!important}.practice-instructions{text-align:center;color:var(--muted);margin:0 0 10px;line-height:1.45}.trace-stage{position:relative;width:min(100%,620px);aspect-ratio:2/1;margin:auto;background:#fff;border:3px dashed color-mix(in srgb,var(--accent) 55%,white);border-radius:20px;overflow:hidden;touch-action:none}.trace-stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}.trace-stage #traceDraw{touch-action:none;cursor:crosshair}.practice-actions{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:11px}.practice-btn{border-radius:15px;color:var(--deep)}
+.spell-boxes{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;margin:12px 0}.spell-box{width:42px;height:48px;border-radius:12px;border:3px solid color-mix(in srgb,var(--accent) 48%,white);display:grid;place-items:center;background:#fff;font-size:1.35rem;font-weight:1000;color:var(--deep)}.spell-box.current{box-shadow:0 0 0 4px var(--accent)}.count-stage{text-align:center}.count-big{font-size:clamp(2.7rem,10vw,5rem);color:var(--deep);font-weight:1000}.match-prompt{text-align:center;font-weight:1000;color:var(--deep);font-size:1.05rem}.choice-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:12px}.choice-btn{border-radius:17px;min-height:62px;font-size:1.08rem}.choice-btn.correct{background:#dff7e9;color:#15552f;border-color:#65c991}.choice-btn.try-again{animation:shake .28s ease;background:#fff0f2;color:#7b2b37}@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}.match-feedback{text-align:center;min-height:1.5em;margin-top:9px;font-weight:900;color:var(--deep)}
+.reward-row{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-top:14px}.reward{background:#fff;border-radius:999px;padding:8px 13px;font-size:.84rem;box-shadow:0 5px 14px #5f42551a}.badge-shelf{display:flex;justify-content:center;gap:7px;flex-wrap:wrap;margin-top:10px}.badge{padding:7px 10px;border-radius:14px;background:#f2edf4;color:#7b7084;font-size:.76rem;font-weight:900}.badge.earned{background:linear-gradient(135deg,#fff0a9,#ffd166);color:#5b3900;box-shadow:0 4px 12px #a46c1d22}
+.instructions,.footer-note{text-align:center;color:var(--muted);font-size:.78rem;max-width:760px;margin:14px auto 0;line-height:1.45}.footer-note strong{color:var(--deep)}
+.celebration{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:40}.confetti{position:absolute;font-size:24px;animation:fall 1.8s ease-out forwards}@keyframes fall{to{transform:translate(var(--dx),100vh) rotate(540deg);opacity:0}}
+.toast{position:fixed;left:50%;bottom:max(20px,env(safe-area-inset-bottom));transform:translate(-50%,24px);opacity:0;z-index:70;max-width:min(92vw,520px);background:#2f2740;color:#fff;padding:12px 17px;border-radius:16px;box-shadow:0 12px 35px #0004;text-align:center;font-weight:900;pointer-events:none;transition:.22s}.toast.show{opacity:1;transform:translate(-50%,0)}
+.modal-backdrop{position:fixed;inset:0;background:#2b203b99;display:grid;place-items:center;padding:16px;z-index:60}.modal-backdrop[hidden]{display:none}.modal{width:min(680px,100%);max-height:min(88vh,760px);overflow:auto;background:#fff;border-radius:25px;padding:20px;box-shadow:0 25px 70px #160f244f}.modal h2{margin:0;color:var(--deep)}.modal p{color:var(--muted);line-height:1.5}.settings-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:14px 0}.setting{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:11px;border-radius:15px;background:#f8f4fa;font-weight:800}.setting input{width:22px;height:22px;accent-color:var(--accent)}.adult-actions{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.adult-btn{border-radius:15px;color:var(--deep)}.adult-btn.danger{color:#8c2635;background:#fff0f2}.modal-close{float:right;border:0;background:var(--soft);border-radius:50%;width:44px;height:44px;cursor:pointer;font-weight:1000}.name-row{display:grid;grid-template-columns:1fr auto;gap:8px;margin:10px 0}.name-row input{min-width:0;padding:11px;border-radius:14px;border:2px solid #e0d7e5}.site-footer{margin-top:16px;padding:14px;text-align:center;border-radius:18px;background:#ffffffb5;color:var(--muted);font-size:.76rem;line-height:1.5}.site-footer strong{color:var(--deep)}
+#ariaLive{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+body.simple-mode .dot-row,body.simple-mode .narration-strip,body.simple-mode .practice-studio .practice-tabs button:nth-child(n+3),body.simple-mode .advanced-control{display:none!important}
+#printArea{display:none}
+@media(max-width:780px){.page-wrap{padding-top:18px}.app-shell{padding:12px}.book-card{grid-template-columns:1fr;max-width:620px}.book-card::after{display:none}.book-page{min-height:0}.dot-row{max-height:74px}.choice-grid{grid-template-columns:1fr}.settings-grid,.adult-actions{grid-template-columns:1fr}.hero p{font-size:.9rem}}
+@media(max-width:480px){.page-wrap{padding-left:7px;padding-right:7px}.hero h1{font-size:2.45rem}.app-shell{border-radius:20px}.book-card{padding:8px;border-radius:20px}.book-page{padding:15px;border-radius:17px}.top-controls{gap:6px}.pill-btn{padding:8px 10px;font-size:.78rem}.nav-row{grid-template-columns:1fr 1fr}.page-indicator{grid-column:1/-1;grid-row:1}.nav-btn{grid-row:2}.spell-box{width:36px;height:43px}.practice-studio{padding:10px}.trace-stage{aspect-ratio:1.55/1}.reward-row{gap:6px}.reward{font-size:.75rem}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}
+@media print{body>*:not(#printArea){display:none!important}#printArea{display:block!important;color:#111;font-family:Georgia,serif;padding:36px}.print-card{border:7px double #bc7b24;padding:35px;text-align:center;min-height:680px}.print-card h1{font-size:3rem;color:#8b4d12}.print-card .name{font-size:2.2rem;border-bottom:2px solid #333;display:inline-block;min-width:360px;padding:8px}.print-summary{text-align:left;max-width:700px;margin:30px auto;font-size:1.1rem;line-height:1.8}}
 </style>
 </head>
 <body class="theme-sunny">
-<div class="decor"><span class="bubble b1"></span><span class="bubble b2"></span><span class="bubble b3"></span></div>
-<div id="celebration" class="celebration"></div>
+<div class="decor" aria-hidden="true"><span class="bubble b1"></span><span class="bubble b2"></span><span class="bubble b3"></span><span class="cloud c1">☁️</span><span class="cloud c2">☁️</span></div>
+<div id="celebration" class="celebration" aria-hidden="true"></div>
+<div id="ariaLive" aria-live="polite"></div>
 <main class="page-wrap">
   <header class="hero">
-    <div class="hero-badge">☀️ Preschool Storytime • Local & private</div>
+    <div class="hero-badge">☀️ Crechè Preschool Storytime · Local &amp; private</div>
     <h1>Sunny Storytime</h1>
-    <p>Explore letters and numbers with movement prompts, cheerful rhymes, gentle narration, and colorful page turns.</p>
+    <p>Explore letters and numbers with cheerful rhymes, movement, tracing, spelling, counting, gentle narration, and colorful page turns.</p>
   </header>
 
-  <section class="app-shell" aria-label="Sunny ABCs and 123s storybook">
+  <section class="app-shell" aria-label="Sunny ABCs and 123s interactive storybook">
     <div class="app-header">
       <h2>Sunny ABCs &amp; 123s</h2>
       <span id="modeLabel">Alphabet Book</span>
       <div class="top-controls">
-        <button class="pill-btn active" id="alphabetModeBtn">🔤 Alphabet</button>
-        <button class="pill-btn" id="numberModeBtn">🔢 Numbers</button>
-        <button class="pill-btn" id="songModeBtn">🎵 Song <span id="songModeState">Off</span></button>
-        <button class="pill-btn active" id="soundModeBtn">🔊 Sound <span id="soundModeState">On</span></button>
-        <button class="pill-btn" id="colorDayBtn">🎨 Theme <span id="colorDayLabel">Sunny</span></button>
+        <button class="pill-btn active" id="alphabetModeBtn" type="button" aria-pressed="true">🔤 Alphabet</button>
+        <button class="pill-btn" id="numberModeBtn" type="button" aria-pressed="false">🔢 Numbers</button>
+        <button class="pill-btn advanced-control" id="caseModeBtn" type="button">Aa Both</button>
+        <button class="pill-btn" id="songModeBtn" type="button" aria-pressed="false">🎵 Rhyme <span id="songModeState">Off</span></button>
+        <button class="pill-btn active" id="soundModeBtn" type="button" aria-pressed="true">🔊 Sound <span id="soundModeState">On</span></button>
+        <button class="pill-btn" id="colorDayBtn" type="button">🎨 <span id="colorDayLabel">Sunny</span></button>
+        <button class="pill-btn favorite" id="favoriteBtn" type="button" aria-pressed="false">☆ Favorite</button>
+        <button class="pill-btn" id="adultBtn" type="button">⚙️ Grown-up Tools</button>
       </div>
       <div class="progress-wrap">
-        <div class="progress-track"><div id="progressBar" class="progress-bar"></div></div>
+        <div class="progress-track" aria-label="Book progress"><div id="progressBar" class="progress-bar"></div></div>
         <div id="progressText" class="progress-text">1 of 26</div>
       </div>
     </div>
@@ -149,17 +117,115 @@ button{touch-action:manipulation}
       </article>
     </div>
 
+    <section class="narration-strip" aria-label="Narration controls">
+      <div class="narration-controls">
+        <button class="action-btn" id="playRhymeBtn" type="button">▶ Read Rhyme</button>
+        <button class="action-btn" id="pauseBtn" type="button">⏸ Pause</button>
+        <button class="action-btn" id="stopBtn" type="button">⏹ Stop</button>
+        <label>Speed
+          <select id="speedSelect" aria-label="Narration speed">
+            <option value="0.72">Slow</option><option value="0.86" selected>Gentle</option><option value="1">Regular</option>
+          </select>
+        </label>
+        <label><input id="autoAdvance" type="checkbox"> Next page after rhyme</label>
+      </div>
+      <div id="narrationStatus" class="narration-status">Ready to read.</div>
+    </section>
+
     <div class="dot-row" id="dotRow" aria-label="Story pages"></div>
+
+    <section class="practice-studio" id="practiceStudio" aria-label="Practice studio">
+      <div class="practice-head">
+        <h3>🌟 Sunny Practice Studio</h3>
+        <div class="practice-tabs" role="tablist" aria-label="Practice activities">
+          <button class="practice-btn active" id="traceTab" type="button" role="tab" aria-selected="true">✏️ Trace</button>
+          <button class="practice-btn" id="spellTab" type="button" role="tab" aria-selected="false">🔤 Spell &amp; Count</button>
+          <button class="practice-btn" id="matchTab" type="button" role="tab" aria-selected="false">🧩 Match</button>
+        </div>
+      </div>
+
+      <div class="practice-panel" id="tracePanel" role="tabpanel">
+        <p class="practice-instructions">Trace the big symbol with your finger, mouse, or stylus. Every try is worth celebrating.</p>
+        <div class="trace-stage" id="traceStage">
+          <canvas id="traceGuide" aria-hidden="true"></canvas>
+          <canvas id="traceDraw" aria-label="Tracing canvas"></canvas>
+        </div>
+        <div class="practice-actions">
+          <button class="practice-btn" id="clearTraceBtn" type="button">🧹 Clear</button>
+          <button class="practice-btn" id="traceSoundBtn" type="button">🔊 Hear It</button>
+          <button class="practice-btn" id="traceDoneBtn" type="button">⭐ I Traced It!</button>
+        </div>
+      </div>
+
+      <div class="practice-panel" id="spellPanel" role="tabpanel" hidden>
+        <p class="practice-instructions" id="spellInstructions">Press Reveal or the Enter key to uncover the word one letter at a time.</p>
+        <div id="spellArea"></div>
+        <div class="practice-actions">
+          <button class="practice-btn" id="revealLetterBtn" type="button">✨ Reveal Next</button>
+          <button class="practice-btn" id="restartSpellBtn" type="button">↻ Restart</button>
+          <button class="practice-btn" id="countAloudBtn" type="button">🔊 Count Aloud</button>
+        </div>
+      </div>
+
+      <div class="practice-panel" id="matchPanel" role="tabpanel" hidden>
+        <div id="matchArea"></div>
+        <div class="practice-actions"><button class="practice-btn" id="newMatchBtn" type="button">🔄 New Match</button></div>
+      </div>
+    </section>
+
     <div class="reward-row">
-      <div class="reward">⭐ Pages explored: <strong id="visitedCount">1</strong></div>
-      <div class="reward">🏆 Stars earned: <strong id="starCount">0</strong></div>
+      <div class="reward">⭐ Pages: <strong id="visitedCount">1</strong></div>
+      <div class="reward">🏆 Stars: <strong id="starCount">0</strong></div>
+      <div class="reward">❤️ Favorites: <strong id="favoriteCount">0</strong></div>
+      <div class="reward">🎯 Activities: <strong id="activityCount">0</strong></div>
     </div>
-    <p class="instructions">Use the arrows, dots, keyboard arrow keys, or swipe to turn pages. Tap any rhyme line to hear it. Song Mode reads each line in order.</p>
-    <p class="footer-note">Everything runs in this file. No accounts, tracking, or outside game services.</p>
+    <div class="badge-shelf" id="badgeShelf" aria-label="Milestone badges"></div>
+
+    <p class="instructions">Use the arrows, page dots, keyboard arrows, or a gentle swipe to turn pages. Tap a rhyme line to hear it. Practice activities never take stars away.</p>
+    <p class="footer-note"><strong>Private by design:</strong> no accounts, advertising, analytics, trackers, or outside game services. Progress stays in this browser.</p>
   </section>
+
+  <footer class="site-footer"><strong>© 2026 Verve N Veda · Khaemenes Academy · Jennifer Kay Pearl</strong><br>Crechè Preschool Edition · All Rights Reserved.</footer>
 </main>
 
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<div class="modal-backdrop" id="adultModal" hidden>
+  <section class="modal" role="dialog" aria-modal="true" aria-labelledby="adultTitle">
+    <button class="modal-close" id="closeAdultBtn" type="button" aria-label="Close grown-up tools">×</button>
+    <h2 id="adultTitle">⚙️ Grown-up Tools</h2>
+    <p>These controls remain on this device. The learner’s name is not saved unless you choose to remember it.</p>
+    <div class="settings-grid">
+      <label class="setting">Rewards <input id="rewardsSetting" type="checkbox" checked></label>
+      <label class="setting">Animations <input id="motionSetting" type="checkbox" checked></label>
+      <label class="setting">Simple layout <input id="simpleSetting" type="checkbox"></label>
+      <label class="setting">Large text <input id="largeTextSetting" type="checkbox"></label>
+      <label class="setting">High contrast <input id="contrastSetting" type="checkbox"></label>
+      <label class="setting">Remember name <input id="rememberNameSetting" type="checkbox"></label>
+    </div>
+    <div class="name-row"><input id="learnerName" type="text" maxlength="50" placeholder="Learner name for printing"><button class="adult-btn" id="saveNameBtn" type="button">Save Choice</button></div>
+    <div class="adult-actions">
+      <button class="adult-btn" id="favoritesOnlyBtn" type="button">❤️ Practice Favorites</button>
+      <button class="adult-btn" id="showAllBtn" type="button">📖 Show All Pages</button>
+      <button class="adult-btn" id="exportBtn" type="button">⬇ Export Progress</button>
+      <button class="adult-btn" id="printSummaryBtn" type="button">🖨 Print Summary</button>
+      <button class="adult-btn" id="certificateBtn" type="button">🏅 Print Certificate</button>
+      <button class="adult-btn danger" id="resetProgressBtn" type="button">🧹 Reset Progress</button>
+    </div>
+  </section>
+</div>
+
+<div class="modal-backdrop" id="confirmModal" hidden>
+  <section class="modal" role="dialog" aria-modal="true" aria-labelledby="confirmTitle">
+    <h2 id="confirmTitle">Please confirm</h2><p id="confirmText"></p>
+    <div class="adult-actions"><button class="adult-btn" id="confirmNo" type="button">Go Back</button><button class="adult-btn danger" id="confirmYes" type="button">Yes, Reset</button></div>
+  </section>
+</div>
+
+<section id="printArea" aria-hidden="true"></section>
+
 <script>
+"use strict";
 const alphabetPages = [
       {
         letter: 'A',
@@ -262,7 +328,7 @@ const alphabetPages = [
           'H is for honeybee busy all day,',
           'Buzzing through blossoms along the way.',
           'Gathering nectar with gentle care,',
-          'Sharing sweet honey for everyone to share.'
+          'Making sweet honey with wonderful care.'
         ]
       },
       {
@@ -364,7 +430,7 @@ const alphabetPages = [
         subtitle: 'Tap to read about “Pancake.”',
         rhyme: [
           'P is for pancake, fluffy and round,',
-          'Golden and warm when it first hits the ground.',
+          'Golden and warm when it lands on your plate.',
           'Drizzle a little syrup on top,',
           'Stack them up high and never let them drop!'
         ]
@@ -444,7 +510,7 @@ const alphabetPages = [
           'V is for violin singing so clear,',
           'Music like stories you can almost hear.',
           'Slow flowing notes or a quick, happy dance,',
-          'Strings full of magic whenever you chance.'
+          'Strings full of magic whenever we dance.'
         ]
       },
       {
@@ -501,7 +567,7 @@ const alphabetPages = [
       }
     ];
 
-    const numberPages = [
+const numberPages = [
       {
         number: 1,
         word: 'One',
@@ -561,10 +627,10 @@ const alphabetPages = [
         title: 'Number 5 — Five Bright Stars',
         subtitle: 'Tap to read about “Five.”',
         rhyme: [
-          'Five bright stars in a velvet sky,',
-          'Twinkling softly way up high.',
+          'Five bright stars in velvet night,',
+          'Twinkling softly, warm and bright.',
           'Count them slowly, one to five,',
-          'Wishing good dreams to every hive.'
+          'Shining dreams as night arrives.'
         ]
       },
       {
@@ -575,9 +641,9 @@ const alphabetPages = [
         subtitle: 'Tap to read about “Six.”',
         rhyme: [
           'Six silver coins in a jingly jar,',
-          'Saving them up can take you far.',
-          'Drop them in gently, hear the song,',
-          'Six tiny rings that don’t last long.'
+          'Saving together can take you far.',
+          'Drop them gently—hear them sing,',
+          'Six little chimes go ring-a-ling!'
         ]
       },
       {
@@ -634,250 +700,140 @@ const alphabetPages = [
       }
     ];
 
-const emojiMap = {
-  Apple:'🍎',Balloon:'🎈',Cat:'🐱',Duck:'🦆',Elephant:'🐘',Firefly:'✨',Garden:'🌻',
-  Honeybee:'🐝',Igloo:'🏠',Jellyfish:'🪼',Kite:'🪁',Ladybug:'🐞',Moon:'🌙',Nest:'🪺',
-  Ocean:'🌊',Pancake:'🥞',Queen:'👑',Rainbow:'🌈',Star:'⭐',Turtle:'🐢',Umbrella:'☂️',
-  Violin:'🎻',Wind:'🌬️',Xylophone:'🎶',Yawn:'🥱',Zoo:'🦁',
-  One:'☀️',Two:'👟',Three:'🌳',Four:'🐸',Five:'⭐',Six:'🪙',Seven:'🌈',Eight:'🐜',
-  Nine:'🎈',Ten:'🌙'
-};
+numberPages.push(
+  {
+    number:11,word:'Eleven',prompt:'Tap your knees eleven times while counting slowly.',title:'Number 11 — Eleven Little Lanterns',subtitle:'Tap to read about “Eleven.”',
+    rhyme:['Eleven little lanterns glow,','Lighting a path where dreamers go.','Count each light from one to eleven,','A tiny parade beneath the heavens.']
+  },
+  {
+    number:12,word:'Twelve',prompt:'Point around an imaginary clock from one to twelve.',title:'Number 12 — Twelve Clock Marks',subtitle:'Tap to read about “Twelve.”',
+    rhyme:['Twelve little marks go round the clock,','Tick-tock, tick-tock, around they walk.','Count them slowly, one through twelve,','Time for stories on the shelf.']
+  }
+);
 
-const state = {
-  book: localStorage.getItem('sunny-book') || 'alphabet',
-  index: Number(localStorage.getItem('sunny-index') || 0),
-  song: localStorage.getItem('sunny-song') === 'true',
-  sound: localStorage.getItem('sunny-sound') !== 'false',
-  theme: Number(localStorage.getItem('sunny-theme') || 0),
-  stars: Number(localStorage.getItem('sunny-stars') || 0),
-  visited: new Set(JSON.parse(localStorage.getItem('sunny-visited') || '[]')),
-  speaking:false
-};
-
-const themes = [
-  ['Sunny','theme-sunny'],['Sky','theme-sky'],['Berry','theme-berry'],['Mint','theme-mint']
+const emojiMap={Apple:'🍎',Balloon:'🎈',Cat:'🐱',Duck:'🦆',Elephant:'🐘',Firefly:'✨',Garden:'🌻',Honeybee:'🐝',Igloo:'🧊',Jellyfish:'🪼',Kite:'🪁',Ladybug:'🐞',Moon:'🌙',Nest:'🪺',Ocean:'🌊',Pancake:'🥞',Queen:'👑',Rainbow:'🌈',Star:'⭐',Turtle:'🐢',Umbrella:'☂️',Violin:'🎻',Wind:'🌬️',Xylophone:'🎶',Yawn:'🥱',Zoo:'🦁',One:'☀️',Two:'👟',Three:'🌳',Four:'🐸',Five:'⭐',Six:'🪙',Seven:'💧',Eight:'🐜',Nine:'🎈',Ten:'💛',Eleven:'🏮',Twelve:'🕰️'};
+const quantityEmoji={1:'☀️',2:'👟',3:'🌳',4:'🐸',5:'⭐',6:'🪙',7:'💧',8:'🐜',9:'🎈',10:'💛',11:'🏮',12:'🟠'};
+const themes=[['Sunny','theme-sunny'],['Sky','theme-sky'],['Berry','theme-berry'],['Mint','theme-mint']];
+const badgeDefs=[
+  {id:'alphabet',icon:'🔤',name:'Alphabet Explorer',test:s=>countVisited('alphabet')>=26},
+  {id:'numbers',icon:'🔢',name:'Number Navigator',test:s=>countVisited('numbers')>=12},
+  {id:'rhyme',icon:'🎵',name:'Rhyme Reader',test:s=>s.progress.rhymes>=10},
+  {id:'move',icon:'🤸',name:'Movement Star',test:s=>s.progress.movements>=8},
+  {id:'trace',icon:'✏️',name:'Tracing Star',test:s=>s.progress.traces>=8},
+  {id:'spell',icon:'✨',name:'Sunny Speller',test:s=>s.progress.spells>=8},
+  {id:'match',icon:'🧩',name:'Matching Champion',test:s=>s.progress.matches>=8},
+  {id:'graduate',icon:'🏅',name:'Storytime Graduate',test:s=>countVisited('alphabet')>=26&&countVisited('numbers')>=12}
 ];
+const STORE='sunny-storytime-v2';
+const $=id=>document.getElementById(id);
+function safeJSON(value,fallback){try{const v=JSON.parse(value);return v??fallback}catch{return fallback}}
+function oldVisited(){return safeJSON(localStorage.getItem('sunny-visited')||'[]',[])}
+const defaults={
+  book:localStorage.getItem('sunny-book')||'alphabet',index:Number(localStorage.getItem('sunny-index')||0),theme:Number(localStorage.getItem('sunny-theme')||0),sound:localStorage.getItem('sunny-sound')!=='false',song:false,caseMode:'both',speed:.86,autoAdvance:false,stars:Number(localStorage.getItem('sunny-stars')||0),visited:oldVisited(),favorites:[],awards:[],progress:{rhymes:0,words:0,movements:0,traces:0,spells:0,matches:0,counting:0},settings:{rewards:true,motion:true,simple:false,largeText:false,contrast:false,rememberName:false},learnerName:'',favoritesOnly:false};
+const loaded=safeJSON(localStorage.getItem(STORE)||'null',null);
+const state={...defaults,...(loaded||{}),progress:{...defaults.progress,...(loaded?.progress||{})},settings:{...defaults.settings,...(loaded?.settings||{})}};
+state.visited=new Set(Array.isArray(state.visited)?state.visited:[]);state.favorites=new Set(Array.isArray(state.favorites)?state.favorites:[]);state.awards=new Set(Array.isArray(state.awards)?state.awards:[]);
+let songToken=0,selectedVoice=null,spellIndex=0,currentMatch=null,currentPractice='trace',swipeStart=null,traceDrawing=false,tracePointer=null,toastTimer=null;
+const traceGuide=$('traceGuide'),traceDraw=$('traceDraw'),guideCtx=traceGuide.getContext('2d'),drawCtx=traceDraw.getContext('2d');
 
-let songToken = 0;
-let selectedVoice = null;
-const $ = id => document.getElementById(id);
-
-function pages(){ return state.book === 'alphabet' ? alphabetPages : numberPages; }
-function current(){ return pages()[state.index]; }
-
+function pages(){const all=state.book==='alphabet'?alphabetPages:numberPages;if(!state.favoritesOnly)return all;return all.filter((_,i)=>state.favorites.has(`${state.book}:${i}`))}
+function originalIndex(){const p=current();const all=state.book==='alphabet'?alphabetPages:numberPages;return Math.max(0,all.indexOf(p))}
+function current(){const list=pages();return list[state.index]||null}
+function pageKey(){return `${state.book}:${originalIndex()}`}
+function countVisited(book){let n=0;state.visited.forEach(k=>{if(k.startsWith(book+':'))n++});return n}
+function totalActivities(){return Object.values(state.progress).reduce((a,b)=>a+Number(b||0),0)}
 function saveState(){
-  localStorage.setItem('sunny-book',state.book);
-  localStorage.setItem('sunny-index',String(state.index));
-  localStorage.setItem('sunny-song',String(state.song));
-  localStorage.setItem('sunny-sound',String(state.sound));
-  localStorage.setItem('sunny-theme',String(state.theme));
-  localStorage.setItem('sunny-stars',String(state.stars));
-  localStorage.setItem('sunny-visited',JSON.stringify([...state.visited]));
+  const payload={...state,visited:[...state.visited],favorites:[...state.favorites],awards:[...state.awards]};
+  try{localStorage.setItem(STORE,JSON.stringify(payload))}catch{toast('Progress could not be saved because browser storage is full.')}
 }
-
-function chooseVoice(){
-  if(!('speechSynthesis' in window)) return;
-  const voices = speechSynthesis.getVoices();
-  selectedVoice = voices.find(v=>/child|kid|jenny|samantha|aria|female/i.test(v.name) && /^en/i.test(v.lang))
-    || voices.find(v=>/^en/i.test(v.lang))
-    || voices[0] || null;
+function toast(message){const t=$('toast');t.textContent=message;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>t.classList.remove('show'),2400)}
+function announce(message){$('ariaLive').textContent='';setTimeout(()=>$('ariaLive').textContent=message,20)}
+function chooseVoice(){if(!('speechSynthesis'in window))return;const voices=speechSynthesis.getVoices();selectedVoice=voices.find(v=>/child|kid|jenny|samantha|aria|female/i.test(v.name)&&/^en/i.test(v.lang))||voices.find(v=>/^en/i.test(v.lang))||voices[0]||null}
+if('speechSynthesis'in window){chooseVoice();speechSynthesis.onvoiceschanged=chooseVoice}
+function speak(text,onEnd,{countRhyme=false,status='Speaking…'}={}){
+  if(!state.sound||!('speechSynthesis'in window)){if(onEnd)setTimeout(onEnd,500);return}
+  speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);if(selectedVoice)u.voice=selectedVoice;u.rate=Number(state.speed)||.86;u.pitch=1.08;u.volume=1;$('narrationStatus').textContent=status;
+  u.onend=()=>{$('narrationStatus').textContent='Ready to read.';if(countRhyme){state.progress.rhymes++;saveState();updateRewards()}onEnd&&onEnd()};u.onerror=()=>{$('narrationStatus').textContent='Narration stopped.';onEnd&&onEnd()};speechSynthesis.speak(u)
 }
-if('speechSynthesis' in window){
-  chooseVoice();
-  speechSynthesis.onvoiceschanged = chooseVoice;
+function stopNarration(){songToken++;document.querySelectorAll('.rhyme-line').forEach(x=>x.classList.remove('active'));if('speechSynthesis'in window)speechSynthesis.cancel();$('pauseBtn').textContent='⏸ Pause';$('narrationStatus').textContent='Narration stopped.'}
+function pauseNarration(){if(!('speechSynthesis'in window))return;if(speechSynthesis.paused){speechSynthesis.resume();$('pauseBtn').textContent='⏸ Pause';$('narrationStatus').textContent='Reading…'}else if(speechSynthesis.speaking){speechSynthesis.pause();$('pauseBtn').textContent='▶ Resume';$('narrationStatus').textContent='Paused.'}}
+function startRhyme(){stopNarration();const token=songToken;const lines=[...document.querySelectorAll('.rhyme-line')];let i=0;state.song=true;updateToggleButtons();const next=()=>{if(token!==songToken||!state.song)return;lines.forEach(x=>x.classList.remove('active'));if(i>=lines.length){state.song=false;updateToggleButtons();state.progress.rhymes++;award(`rhyme:${pageKey()}`);saveState();updateRewards();$('narrationStatus').textContent='Rhyme complete!';if(state.autoAdvance)setTimeout(()=>go(1),700);return}const line=lines[i++];line.classList.add('active');speak(line.textContent,()=>setTimeout(next,220),{status:`Reading line ${i} of ${lines.length}…`})};next()}
+function celebrate(){if(!state.settings.rewards||!state.settings.motion)return;const holder=$('celebration'),bits=['⭐','🌈','✨','🎈','💛'];for(let i=0;i<18;i++){const el=document.createElement('span');el.className='confetti';el.textContent=bits[i%bits.length];el.style.left=Math.random()*100+'vw';el.style.top='-40px';el.style.setProperty('--dx',(Math.random()*180-90)+'px');el.style.animationDelay=Math.random()*.35+'s';holder.appendChild(el);setTimeout(()=>el.remove(),2200)}}
+function award(id,amount=1,message='Wonderful work!'){
+  if(state.awards.has(id))return false;state.awards.add(id);if(state.settings.rewards){state.stars+=amount;celebrate();toast(message)}saveState();return true
 }
-
-function speak(text, onEnd){
-  if(!state.sound || !('speechSynthesis' in window)){
-    if(onEnd) setTimeout(onEnd,900);
-    return;
-  }
-  speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(text);
-  if(selectedVoice) u.voice = selectedVoice;
-  u.rate=.86;u.pitch=1.12;u.volume=1;
-  u.onend=()=>onEnd&&onEnd();
-  u.onerror=()=>onEnd&&onEnd();
-  speechSynthesis.speak(u);
+function markVisited(){const key=pageKey();if(!state.visited.has(key)){state.visited.add(key);award(`visit:${key}`,1,'A new page explored! ⭐');saveState()}}
+function displaySymbol(p){if(state.book==='numbers')return String(p.number);const upper=p.letter.toUpperCase(),lower=p.letter.toLowerCase();return state.caseMode==='upper'?upper:state.caseMode==='lower'?lower:`${upper} ${lower}`}
+function quantityHTML(n,word){const icon=quantityEmoji[n]||emojiMap[word]||'●';return Array.from({length:n},(_,i)=>`<span class="quantity-item" style="animation-delay:${i*.035}s" data-count="${i+1}">${icon}</span>`).join('')}
+function updateToggleButtons(){
+  $('songModeState').textContent=state.song?'On':'Off';$('soundModeState').textContent=state.sound?'On':'Off';$('songModeBtn').classList.toggle('active',state.song);$('songModeBtn').setAttribute('aria-pressed',String(state.song));$('soundModeBtn').classList.toggle('active',state.sound);$('soundModeBtn').setAttribute('aria-pressed',String(state.sound));
 }
-
-function stopSong(){
-  songToken++;
-  document.querySelectorAll('.rhyme-line').forEach(x=>x.classList.remove('active'));
-  if('speechSynthesis' in window) speechSynthesis.cancel();
-}
-
-function startSong(){
-  stopSong();
-  const token = songToken;
-  const lines = [...document.querySelectorAll('.rhyme-line')];
-  let i=0;
-  const next=()=>{
-    if(token!==songToken || !state.song) return;
-    lines.forEach(x=>x.classList.remove('active'));
-    if(i>=lines.length) return;
-    const line=lines[i++];
-    line.classList.add('active');
-    speak(line.textContent,()=>setTimeout(next,250));
-  };
-  next();
-}
-
-function celebrate(){
-  const holder=$('celebration');
-  const bits=['⭐','🌈','✨','🎈','💛'];
-  for(let i=0;i<18;i++){
-    const el=document.createElement('span');
-    el.className='confetti';el.textContent=bits[i%bits.length];
-    el.style.left=Math.random()*100+'vw';
-    el.style.top='-40px';
-    el.style.setProperty('--dx',(Math.random()*180-90)+'px');
-    el.style.animationDelay=(Math.random()*.35)+'s';
-    holder.appendChild(el);
-    setTimeout(()=>el.remove(),2200);
-  }
-}
-
-function markVisited(){
-  const key=state.book+':'+state.index;
-  if(!state.visited.has(key)){
-    state.visited.add(key);
-    state.stars++;
-    if(state.stars%5===0) celebrate();
-    saveState();
-  }
-}
-
-function renderDots(){
-  const row=$('dotRow');row.innerHTML='';
-  pages().forEach((_,i)=>{
-    const b=document.createElement('button');
-    b.className=i===state.index?'active':'';
-    b.setAttribute('aria-label',`Go to page ${i+1}`);
-    b.onclick=()=>{state.index=i;render(true)};
-    row.appendChild(b);
-  });
-}
-
+function renderDots(){const row=$('dotRow'),list=pages();row.innerHTML='';list.forEach((p,i)=>{const all=state.book==='alphabet'?alphabetPages:numberPages,oi=all.indexOf(p),key=`${state.book}:${oi}`,b=document.createElement('button');b.className=(i===state.index?'active ':'')+(state.visited.has(key)?'visited ':'')+(state.favorites.has(key)?'favorite-dot':'');b.setAttribute('aria-label',`${state.book==='alphabet'?'Letter '+p.letter:'Number '+p.number}${state.favorites.has(key)?', favorite':''}`);b.onclick=()=>{state.index=i;render(true)};row.appendChild(b)})}
 function render(flip=false){
-  const list=pages();
-  state.index=Math.max(0,Math.min(state.index,list.length-1));
-  const p=current();
-  stopSong();
-  if(flip){
-    $('bookCard').classList.remove('flip');
-    void $('bookCard').offsetWidth;
-    $('bookCard').classList.add('flip');
-  }
-  markVisited();
-  const symbol=state.book==='alphabet'?p.letter:p.number;
-  const emoji=emojiMap[p.word]||'✨';
-
-  $('leftPage').innerHTML=`
-    <span class="page-sparkle" style="right:18px;top:12px">✦</span>
-    <div class="page-label">${state.book==='alphabet'?'Letter':'Number'} ${state.index+1} of ${list.length}</div>
-    <div class="symbol-wrap">
-      <div class="page-emoji" aria-hidden="true">${emoji}</div>
-      <div class="page-main-symbol">${symbol}</div>
-    </div>
-    <div class="page-word">${p.word.toUpperCase()}</div>
-    <div class="letter-prompt">${p.prompt}</div>
-    <div class="action-row">
-      <button class="action-btn" id="sayWord">🔊 Say ${p.word}</button>
-      <button class="action-btn" id="doPrompt">🤸 Movement prompt</button>
-    </div>`;
-
-  $('rightPage').innerHTML=`
-    <span class="page-sparkle" style="left:16px;bottom:14px">✿</span>
-    <div class="page-label">Story Rhyme</div>
-    <div class="story-title">${p.title}</div>
-    <div class="story-subtitle">Tap a line to hear it read aloud.</div>
-    <ul class="rhyme-lines">${p.rhyme.map((line,i)=>`<li class="rhyme-line" tabindex="0" data-line="${i}">${line}</li>`).join('')}</ul>
-    <div class="nav-row">
-      <button class="nav-btn" id="prevBtn" ${state.index===0?'disabled':''}>◀ Back</button>
-      <div class="page-indicator">${state.book==='alphabet'?`Letter ${p.letter}`:`Number ${p.number}`} · Page ${state.index+1} of ${list.length}</div>
-      <button class="nav-btn" id="nextBtn" ${state.index===list.length-1?'disabled':''}>Next ▶</button>
-    </div>`;
-
-  $('sayWord').onclick=()=>speak(state.book==='alphabet'
-    ? `${p.letter}. ${p.letter} is for ${p.word}.`
-    : `${p.number}. ${p.word}.`);
-  $('doPrompt').onclick=()=>speak(p.prompt);
-  $('prevBtn').onclick=()=>go(-1);
-  $('nextBtn').onclick=()=>go(1);
-  document.querySelectorAll('.rhyme-line').forEach(el=>{
-    const read=()=>speak(el.textContent);
-    el.onclick=read;
-    el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();read()}};
-  });
-
-  $('progressBar').style.width=((state.index+1)/list.length*100)+'%';
-  $('progressText').textContent=`${state.index+1} of ${list.length}`;
-  $('visitedCount').textContent=state.visited.size;
-  $('starCount').textContent=state.stars;
-  $('modeLabel').textContent=state.book==='alphabet'?'Alphabet Book':'Numbers Book';
-  renderDots();
-  saveState();
-  if(state.song) setTimeout(startSong,220);
+  const list=pages();if(!list.length){state.favoritesOnly=false;toast('No favorites are saved in this book yet.');return render(false)}state.index=Math.max(0,Math.min(state.index,list.length-1));const p=current();stopNarration();if(flip&&state.settings.motion){$('bookCard').classList.remove('flip');void $('bookCard').offsetWidth;$('bookCard').classList.add('flip')}markVisited();
+  const emoji=emojiMap[p.word]||'✨',symbol=displaySymbol(p),isNumber=state.book==='numbers';
+  $('leftPage').innerHTML=`<span class="page-sparkle" style="right:18px;top:12px">✦</span><div class="page-label">${isNumber?'Number':'Letter'} ${state.index+1} of ${list.length}</div><div class="symbol-wrap"><div class="page-emoji" id="pageEmoji" aria-hidden="true">${emoji}</div><div class="page-main-symbol">${symbol}</div></div><div class="page-word">${p.word.toUpperCase()}</div>${isNumber?`<div class="quantity-grid" id="quantityGrid" aria-label="${p.number} objects">${quantityHTML(p.number,p.word)}</div>`:''}<div class="letter-prompt">${p.prompt}</div><div class="action-row"><button class="action-btn" id="sayWord" type="button">🔊 Say ${p.word}</button><button class="action-btn" id="doPrompt" type="button">🤸 Move With Me</button>${isNumber?'<button class="action-btn" id="countObjects" type="button">🔢 Count</button>':''}</div>`;
+  $('rightPage').innerHTML=`<span class="page-sparkle" style="left:16px;bottom:14px">✿</span><div class="page-label">Story Rhyme</div><div class="story-title">${p.title}</div><div class="story-subtitle">Tap a line to hear it read aloud.</div><ul class="rhyme-lines">${p.rhyme.map((line,i)=>`<li class="rhyme-line" tabindex="0" role="button" data-line="${i}">${line}</li>`).join('')}</ul><div class="nav-row"><button class="nav-btn" id="prevBtn" type="button" ${state.index===0?'disabled':''}>◀ Back</button><div class="page-indicator">${isNumber?`Number ${p.number}`:`Letter ${p.letter}`} · Page ${state.index+1} of ${list.length}</div><button class="nav-btn" id="nextBtn" type="button" ${state.index===list.length-1?'disabled':''}>Next ▶</button></div>`;
+  $('sayWord').onclick=()=>{state.progress.words++;award(`word:${pageKey()}`);saveState();updateRewards();animateEmoji();speak(isNumber?`${p.number}. ${p.word}.`:`${p.letter}. ${p.letter} is for ${p.word}.`,null,{status:`Saying ${p.word}…`})};
+  $('doPrompt').onclick=()=>{state.progress.movements++;award(`move:${pageKey()}`);saveState();updateRewards();speak(p.prompt,null,{status:'Movement prompt…'})};
+  if(isNumber)$('countObjects').onclick=countObjects;
+  $('prevBtn').onclick=()=>go(-1);$('nextBtn').onclick=()=>go(1);
+  document.querySelectorAll('.rhyme-line').forEach(el=>{const read=()=>speak(el.textContent,()=>{state.progress.rhymes++;award(`line:${pageKey()}:${el.dataset.line}`);saveState();updateRewards()},{status:'Reading this line…'});el.onclick=read;el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();read()}}});
+  $('progressBar').style.width=((state.index+1)/list.length*100)+'%';$('progressText').textContent=`${state.index+1} of ${list.length}`;$('modeLabel').textContent=isNumber?'Numbers Book':'Alphabet Book';
+  const fav=state.favorites.has(pageKey());$('favoriteBtn').classList.toggle('active',fav);$('favoriteBtn').setAttribute('aria-pressed',String(fav));$('favoriteBtn').textContent=fav?'★ Favorite':'☆ Favorite';
+  renderDots();resetPractice();updateRewards();saveState();$('narrationStatus').textContent=state.song?'Preparing rhyme…':'Ready to read.';announce(`${isNumber?'Number '+p.number:'Letter '+p.letter}. ${p.title}. Page ${state.index+1} of ${list.length}.`);if(state.song)setTimeout(startRhyme,220)
 }
-
-function go(dir){
-  const next=state.index+dir;
-  if(next<0||next>=pages().length) return;
-  state.index=next;render(true);
+function animateEmoji(){const e=$('pageEmoji');if(!e)return;e.classList.remove('spoken-pop');void e.offsetWidth;e.classList.add('spoken-pop')}
+function go(dir){const next=state.index+dir;if(next<0||next>=pages().length)return;state.index=next;render(true)}
+function setBook(book){state.book=book;state.index=0;state.favoritesOnly=false;$('alphabetModeBtn').classList.toggle('active',book==='alphabet');$('numberModeBtn').classList.toggle('active',book==='numbers');$('alphabetModeBtn').setAttribute('aria-pressed',String(book==='alphabet'));$('numberModeBtn').setAttribute('aria-pressed',String(book==='numbers'));$('caseModeBtn').style.display=book==='alphabet'?'':'none';render(true)}
+function cycleCase(){const modes=['both','upper','lower'],labels={both:'Aa Both',upper:'A Upper',lower:'a Lower'};state.caseMode=modes[(modes.indexOf(state.caseMode)+1)%modes.length];$('caseModeBtn').textContent=labels[state.caseMode];render(false)}
+function toggleFavorite(){const key=pageKey();if(state.favorites.has(key)){state.favorites.delete(key);toast('Favorite removed.')}else{state.favorites.add(key);award(`favorite:${key}`,1,'A favorite page saved! ❤️')}saveState();render(false)}
+function countObjects(){const p=current();if(state.book!=='numbers')return;const items=[...document.querySelectorAll('#quantityGrid .quantity-item')];let i=0;state.progress.counting++;award(`count:${pageKey()}`);saveState();updateRewards();const next=()=>{items.forEach(x=>x.classList.remove('counting'));if(i>=items.length){speak(`${p.number}. ${p.word}!`,null,{status:'Counting complete!'});return}const item=items[i++];item.classList.add('counting');speak(String(i),()=>setTimeout(next,120),{status:`Counting ${i} of ${p.number}…`})};next()}
+function updateRewards(){
+  $('visitedCount').textContent=state.visited.size;$('starCount').textContent=state.stars;$('favoriteCount').textContent=state.favorites.size;$('activityCount').textContent=totalActivities();
+  const shelf=$('badgeShelf');shelf.innerHTML='';badgeDefs.forEach(b=>{const earned=b.test(state);if(earned&&!state.awards.has(`badge:${b.id}`)){state.awards.add(`badge:${b.id}`);if(state.settings.rewards){state.stars+=2;celebrate();toast(`${b.icon} ${b.name} earned!`)}}const el=document.createElement('span');el.className='badge'+(earned?' earned':'');el.textContent=`${b.icon} ${b.name}`;shelf.appendChild(el)});saveState()
 }
+function showPractice(name){currentPractice=name;[['trace',$('tracePanel'),$('traceTab')],['spell',$('spellPanel'),$('spellTab')],['match',$('matchPanel'),$('matchTab')]].forEach(([n,p,b])=>{p.hidden=n!==name;b.classList.toggle('active',n===name);b.setAttribute('aria-selected',String(n===name))});if(name==='trace')setTimeout(resizeTrace,30);if(name==='spell')renderSpell();if(name==='match')buildMatch()}
+function resetPractice(){spellIndex=0;renderSpell();buildMatch();setTimeout(()=>{resizeTrace();clearTrace()},40)}
+function traceSymbol(){const p=current();if(!p)return state.book==='alphabet'?'A':'1';if(state.book==='numbers')return String(p.number);return state.caseMode==='lower'?p.letter.toLowerCase():state.caseMode==='upper'?p.letter.toUpperCase():`${p.letter.toUpperCase()} ${p.letter.toLowerCase()}`}
+function resizeCanvasToBox(canvas,ctx){const r=canvas.getBoundingClientRect(),dpr=Math.max(1,window.devicePixelRatio||1);canvas.width=Math.round(r.width*dpr);canvas.height=Math.round(r.height*dpr);ctx.setTransform(dpr,0,0,dpr,0,0)}
+function resizeTrace(){resizeCanvasToBox(traceGuide,guideCtx);resizeCanvasToBox(traceDraw,drawCtx);drawTraceGuide()}
+function drawTraceGuide(){const r=traceGuide.getBoundingClientRect();guideCtx.clearRect(0,0,r.width,r.height);guideCtx.save();guideCtx.textAlign='center';guideCtx.textBaseline='middle';guideCtx.font=`1000 ${Math.min(r.height*.68,r.width*.37)}px ${getComputedStyle(document.body).fontFamily}`;guideCtx.strokeStyle='rgba(90,70,110,.16)';guideCtx.lineWidth=8;guideCtx.setLineDash([14,12]);guideCtx.strokeText(traceSymbol(),r.width/2,r.height/2);guideCtx.restore()}
+function clearTrace(){const r=traceDraw.getBoundingClientRect();drawCtx.clearRect(0,0,r.width,r.height)}
+function tracePoint(e){const r=traceDraw.getBoundingClientRect();return{x:e.clientX-r.left,y:e.clientY-r.top}}
+traceDraw.addEventListener('pointerdown',e=>{e.preventDefault();traceDrawing=true;tracePointer=e.pointerId;traceDraw.setPointerCapture?.(e.pointerId);const p=tracePoint(e);drawCtx.beginPath();drawCtx.moveTo(p.x,p.y)});
+traceDraw.addEventListener('pointermove',e=>{if(!traceDrawing||e.pointerId!==tracePointer)return;e.preventDefault();const p=tracePoint(e);drawCtx.lineCap='round';drawCtx.lineJoin='round';drawCtx.lineWidth=Math.max(12,traceDraw.getBoundingClientRect().width*.025);drawCtx.strokeStyle=getComputedStyle(document.body).getPropertyValue('--accent').trim()||'#ff9f43';drawCtx.lineTo(p.x,p.y);drawCtx.stroke()});
+function endTrace(e){if(!traceDrawing)return;traceDrawing=false;try{traceDraw.releasePointerCapture?.(tracePointer)}catch{}tracePointer=null}
+traceDraw.addEventListener('pointerup',endTrace);traceDraw.addEventListener('pointercancel',endTrace);traceDraw.addEventListener('pointerleave',e=>{if(e.buttons===0)endTrace(e)});window.addEventListener('resize',()=>setTimeout(resizeTrace,120));
+function renderSpell(){const area=$('spellArea'),p=current();if(!p)return;const word=p.word.toUpperCase();area.innerHTML=`<div class="spell-boxes">${[...word].map((ch,i)=>`<span class="spell-box ${i===spellIndex?'current':''}" data-index="${i}">${i<spellIndex?ch:''}</span>`).join('')}</div><div class="match-feedback">${spellIndex>=word.length?'You spelled '+p.word+'! 🌟':'Reveal each letter and say it with me.'}</div>${state.book==='numbers'?`<div class="count-stage"><div class="count-big">${p.number}</div><div class="quantity-grid">${quantityHTML(p.number,p.word)}</div></div>`:''}`;$('countAloudBtn').style.display=state.book==='numbers'?'':'none'}
+function revealLetter(){const p=current();if(!p)return;const word=p.word.toUpperCase();if(spellIndex>=word.length)return;const letter=word[spellIndex];spellIndex++;renderSpell();speak(letter,()=>{if(spellIndex>=word.length){state.progress.spells++;award(`spell:${pageKey()}`,1,'You spelled the whole word! ✨');saveState();updateRewards();speak(p.word)}},{status:`Letter ${letter}`})}
+function shuffle(a){const out=[...a];for(let i=out.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[out[i],out[j]]=[out[j],out[i]]}return out}
+function buildMatch(){const p=current();if(!p)return;let prompt,correct,choices;if(state.book==='alphabet'){correct=p.letter.toUpperCase();const letters=alphabetPages.map(x=>x.letter).filter(x=>x!==correct);choices=shuffle([correct,...shuffle(letters).slice(0,2)]);prompt=`Which letter begins ${p.word}?`}else{correct=String(p.number);const nums=numberPages.map(x=>String(x.number)).filter(x=>x!==correct);choices=shuffle([correct,...shuffle(nums).slice(0,2)]);prompt=`Which number matches ${p.word}?`}currentMatch={correct,answered:false};$('matchArea').innerHTML=`<div class="match-prompt">${prompt}</div><div class="choice-grid">${choices.map(c=>`<button class="choice-btn" type="button" data-choice="${c}">${c}</button>`).join('')}</div><div class="match-feedback" id="matchFeedback">Choose one answer.</div>`;document.querySelectorAll('#matchArea .choice-btn').forEach(b=>b.onclick=()=>answerMatch(b))}
+function answerMatch(btn){if(!currentMatch||currentMatch.answered)return;const correct=btn.dataset.choice===currentMatch.correct;if(correct){currentMatch.answered=true;btn.classList.add('correct');$('matchFeedback').textContent='Yes! You found it! 🌟';state.progress.matches++;award(`match:${pageKey()}`,1,'Great matching! 🧩');saveState();updateRewards();speak('That is correct! Wonderful matching.')}else{btn.classList.remove('try-again');void btn.offsetWidth;btn.classList.add('try-again');$('matchFeedback').textContent='Good try. Look again—you can do it!';speak('Good try. Look again.') } }
+function applySettings(){document.body.className=themes[state.theme]?.[1]||'theme-sunny';document.body.classList.toggle('no-motion',!state.settings.motion);document.body.classList.toggle('simple-mode',state.settings.simple);document.body.classList.toggle('large-text',state.settings.largeText);document.body.classList.toggle('high-contrast',state.settings.contrast);$('rewardsSetting').checked=state.settings.rewards;$('motionSetting').checked=state.settings.motion;$('simpleSetting').checked=state.settings.simple;$('largeTextSetting').checked=state.settings.largeText;$('contrastSetting').checked=state.settings.contrast;$('rememberNameSetting').checked=state.settings.rememberName;$('learnerName').value=state.learnerName||'';$('colorDayLabel').textContent=themes[state.theme]?.[0]||'Sunny'}
+function openAdult(){applySettings();$('adultModal').hidden=false;$('closeAdultBtn').focus()}
+function closeAdult(){$('adultModal').hidden=true;$('adultBtn').focus()}
+function downloadJSON(){const payload={exportedAt:new Date().toISOString(),app:'Sunny ABCs & 123s Storytime',progress:{...state,visited:[...state.visited],favorites:[...state.favorites],awards:[...state.awards],learnerName:state.settings.rememberName?state.learnerName:''}};const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`Sunny_Storytime_Progress_${new Date().toISOString().slice(0,10)}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000);toast('Progress export downloaded.')}
+function makePrint(mode){const name=$('learnerName').value.trim()||'________________________',date=new Date().toLocaleDateString();if(mode==='certificate'){$('printArea').innerHTML=`<div class="print-card"><div style="font-size:4rem">☀️ 🌈 ⭐</div><h1>Sunny Storytime Certificate</h1><p>This certificate celebrates</p><div class="name">${escapeHTML(name)}</div><h2>for joyful learning in Sunny ABCs &amp; 123s</h2><p>Alphabet pages explored: ${countVisited('alphabet')} of 26<br>Number pages explored: ${countVisited('numbers')} of 12<br>Stars earned: ${state.stars}<br>Practice activities: ${totalActivities()}</p><p>Presented ${date}</p><h3>Khaemenes Academy · Verve N Veda</h3><p>Jennifer Kay Pearl</p></div>`}else{$('printArea').innerHTML=`<div class="print-card"><h1>Sunny Storytime Progress</h1><h2>${escapeHTML(name)}</h2><div class="print-summary"><strong>Date:</strong> ${date}<br><strong>Alphabet pages:</strong> ${countVisited('alphabet')} / 26<br><strong>Number pages:</strong> ${countVisited('numbers')} / 12<br><strong>Stars:</strong> ${state.stars}<br><strong>Favorites:</strong> ${state.favorites.size}<br><strong>Rhymes heard:</strong> ${state.progress.rhymes}<br><strong>Words spoken:</strong> ${state.progress.words}<br><strong>Movement prompts:</strong> ${state.progress.movements}<br><strong>Tracing activities:</strong> ${state.progress.traces}<br><strong>Words spelled:</strong> ${state.progress.spells}<br><strong>Matching activities:</strong> ${state.progress.matches}<br><strong>Counting activities:</strong> ${state.progress.counting}</div><h3>Khaemenes Academy · Verve N Veda</h3></div>`}setTimeout(()=>window.print(),80)}
+function escapeHTML(v){return String(v).replace(/[&<>'"]/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[ch]))}
+function confirmReset(){closeAdult();$('confirmText').textContent='This will clear all Sunny Storytime stars, favorites, visited pages, and activity progress from this browser.';$('confirmModal').hidden=false;$('confirmNo').focus()}
+function resetProgress(){localStorage.removeItem(STORE);['sunny-book','sunny-index','sunny-theme','sunny-sound','sunny-song','sunny-stars','sunny-visited'].forEach(k=>localStorage.removeItem(k));location.reload()}
 
-function setBook(book){
-  state.book=book;state.index=0;
-  $('alphabetModeBtn').classList.toggle('active',book==='alphabet');
-  $('numberModeBtn').classList.toggle('active',book==='numbers');
-  render(true);
-}
+$('alphabetModeBtn').onclick=()=>setBook('alphabet');$('numberModeBtn').onclick=()=>setBook('numbers');$('caseModeBtn').onclick=cycleCase;
+$('songModeBtn').onclick=()=>{state.song=!state.song;saveState();state.song?startRhyme():stopNarration();updateToggleButtons()};
+$('soundModeBtn').onclick=()=>{state.sound=!state.sound;if(!state.sound){state.song=false;stopNarration()}saveState();updateToggleButtons()};
+$('colorDayBtn').onclick=()=>{state.theme=(state.theme+1)%themes.length;applySettings();saveState()};$('favoriteBtn').onclick=toggleFavorite;
+$('playRhymeBtn').onclick=startRhyme;$('pauseBtn').onclick=pauseNarration;$('stopBtn').onclick=()=>{state.song=false;stopNarration();updateToggleButtons();saveState()};$('speedSelect').onchange=e=>{state.speed=Number(e.target.value);saveState();toast('Narration speed updated.')};$('autoAdvance').onchange=e=>{state.autoAdvance=e.target.checked;saveState()};
+$('traceTab').onclick=()=>showPractice('trace');$('spellTab').onclick=()=>showPractice('spell');$('matchTab').onclick=()=>showPractice('match');$('clearTraceBtn').onclick=clearTrace;$('traceSoundBtn').onclick=()=>speak(traceSymbol());$('traceDoneBtn').onclick=()=>{state.progress.traces++;award(`trace:${pageKey()}`,1,'Beautiful tracing effort! ✏️');saveState();updateRewards()};$('revealLetterBtn').onclick=revealLetter;$('restartSpellBtn').onclick=()=>{spellIndex=0;renderSpell()};$('countAloudBtn').onclick=countObjects;$('newMatchBtn').onclick=buildMatch;
+$('adultBtn').onclick=openAdult;$('closeAdultBtn').onclick=closeAdult;$('adultModal').addEventListener('click',e=>{if(e.target===$('adultModal'))closeAdult()});
+['rewards','motion','simple','largeText','contrast'].forEach(k=>{const id={rewards:'rewardsSetting',motion:'motionSetting',simple:'simpleSetting',largeText:'largeTextSetting',contrast:'contrastSetting'}[k];$(id).onchange=e=>{state.settings[k]=e.target.checked;applySettings();saveState()}});
+$('saveNameBtn').onclick=()=>{state.settings.rememberName=$('rememberNameSetting').checked;state.learnerName=state.settings.rememberName?$('learnerName').value.trim():'';saveState();toast(state.settings.rememberName?'Name saved on this device.':'Name will not be stored.')} ;
+$('favoritesOnlyBtn').onclick=()=>{state.favoritesOnly=true;state.index=0;closeAdult();render(true)};$('showAllBtn').onclick=()=>{state.favoritesOnly=false;state.index=0;closeAdult();render(true)};$('exportBtn').onclick=downloadJSON;$('printSummaryBtn').onclick=()=>makePrint('summary');$('certificateBtn').onclick=()=>makePrint('certificate');$('resetProgressBtn').onclick=confirmReset;$('confirmNo').onclick=()=>{$('confirmModal').hidden=true;openAdult()};$('confirmYes').onclick=resetProgress;
+document.addEventListener('keydown',e=>{if(!$('adultModal').hidden||!$('confirmModal').hidden)return;if(currentPractice==='spell'&&e.key==='Enter'){e.preventDefault();revealLetter();return}if(e.key==='ArrowRight')go(1);if(e.key==='ArrowLeft')go(-1)});
+$('bookCard').addEventListener('pointerdown',e=>{if(e.target.closest('button,.rhyme-line'))return;swipeStart={x:e.clientX,y:e.clientY}});$('bookCard').addEventListener('pointerup',e=>{if(!swipeStart)return;const dx=e.clientX-swipeStart.x,dy=e.clientY-swipeStart.y;swipeStart=null;if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.2)go(dx<0?1:-1)});$('bookCard').addEventListener('pointercancel',()=>swipeStart=null);
 
-$('alphabetModeBtn').onclick=()=>setBook('alphabet');
-$('numberModeBtn').onclick=()=>setBook('numbers');
-$('songModeBtn').onclick=()=>{
-  state.song=!state.song;
-  $('songModeState').textContent=state.song?'On':'Off';
-  $('songModeBtn').classList.toggle('active',state.song);
-  saveState();
-  state.song?startSong():stopSong();
-};
-$('soundModeBtn').onclick=()=>{
-  state.sound=!state.sound;
-  $('soundModeState').textContent=state.sound?'On':'Off';
-  $('soundModeBtn').classList.toggle('active',state.sound);
-  if(!state.sound) stopSong();
-  saveState();
-};
-$('colorDayBtn').onclick=()=>{
-  state.theme=(state.theme+1)%themes.length;
-  document.body.className=themes[state.theme][1];
-  $('colorDayLabel').textContent=themes[state.theme][0];
-  saveState();
-};
-
-document.addEventListener('keydown',e=>{
-  if(e.key==='ArrowRight') go(1);
-  if(e.key==='ArrowLeft') go(-1);
-});
-
-let swipeStart=0;
-$('bookCard').addEventListener('pointerdown',e=>swipeStart=e.clientX);
-$('bookCard').addEventListener('pointerup',e=>{
-  const d=e.clientX-swipeStart;
-  if(Math.abs(d)>55) go(d<0?1:-1);
-});
-
-document.body.className=themes[state.theme]?.[1]||'theme-sunny';
-$('colorDayLabel').textContent=themes[state.theme]?.[0]||'Sunny';
-$('songModeState').textContent=state.song?'On':'Off';
-$('soundModeState').textContent=state.sound?'On':'Off';
-$('songModeBtn').classList.toggle('active',state.song);
-$('soundModeBtn').classList.toggle('active',state.sound);
-$('alphabetModeBtn').classList.toggle('active',state.book==='alphabet');
-$('numberModeBtn').classList.toggle('active',state.book==='numbers');
-render(false);
+function init(){state.index=Number.isFinite(state.index)?state.index:0;state.theme=Math.max(0,Math.min(themes.length-1,Number(state.theme)||0));applySettings();$('speedSelect').value=String(state.speed);$('autoAdvance').checked=state.autoAdvance;$('caseModeBtn').textContent={both:'Aa Both',upper:'A Upper',lower:'a Lower'}[state.caseMode]||'Aa Both';$('caseModeBtn').style.display=state.book==='alphabet'?'':'none';$('alphabetModeBtn').classList.toggle('active',state.book==='alphabet');$('numberModeBtn').classList.toggle('active',state.book==='numbers');$('alphabetModeBtn').setAttribute('aria-pressed',String(state.book==='alphabet'));$('numberModeBtn').setAttribute('aria-pressed',String(state.book==='numbers'));updateToggleButtons();render(false);showPractice('trace')}
+init();
 </script>
 </body>
 </html>
