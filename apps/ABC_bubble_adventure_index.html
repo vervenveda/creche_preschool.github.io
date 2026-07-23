@@ -1,154 +1,524 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>ABC Bubble Adventure</title>
-  <style>
-    body {
-      margin: 0; padding: 0;
-      font-family: Comic Sans MS, sans-serif;
-      background: linear-gradient(135deg, #89f7fe, #66a6ff);
-      overflow: hidden;
-      text-align: center;
-    }
-    h1 {
-      margin: 10px; color: #fff; font-size: 42px;
-      text-shadow: 2px 2px 4px #333;
-    }
-    #gameArea {
-      position: relative;
-      width: 100%;
-      height: calc(80vh - 20px); /* leave space for footer */
-      overflow: hidden;
-      border: 4px solid #fff;
-      background: linear-gradient(to top, #d9f7ff, #ffffff);
-    }
-    .bubble {
-      position: absolute;
-      border-radius: 50%;
-      width: 120px; height: 120px; /* bigger bubbles */
-      display: flex; align-items: center; justify-content: center;
-      font-size: 48px; font-weight: bold;
-      color: #fff;
-      cursor: pointer;
-    }
-    #message {
-      margin: 10px; font-size: 24px; color: #fff;
-    }
-    #startBtn {
-      padding: 12px 24px;
-      font-size: 20px;
-      border: none; border-radius: 10px;
-      background: #ff69b4; color: white;
-      cursor: pointer;
-      margin-bottom: 10px;
-    }
-    #footer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      text-align: center;
-      padding: 4px 0;
-      font-size: 12px;
-      background: rgba(0,0,0,0.3);
-      color: #fff;
-      text-shadow: 0 0 2px #333;
-      z-index: 1000;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="ABC Bubble Adventure — a colorful preschool alphabet recognition game.">
+<title>ABC Bubble Adventure</title>
+<style>
+:root{
+  --sky1:#7ad8ff;
+  --sky2:#7b8cff;
+  --sun:#ffd95f;
+  --pink:#ff7fb7;
+  --coral:#ff8d78;
+  --mint:#67d9b0;
+  --purple:#8a6fe8;
+  --ink:#2d2850;
+  --panel:rgba(255,255,255,.9);
+  --shadow:0 18px 44px rgba(44,39,88,.18);
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 14% 15%,rgba(255,255,255,.8) 0 5%,transparent 6%),
+    radial-gradient(circle at 86% 14%,rgba(255,255,255,.65) 0 4%,transparent 5%),
+    linear-gradient(145deg,#d9f9ff 0%,#c7e4ff 42%,#e9dcff 100%);
+  overflow-x:hidden;
+}
+button{font:inherit;touch-action:manipulation}
+.app{
+  width:min(1180px,calc(100% - 20px));
+  margin:0 auto;
+  padding:18px 0 38px;
+}
+.hero{
+  text-align:center;
+  background:linear-gradient(135deg,#4361c8,#7b5bd6,#d65c9e);
+  color:white;
+  border-radius:30px;
+  padding:24px 18px 20px;
+  box-shadow:var(--shadow);
+  position:relative;
+  overflow:hidden;
+}
+.hero::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    radial-gradient(circle at 15% 30%,rgba(255,255,255,.22),transparent 18%),
+    radial-gradient(circle at 80% 20%,rgba(255,255,255,.14),transparent 20%);
+}
+.hero > *{position:relative;z-index:1}
+.hero h1{
+  margin:0;
+  font-size:clamp(2.2rem,6vw,4.8rem);
+  line-height:1;
+  letter-spacing:-.04em;
+}
+.hero p{
+  margin:8px auto 0;
+  max-width:720px;
+  color:#f4efff;
+  line-height:1.55;
+}
+.toolbar{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:9px;
+  margin:14px 0;
+}
+button{
+  border:0;
+  border-radius:999px;
+  padding:10px 15px;
+  font-weight:850;
+  cursor:pointer;
+  transition:.18s ease;
+}
+button:hover{transform:translateY(-2px)}
+.primary{
+  color:white;
+  background:linear-gradient(135deg,var(--pink),var(--coral));
+  box-shadow:0 8px 18px rgba(215,79,132,.18);
+}
+.secondary{
+  background:white;
+  color:var(--ink);
+  border:1px solid #ddd8ef;
+}
+.stats{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:9px;
+  margin-bottom:12px;
+}
+.stat{
+  text-align:center;
+  background:var(--panel);
+  border-radius:18px;
+  padding:11px;
+  box-shadow:0 8px 20px rgba(54,40,87,.08);
+}
+.stat strong{
+  display:block;
+  color:var(--purple);
+  font-size:1.25rem;
+}
+.message{
+  text-align:center;
+  min-height:54px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  font-size:clamp(1.15rem,3vw,1.7rem);
+  font-weight:900;
+  margin-bottom:10px;
+}
+.target-letter{
+  display:inline-grid;
+  place-items:center;
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  color:white;
+  background:linear-gradient(135deg,var(--pink),var(--purple));
+  box-shadow:0 8px 16px rgba(91,65,155,.18);
+}
+.game-shell{
+  position:relative;
+  min-height:560px;
+  border-radius:30px;
+  overflow:hidden;
+  border:6px solid rgba(255,255,255,.9);
+  background:
+    radial-gradient(circle at 18% 18%,#fff 0 25px,transparent 26px),
+    radial-gradient(circle at 78% 16%,#fff 0 35px,transparent 36px),
+    linear-gradient(to top,#b9eeff 0%,#ddf7ff 48%,#f8fdff 100%);
+  box-shadow:var(--shadow);
+}
+.game-shell::after{
+  content:"";
+  position:absolute;
+  left:0;right:0;bottom:0;
+  height:90px;
+  background:
+    radial-gradient(ellipse at 20% 100%,#74d89a 0 42%,transparent 43%),
+    radial-gradient(ellipse at 50% 100%,#61c987 0 45%,transparent 46%),
+    radial-gradient(ellipse at 82% 100%,#7bd99d 0 43%,transparent 44%);
+  pointer-events:none;
+}
+.bubble{
+  position:absolute;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  font-weight:950;
+  color:white;
+  cursor:pointer;
+  user-select:none;
+  box-shadow:
+    inset -12px -14px 22px rgba(0,0,0,.12),
+    inset 10px 12px 20px rgba(255,255,255,.35),
+    0 14px 24px rgba(45,43,83,.2);
+  border:4px solid rgba(255,255,255,.7);
+  transition:transform .15s ease,filter .15s ease;
+  z-index:2;
+}
+.bubble::before{
+  content:"";
+  position:absolute;
+  width:22%;
+  height:22%;
+  border-radius:50%;
+  background:rgba(255,255,255,.7);
+  top:15%;
+  left:20%;
+  filter:blur(1px);
+}
+.bubble:hover{transform:scale(1.07)}
+.bubble.pop{
+  animation:pop .28s ease forwards;
+}
+@keyframes pop{
+  to{transform:scale(1.6);opacity:0}
+}
+.spark{
+  position:fixed;
+  z-index:20;
+  pointer-events:none;
+  font-size:26px;
+  animation:spark 1s ease-out forwards;
+}
+@keyframes spark{
+  to{opacity:0;transform:translateY(-90px) rotate(45deg) scale(1.3)}
+}
+.footer{
+  text-align:center;
+  color:#5f5675;
+  font-size:.84rem;
+  margin-top:12px;
+}
+@media(max-width:700px){
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .game-shell{min-height:520px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:.001ms!important;
+    animation-iteration-count:1!important;
+    scroll-behavior:auto!important;
+  }
+}
+</style>
 </head>
 <body>
-  <h1>ABC Bubble Adventure 🎈</h1>
-  <button id="startBtn">Start Game</button>
-  <div id="message"></div>
-  <div id="gameArea"></div>
-  <div id="footer">All Rights Reserved Archaemenes Academy 2025.</div>
+<main class="app">
+  <header class="hero">
+    <h1>ABC Bubble Adventure 🎈</h1>
+    <p>Listen, look, and pop the correct letter while colorful bubbles float through the sky.</p>
+  </header>
 
-  <!-- Pop sound -->
-  <audio id="popSound" src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg"></audio>
+  <div class="toolbar">
+    <button id="startBtn" class="primary">▶ Start Game</button>
+    <button id="pauseBtn" class="secondary">⏸ Pause</button>
+    <button id="soundBtn" class="secondary">🔊 Sound On</button>
+    <button id="levelBtn" class="secondary">⭐ Level: Easy</button>
+    <button id="resetBtn" class="secondary">↺ Reset Score</button>
+  </div>
 
-  <script>
-    const gameArea = document.getElementById("gameArea");
-    const message = document.getElementById("message");
-    const startBtn = document.getElementById("startBtn");
-    const popSound = document.getElementById("popSound");
+  <section class="stats">
+    <div class="stat"><strong id="score">0</strong>Score</div>
+    <div class="stat"><strong id="streak">0</strong>Streak</div>
+    <div class="stat"><strong id="best">0</strong>Best Streak</div>
+    <div class="stat"><strong id="round">0</strong>Rounds</div>
+  </section>
 
-    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
-    let targetLetter = null;
-    let gameInterval;
-    let bubbleSpeed = 4000; // initial speed (ms)
+  <div class="message" id="message">Press Start to begin.</div>
 
-    function randomColor() {
-      const colors = ["#ff7675","#55efc4","#ffeaa7","#74b9ff","#a29bfe","#fd79a8"];
-      return colors[Math.floor(Math.random()*colors.length)];
+  <section class="game-shell" id="gameArea" aria-label="Alphabet bubble game"></section>
+
+  <p class="footer">Archaemenes Academy • Local-only preschool learning • No tracking or outside game services</p>
+</main>
+
+<script>
+(() => {
+  "use strict";
+
+  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+  const colors = [
+    ["#ff7f9f","#ff5d73"],
+    ["#54d6b5","#2ebf91"],
+    ["#ffd45d","#f5a63d"],
+    ["#66b8ff","#4f88e8"],
+    ["#a98bff","#7c64e5"],
+    ["#f27fb3","#d9589c"],
+    ["#62d6e8","#3ca9c2"],
+    ["#ff9a75","#ef6a52"]
+  ];
+
+  const gameArea = document.getElementById("gameArea");
+  const message = document.getElementById("message");
+  const startBtn = document.getElementById("startBtn");
+  const pauseBtn = document.getElementById("pauseBtn");
+  const soundBtn = document.getElementById("soundBtn");
+  const levelBtn = document.getElementById("levelBtn");
+  const resetBtn = document.getElementById("resetBtn");
+
+  const state = {
+    running:false,
+    paused:false,
+    sound:localStorage.getItem("abcBubbleSound") !== "false",
+    level:Number(localStorage.getItem("abcBubbleLevel") || 0),
+    score:Number(localStorage.getItem("abcBubbleScore") || 0),
+    streak:Number(localStorage.getItem("abcBubbleStreak") || 0),
+    best:Number(localStorage.getItem("abcBubbleBest") || 0),
+    rounds:Number(localStorage.getItem("abcBubbleRounds") || 0),
+    target:null,
+    spawnTimer:null,
+    bubbles:new Set()
+  };
+
+  const levels = [
+    {name:"Easy", speed:6500, spawn:1450, size:[100,130]},
+    {name:"Medium", speed:5200, spawn:1200, size:[88,118]},
+    {name:"Challenge", speed:4200, spawn:950, size:[78,105]}
+  ];
+
+  function save(){
+    localStorage.setItem("abcBubbleSound",String(state.sound));
+    localStorage.setItem("abcBubbleLevel",String(state.level));
+    localStorage.setItem("abcBubbleScore",String(state.score));
+    localStorage.setItem("abcBubbleStreak",String(state.streak));
+    localStorage.setItem("abcBubbleBest",String(state.best));
+    localStorage.setItem("abcBubbleRounds",String(state.rounds));
+  }
+
+  function updateStats(){
+    document.getElementById("score").textContent=state.score;
+    document.getElementById("streak").textContent=state.streak;
+    document.getElementById("best").textContent=state.best;
+    document.getElementById("round").textContent=state.rounds;
+    soundBtn.textContent=state.sound?"🔊 Sound On":"🔇 Sound Off";
+    levelBtn.textContent="⭐ Level: "+levels[state.level].name;
+  }
+
+  function beep(kind="good"){
+    if(!state.sound) return;
+    const AudioCtx=window.AudioContext||window.webkitAudioContext;
+    if(!AudioCtx) return;
+    const ctx=new AudioCtx();
+    const osc=ctx.createOscillator();
+    const gain=ctx.createGain();
+    osc.type=kind==="good"?"sine":"triangle";
+    osc.frequency.value=kind==="good"?660:220;
+    gain.gain.setValueAtTime(.16,ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.22);
+    osc.connect(gain).connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime+.23);
+  }
+
+  function speak(text){
+    if(!state.sound || !("speechSynthesis" in window)) return;
+    speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(text);
+    u.rate=.86;
+    u.pitch=1.15;
+    speechSynthesis.speak(u);
+  }
+
+  function spark(target,symbol="⭐"){
+    const r=target.getBoundingClientRect();
+    for(let i=0;i<6;i++){
+      const el=document.createElement("span");
+      el.className="spark";
+      el.textContent=symbol;
+      el.style.left=(r.left+r.width/2+(Math.random()*60-30))+"px";
+      el.style.top=(r.top+r.height/2)+"px";
+      el.style.animationDelay=(Math.random()*.15)+"s";
+      document.body.appendChild(el);
+      setTimeout(()=>el.remove(),1100);
     }
+  }
 
-    function createBubble(letter = null) {
-      const bubble = document.createElement("div");
-      bubble.classList.add("bubble");
-      bubble.style.background = randomColor();
+  function randomLetter(){
+    return letters[Math.floor(Math.random()*letters.length)];
+  }
 
-      // Either a random letter or the one we want to show
-      const bubbleLetter = letter || letters[Math.floor(Math.random()*letters.length)];
-      bubble.textContent = bubbleLetter;
+  function clearBubbles(){
+    state.bubbles.forEach(item=>{
+      cancelAnimationFrame(item.raf);
+      item.el.remove();
+    });
+    state.bubbles.clear();
+  }
 
-      const maxLeft = gameArea.clientWidth - 120;
-      bubble.style.left = Math.random() * maxLeft + "px";
-      bubble.style.bottom = "-120px";
+  function setMessage(text,letter=null){
+    message.innerHTML=letter
+      ? `${text} <span class="target-letter">${letter}</span>`
+      : text;
+  }
 
-      gameArea.appendChild(bubble);
+  function pickNewLetter(){
+    state.target=randomLetter();
+    state.rounds++;
+    setMessage("Pop the bubble with the letter",state.target);
+    speak("Find the letter "+state.target);
+    createBubble(state.target,true);
+    updateStats();
+    save();
+  }
 
-      let start = null;
-      const bottomLimit = gameArea.clientHeight - 120; // so it doesn’t go behind footer
+  function createBubble(letter=null,isTarget=false){
+    if(!state.running || state.paused) return;
 
-      function animate(time) {
-        if (!start) start = time;
-        const progress = (time - start) / bubbleSpeed;
-        const newBottom = progress * bottomLimit;
-        bubble.style.bottom = newBottom + "px";
-        if (progress < 1) {
-          requestAnimationFrame(animate);
-        } else {
-          // Bubble reached top, remove and respawn missed letter
-          bubble.remove();
-          if (bubbleLetter === targetLetter) {
-            createBubble(targetLetter); // respawn the target letter if missed
-          }
+    const config=levels[state.level];
+    const bubble=document.createElement("button");
+    bubble.className="bubble";
+    bubble.type="button";
+
+    const bubbleLetter=letter||randomLetter();
+    bubble.textContent=bubbleLetter;
+    bubble.setAttribute("aria-label","Letter "+bubbleLetter);
+
+    const size=Math.round(config.size[0]+Math.random()*(config.size[1]-config.size[0]));
+    bubble.style.width=size+"px";
+    bubble.style.height=size+"px";
+    bubble.style.fontSize=Math.max(34,size*.4)+"px";
+
+    const palette=colors[Math.floor(Math.random()*colors.length)];
+    bubble.style.background=`linear-gradient(145deg,${palette[0]},${palette[1]})`;
+
+    const maxLeft=Math.max(0,gameArea.clientWidth-size-8);
+    const left=Math.random()*maxLeft;
+    bubble.style.left=left+"px";
+    bubble.style.bottom=(-size-10)+"px";
+
+    gameArea.appendChild(bubble);
+
+    const item={el:bubble,raf:null,start:null,pausedAt:0};
+    state.bubbles.add(item);
+
+    function animate(time){
+      if(!state.running || !document.body.contains(bubble)){
+        state.bubbles.delete(item);
+        return;
+      }
+      if(state.paused){
+        item.raf=requestAnimationFrame(animate);
+        return;
+      }
+      if(!item.start) item.start=time;
+      const elapsed=time-item.start;
+      const distance=gameArea.clientHeight-size-80;
+      const progress=elapsed/config.speed;
+      bubble.style.bottom=(-size+progress*(distance+size))+"px";
+
+      if(progress<1){
+        item.raf=requestAnimationFrame(animate);
+      }else{
+        bubble.remove();
+        state.bubbles.delete(item);
+        if(bubbleLetter===state.target){
+          state.streak=0;
+          setMessage("That letter floated away. Try again with",state.target);
+          beep("bad");
+          updateStats();
+          save();
+          setTimeout(()=>createBubble(state.target,true),350);
         }
       }
-      requestAnimationFrame(animate);
+    }
 
-      bubble.addEventListener("click", () => {
-        if (bubbleLetter === targetLetter) {
-          message.textContent = "✅ Great job! You found " + bubbleLetter;
-          popSound.play();
+    item.raf=requestAnimationFrame(animate);
+
+    bubble.onclick=()=>{
+      if(!state.running || state.paused) return;
+      cancelAnimationFrame(item.raf);
+
+      if(bubbleLetter===state.target){
+        bubble.classList.add("pop");
+        spark(bubble,"⭐");
+        beep("good");
+        state.score+=10;
+        state.streak++;
+        state.best=Math.max(state.best,state.streak);
+        setMessage("Great job! You found",bubbleLetter);
+        speak("Great job. You found "+bubbleLetter);
+        setTimeout(()=>{
           bubble.remove();
+          state.bubbles.delete(item);
           pickNewLetter();
-        } else {
-          message.textContent = "❌ Try again!";
+        },280);
+      }else{
+        bubble.classList.add("pop");
+        beep("bad");
+        state.score=Math.max(0,state.score-2);
+        state.streak=0;
+        setMessage("Almost! Look again for",state.target);
+        setTimeout(()=>{
           bubble.remove();
-        }
-      });
-    }
+          state.bubbles.delete(item);
+        },260);
+      }
+      updateStats();
+      save();
+    };
+  }
 
-    function pickNewLetter() {
-      targetLetter = letters[Math.floor(Math.random()*letters.length)];
-      message.textContent = "👂 Pop the bubble with the letter: " + targetLetter;
-      createBubble(targetLetter);
-    }
+  function startGame(){
+    clearInterval(state.spawnTimer);
+    clearBubbles();
+    state.running=true;
+    state.paused=false;
+    pauseBtn.textContent="⏸ Pause";
+    startBtn.textContent="↻ Restart Game";
+    pickNewLetter();
+    state.spawnTimer=setInterval(()=>createBubble(),levels[state.level].spawn);
+  }
 
-    function startGame() {
-      message.textContent = "";
-      clearInterval(gameInterval);
-      bubbleSpeed = 4000; // reset speed
-      pickNewLetter();
-      gameInterval = setInterval(() => {
-        createBubble();
-      }, 1500);
-    }
+  function togglePause(){
+    if(!state.running) return;
+    state.paused=!state.paused;
+    pauseBtn.textContent=state.paused?"▶ Resume":"⏸ Pause";
+    setMessage(state.paused?"Game paused.":"Keep looking for",state.paused?null:state.target);
+  }
 
-    startBtn.addEventListener("click", startGame);
-  </script>
+  startBtn.onclick=startGame;
+  pauseBtn.onclick=togglePause;
+
+  soundBtn.onclick=()=>{
+    state.sound=!state.sound;
+    updateStats();
+    save();
+  };
+
+  levelBtn.onclick=()=>{
+    state.level=(state.level+1)%levels.length;
+    updateStats();
+    save();
+    if(state.running) startGame();
+  };
+
+  resetBtn.onclick=()=>{
+    if(!confirm("Reset the saved score and streaks?")) return;
+    state.score=0;
+    state.streak=0;
+    state.best=0;
+    state.rounds=0;
+    updateStats();
+    save();
+  };
+
+  updateStats();
+})();
+</script>
 </body>
 </html>
