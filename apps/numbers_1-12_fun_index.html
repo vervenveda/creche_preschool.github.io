@@ -2,85 +2,590 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Numbers 1–12 Fun!</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Number Garden 1–12 — a colorful tracing, counting, matching, and early number-learning app for young children.">
+<title>Number Garden 1–12</title>
 <style>
-  body {
-    font-family: 'Comic Sans MS', cursive, sans-serif;
-    text-align: center;
-    background: #FAF3E0;
-    padding: 20px;
-  }
-  #number-display {
-    font-size: 5rem;
-    color: #FF8C00;
-    margin: 20px;
-  }
-  #count-btns button {
-    font-size: 1.5rem;
-    padding: 10px 20px;
-    margin: 5px;
-    border: none;
-    border-radius: 10px;
-    background: #87CEEB;
-    color: #fff;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
-  #count-btns button:hover {
-    background: #00BFFF;
-  }
-  .dot-container {
-    margin: 10px auto;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px;
-  }
-  .dot {
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    background: #FF6F61;
-  }
+:root{
+  --plum:#6d55b5;
+  --violet:#8d6ed8;
+  --rose:#eb79ac;
+  --coral:#ff8e75;
+  --sun:#ffd369;
+  --mint:#71d3ae;
+  --aqua:#65ced1;
+  --sky:#6cb9e7;
+  --cream:#fff8dc;
+  --paper:#fffdf8;
+  --ink:#332d45;
+  --muted:#746c7f;
+  --good:#3caf72;
+  --bad:#d95c6d;
+  --shadow:0 22px 58px rgba(65,44,88,.16);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  min-height:100vh;
+  color:var(--ink);
+  font-family:"Comic Sans MS","Trebuchet MS",system-ui,sans-serif;
+  background:
+    radial-gradient(circle at 12% 12%,rgba(255,255,255,.92) 0 5%,transparent 6%),
+    radial-gradient(circle at 88% 14%,rgba(255,255,255,.74) 0 4%,transparent 5%),
+    linear-gradient(145deg,#fff2c8 0%,#f6e8ff 42%,#dff7ff 100%);
+  overflow-x:hidden;
+}
+button{font:inherit;touch-action:manipulation}
+.sky{
+  position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:0;
+}
+.sky span{
+  position:absolute;
+  font-size:clamp(1.25rem,3vw,2.2rem);
+  opacity:.32;
+  animation:float 12s ease-in-out infinite;
+}
+.sky span:nth-child(1){left:4%;top:12%}
+.sky span:nth-child(2){left:18%;top:76%;animation-delay:-3s}
+.sky span:nth-child(3){left:43%;top:7%;animation-delay:-5s}
+.sky span:nth-child(4){left:72%;top:80%;animation-delay:-8s}
+.sky span:nth-child(5){left:90%;top:18%;animation-delay:-10s}
+@keyframes float{50%{transform:translateY(-24px) rotate(6deg) scale(1.08)}}
+
+.app{
+  position:relative;z-index:1;
+  width:min(1120px,calc(100% - 22px));
+  margin:0 auto;
+  padding:22px 0 48px;
+}
+.hero{
+  color:white;
+  text-align:center;
+  padding:28px 20px 24px;
+  border-radius:32px;
+  background:
+    radial-gradient(circle at 18% 20%,rgba(255,255,255,.18),transparent 22%),
+    linear-gradient(135deg,var(--plum),var(--violet),var(--rose),var(--coral));
+  box-shadow:var(--shadow);
+}
+.hero h1{
+  margin:0;
+  font-size:clamp(2.3rem,7vw,5rem);
+  line-height:.96;
+  letter-spacing:-.05em;
+}
+.hero p{
+  margin:8px auto 0;
+  max-width:760px;
+  color:#fff4fb;
+  line-height:1.6;
+}
+.hero-icons{
+  display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:14px;
+}
+.hero-icons span{
+  width:48px;height:48px;display:grid;place-items:center;
+  border-radius:17px;background:rgba(255,255,255,.16);font-size:1.8rem;
+}
+
+.toolbar{
+  display:flex;justify-content:center;flex-wrap:wrap;gap:9px;margin:15px 0;
+}
+button{
+  border:0;border-radius:999px;padding:10px 14px;font-weight:850;cursor:pointer;
+  background:linear-gradient(135deg,var(--sun),var(--coral));
+  color:#3c2a16;
+  box-shadow:0 7px 18px rgba(94,56,24,.13);
+  transition:.18s ease;
+}
+button:hover{transform:translateY(-2px)}
+button.secondary{background:white;color:var(--plum);border:1px solid #dfd7e8}
+button.good{background:linear-gradient(135deg,#79dc9f,var(--good));color:#123621}
+
+.stats{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:14px;
+}
+.stat{
+  background:rgba(255,255,255,.9);border-radius:18px;padding:11px;text-align:center;
+  box-shadow:0 8px 20px rgba(62,42,81,.08);
+}
+.stat strong{display:block;font-size:1.24rem;color:var(--violet)}
+
+.layout{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(330px,.9fr);
+  gap:16px;
+}
+.panel{
+  background:rgba(255,255,255,.92);
+  border:1px solid rgba(255,255,255,.96);
+  border-radius:28px;
+  padding:18px;
+  box-shadow:var(--shadow);
+}
+.number-card{
+  min-height:540px;
+  border-radius:26px;
+  padding:20px;
+  text-align:center;
+  background:
+    radial-gradient(circle at 80% 18%,rgba(255,255,255,.8),transparent 25%),
+    linear-gradient(145deg,#fff7d5,#f4ecff,#e6faff);
+}
+.number-stage{
+  display:grid;
+  grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);
+  gap:16px;
+  align-items:center;
+}
+.number-display{
+  min-height:240px;
+  display:grid;
+  place-items:center;
+  border-radius:28px;
+  color:white;
+  font-size:clamp(7rem,20vw,13rem);
+  font-weight:950;
+  background:
+    radial-gradient(circle at 28% 20%,rgba(255,255,255,.24),transparent 24%),
+    linear-gradient(145deg,var(--violet),var(--rose),var(--coral));
+  box-shadow:
+    inset -16px -18px 28px rgba(0,0,0,.12),
+    inset 12px 13px 24px rgba(255,255,255,.18),
+    0 20px 38px rgba(87,50,112,.2);
+  text-shadow:0 7px 12px rgba(63,38,79,.22);
+}
+.number-info h2{
+  margin:0;
+  color:var(--plum);
+  font-size:clamp(1.8rem,5vw,3rem);
+}
+.number-word{
+  margin-top:5px;
+  font-size:clamp(1.35rem,4vw,2.1rem);
+  color:var(--rose);
+  font-weight:900;
+}
+.fact{
+  margin-top:9px;
+  padding:12px;
+  border-radius:18px;
+  background:white;
+  border-left:6px solid var(--mint);
+  color:var(--muted);
+  line-height:1.5;
+}
+.dots{
+  display:grid;
+  grid-template-columns:repeat(4,54px);
+  justify-content:center;
+  gap:10px;
+  margin:18px auto 4px;
+}
+.dot{
+  width:54px;height:54px;border-radius:50%;
+  display:grid;place-items:center;
+  font-size:1.7rem;
+  box-shadow:inset -7px -8px 12px rgba(0,0,0,.11),inset 6px 7px 10px rgba(255,255,255,.22),0 8px 16px rgba(69,46,88,.11);
+  animation:pop .35s ease both;
+}
+@keyframes pop{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
+
+.side-stack{display:grid;gap:14px}
+.activity{
+  border-radius:22px;padding:15px;background:linear-gradient(145deg,#fff,#fff9ed);
+  border:1px solid #ebe3ee;
+}
+.activity h2{margin:0 0 7px;color:var(--plum);font-size:1.22rem}
+.number-grid{
+  display:grid;grid-template-columns:repeat(6,1fr);gap:7px;
+}
+.number-btn{
+  padding:9px 4px;border-radius:14px;background:white;color:var(--plum);
+  border:1px solid #e1d9e8;box-shadow:none;
+}
+.number-btn.active{
+  color:white;background:linear-gradient(135deg,var(--violet),var(--rose));
+}
+.number-btn.done::after{content:" ✓";color:var(--mint)}
+
+.tracing-wrap{
+  position:relative;
+  border-radius:22px;
+  overflow:hidden;
+  background:
+    linear-gradient(#ffffffcc,#ffffffcc),
+    repeating-linear-gradient(0deg,transparent 0 34px,#d8e8f3 35px 36px);
+  border:2px solid #e2d8ea;
+}
+#traceCanvas{
+  display:block;
+  width:100%;
+  height:300px;
+  touch-action:none;
+  cursor:crosshair;
+}
+.trace-controls{
+  display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:10px;
+}
+.trace-message{
+  text-align:center;
+  min-height:28px;
+  margin-top:8px;
+  color:var(--plum);
+  font-weight:900;
+}
+.progress{
+  height:12px;border-radius:999px;overflow:hidden;background:#e9e3ed;
+}
+.progress>div{
+  height:100%;width:0;
+  background:linear-gradient(90deg,var(--rose),var(--sun),var(--mint),var(--sky));
+  transition:width .35s ease;
+}
+.game-area{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:10px;
+}
+.choice{
+  min-height:70px;border-radius:18px;background:linear-gradient(145deg,#fff,#f7f3ff);
+  color:var(--plum);font-size:1.7rem;border:2px solid #e7deed;box-shadow:none;
+}
+.choice.correct{background:#eafff1;border-color:var(--good)}
+.choice.wrong{background:#fff0f2;border-color:var(--bad)}
+.site-footer{
+  margin-top:16px;padding:15px 12px;text-align:center;border-radius:18px;
+  background:rgba(255,255,255,.78);border:1px solid rgba(90,60,120,.12);
+  color:#665b72;font-size:.84rem;line-height:1.5;
+}
+.site-footer strong{color:#503a76}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.number-stage{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.number-grid{grid-template-columns:repeat(4,1fr)}.game-area{grid-template-columns:1fr}.dots{grid-template-columns:repeat(4,46px)}.dot{width:46px;height:46px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important}}
 </style>
 </head>
 <body>
+<div class="sky" aria-hidden="true"><span>⭐</span><span>🌈</span><span>☁️</span><span>✨</span><span>🦋</span></div>
 
-<h1>Learn Numbers 1–12!</h1>
-<div id="number-display">1</div>
+<main class="app">
+  <header class="hero">
+    <h1>Number Garden 1–12</h1>
+    <p>Count, trace, listen, match, and explore every number from one through twelve.</p>
+    <div class="hero-icons"><span>1️⃣</span><span>🔢</span><span>✏️</span><span>🌼</span></div>
+  </header>
 
-<div id="count-btns">
-  <button onclick="changeNumber(-1)">⬅️ Prev</button>
-  <button onclick="changeNumber(1)">Next ➡️</button>
-</div>
+  <div class="toolbar">
+    <button id="prevBtn" class="secondary">⬅ Previous</button>
+    <button id="hearBtn">🔊 Hear Number</button>
+    <button id="nextBtn" class="good">Next ➡</button>
+    <button id="randomBtn" class="secondary">🎲 Surprise Me</button>
+  </div>
 
-<div id="dots" class="dot-container"></div>
+  <section class="stats">
+    <div class="stat"><strong id="currentStat">1</strong>Current Number</div>
+    <div class="stat"><strong id="starsStat">0</strong>Stars</div>
+    <div class="stat"><strong id="tracedStat">0</strong>Numbers Traced</div>
+    <div class="stat"><strong id="matchedStat">0</strong>Matches Solved</div>
+  </section>
+
+  <div class="layout">
+    <section class="panel">
+      <div class="number-card">
+        <div class="number-stage">
+          <div class="number-display" id="numberDisplay">1</div>
+          <div class="number-info">
+            <h2 id="numberTitle">Number One</h2>
+            <div class="number-word" id="numberWord">ONE</div>
+            <div class="fact" id="factText">One sun shines in the daytime sky.</div>
+          </div>
+        </div>
+
+        <div class="dots" id="dots"></div>
+
+        <section class="activity" style="margin-top:16px">
+          <h2>🎯 Match the Number</h2>
+          <div id="matchPrompt" class="trace-message">Choose the group with one object.</div>
+          <div class="game-area" id="gameArea"></div>
+        </section>
+      </div>
+    </section>
+
+    <aside class="side-stack">
+      <section class="activity">
+        <h2>🌈 Number Path</h2>
+        <div class="number-grid" id="numberGrid"></div>
+      </section>
+
+      <section class="activity">
+        <h2>✏️ Trace the Number</h2>
+        <div class="tracing-wrap">
+          <canvas id="traceCanvas" width="620" height="600" aria-label="Number tracing canvas"></canvas>
+        </div>
+        <div class="trace-controls">
+          <button id="clearTrace" class="secondary">🧽 Clear</button>
+          <button id="checkTrace">✓ Check Trace</button>
+          <button id="guideBtn" class="secondary">👁 Guide On</button>
+        </div>
+        <div class="trace-message" id="traceMessage">Trace over the large number.</div>
+      </section>
+
+      <section class="activity">
+        <h2>🏆 Garden Progress</h2>
+        <div class="progress"><div id="progressBar"></div></div>
+        <div class="trace-message" id="progressText"></div>
+      </section>
+    </aside>
+  </div>
+
+  <footer class="site-footer">
+    <strong>© 2026 Verve N Veda · Khaemenes Academy · Jennifer Kay Pearl</strong><br>
+    All Rights Reserved.
+  </footer>
+</main>
 
 <script>
-  let current = 1;
-  const maxNum = 12;
-  const display = document.getElementById('number-display');
-  const dotsDiv = document.getElementById('dots');
+(() => {
+"use strict";
 
-  function updateDisplay() {
-    display.textContent = current;
-    dotsDiv.innerHTML = '';
+const DATA = [
+  {n:1,word:"one",emoji:"☀️",fact:"One sun shines in the daytime sky."},
+  {n:2,word:"two",emoji:"👀",fact:"You have two eyes."},
+  {n:3,word:"three",emoji:"🍎",fact:"Three apples make a small snack."},
+  {n:4,word:"four",emoji:"🦋",fact:"A butterfly has four wings."},
+  {n:5,word:"five",emoji:"⭐",fact:"A star shape has five points."},
+  {n:6,word:"six",emoji:"🐞",fact:"An insect has six legs."},
+  {n:7,word:"seven",emoji:"🌈",fact:"A rainbow is often taught with seven colors."},
+  {n:8,word:"eight",emoji:"🐙",fact:"An octopus has eight arms."},
+  {n:9,word:"nine",emoji:"🎈",fact:"Nine balloons make a bright bunch."},
+  {n:10,word:"ten",emoji:"🖐️",fact:"You have ten fingers."},
+  {n:11,word:"eleven",emoji:"⚽",fact:"A soccer team has eleven players on the field."},
+  {n:12,word:"twelve",emoji:"🕛",fact:"A clock face shows twelve numbers."}
+];
 
-    for (let i = 0; i < current; i++) {
-      const d = document.createElement('div');
-      d.classList.add('dot');
-      dotsDiv.appendChild(d);
-    }
+const COLORS=[
+  "linear-gradient(145deg,#e96f9f,#c95486)",
+  "linear-gradient(145deg,#6d84e5,#4d61bd)",
+  "linear-gradient(145deg,#f5a24d,#dd7837)",
+  "linear-gradient(145deg,#63c889,#3aa96b)",
+  "linear-gradient(145deg,#60c8ce,#3b9da6)",
+  "linear-gradient(145deg,#9d72db,#7651b7)"
+];
+
+const state={
+  current:Number(localStorage.getItem("numberGardenCurrent")||1),
+  stars:Number(localStorage.getItem("numberGardenStars")||0),
+  traced:new Set(JSON.parse(localStorage.getItem("numberGardenTraced")||"[]")),
+  matched:new Set(JSON.parse(localStorage.getItem("numberGardenMatched")||"[]")),
+  guide:true
+};
+
+const $=id=>document.getElementById(id);
+const canvas=$("traceCanvas");
+const ctx=canvas.getContext("2d");
+let drawing=false;
+let points=0;
+
+function save(){
+  localStorage.setItem("numberGardenCurrent",String(state.current));
+  localStorage.setItem("numberGardenStars",String(state.stars));
+  localStorage.setItem("numberGardenTraced",JSON.stringify([...state.traced]));
+  localStorage.setItem("numberGardenMatched",JSON.stringify([...state.matched]));
+}
+
+function speak(text){
+  if(!("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  const voices=speechSynthesis.getVoices();
+  u.voice=voices.find(v=>/child|kid|jenny|samantha|aria|female/i.test(v.name)&&/^en/i.test(v.lang))
+    ||voices.find(v=>/^en/i.test(v.lang))||voices[0]||null;
+  u.rate=.84;u.pitch=1.1;
+  speechSynthesis.speak(u);
+}
+
+function currentData(){return DATA[state.current-1]}
+
+function render(){
+  const item=currentData();
+  $("numberDisplay").textContent=item.n;
+  $("numberTitle").textContent=`Number ${item.word[0].toUpperCase()+item.word.slice(1)}`;
+  $("numberWord").textContent=item.word.toUpperCase();
+  $("factText").textContent=item.fact;
+  renderDots();
+  renderNumbers();
+  renderMatch();
+  clearCanvas();
+  updateStats();
+  save();
+}
+
+function renderDots(){
+  const item=currentData();
+  const box=$("dots");box.innerHTML="";
+  for(let i=0;i<item.n;i++){
+    const d=document.createElement("div");
+    d.className="dot";
+    d.textContent=item.emoji;
+    d.style.background=COLORS[i%COLORS.length];
+    d.style.animationDelay=(i*.04)+"s";
+    box.appendChild(d);
   }
+}
 
-  function changeNumber(delta) {
-    current = Math.min(maxNum, Math.max(1, current + delta));
-    updateDisplay();
+function renderNumbers(){
+  const box=$("numberGrid");box.innerHTML="";
+  DATA.forEach(item=>{
+    const b=document.createElement("button");
+    b.className="number-btn"+(item.n===state.current?" active":"")+(state.traced.has(item.n)&&state.matched.has(item.n)?" done":"");
+    b.textContent=item.n;
+    b.onclick=()=>{state.current=item.n;render()};
+    box.appendChild(b);
+  });
+}
+
+function shuffle(a){
+  const c=[...a];
+  for(let i=c.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[c[i],c[j]]=[c[j],c[i]]}
+  return c;
+}
+
+function renderMatch(){
+  const item=currentData();
+  $("matchPrompt").textContent=`Choose the group with ${item.n} object${item.n===1?"":"s"}.`;
+  const counts=new Set([item.n]);
+  while(counts.size<3){
+    const n=Math.max(1,Math.min(12,item.n+(Math.floor(Math.random()*7)-3)));
+    counts.add(n);
   }
+  const box=$("gameArea");box.innerHTML="";
+  shuffle([...counts]).forEach(count=>{
+    const b=document.createElement("button");
+    b.className="choice";
+    b.textContent=Array.from({length:count},()=>item.emoji).join("");
+    b.onclick=()=>{
+      if(count===item.n){
+        b.classList.add("correct");
+        $("matchPrompt").textContent="Correct! You matched the number.";
+        if(!state.matched.has(item.n)){state.matched.add(item.n);state.stars+=2}
+        speak("Correct. You matched the number.");
+        updateStats();renderNumbers();save();
+      }else{
+        b.classList.add("wrong");
+        $("matchPrompt").textContent="Good try. Count each picture carefully.";
+        speak("Good try. Count carefully.");
+        setTimeout(()=>b.classList.remove("wrong"),600);
+      }
+    };
+    box.appendChild(b);
+  });
+}
 
-  updateDisplay();
+function resizeCanvas(){
+  const rect=canvas.getBoundingClientRect();
+  const dpr=Math.max(1,window.devicePixelRatio||1);
+  canvas.width=Math.round(rect.width*dpr);
+  canvas.height=Math.round(rect.height*dpr);
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+  drawGuide();
+}
+window.addEventListener("resize",resizeCanvas);
+
+function drawGuide(){
+  const rect=canvas.getBoundingClientRect();
+  ctx.clearRect(0,0,rect.width,rect.height);
+  if(!state.guide) return;
+  ctx.save();
+  ctx.fillStyle="rgba(109,85,181,.12)";
+  ctx.strokeStyle="rgba(109,85,181,.32)";
+  ctx.lineWidth=3;
+  ctx.setLineDash([12,10]);
+  ctx.textAlign="center";
+  ctx.textBaseline="middle";
+  ctx.font=`900 ${Math.min(rect.width*.58,rect.height*.72)}px "Comic Sans MS",sans-serif`;
+  ctx.strokeText(String(state.current),rect.width/2,rect.height/2+8);
+  ctx.fillText(String(state.current),rect.width/2,rect.height/2+8);
+  ctx.restore();
+}
+
+function clearCanvas(){
+  points=0;
+  drawGuide();
+  $("traceMessage").textContent="Trace over the large number.";
+}
+
+function pointerPos(e){
+  const r=canvas.getBoundingClientRect();
+  const p=e.touches?e.touches[0]:e;
+  return {x:p.clientX-r.left,y:p.clientY-r.top};
+}
+
+function startDraw(e){
+  e.preventDefault();
+  drawing=true;
+  const p=pointerPos(e);
+  ctx.beginPath();
+  ctx.moveTo(p.x,p.y);
+}
+function moveDraw(e){
+  if(!drawing)return;
+  e.preventDefault();
+  const p=pointerPos(e);
+  ctx.lineCap="round";
+  ctx.lineJoin="round";
+  ctx.strokeStyle="#e566a0";
+  ctx.lineWidth=12;
+  ctx.lineTo(p.x,p.y);
+  ctx.stroke();
+  points++;
+}
+function endDraw(){drawing=false}
+
+canvas.addEventListener("pointerdown",startDraw);
+canvas.addEventListener("pointermove",moveDraw);
+canvas.addEventListener("pointerup",endDraw);
+canvas.addEventListener("pointerleave",endDraw);
+
+function checkTrace(){
+  if(points<18){
+    $("traceMessage").textContent="Keep tracing a little more.";
+    speak("Keep tracing a little more.");
+    return;
+  }
+  $("traceMessage").textContent="Beautiful tracing! You earned a star.";
+  if(!state.traced.has(state.current)){state.traced.add(state.current);state.stars+=2}
+  speak("Beautiful tracing.");
+  updateStats();renderNumbers();save();
+}
+
+function updateStats(){
+  $("currentStat").textContent=state.current;
+  $("starsStat").textContent=state.stars;
+  $("tracedStat").textContent=state.traced.size;
+  $("matchedStat").textContent=state.matched.size;
+  const complete=DATA.filter(x=>state.traced.has(x.n)&&state.matched.has(x.n)).length;
+  $("progressBar").style.width=(complete/12*100)+"%";
+  $("progressText").textContent=`${complete} of 12 numbers fully explored.`;
+}
+
+function change(delta){
+  state.current=Math.max(1,Math.min(12,state.current+delta));
+  render();
+}
+
+$("prevBtn").onclick=()=>change(-1);
+$("nextBtn").onclick=()=>change(1);
+$("randomBtn").onclick=()=>{state.current=Math.floor(Math.random()*12)+1;render()};
+$("hearBtn").onclick=()=>{const d=currentData();speak(`${d.n}. ${d.word}. ${d.fact}`)};
+$("clearTrace").onclick=clearCanvas;
+$("checkTrace").onclick=checkTrace;
+$("guideBtn").onclick=()=>{
+  state.guide=!state.guide;
+  $("guideBtn").textContent=state.guide?"👁 Guide On":"👁 Guide Off";
+  clearCanvas();
+};
+
+requestAnimationFrame(()=>{resizeCanvas();render()});
+})();
 </script>
-
 </body>
 </html>
