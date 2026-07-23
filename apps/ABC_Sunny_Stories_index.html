@@ -1,374 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Sunny ABCs & 123s — Storytime</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600&family=Nunito:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    :root{
-      --bg-gradient: linear-gradient(135deg,#fff7df,#ffe9c9);
-      --accent:#ffb347;
-      --accent-soft:#ffe0b5;
-      --accent-deep:#f7941d;
-      --card-bg:#ffffff;
-      --text-main:#3b3429;
-      --pill-bg:#fff7e8;
-      --pill-border:#ffd49a;
-      --shadow-soft:0 16px 40px rgba(0,0,0,0.10);
-    }
-    /* Color Day themes */
-    body.theme-sunny{
-      --bg-gradient: linear-gradient(135deg,#fff7df,#ffe9c9);
-      --accent:#ffb347;
-      --accent-soft:#ffe0b5;
-      --accent-deep:#f7941d;
-    }
-    body.theme-sky{
-      --bg-gradient: linear-gradient(135deg,#e3f2ff,#c5e3ff);
-      --accent:#3da9ff;
-      --accent-soft:#d3e9ff;
-      --accent-deep:#1b78d1;
-    }
-    body.theme-berry{
-      --bg-gradient: linear-gradient(135deg,#ffe6f0,#ffd3dd);
-      --accent:#ff6b9c;
-      --accent-soft:#ffd1e0;
-      --accent-deep:#e04478;
-    }
-
-    *{box-sizing:border-box;}
-
-    html,body{
-      margin:0;
-      min-height:100vh;
-      font-family:'Nunito',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-      background:var(--bg-gradient);
-      color:var(--text-main);
-    }
-
-    .page-wrap{
-      max-width:1040px;
-      margin:0 auto;
-      padding:40px 16px 60px;
-    }
-
-    .title-area{
-      text-align:center;
-      margin-bottom:18px;
-    }
-    .title-area h1{
-      margin:0 0 4px;
-      font-family:'Baloo 2',cursive;
-      font-size:42px;
-      color:#ff9a1f;
-      letter-spacing:1px;
-    }
-    .title-area p{
-      margin:0;
-      font-size:14px;
-      opacity:0.85;
-    }
-
-    .app-shell{
-      margin-top:22px;
-      background:rgba(255,255,255,0.65);
-      border-radius:21px;
-      padding:18px 18px 22px;
-      box-shadow:var(--shadow-soft);
-    }
-
-    .app-header{
-      text-align:center;
-      margin-bottom:14px;
-    }
-    .app-header h2{
-      font-family:'Baloo 2',cursive;
-      font-size:22px;
-      margin:0 0 4px;
-    }
-    .app-header span{
-      font-size:12px;
-      opacity:0.8;
-    }
-
-    .top-controls{
-      display:flex;
-      flex-wrap:wrap;
-      justify-content:center;
-      gap:8px;
-      margin-top:12px;
-    }
-
-    .pill-btn{
-      border-radius:999px;
-      border:1px solid var(--pill-border);
-      background:var(--pill-bg);
-      font-size:12px;
-      padding:4px 12px;
-      cursor:pointer;
-      display:inline-flex;
-      align-items:center;
-      gap:4px;
-      transition:background 0.2s,box-shadow 0.2s,transform 0.1s,color 0.2s,border-color 0.2s;
-      color:var(--text-main);
-    }
-    .pill-btn span.label{
-      font-weight:600;
-    }
-    .pill-btn.active{
-      background:var(--accent);
-      color:#fff;
-      border-color:var(--accent-deep);
-      box-shadow:0 0 0 1px rgba(255,255,255,0.6);
-    }
-    .pill-btn:active{
-      transform:translateY(1px);
-    }
-
-    .book-row{
-      margin-top:22px;
-      display:flex;
-      justify-content:center;
-    }
-
-    .book-card{
-      width:100%;
-      max-width:620px;
-      background:var(--card-bg);
-      border-radius:21px;
-      display:flex;
-      padding:14px;
-      box-shadow:var(--shadow-soft);
-      position:relative;
-      overflow:hidden;
-      transform-origin:center center;
-      transition:box-shadow 0.25s;
-    }
-    .book-card.flip{
-      animation:pageFlip 0.45s ease;
-    }
-    @keyframes pageFlip{
-      0%{transform:perspective(1000px) rotateY(0deg);}
-      45%{transform:perspective(1000px) rotateY(-10deg);}
-      100%{transform:perspective(1000px) rotateY(0deg);}
-    }
-
-    .book-page{
-      flex:1;
-      padding:14px 16px;
-      border-radius:15px;
-      background:#fffaf2;
-      position:relative;
-    }
-    .book-page + .book-page{
-      margin-left:10px;
-    }
-
-    .page-label{
-      font-size:11px;
-      text-transform:uppercase;
-      letter-spacing:1px;
-      color:rgba(0,0,0,0.45);
-      margin-bottom:4px;
-    }
-    .page-main-symbol{
-      font-family:'Baloo 2',cursive;
-      font-size:64px;
-      margin:10px 0 4px;
-      text-align:center;
-      color:var(--accent-deep);
-    }
-    .page-word{
-      text-align:center;
-      font-size:14px;
-      letter-spacing:2px;
-      text-transform:uppercase;
-      margin-bottom:12px;
-    }
-    .letter-prompt{
-      margin-top:16px;
-      font-size:13px;
-      padding:10px 10px;
-      border-radius:12px;
-      background:var(--accent-soft);
-      text-align:center;
-    }
-
-    .story-title{
-      font-size:14px;
-      font-weight:700;
-      text-align:center;
-      text-transform:uppercase;
-      letter-spacing:1px;
-      margin-bottom:8px;
-      color:var(--accent-deep);
-    }
-    .story-subtitle{
-      font-size:11px;
-      text-align:center;
-      opacity:0.7;
-      margin-bottom:8px;
-    }
-    .rhyme-lines{
-      font-size:13px;
-      line-height:1.55;
-      margin:0;
-      padding:0;
-      list-style:none;
-    }
-    .rhyme-line{
-      padding:2px 0;
-      transition:background 0.25s,color 0.25s;
-      border-radius:6px;
-    }
-    .rhyme-line.active{
-      background:var(--accent-soft);
-      color:#2f2411;
-    }
-
-    .nav-row{
-      margin-top:12px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      font-size:12px;
-    }
-    .nav-buttons{
-      display:flex;
-      gap:8px;
-    }
-    .nav-btn{
-      border-radius:999px;
-      border:1px solid rgba(0,0,0,0.1);
-      padding:4px 10px;
-      font-size:12px;
-      cursor:pointer;
-      background:#fffdf8;
-      display:inline-flex;
-      align-items:center;
-      gap:4px;
-    }
-    .nav-btn:disabled{
-      opacity:0.4;
-      cursor:default;
-    }
-    .nav-btn span.arrow{
-      font-size:10px;
-    }
-
-    .page-indicator{
-      text-align:center;
-      font-size:11px;
-      opacity:0.7;
-      flex:1;
-    }
-
-    .dot-row{
-      text-align:center;
-      margin-top:6px;
-    }
-    .dot-row button{
-      width:8px;
-      height:8px;
-      border-radius:999px;
-      border:none;
-      margin:0 2px;
-      background:rgba(0,0,0,0.12);
-      cursor:pointer;
-      padding:0;
-    }
-    .dot-row button.active{
-      background:var(--accent-deep);
-    }
-
-    .instructions{
-      margin-top:18px;
-      text-align:center;
-      font-size:12px;
-      max-width:540px;
-      margin-left:auto;
-      margin-right:auto;
-      opacity:0.9;
-    }
-
-    .footer-note{
-      margin-top:8px;
-      text-align:center;
-      font-size:11px;
-      opacity:0.75;
-    }
-
-    @media (max-width:720px){
-      .book-card{
-        flex-direction:column;
-      }
-      .book-page + .book-page{
-        margin-left:0;
-        margin-top:8px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sunny ABCs & 123s — Storytime</title>
+<style>
+:root{
+  --sky:#7fd8ff;--sun:#ffd45c;--coral:#ff8f7c;--berry:#ec6fa7;--mint:#82dfbd;
+  --ink:#302a3a;--muted:#6e6680;--paper:#fffdf8;--panel:rgba(255,255,255,.82);
+  --accent:#ff9f43;--accent2:#ffcf5a;--deep:#e66f22;--soft:#fff1c9;
+  --shadow:0 20px 55px rgba(56,39,73,.16);--radius:28px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;min-height:100vh;color:var(--ink);
+  font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:
+    radial-gradient(circle at 14% 14%,rgba(255,255,255,.9) 0 5%,transparent 6%),
+    radial-gradient(circle at 88% 18%,rgba(255,255,255,.7) 0 4%,transparent 5%),
+    linear-gradient(145deg,#fff4c8 0%,#ffe6cb 42%,#ffd6e8 100%);
+  overflow-x:hidden;
+}
+body.theme-sunny{--accent:#ff9f43;--accent2:#ffd15c;--deep:#e56d21;--soft:#fff1c9}
+body.theme-sky{
+  --accent:#49baf2;--accent2:#85dbff;--deep:#187dc0;--soft:#dff5ff;
+  background:linear-gradient(145deg,#e7f8ff,#d7eeff,#e7e0ff);
+}
+body.theme-berry{
+  --accent:#ed6b9e;--accent2:#ffabc7;--deep:#b93d72;--soft:#ffe4ef;
+  background:linear-gradient(145deg,#fff0f5,#ffdce9,#f4ddff);
+}
+body.theme-mint{
+  --accent:#4fc69d;--accent2:#8de2c5;--deep:#218c6b;--soft:#ddf8ee;
+  background:linear-gradient(145deg,#e8fff7,#d9f5ef,#e7f7ff);
+}
+button,select{font:inherit}
+button{touch-action:manipulation}
+.decor{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:-1}
+.bubble{position:absolute;border-radius:50%;opacity:.2;animation:float 8s ease-in-out infinite}
+.b1{width:130px;height:130px;background:#fff;left:3%;top:12%}
+.b2{width:80px;height:80px;background:#ffd35a;right:8%;top:26%;animation-delay:-2s}
+.b3{width:170px;height:170px;background:#fff;right:1%;bottom:8%;animation-delay:-5s}
+@keyframes float{50%{transform:translateY(-18px) scale(1.05)}}
+.page-wrap{max-width:1120px;margin:auto;padding:32px 16px 56px}
+.hero{text-align:center;margin-bottom:18px}
+.hero-badge{display:inline-flex;gap:8px;align-items:center;padding:7px 13px;border-radius:999px;background:#ffffffb8;box-shadow:0 8px 24px #634d6b18;font-size:13px}
+.hero h1{margin:10px 0 2px;font-size:clamp(38px,7vw,68px);line-height:.95;color:var(--deep);letter-spacing:-2px}
+.hero p{margin:8px auto 0;max-width:680px;color:var(--muted);font-size:15px}
+.app-shell{background:var(--panel);backdrop-filter:blur(14px);border:1px solid #ffffffc7;border-radius:var(--radius);padding:18px;box-shadow:var(--shadow)}
+.app-header{text-align:center}
+.app-header h2{margin:0;font-size:25px}
+#modeLabel{color:var(--muted);font-size:13px}
+.top-controls{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:13px}
+.pill-btn{
+  border:1px solid color-mix(in srgb,var(--accent) 32%,white);
+  background:#fff;border-radius:999px;padding:8px 13px;color:var(--ink);font-weight:700;
+  cursor:pointer;box-shadow:0 5px 12px rgba(48,32,60,.08);transition:.2s ease;
+}
+.pill-btn:hover{transform:translateY(-2px)}
+.pill-btn.active{color:white;background:linear-gradient(135deg,var(--accent),var(--deep));border-color:transparent}
+.progress-wrap{max-width:720px;margin:15px auto 4px;display:flex;align-items:center;gap:10px}
+.progress-track{height:10px;flex:1;background:#fff;border-radius:999px;overflow:hidden;border:1px solid #eee}
+.progress-bar{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .35s ease}
+.progress-text{font-size:12px;color:var(--muted);min-width:80px;text-align:right}
+.book-row{margin-top:18px;display:flex;justify-content:center}
+.book-card{
+  width:100%;max-width:760px;display:grid;grid-template-columns:1fr 1.12fr;gap:12px;
+  background:#fff;border-radius:26px;padding:14px;box-shadow:0 15px 40px rgba(76,54,80,.15);
+  position:relative;overflow:hidden;transform-origin:center;transition:.25s;
+}
+.book-card.flip{animation:pageFlip .42s ease}
+@keyframes pageFlip{0%{transform:perspective(1100px) rotateY(0)}45%{transform:perspective(1100px) rotateY(-7deg) scale(.99)}100%{transform:none}}
+.book-page{min-height:390px;border-radius:20px;padding:18px;background:linear-gradient(160deg,#fffdf7,#fff8ec);position:relative;overflow:hidden}
+.book-page.right{background:linear-gradient(160deg,#fff,#fff8fb)}
+.page-sparkle{position:absolute;font-size:34px;opacity:.15;animation:spin 14s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.page-label{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:#8b8197}
+.symbol-wrap{display:grid;place-items:center;margin-top:10px}
+.page-emoji{font-size:72px;line-height:1;filter:drop-shadow(0 9px 8px #5b3e5e25);animation:bob 2.8s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(-8px) rotate(2deg)}}
+.page-main-symbol{font-size:80px;line-height:1;font-weight:900;color:var(--deep);text-shadow:0 4px 0 #fff}
+.page-word{text-align:center;font-size:18px;font-weight:900;letter-spacing:3px;margin-top:8px}
+.letter-prompt{margin-top:18px;padding:13px;border-radius:16px;background:var(--soft);text-align:center;font-size:14px;border:1px dashed var(--accent)}
+.action-row{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin-top:13px}
+.action-btn{border:0;border-radius:14px;padding:9px 12px;background:#fff;color:var(--deep);font-weight:800;cursor:pointer;box-shadow:0 4px 12px #51374f15}
+.story-title{font-size:18px;font-weight:900;text-align:center;color:var(--deep);margin:12px 0 3px}
+.story-subtitle{font-size:12px;text-align:center;color:var(--muted);margin-bottom:10px}
+.rhyme-lines{list-style:none;padding:0;margin:0;display:grid;gap:7px}
+.rhyme-line{padding:9px 11px;border-radius:12px;font-size:14px;line-height:1.4;cursor:pointer;transition:.2s;background:#ffffff8a}
+.rhyme-line:hover{background:var(--soft);transform:translateX(3px)}
+.rhyme-line.active{background:linear-gradient(90deg,var(--soft),#fff);color:#20182a;box-shadow:0 0 0 2px var(--accent) inset}
+.nav-row{margin-top:14px;display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center}
+.nav-btn{border:0;border-radius:14px;padding:9px 12px;background:var(--soft);color:var(--deep);font-weight:900;cursor:pointer}
+.nav-btn:disabled{opacity:.35;cursor:default}
+.page-indicator{font-size:12px;color:var(--muted);text-align:center}
+.dot-row{display:flex;justify-content:center;flex-wrap:wrap;gap:5px;margin-top:13px;max-height:70px;overflow:auto;padding:3px}
+.dot-row button{width:11px;height:11px;border-radius:50%;border:0;background:#d8cfdb;cursor:pointer}
+.dot-row button.active{background:var(--deep);transform:scale(1.25)}
+.reward-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:14px}
+.reward{background:#fff;border-radius:999px;padding:7px 12px;font-size:13px;box-shadow:0 5px 14px #5f42551a}
+.instructions,.footer-note{text-align:center;color:var(--muted);font-size:12px;max-width:700px;margin:16px auto 0}
+.celebration{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:10}
+.confetti{position:absolute;font-size:24px;animation:fall 1.8s ease-out forwards}
+@keyframes fall{to{transform:translate(var(--dx),100vh) rotate(540deg);opacity:0}}
+@media(max-width:760px){
+  .page-wrap{padding-top:20px}
+  .book-card{grid-template-columns:1fr}
+  .book-page{min-height:0}
+  .dot-row{max-height:90px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}
+}
+</style>
 </head>
 <body class="theme-sunny">
-  <div class="page-wrap">
-    <div class="title-area">
-      <h1>Storytime</h1>
-      <p>Sunny ABCs &amp; 123s — tap, rhyme, and smile your way through letters and numbers.</p>
-    </div>
+<div class="decor"><span class="bubble b1"></span><span class="bubble b2"></span><span class="bubble b3"></span></div>
+<div id="celebration" class="celebration"></div>
+<main class="page-wrap">
+  <header class="hero">
+    <div class="hero-badge">☀️ Preschool Storytime • Local & private</div>
+    <h1>Sunny Storytime</h1>
+    <p>Explore letters and numbers with movement prompts, cheerful rhymes, gentle narration, and colorful page turns.</p>
+  </header>
 
-    <div class="app-shell">
-      <div class="app-header">
-        <h2>Sunny ABCs &amp; 123s</h2>
-        <span id="modeLabel">Alphabet Book</span>
-        <div class="top-controls">
-          <button class="pill-btn active" id="alphabetModeBtn"><span class="label">Alphabet</span></button>
-          <button class="pill-btn" id="numberModeBtn"><span class="label">Numbers</span></button>
-
-          <button class="pill-btn" id="songModeBtn">
-            <span class="label">Song Mode</span>
-            <span id="songModeState">Off</span>
-          </button>
-          <button class="pill-btn active" id="soundModeBtn">
-            <span class="label">Sound</span>
-            <span id="soundModeState">On</span>
-          </button>
-
-          <button class="pill-btn" id="colorDayBtn">
-            <span class="label">Color Day</span>
-            <span id="colorDayLabel">Sunny</span>
-          </button>
-        </div>
+  <section class="app-shell" aria-label="Sunny ABCs and 123s storybook">
+    <div class="app-header">
+      <h2>Sunny ABCs &amp; 123s</h2>
+      <span id="modeLabel">Alphabet Book</span>
+      <div class="top-controls">
+        <button class="pill-btn active" id="alphabetModeBtn">🔤 Alphabet</button>
+        <button class="pill-btn" id="numberModeBtn">🔢 Numbers</button>
+        <button class="pill-btn" id="songModeBtn">🎵 Song <span id="songModeState">Off</span></button>
+        <button class="pill-btn active" id="soundModeBtn">🔊 Sound <span id="soundModeState">On</span></button>
+        <button class="pill-btn" id="colorDayBtn">🎨 Theme <span id="colorDayLabel">Sunny</span></button>
       </div>
-
-      <div class="book-row">
-        <div class="book-card" id="bookCard">
-          <div class="book-page" id="leftPage">
-            <!-- Left page content injected by JS -->
-          </div>
-          <div class="book-page" id="rightPage">
-            <!-- Right page content injected by JS -->
-          </div>
-        </div>
-      </div>
-
-      <div class="dot-row" id="dotRow"></div>
-
-      <div class="instructions">
-        How to play: Use the arrows or little dots to turn the pages. Turn on
-        <strong>Song Mode</strong> to highlight each rhyme line (and hear it read aloud if
-        <strong>Sound</strong> is on). Try different <strong>Color Day</strong> themes for sunny yellow,
-        sky blue, or berry red fun.
-      </div>
-      <div class="footer-note">
-        Designed for quiet play &amp; gentle learning. Sound can be turned off at any time.
+      <div class="progress-wrap">
+        <div class="progress-track"><div id="progressBar" class="progress-bar"></div></div>
+        <div id="progressText" class="progress-text">1 of 26</div>
       </div>
     </div>
-  </div>
 
-  <script>
-    // -------- Data: Alphabet & Numbers --------
-    const alphabetPages = [
+    <div class="book-row">
+      <article class="book-card" id="bookCard">
+        <section class="book-page" id="leftPage"></section>
+        <section class="book-page right" id="rightPage"></section>
+      </article>
+    </div>
+
+    <div class="dot-row" id="dotRow" aria-label="Story pages"></div>
+    <div class="reward-row">
+      <div class="reward">⭐ Pages explored: <strong id="visitedCount">1</strong></div>
+      <div class="reward">🏆 Stars earned: <strong id="starCount">0</strong></div>
+    </div>
+    <p class="instructions">Use the arrows, dots, keyboard arrow keys, or swipe to turn pages. Tap any rhyme line to hear it. Song Mode reads each line in order.</p>
+    <p class="footer-note">Everything runs in this file. No accounts, tracking, or outside game services.</p>
+  </section>
+</main>
+
+<script>
+const alphabetPages = [
       {
         letter: 'A',
         word: 'Apple',
@@ -842,211 +634,250 @@
       }
     ];
 
-    // -------- State --------
-    let currentBook = 'alphabet'; // 'alphabet' or 'numbers'
-    let currentIndex = 0;
-    let songMode = false;
-    let soundOn = true;
-    let colorDayIndex = 0;
-    const colorDayNames = ['Sunny','Sky','Berry'];
-    const colorDayClasses = ['theme-sunny','theme-sky','theme-berry'];
+const emojiMap = {
+  Apple:'🍎',Balloon:'🎈',Cat:'🐱',Duck:'🦆',Elephant:'🐘',Firefly:'✨',Garden:'🌻',
+  Honeybee:'🐝',Igloo:'🏠',Jellyfish:'🪼',Kite:'🪁',Ladybug:'🐞',Moon:'🌙',Nest:'🪺',
+  Ocean:'🌊',Pancake:'🥞',Queen:'👑',Rainbow:'🌈',Star:'⭐',Turtle:'🐢',Umbrella:'☂️',
+  Violin:'🎻',Wind:'🌬️',Xylophone:'🎶',Yawn:'🥱',Zoo:'🦁',
+  One:'☀️',Two:'👟',Three:'🌳',Four:'🐸',Five:'⭐',Six:'🪙',Seven:'🌈',Eight:'🐜',
+  Nine:'🎈',Ten:'🌙'
+};
 
-    let songTimer = null;
-    let currentLineIndex = 0;
+const state = {
+  book: localStorage.getItem('sunny-book') || 'alphabet',
+  index: Number(localStorage.getItem('sunny-index') || 0),
+  song: localStorage.getItem('sunny-song') === 'true',
+  sound: localStorage.getItem('sunny-sound') !== 'false',
+  theme: Number(localStorage.getItem('sunny-theme') || 0),
+  stars: Number(localStorage.getItem('sunny-stars') || 0),
+  visited: new Set(JSON.parse(localStorage.getItem('sunny-visited') || '[]')),
+  speaking:false
+};
 
-    // -------- Helpers --------
-    function getCurrentPages(){
-      return currentBook === 'alphabet' ? alphabetPages : numberPages;
-    }
+const themes = [
+  ['Sunny','theme-sunny'],['Sky','theme-sky'],['Berry','theme-berry'],['Mint','theme-mint']
+];
 
-    function speak(text){
-      if(!soundOn || !('speechSynthesis' in window)) return;
-      const utter = new SpeechSynthesisUtterance(text);
-      utter.rate = 1.0;
-      utter.pitch = 1.1;
-      window.speechSynthesis.cancel();
-      window.speechSynthesis.speak(utter);
-    }
+let songToken = 0;
+let selectedVoice = null;
+const $ = id => document.getElementById(id);
 
-    function stopSong(){
-      if(songTimer) clearTimeout(songTimer);
-      songTimer = null;
-      if('speechSynthesis' in window) window.speechSynthesis.cancel();
-      const lines = document.querySelectorAll('.rhyme-line');
-      lines.forEach(l => l.classList.remove('active'));
-    }
+function pages(){ return state.book === 'alphabet' ? alphabetPages : numberPages; }
+function current(){ return pages()[state.index]; }
 
-    function startSong(){
-      stopSong();
-      const lines = document.querySelectorAll('.rhyme-line');
-      if(!lines.length) return;
-      currentLineIndex = 0;
+function saveState(){
+  localStorage.setItem('sunny-book',state.book);
+  localStorage.setItem('sunny-index',String(state.index));
+  localStorage.setItem('sunny-song',String(state.song));
+  localStorage.setItem('sunny-sound',String(state.sound));
+  localStorage.setItem('sunny-theme',String(state.theme));
+  localStorage.setItem('sunny-stars',String(state.stars));
+  localStorage.setItem('sunny-visited',JSON.stringify([...state.visited]));
+}
 
-      const step = () => {
-        const all = document.querySelectorAll('.rhyme-line');
-        all.forEach(l => l.classList.remove('active'));
-        const line = all[currentLineIndex];
-        if(!line){
-          stopSong();
-          return;
-        }
-        line.classList.add('active');
-        speak(line.textContent);
-        currentLineIndex++;
-        songTimer = setTimeout(step, 1900);
-      };
+function chooseVoice(){
+  if(!('speechSynthesis' in window)) return;
+  const voices = speechSynthesis.getVoices();
+  selectedVoice = voices.find(v=>/child|kid|jenny|samantha|aria|female/i.test(v.name) && /^en/i.test(v.lang))
+    || voices.find(v=>/^en/i.test(v.lang))
+    || voices[0] || null;
+}
+if('speechSynthesis' in window){
+  chooseVoice();
+  speechSynthesis.onvoiceschanged = chooseVoice;
+}
 
-      step();
-    }
+function speak(text, onEnd){
+  if(!state.sound || !('speechSynthesis' in window)){
+    if(onEnd) setTimeout(onEnd,900);
+    return;
+  }
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  if(selectedVoice) u.voice = selectedVoice;
+  u.rate=.86;u.pitch=1.12;u.volume=1;
+  u.onend=()=>onEnd&&onEnd();
+  u.onerror=()=>onEnd&&onEnd();
+  speechSynthesis.speak(u);
+}
 
-    // -------- Render --------
-    function renderDots(){
-      const pages = getCurrentPages();
-      const dotRow = document.getElementById('dotRow');
-      dotRow.innerHTML = '';
-      pages.forEach((_,idx)=>{
-        const btn = document.createElement('button');
-        if(idx === currentIndex) btn.classList.add('active');
-        btn.addEventListener('click',()=>{
-          currentIndex = idx;
-          renderPage(true);
-        });
-        dotRow.appendChild(btn);
-      });
-    }
+function stopSong(){
+  songToken++;
+  document.querySelectorAll('.rhyme-line').forEach(x=>x.classList.remove('active'));
+  if('speechSynthesis' in window) speechSynthesis.cancel();
+}
 
-    function renderPage(withFlip){
-      const pages = getCurrentPages();
-      const page = pages[currentIndex];
-      if(!page) return;
+function startSong(){
+  stopSong();
+  const token = songToken;
+  const lines = [...document.querySelectorAll('.rhyme-line')];
+  let i=0;
+  const next=()=>{
+    if(token!==songToken || !state.song) return;
+    lines.forEach(x=>x.classList.remove('active'));
+    if(i>=lines.length) return;
+    const line=lines[i++];
+    line.classList.add('active');
+    speak(line.textContent,()=>setTimeout(next,250));
+  };
+  next();
+}
 
-      const left = document.getElementById('leftPage');
-      const right = document.getElementById('rightPage');
-      const bookCard = document.getElementById('bookCard');
+function celebrate(){
+  const holder=$('celebration');
+  const bits=['⭐','🌈','✨','🎈','💛'];
+  for(let i=0;i<18;i++){
+    const el=document.createElement('span');
+    el.className='confetti';el.textContent=bits[i%bits.length];
+    el.style.left=Math.random()*100+'vw';
+    el.style.top='-40px';
+    el.style.setProperty('--dx',(Math.random()*180-90)+'px');
+    el.style.animationDelay=(Math.random()*.35)+'s';
+    holder.appendChild(el);
+    setTimeout(()=>el.remove(),2200);
+  }
+}
 
-      if(withFlip){
-        bookCard.classList.remove('flip');
-        void bookCard.offsetWidth; // reflow
-        bookCard.classList.add('flip');
-      }
+function markVisited(){
+  const key=state.book+':'+state.index;
+  if(!state.visited.has(key)){
+    state.visited.add(key);
+    state.stars++;
+    if(state.stars%5===0) celebrate();
+    saveState();
+  }
+}
 
-      stopSong();
+function renderDots(){
+  const row=$('dotRow');row.innerHTML='';
+  pages().forEach((_,i)=>{
+    const b=document.createElement('button');
+    b.className=i===state.index?'active':'';
+    b.setAttribute('aria-label',`Go to page ${i+1}`);
+    b.onclick=()=>{state.index=i;render(true)};
+    row.appendChild(b);
+  });
+}
 
-      if(currentBook === 'alphabet'){
-        left.innerHTML = `
-          <div class="page-label">Letter ${currentIndex+1} of ${pages.length}</div>
-          <div class="page-main-symbol">${page.letter}</div>
-          <div class="page-word">${page.word.toUpperCase()}</div>
-          <div class="letter-prompt">${page.prompt}</div>
-        `;
-      } else {
-        left.innerHTML = `
-          <div class="page-label">Number ${currentIndex+1} of ${pages.length}</div>
-          <div class="page-main-symbol">${page.number}</div>
-          <div class="page-word">${page.word.toUpperCase()}</div>
-          <div class="letter-prompt">${page.prompt}</div>
-        `;
-      }
+function render(flip=false){
+  const list=pages();
+  state.index=Math.max(0,Math.min(state.index,list.length-1));
+  const p=current();
+  stopSong();
+  if(flip){
+    $('bookCard').classList.remove('flip');
+    void $('bookCard').offsetWidth;
+    $('bookCard').classList.add('flip');
+  }
+  markVisited();
+  const symbol=state.book==='alphabet'?p.letter:p.number;
+  const emoji=emojiMap[p.word]||'✨';
 
-      const linesHTML = page.rhyme.map(line => `<li class="rhyme-line">${line}</li>`).join('');
-      right.innerHTML = `
-        <div class="page-label">Story Rhyme</div>
-        <div class="story-title">${page.title}</div>
-        <div class="story-subtitle">${page.subtitle}</div>
-        <ul class="rhyme-lines">
-          ${linesHTML}
-        </ul>
-        <div class="nav-row">
-          <div class="nav-buttons">
-            <button class="nav-btn" id="prevBtn" ${currentIndex===0?'disabled':''}>
-              <span class="arrow">◀</span><span>Back</span>
-            </button>
-            <button class="nav-btn" id="nextBtn" ${currentIndex===pages.length-1?'disabled':''}>
-              <span>Next</span><span class="arrow">▶</span>
-            </button>
-          </div>
-          <div class="page-indicator">
-            ${currentBook === 'alphabet'
-              ? `Letter ${page.letter} · Page ${currentIndex+1} of ${pages.length}`
-              : `Number ${page.number} · Page ${currentIndex+1} of ${pages.length}`}
-          </div>
-        </div>
-      `;
+  $('leftPage').innerHTML=`
+    <span class="page-sparkle" style="right:18px;top:12px">✦</span>
+    <div class="page-label">${state.book==='alphabet'?'Letter':'Number'} ${state.index+1} of ${list.length}</div>
+    <div class="symbol-wrap">
+      <div class="page-emoji" aria-hidden="true">${emoji}</div>
+      <div class="page-main-symbol">${symbol}</div>
+    </div>
+    <div class="page-word">${p.word.toUpperCase()}</div>
+    <div class="letter-prompt">${p.prompt}</div>
+    <div class="action-row">
+      <button class="action-btn" id="sayWord">🔊 Say ${p.word}</button>
+      <button class="action-btn" id="doPrompt">🤸 Movement prompt</button>
+    </div>`;
 
-      document.getElementById('prevBtn').onclick = () => {
-        if(currentIndex>0){
-          currentIndex--;
-          renderPage(true);
-        }
-      };
-      document.getElementById('nextBtn').onclick = () => {
-        if(currentIndex<pages.length-1){
-          currentIndex++;
-          renderPage(true);
-        }
-      };
+  $('rightPage').innerHTML=`
+    <span class="page-sparkle" style="left:16px;bottom:14px">✿</span>
+    <div class="page-label">Story Rhyme</div>
+    <div class="story-title">${p.title}</div>
+    <div class="story-subtitle">Tap a line to hear it read aloud.</div>
+    <ul class="rhyme-lines">${p.rhyme.map((line,i)=>`<li class="rhyme-line" tabindex="0" data-line="${i}">${line}</li>`).join('')}</ul>
+    <div class="nav-row">
+      <button class="nav-btn" id="prevBtn" ${state.index===0?'disabled':''}>◀ Back</button>
+      <div class="page-indicator">${state.book==='alphabet'?`Letter ${p.letter}`:`Number ${p.number}`} · Page ${state.index+1} of ${list.length}</div>
+      <button class="nav-btn" id="nextBtn" ${state.index===list.length-1?'disabled':''}>Next ▶</button>
+    </div>`;
 
-      renderDots();
+  $('sayWord').onclick=()=>speak(state.book==='alphabet'
+    ? `${p.letter}. ${p.letter} is for ${p.word}.`
+    : `${p.number}. ${p.word}.`);
+  $('doPrompt').onclick=()=>speak(p.prompt);
+  $('prevBtn').onclick=()=>go(-1);
+  $('nextBtn').onclick=()=>go(1);
+  document.querySelectorAll('.rhyme-line').forEach(el=>{
+    const read=()=>speak(el.textContent);
+    el.onclick=read;
+    el.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();read()}};
+  });
 
-      if(songMode){
-        setTimeout(startSong, 250);
-      }
-    }
+  $('progressBar').style.width=((state.index+1)/list.length*100)+'%';
+  $('progressText').textContent=`${state.index+1} of ${list.length}`;
+  $('visitedCount').textContent=state.visited.size;
+  $('starCount').textContent=state.stars;
+  $('modeLabel').textContent=state.book==='alphabet'?'Alphabet Book':'Numbers Book';
+  renderDots();
+  saveState();
+  if(state.song) setTimeout(startSong,220);
+}
 
-    // -------- Controls --------
-    const alphabetModeBtn = document.getElementById('alphabetModeBtn');
-    const numberModeBtn = document.getElementById('numberModeBtn');
-    const songModeBtn = document.getElementById('songModeBtn');
-    const soundModeBtn = document.getElementById('soundModeBtn');
-    const colorDayBtn = document.getElementById('colorDayBtn');
+function go(dir){
+  const next=state.index+dir;
+  if(next<0||next>=pages().length) return;
+  state.index=next;render(true);
+}
 
-    alphabetModeBtn.addEventListener('click',()=>{
-      currentBook = 'alphabet';
-      currentIndex = 0;
-      document.getElementById('modeLabel').textContent = 'Alphabet Book';
-      alphabetModeBtn.classList.add('active');
-      numberModeBtn.classList.remove('active');
-      renderPage(true);
-    });
+function setBook(book){
+  state.book=book;state.index=0;
+  $('alphabetModeBtn').classList.toggle('active',book==='alphabet');
+  $('numberModeBtn').classList.toggle('active',book==='numbers');
+  render(true);
+}
 
-    numberModeBtn.addEventListener('click',()=>{
-      currentBook = 'numbers';
-      currentIndex = 0;
-      document.getElementById('modeLabel').textContent = 'Numbers Book';
-      numberModeBtn.classList.add('active');
-      alphabetModeBtn.classList.remove('active');
-      renderPage(true);
-    });
+$('alphabetModeBtn').onclick=()=>setBook('alphabet');
+$('numberModeBtn').onclick=()=>setBook('numbers');
+$('songModeBtn').onclick=()=>{
+  state.song=!state.song;
+  $('songModeState').textContent=state.song?'On':'Off';
+  $('songModeBtn').classList.toggle('active',state.song);
+  saveState();
+  state.song?startSong():stopSong();
+};
+$('soundModeBtn').onclick=()=>{
+  state.sound=!state.sound;
+  $('soundModeState').textContent=state.sound?'On':'Off';
+  $('soundModeBtn').classList.toggle('active',state.sound);
+  if(!state.sound) stopSong();
+  saveState();
+};
+$('colorDayBtn').onclick=()=>{
+  state.theme=(state.theme+1)%themes.length;
+  document.body.className=themes[state.theme][1];
+  $('colorDayLabel').textContent=themes[state.theme][0];
+  saveState();
+};
 
-    songModeBtn.addEventListener('click',()=>{
-      songMode = !songMode;
-      document.getElementById('songModeState').textContent = songMode ? 'On' : 'Off';
-      songModeBtn.classList.toggle('active',songMode);
-      if(songMode){
-        startSong();
-      } else {
-        stopSong();
-      }
-    });
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight') go(1);
+  if(e.key==='ArrowLeft') go(-1);
+});
 
-    soundModeBtn.addEventListener('click',()=>{
-      soundOn = !soundOn;
-      document.getElementById('soundModeState').textContent = soundOn ? 'On' : 'Off';
-      soundModeBtn.classList.toggle('active',soundOn);
-      if(!soundOn && 'speechSynthesis' in window){
-        window.speechSynthesis.cancel();
-      }
-    });
+let swipeStart=0;
+$('bookCard').addEventListener('pointerdown',e=>swipeStart=e.clientX);
+$('bookCard').addEventListener('pointerup',e=>{
+  const d=e.clientX-swipeStart;
+  if(Math.abs(d)>55) go(d<0?1:-1);
+});
 
-    colorDayBtn.addEventListener('click',()=>{
-      colorDayIndex = (colorDayIndex+1) % colorDayNames.length;
-      const name = colorDayNames[colorDayIndex];
-      document.getElementById('colorDayLabel').textContent = name;
-      document.body.className = colorDayClasses[colorDayIndex];
-    });
-
-    // -------- Init --------
-    renderPage(false);
-  </script>
+document.body.className=themes[state.theme]?.[1]||'theme-sunny';
+$('colorDayLabel').textContent=themes[state.theme]?.[0]||'Sunny';
+$('songModeState').textContent=state.song?'On':'Off';
+$('soundModeState').textContent=state.sound?'On':'Off';
+$('songModeBtn').classList.toggle('active',state.song);
+$('soundModeBtn').classList.toggle('active',state.sound);
+$('alphabetModeBtn').classList.toggle('active',state.book==='alphabet');
+$('numberModeBtn').classList.toggle('active',state.book==='numbers');
+render(false);
+</script>
 </body>
 </html>
