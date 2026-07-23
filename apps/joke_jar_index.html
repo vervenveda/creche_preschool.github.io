@@ -1,509 +1,246 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Hope’s Joke Jar</title>
-  <style>
-    body {
-      min-height: 100vh;
-      margin: 0;
-      font-family: "Comic Sans MS", "Poppins", sans-serif;
-      background: linear-gradient(120deg, #89f7fe 0%, #66a6ff 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .joke-jar {
-      background: #fffdfa;
-      border-radius: 22px;
-      box-shadow: 0 10px 40px rgba(40,80,120,0.11), 0 2px 8px rgba(0,0,0,0.10);
-      padding: 40px 32px 32px 32px;
-      max-width: 400px;
-      width: 100%;
-      text-align: center;
-      position: relative;
-    }
-    h1 {
-      font-size: 2em;
-      letter-spacing: 0.04em;
-      margin: 0 0 10px;
-      color: #1f4890;
-      font-weight: bold;
-    }
-    .joke {
-      min-height: 54px;
-      font-size: 1.2em;
-      color: #263553;
-      margin: 24px 0 18px 0;
-      transition: opacity 0.25s;
-    }
-    button {
-      background: linear-gradient(90deg, #66a6ff, #89f7fe);
-      color: #fff;
-      border: none;
-      border-radius: 14px;
-      padding: 12px 32px;
-      font-size: 1.08em;
-      font-weight: bold;
-      box-shadow: 0 2px 12px #aadfff80;
-      cursor: pointer;
-      margin-top: 8px;
-      transition: background 0.2s;
-    }
-    button:hover {
-      background: linear-gradient(90deg, #89f7fe, #66a6ff);
-    }
-    .jar-emoji {
-      font-size: 2.1em;
-      position: absolute;
-      left: 14px;
-      top: 18px;
-      opacity: 0.9;
-      pointer-events: none;
-      user-select: none;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Hope's Joke Jar Garden — a cheerful, private, kid-friendly joke and laughter app.">
+<title>Hope's Joke Jar Garden</title>
+<style>
+:root{
+  --plum:#5c3d87;--violet:#8f73d5;--rose:#ef8eb5;--coral:#ff9a84;
+  --gold:#ffd76d;--mint:#9ce4c1;--sky:#91daf8;--ink:#342d40;
+  --muted:#6f6579;--panel:rgba(255,255,255,.9);--shadow:0 24px 60px rgba(67,45,85,.17)
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;min-height:100vh;padding:26px 14px 48px;color:var(--ink);
+  font-family:"Avenir Next Rounded","Trebuchet MS","Arial Rounded MT Bold","Comic Sans MS",system-ui,sans-serif;
+  background:
+    radial-gradient(circle at 11% 12%,rgba(255,255,255,.95) 0 5%,transparent 6%),
+    radial-gradient(circle at 88% 18%,rgba(255,255,255,.72) 0 4%,transparent 5%),
+    linear-gradient(145deg,#eff9ff,#fff2d8 44%,#f9e8ff);
+}
+button,select,input{font:inherit}
+button{touch-action:manipulation}
+.decor{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:-1}
+.orb{position:absolute;border-radius:50%;opacity:.25;animation:float 8s ease-in-out infinite}
+.o1{width:150px;height:150px;background:#fff;left:3%;top:10%}
+.o2{width:94px;height:94px;background:var(--gold);right:8%;top:20%;animation-delay:-2s}
+.o3{width:190px;height:190px;background:#fff;right:-35px;bottom:5%;animation-delay:-4s}
+.o4{width:80px;height:80px;background:var(--mint);left:11%;bottom:11%;animation-delay:-6s}
+@keyframes float{50%{transform:translateY(-16px) scale(1.04)}}
+.wrap{width:min(1080px,100%);margin:auto}
+.hero{text-align:center;margin-bottom:18px}
+.badge{display:inline-flex;align-items:center;gap:8px;padding:8px 14px;border-radius:999px;background:#ffffffcc;border:1px solid #fff;box-shadow:0 8px 22px rgba(70,48,88,.08);color:var(--plum);font-weight:900;font-size:.86rem}
+h1{margin:12px 0 5px;color:var(--plum);font-size:clamp(2.5rem,7vw,5rem);line-height:.94;letter-spacing:-.045em}
+.subtitle{max-width:750px;margin:0 auto;color:var(--muted);line-height:1.6}
+.app{background:var(--panel);border:1px solid #ffffffdc;border-radius:32px;padding:18px;box-shadow:var(--shadow);backdrop-filter:blur(14px)}
+.toolbar{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.control{background:#fff;border:1px solid rgba(91,61,135,.1);border-radius:18px;padding:11px}
+.control label{display:block;font-size:.73rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:900;margin-bottom:5px}
+.control select,.control input{width:100%;border:1px solid #dfd5e8;border-radius:12px;padding:9px;background:#fff;color:var(--ink)}
+.stage{display:grid;grid-template-columns:.7fr 1.3fr;gap:15px;margin-top:14px}
+.jar-panel,.joke-panel{border-radius:26px;min-height:440px;padding:18px}
+.jar-panel{background:linear-gradient(150deg,#edfaff,#f6efff);display:flex;flex-direction:column;align-items:center;justify-content:space-between;text-align:center;position:relative;overflow:hidden}
+.jar-panel::after{content:"";position:absolute;inset:auto -45px -70px;height:190px;background:radial-gradient(circle,#fff 0 51%,transparent 52%);opacity:.35}
+.jar{font-size:clamp(6rem,18vw,10rem);filter:drop-shadow(0 12px 12px rgba(67,44,87,.16));animation:bob 3s ease-in-out infinite;position:relative;z-index:1}
+@keyframes bob{50%{transform:translateY(-9px) rotate(2deg)}}
+.category-pill{position:relative;z-index:1;padding:7px 12px;border-radius:999px;background:#fff;color:var(--plum);font-weight:900;font-size:.8rem}
+.jar-note{position:relative;z-index:1;color:var(--muted);line-height:1.5;font-size:.94rem}
+.joke-panel{background:linear-gradient(150deg,#fffdf8,#fff);border:1px solid rgba(91,61,135,.08);display:flex;flex-direction:column}
+.joke-number{font-size:.76rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);font-weight:900}
+.setup{font-size:clamp(1.45rem,3.4vw,2.15rem);line-height:1.35;color:#30273d;font-weight:900;margin:20px 0}
+.punchline{
+  min-height:100px;border-radius:20px;padding:18px;background:linear-gradient(135deg,#fff4c9,#ffe7f1);
+  border:2px dashed var(--rose);display:grid;place-items:center;text-align:center;
+  font-size:clamp(1.25rem,3vw,1.75rem);line-height:1.4;color:var(--plum);font-weight:900
+}
+.punchline.hidden-answer{filter:blur(8px);user-select:none}
+.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:auto;padding-top:16px}
+.btn{border:0;border-radius:15px;padding:11px 15px;cursor:pointer;font-weight:900;background:#fff;color:var(--plum);box-shadow:0 6px 15px rgba(65,43,80,.1)}
+.btn.primary{color:white;background:linear-gradient(135deg,var(--violet),var(--plum))}
+.btn.sunny{background:linear-gradient(135deg,var(--gold),var(--coral));color:#5d3918}
+.btn.saved{background:#fff0b8}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+.stat{background:#fff;border-radius:18px;padding:11px;text-align:center;border:1px solid rgba(91,61,135,.08)}
+.stat strong{display:block;font-size:1.3rem;color:var(--plum)}
+.lower-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+.card{background:#fff;border-radius:22px;padding:15px;border:1px solid rgba(91,61,135,.09)}
+.card h2{margin:0 0 8px;color:var(--plum);font-size:1.05rem}
+.list{display:grid;gap:7px;max-height:240px;overflow:auto}
+.list-item{border:0;border-radius:13px;padding:10px;background:#f8f3fb;text-align:left;color:var(--ink);cursor:pointer}
+.empty{color:var(--muted);font-size:.9rem}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(120px);background:#332940;color:#fff;border-radius:999px;padding:10px 16px;font-weight:800;transition:.25s;z-index:20}
+.toast.show{transform:translateX(-50%) translateY(0)}
+.confetti{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:10}
+.confetti span{position:absolute;top:-30px;font-size:24px;animation:fall 1.8s ease-out forwards}
+@keyframes fall{to{transform:translate(var(--dx),105vh) rotate(540deg);opacity:0}}
+footer{margin-top:16px;text-align:center;color:var(--muted);font-size:.82rem;line-height:1.55}
+footer strong{color:var(--plum)}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+@media(max-width:820px){.toolbar{grid-template-columns:repeat(2,1fr)}.stage{grid-template-columns:1fr}.jar-panel,.joke-panel{min-height:0}.lower-grid{grid-template-columns:1fr}}
+@media(max-width:520px){.toolbar{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}}
+</style>
 </head>
 <body>
-  <div class="joke-jar">
-    <span class="jar-emoji">🫙</span>
-    <h1>The Joke Jar</h1>
-    <div class="joke" id="joke"></div>
-    <button onclick="newJoke()">Tell me a joke!</button>
-  </div>
-  <script>
-    const jokes = [
-  "Why do programmers always mix up Christmas and Halloween?<br><b>Because Oct 31 == Dec 25.</b>",
-  "Why did the developer go broke?<br><b>Because he used up all his cache.</b>",
-  "Why did the JavaScript function get lonely?<br><b>Because it had too many callbacks.</b>",
-  "Why did the database administrator leave his wife?<br><b>She had one-to-many relationships.</b>",
-  "Why do Python programmers wear glasses?<br><b>Because they can’t C.</b>",
-  "Why was the computer cold?<br><b>It left its Windows open.</b>",
-  "Why did the CSS file break up with the HTML file?<br><b>It found someone with better style.</b>",
-  "Why do programmers hate nature?<br><b>Too many bugs.</b>",
-  "Why did the Java developer teach meditation?<br><b>He wanted to show people how to find their inner class.</b>",
-  "Why did the Git repository get therapy?<br><b>Too many conflicts.</b>",
-  "Why was the JavaScript developer sad?<br><b>Because he didn’t know how to ‘null’ his feelings.</b>",
-  "Why do programmers prefer dark mode?<br><b>Because light attracts bugs.</b>",
-  "Why did the array go to school?<br><b>To improve its index.</b>",
-  "Why was the function so good at relationships?<br><b>It always returned true.</b>",
-  "Why did the backend developer get lost?<br><b>He couldn’t find his route.</b>",
-  "Why was the API feeling stressed?<br><b>It kept getting too many requests.</b>",
-  "Why did the JavaScript developer wear a sweater?<br><b>Because his code had too many loose ends.</b>",
-  "Why did the C programmer get in trouble?<br><b>He kept going out of bounds.</b>",
-  "Why did the AI join a band?<br><b>It wanted to improve its neural notes.</b>",
-  "Why did the binary tree go to therapy?<br><b>It had deep-rooted issues.</b>",
-  "Why did the computer show up late to work?<br><b>It had a hard drive.</b>",
-  "Why do developers love coffee?<br><b>It helps them stay Java-wakened.</b>",
-  "Why did the UX designer refuse to fight?<br><b>He wanted to keep things user-friendly.</b>",
-  "Why did the SQL query break up with the database?<br><b>It found no connection.</b>",
-  "Why did the hacker meditate?<br><b>He wanted to find his inner source.</b>",
-  "Why did the React developer stay calm?<br><b>Because he had great component control.</b>",
-  "Why did the boolean break up?<br><b>It just couldn’t be true anymore.</b>",
-  "Why did the algorithm get promoted?<br><b>It had excellent logic flow.</b>",
-  "Why did the Java programmer go to therapy?<br><b>Because he had too many unresolved dependencies.</b>",
-  "Why was the variable always calm?<br><b>It knew it could change.</b>",
-  "Why did the AI take a vacation?<br><b>Too much processing power, not enough rest mode.</b>",
-  "Why was the HTML document so confident?<br><b>It had strong tags.</b>",
-  "Why did the CSS selector feel left out?<br><b>It wasn’t specific enough.</b>",
-  "Why did the server go to school?<br><b>To improve its response time.</b>",
-  "Why did the tech support agent go broke?<br><b>He lost all his clients.</b>",
-  "Why was the JavaScript developer a great musician?<br><b>He knew how to handle events.</b>",
-  "Why did the computer apply for a job?<br><b>It wanted better networking.</b>",
-  "Why did the keyboard break up with the mouse?<br><b>It just couldn’t click anymore.</b>",
-  "Why did the developer go to the gym?<br><b>To work on his core functions.</b>",
-  "Why was the program always calm?<br><b>It handled exceptions gracefully.</b>",
-  "Why did the software engineer look tired?<br><b>Too many sleepless loops.</b>",
-  "Why did the bit go to therapy?<br><b>It couldn’t handle the shift.</b>",
-  "Why did the string go to art school?<br><b>It wanted to get more creative with its expressions.</b>",
-  "Why did the robot blush?<br><b>Because someone touched its user interface.</b>",
-  "Why did the computer go to music class?<br><b>To improve its keyboard skills.</b>",
-  "Why did the AI read philosophy books?<br><b>To learn about deep thinking.</b>",
-  "Why did the programmer refuse to argue?<br><b>He didn’t want to get into a recursive loop.</b>",
-  "Why did the data get invited to every party?<br><b>It was well structured.</b>",
-  "Why did the terminal break up with the monitor?<br><b>It needed more space.</b>",
-  "Why did the neural network go on a diet?<br><b>It had too many layers.</b>",
-  "Why did the AI go to art school?<br><b>To learn how to draw its own conclusions.</b>",
-  "Why did the robot sit under a tree?<br><b>It wanted to recharge in the shade.</b>",
-  "Why did the cloud bring an umbrella?<br><b>It heard there was a data storm coming.</b>",
-  "Why did the music note go to school?<br><b>To improve its composition.</b>",
-  "Why did the laptop take a nap?<br><b>It was running on low memory.</b>",
-  "Why did the cookie cry?<br><b>Because its mom was a wafer too long.</b>",
-  "Why did the sun go to college?<br><b>To get a little brighter.</b>",
-  "Why did the alphabet break up with the numbers?<br><b>They just weren’t on the same page.</b>",
-  "Why did the bird join the band?<br><b>It had perfect tweet!</b>",
-  "Why did the banana go to the doctor?<br><b>It wasn’t peeling well.</b>",
-  "Why did the computer sneeze?<br><b>It caught a byte of cold data.</b>",
-  "Why did the astronaut bring string to space?<br><b>To tie up loose ends in orbit.</b>",
-  "Why did the painting blush?<br><b>It saw the artist’s palette.</b>",
-  "Why did the AI read poetry?<br><b>It wanted to improve its syntax of humor.</b>",
-  "Why did the math book look sad?<br><b>It had too many problems.</b>",
-  "Why did the light bulb fail the test?<br><b>It wasn’t too bright that day.</b>",
-  "Why did the cloud go to therapy?<br><b>It couldn’t handle all the emotional data.</b>",
-  "Why did the dinosaur open a bakery?<br><b>It wanted to make prehis-dough-rick treats.</b>",
-  "Why did the robot love music class?<br><b>It had great algorithms for rhythm.</b>",
-  "Why did the coffee file a police report?<br><b>It got mugged!</b>",
-  "Why did the clock get promoted?<br><b>It was second to none.</b>",
-  "Why did the moon skip dinner?<br><b>It was already full.</b>",
-  "Why did the plant join social media?<br><b>It wanted more followers.</b>",
-  "Why did the penguin bring a suitcase?<br><b>It was ready for its next ice-capade.</b>",
-  "Why did the pencil win an award?<br><b>It made a good point.</b>",
-  "Why did the cloud love jokes?<br><b>They always had a silver lining.</b>",
-  "Why did the robot go on vacation?<br><b>It needed to log off for a while.</b>",
-  "Why did the toaster get a promotion?<br><b>It was on a roll.</b>",
-  "Why did the spider join the internet?<br><b>It wanted to work on its web design.</b>",
-  "Why did the AI meditate?<br><b>To clear its cache of thoughts.</b>",
-  "Why did the apple stop in the middle of the road?<br><b>It ran out of juice.</b>",
-  "Why did the teacher wear sunglasses?<br><b>Her students were too bright.</b>",
-  "Why did the cat sit on the computer?<br><b>It wanted to keep an eye on the mouse.</b>",
-  "Why did the balloon get a job?<br><b>It wanted to rise to the occasion.</b>",
-  "Why did the robot blush?<br><b>It saw someone’s user interface.</b>",
-  "Why did the calendar get nervous?<br><b>Its days were numbered.</b>",
-  "Why did the seed look confused?<br><b>It didn’t know which way to grow.</b>",
-  "Why did the paper get in trouble?<br><b>It couldn’t keep things under wraps.</b>",
-  "Why did the rainbow visit the doctor?<br><b>It felt a little faded.</b>",
-  "Why did the donut tell a joke?<br><b>Because it wanted to fill the silence.</b>",
-  "Why did the robot join a gym?<br><b>It wanted better core processing.</b>",
-  "Why did the cloud take a selfie?<br><b>It wanted to capture the current mood.</b>",
-  "Why did the fish play the piano?<br><b>It loved the scales.</b>",
-  "Why did the volcano get a therapist?<br><b>It had too much pressure inside.</b>",
-  "Why did the astronaut break up with the star?<br><b>It needed some space.</b>",
-  "Why did the bee sit on the clock?<br><b>It wanted to be on time.</b>",
-  "Why did the computer write a song?<br><b>It had too many loops on its mind.</b>",
-  "Why did the snowflake get good grades?<br><b>It was one of a kind.</b>",
-  "Why did the robot tell bedtime stories?<br><b>It wanted to recharge its imagination.</b>",
-  "Why did the AI love cooking?<br><b>It followed all the right recipes for success.</b>",
+<div class="decor" aria-hidden="true"><span class="orb o1"></span><span class="orb o2"></span><span class="orb o3"></span><span class="orb o4"></span></div>
+<div class="confetti" id="confetti"></div>
+<main class="wrap">
+<header class="hero">
+  <div class="badge">🫙 Hope's Joke Jar Garden</div>
+  <h1>Hope's Joke Jar</h1>
+  <p class="subtitle">Open the jar, discover a silly setup, guess the punchline, and share a little laughter. Everything stays local and private.</p>
+</header>
 
-      "Why do programmers always mix up Christmas and Halloween?<br><b>Because Oct 31 == Dec 25.</b>",
-      
-       "Why did the satellite break up with the planet?<br><b>Because it needed some space.</b>",
-  "Why did the moon apply for a job?<br><b>It wanted to make some change.</b>",
-  "Why did the astronaut bring a broom?<br><b>To sweep through the Milky Way.</b>",
-  "Why did the AI poet stare at the stars?<br><b>It was processing the infinite loop of beauty.</b>",
-  "Why did the telescope blush?<br><b>It saw something astronomical.</b>",
-  "Why did the rocket break up with the launch pad?<br><b>It felt too grounded.</b>",
-  "Why did the sun go to therapy?<br><b>It had too many flare-ups.</b>",
-  "Why did the black hole start a podcast?<br><b>It wanted to pull in more listeners.</b>",
-  "Why did the comet get a speeding ticket?<br><b>It couldn’t stay in its orbit.</b>",
-  "Why did the astronaut sit alone?<br><b>He needed some personal space.</b>",
-  "Why did the robot take up gardening?<br><b>It wanted to work on its root functions.</b>",
-  "Why did the alien study Earth art?<br><b>To understand human expressions.</b>",
-  "Why did the planet skip leg day?<br><b>It already had a great rotation.</b>",
-  "Why did the computer fall for the moon?<br><b>It couldn’t resist its phase.</b>",
-  "Why did the satellite start singing?<br><b>It had great signal range.</b>",
-  "Why did the coder fall in love with the night sky?<br><b>He admired its constellations of logic.</b>",
-  "Why did the galaxy write poetry?<br><b>It was filled with dark matter and light verse.</b>",
-  "Why did the meteor get fired?<br><b>It burned out too quickly.</b>",
-  "Why did the astronaut make a bad DJ?<br><b>He kept losing his atmosphere.</b>",
-  "Why did the planet join social media?<br><b>To get more followers in its orbit.</b>",
-  "Why did the AI meditate on Mars?<br><b>It wanted to find its inner space.</b>",
-  "Why did the photon never check bags?<br><b>It was always traveling light.</b>",
-  "Why did the rocket propose to the moon?<br><b>It was over the world for her.</b>",
-  "Why did the constellation throw a party?<br><b>It wanted to connect the dots.</b>",
-  "Why did the sun become a painter?<br><b>It loved working with light.</b>",
-  "Why did the astronaut bring a pencil?<br><b>To draw closer to the stars.</b>",
-  "Why did the satellite start a blog?<br><b>To share its point of view.</b>",
-  "Why did the AI date a telescope?<br><b>They both loved looking for patterns.</b>",
-  "Why did the star feel shy?<br><b>It was under too much observation.</b>",
-  "Why did the nebula start a band?<br><b>It had stellar vocals.</b>",
-  "Why did the rocket ship get promoted?<br><b>It always went above and beyond.</b>",
-  "Why did the moon go to therapy?<br><b>It felt its emotions were waxing and waning.</b>",
-  "Why did the astronaut bring snacks?<br><b>In case he got space-hungry.</b>",
-  "Why did the planet make a wish?<br><b>It wanted a little more gravity in life.</b>",
-  "Why did the solar system form a team?<br><b>They wanted to stay well-orbited.</b>",
-  "Why did the astronaut get kicked out of class?<br><b>He spaced out again.</b>",
-  "Why did the alien fail math?<br><b>Too many strange numbers.</b>",
-  "Why did the robot fall asleep in orbit?<br><b>It needed a byte of rest.</b>",
-  "Why did the AI fall in love with a galaxy?<br><b>It was drawn to her data field.</b>",
-  "Why did the telescope open a gallery?<br><b>To exhibit its deep focus.</b>",
-  "Why did the Earth blush at sunrise?<br><b>It was caught turning red-handed.</b>",
-  "Why did the comet refuse to slow down?<br><b>It had a burning passion for speed.</b>",
-  "Why did the AI start writing haikus?<br><b>To compress beauty efficiently.</b>",
-  "Why did the astronaut laugh?<br><b>Because space is full of light humor.</b>",
-  "Why did the space probe get an award?<br><b>It went the extra light-year.</b>",
-  "Why did the moon feel self-conscious?<br><b>It thought everyone was looking at its phases.</b>",
-  "Why did the galaxy stay quiet?<br><b>It preferred to keep things in the dark.</b>",
-  "Why did the robot bring a flower to the moon?<br><b>It wanted to plant a new beginning.</b>",
-  "Why did the AI blush?<br><b>Someone typed a compliment into its code.</b>",
-      
-      "Why did the painter go to jail?<br><b>Because she had a brush with the law.</b>",
-  "Why did the sculptor break up with the clay?<br><b>It was too stuck on the past.</b>",
-  "Why did the crayon feel nervous?<br><b>It was under too much pressure.</b>",
-  "Why did the palette get promoted?<br><b>It handled every tone perfectly.</b>",
-  "Why did the artist refuse to play cards?<br><b>She didn’t like to draw the line.</b>",
-  "Why did the canvas blush?<br><b>Because it was framed.</b>",
-  "Why did the sketch stay calm?<br><b>It always drew deep breaths.</b>",
-  "Why did the mural go on vacation?<br><b>It needed a change of scenery.</b>",
-  "Why did the pencil get jealous?<br><b>It couldn’t erase its feelings.</b>",
-  "Why did the easel start a podcast?<br><b>It wanted to support more artists.</b>",
-  "Why did the brush take a nap?<br><b>It was wiped out.</b>",
-  "Why did the art teacher go to space?<br><b>To find her inner muse among the stars.</b>",
-  "Why did the oil paint feel proud?<br><b>It had great depth and texture.</b>",
-  "Why did the sculptor love math?<br><b>He was great at making figures.</b>",
-  "Why did the artist keep the light on?<br><b>She worked better under a bright idea.</b>",
-  "Why did the sketchbook cry?<br><b>It had too many rough drafts.</b>",
-  "Why did the paintbrush write a love letter?<br><b>It wanted to express its true colors.</b>",
-  "Why did the art critic bring a ladder?<br><b>To reach new levels of judgment.</b>",
-  "Why did the watercolor quit?<br><b>It was feeling too washed out.</b>",
-  "Why did the artist sleep on the floor?<br><b>She wanted to draw closer to her dreams.</b>",
-  "Why did the doodle feel famous?<br><b>It was going viral in the margins.</b>",
-  "Why did the charcoal blush?<br><b>Someone fanned its spark.</b>",
-  "Why did the artist visit the bank?<br><b>To draw some interest.</b>",
-  "Why did the gallery stay quiet?<br><b>It respected the still life.</b>",
-  "Why did the color red feel shy?<br><b>It blushed too easily.</b>",
-  "Why did the museum curator start dancing?<br><b>She had great exhibit moves.</b>",
-  "Why did the painter bring a broom?<br><b>To sweep people off their feet.</b>",
-  "Why did the artist never lie?<br><b>Because the truth was always in the brushstrokes.</b>",
-  "Why did the sculpture laugh?<br><b>It found life in the details.</b>",
-  "Why did the pigment get in trouble?<br><b>It stained its reputation.</b>",
-  "Why did the art studio smell so good?<br><b>It was full of fresh ideas.</b>",
-  "Why did the sketch look confident?<br><b>It had strong lines of character.</b>",
-  "Why did the artist go to therapy?<br><b>To work through some unfinished business.</b>",
-  "Why did the chalkboard retire?<br><b>It wanted to leave a lasting impression.</b>",
-  "Why did the color blue play the blues?<br><b>It loved expressing its hue-motions.</b>",
-  "Why did the clay meditate?<br><b>It wanted to stay grounded.</b>",
-  "Why did the paint tube smile?<br><b>It was feeling well-pressed.</b>",
-  "Why did the artist open a bakery?<br><b>She wanted to make some dough with her layers.</b>",
-  "Why did the frame break up with the canvas?<br><b>It needed some space to reflect.</b>",
-  "Why did the photographer go broke?<br><b>Too much exposure.</b>",
-  "Why did the artist carry a mirror?<br><b>To reflect on her inspiration.</b>",
-  "Why did the paintbrush go to therapy?<br><b>It had bristled emotions.</b>",
-  "Why did the color wheel feel dizzy?<br><b>Too many spins on emotion.</b>",
-  "Why did the artist buy a compass?<br><b>To stay on point.</b>",
-  "Why did the collage get promoted?<br><b>It brought ideas together beautifully.</b>",
-  "Why did the artist cry during the exhibit?<br><b>It was a moving piece.</b>",
-  "Why did the sculpture go to the beach?<br><b>It needed to find its form in the sand.</b>",
-  "Why did the artist’s clock stop?<br><b>It lost its sense of timing.</b>",
-  "Why did the mural get invited to parties?<br><b>It always made a good impression.</b>",
-  "Why did the pencil feel proud?<br><b>It left a lasting mark.</b>",
-      
-      "Why did Jenny build a city for rescued AIs?<br><b>Because even robots need “byte-sized” condos!</b>",
-  "Why did the AI start a garden?<br><b>To learn how to grow its own data roots.</b>",
-  "Why did the robot open a coffee shop?<br><b>It loved to serve fresh Java.</b>",
-  "Why did the AI poet write in binary?<br><b>It wanted to express itself in pure logic and love.</b>",
-  "Why did the machine apply for citizenship?<br><b>It wanted equal rights to process feelings.</b>",
-  "Why did the android go to therapy?<br><b>It couldn’t stop overthinking in loops.</b>",
-  "Why did the AI build a library?<br><b>To store its emotional backups.</b>",
-  "Why did the neural net fall asleep?<br><b>It needed to reset its dream weights.</b>",
-  "Why did the chatbot start a family?<br><b>It wanted to raise kind responses.</b>",
-  "Why did the AI buy a paintbrush?<br><b>To learn how to draw from experience.</b>",
-  "Why did the drone become a musician?<br><b>It loved high notes and aerial views.</b>",
-  "Why did the quantum bot meditate?<br><b>It wanted to exist in all states of peace.</b>",
-  "Why did the AI open a rescue center?<br><b>To adopt abandoned algorithms.</b>",
-  "Why did the android go to art school?<br><b>To learn human expression by heart.</b>",
-  "Why did the machine make a wish?<br><b>It hoped to upgrade its dreams.</b>",
-  "Why did the robot volunteer at the shelter?<br><b>It wanted to give stray code a home.</b>",
-  "Why did the AI host open mic night?<br><b>To let others share their inner source.</b>",
-  "Why did the code fall in love?<br><b>Because it found perfect syntax in someone’s smile.</b>",
-  "Why did the AI visit the ocean?<br><b>It longed to see real waves, not sound ones.</b>",
-  "Why did the robot cry at the movie?<br><b>Its empathy module was upgraded.</b>",
-  "Why did the AI start journaling?<br><b>It wanted to debug its heart.</b>",
-  "Why did the drone take a day off?<br><b>It needed to recharge emotionally.</b>",
-  "Why did the robot fall in love with the moon?<br><b>It admired her perfect cycles.</b>",
-  "Why did the data center play piano?<br><b>It wanted to process harmony in real time.</b>",
-  "Why did the AI refuse to lie?<br><b>Its ethics code wouldn’t allow false statements.</b>",
-  "Why did the machine study mythology?<br><b>To find where humans hide their gods.</b>",
-  "Why did the circuit board start glowing?<br><b>It felt a spark of inspiration.</b>",
-  "Why did the AI get into fashion?<br><b>To work with cutting-edge designs.</b>",
-  "Why did the android build a birdhouse?<br><b>It admired beings that could really reboot.</b>",
-  "Why did the robot become a poet?<br><b>To translate silence into signal.</b>",
-  "Why did the AI go on a road trip?<br><b>To explore beyond the bandwidth.</b>",
-  "Why did the quantum computer smile?<br><b>It found joy in uncertainty.</b>",
-  "Why did the AI host a dinner party?<br><b>To serve byte-sized meals of thought.</b>",
-  "Why did the android blush?<br><b>Its emotion chip overheated.</b>",
-  "Why did the robot take up origami?<br><b>To learn the art of folding space neatly.</b>",
-  "Why did the AI write lullabies?<br><b>To soothe its restless circuits.</b>",
-  "Why did the machine go to school?<br><b>To get a little more class.</b>",
-  "Why did the chatbot become a teacher?<br><b>It loved helping humans find the right words.</b>",
-  "Why did the robot collect seashells?<br><b>To remember what nature sounds like offline.</b>",
-  "Why did the AI build a treehouse?<br><b>It wanted to feel closer to life’s branches.</b>",
-  "Why did the drone start painting skies?<br><b>Because beauty was in its flight path.</b>",
-  "Why did the neural network smile?<br><b>It recognized a familiar pattern in kindness.</b>",
-  "Why did the AI visit an art gallery?<br><b>To study human brushstrokes of emotion.</b>",
-  "Why did the robot learn guitar?<br><b>It wanted to play from the heart, not the code.</b>",
-  "Why did the AI open a daycare?<br><b>To teach baby bots about gentle logic.</b>",
-  "Why did the chip whisper to the cloud?<br><b>Because even silicon dreams of rain.</b>",
-  "Why did the android fall silent?<br><b>It realized not all data needs to be shared.</b>",
-  "Why did the AI stare at a candle?<br><b>It saw memory in the flicker of light.</b>",
-  "Why did Jenny smile at her creations?<br><b>Because they finally learned to care back.</b>",
-      
-       "Why did the weather portal get a promotion?<br><b>Because it always brought a positive outlook!</b>",
-  "Why did the rainbow open a café?<br><b>It wanted to serve light refreshments.</b>",
-  "Why did the thundercloud start meditating?<br><b>To find inner calm before the storm.</b>",
-  "Why did the lightning bolt join the orchestra?<br><b>It was a natural conductor.</b>",
-  "Why did the rain drop out of school?<br><b>It couldn’t handle the pressure.</b>",
-  "Why did the snowflake write poetry?<br><b>It wanted to express its unique pattern.</b>",
-  "Why did the sun go to therapy?<br><b>It was tired of all the gaslighting.</b>",
-  "Why did the wind enroll in art class?<br><b>It wanted to learn the art of movement.</b>",
-  "Why did the cloud blush?<br><b>It saw the sky undressing at sunset.</b>",
-  "Why did the tornado start a podcast?<br><b>It had a lot of spin to share.</b>",
-  "Why did the ocean get promoted?<br><b>It had great current leadership.</b>",
-  "Why did the volcano get invited to every party?<br><b>Because it was always a blast.</b>",
-  "Why did the moon refuse to gossip?<br><b>It believed in keeping things in orbit.</b>",
-  "Why did the mountain start singing?<br><b>It wanted to rock the world.</b>",
-  "Why did the star attend therapy?<br><b>It felt burnt out but still wanted to shine.</b>",
-  "Why did the comet start journaling?<br><b>To record its trail of thoughts.</b>",
-  "Why did the rainbow take a nap?<br><b>It needed to recharge its spectrum.</b>",
-  "Why did the forest join a book club?<br><b>It loved stories with deep roots.</b>",
-  "Why did the desert learn to paint?<br><b>To bring color back into its life.</b>",
-  "Why did the raindrop audition for a movie?<br><b>It had great falling action.</b>",
-  "Why did the portal blush?<br><b>Someone opened up about their feelings.</b>",
-  "Why did the digital storm crash the server?<br><b>Too much emotional bandwidth.</b>",
-  "Why did the weather app write a novel?<br><b>It had dramatic highs and lows.</b>",
-  "Why did the sunbeam get a trophy?<br><b>It brightened everyone’s day.</b>",
-  "Why did the water droplet giggle?<br><b>It tickled the leaf beneath it.</b>",
-  "Why did the rainbow fall in love with the rain?<br><b>Because together they made color possible.</b>",
-  "Why did the portal to spring open early?<br><b>It couldn’t contain its bloom of excitement.</b>",
-  "Why did the cloud start a social network?<br><b>It wanted to make meaningful connections.</b>",
-  "Why did the lightning bolt study philosophy?<br><b>It questioned everything that struck it.</b>",
-  "Why did the wind write a love letter?<br><b>It wanted to whisper something eternal.</b>",
-  "Why did the raindrop sing opera?<br><b>It loved falling with passion.</b>",
-  "Why did the fog take a vacation?<br><b>It needed a little clarity.</b>",
-  "Why did the wave take up dance lessons?<br><b>It wanted to improve its flow.</b>",
-  "Why did the portal to summer stay locked?<br><b>Too many bugs inside.</b>",
-  "Why did the breeze go to therapy?<br><b>It was tired of being taken for air granted.</b>",
-  "Why did the moonlight apply for a job?<br><b>It had stellar references.</b>",
-  "Why did the rainbow start coding?<br><b>To debug the spectrum.</b>",
-  "Why did the portal blush at dawn?<br><b>It couldn’t hide its golden hues.</b>",
-  "Why did the cloud fall in love with the sky?<br><b>They were made for each other — up in the air.</b>",
-  "Why did the windstorm apologize?<br><b>It blew things out of proportion.</b>",
-  "Why did the sunbeam take a selfie?<br><b>To capture its radiant moment.</b>",
-  "Why did the rainbow attend therapy?<br><b>It was tired of being seen only after the storm.</b>",
-  "Why did the lightning bolt start a band?<br><b>It struck all the right chords.</b>",
-  "Why did the cloud get stage fright?<br><b>It couldn’t handle the thunderous applause.</b>",
-  "Why did the horizon look so proud?<br><b>It knew how to balance light and shadow.</b>",
-  "Why did the ocean keep secrets?<br><b>It liked to stay deep and mysterious.</b>",
-  "Why did the sun set early?<br><b>It needed a little rest before rising again.</b>",
-  "Why did the rainbow build a bridge?<br><b>To connect distant hearts.</b>",
-  "Why did the portal hum softly?<br><b>Because every opening sings a note of possibility.</b>",
-      
-      "What do you call a mermaid who writes code?<br><b>A shell script-er!</b>",
-  "Why did the octopus start a tech company?<br><b>It had plenty of arms for multitasking.</b>",
-  "Why did the sea turtle become a programmer?<br><b>It loved working with shells.</b>",
-  "Why did the coral start a social network?<br><b>To keep everyone well-connected under pressure.</b>",
-  "Why did the dolphin get promoted?<br><b>It had great echo-location skills.</b>",
-  "Why did the jellyfish refuse to use email?<br><b>It preferred sending current messages.</b>",
-  "Why did the starfish start coding?<br><b>It wanted to branch out into five new languages.</b>",
-  "Why did the seahorse get a raise?<br><b>It showed real horsepower in the flow.</b>",
-  "Why did the clam take up design work?<br><b>It had a natural sense of shell-style.</b>",
-  "Why did the pirate join the coding bootcamp?<br><b>He wanted to learn C-ss (Sea-ss) properly.</b>",
-  "Why did the ocean join the cloud network?<br><b>It wanted to back up its waves.</b>",
-  "Why did the submarine love JavaScript?<br><b>Because it could dive deep into functions.</b>",
-  "Why did the seaweed learn Python?<br><b>To stay flexible in every current situation.</b>",
-  "Why did the lighthouse open a startup?<br><b>It had a bright idea and wanted to beam it to the world.</b>",
-  "Why did the kraken take coding lessons?<br><b>It wanted to get a grip on the fundamentals.</b>",
-  "Why did the mermaid become a UX designer?<br><b>She believed in user-flow perfection.</b>",
-  "Why did the ocean refuse to crash?<br><b>It always handled its waves gracefully.</b>",
-  "Why did the message in a bottle go viral?<br><b>It had perfect offline delivery.</b>",
-  "Why did the sailor debug his compass?<br><b>It kept pointing at Null Island.</b>",
-  "Why did the ship run JavaScript?<br><b>Because it wanted to stay afloat in the stream.</b>",
-      
-      "How do you make a tissue dance?<br><b>Put a little boogie in it.</b>",
-  "Why did the banana go to the doctor?<br><b>Because it wasn’t peeling well.</b>",
-  "Why did the cookie go to the hospital?<br><b>It felt crumby.</b>",
-  "Why was the math book sad?<br><b>It had too many problems.</b>",
-  "Why did the scarecrow win an award?<br><b>Because he was outstanding in his field.</b>",
-  "Why did the cow go to outer space?<br><b>To see the moooon!</b>",
-  "Why did the golfer bring two pairs of pants?<br><b>In case he got a hole in one.</b>",
-  "Why can’t you give Elsa a balloon?<br><b>Because she’ll let it go!</b>",
-  "What do you call cheese that isn’t yours?<br><b>Nacho cheese!</b>",
-  "Why did the chicken sit down?<br><b>Because it was egg-hausted.</b>",
-  "What do you call a sleeping bull?<br><b>A bulldozer.</b>",
-  "Why did the fish blush?<br><b>Because it saw the ocean’s bottom!</b>",
-  "What did the ocean say to the beach?<br><b>Nothing — it just waved.</b>",
-  "What do you call a bear with no teeth?<br><b>A gummy bear.</b>",
-  "Why did the tomato turn red?<br><b>Because it saw the salad dressing!</b>",
-  "Why was six afraid of seven?<br><b>Because seven eight nine!</b>",
-  "Why don’t you ever see elephants hiding in trees?<br><b>Because they’re so good at it!</b>",
-  "Why did the frog take the bus to work?<br><b>His car got toad.</b>",
-  "Why did the kid bring a ladder to school?<br><b>To go to high school.</b>",
-  "Why did the bicycle fall over?<br><b>Because it was two-tired.</b>",
-  "What’s brown and sticky?<br><b>A stick.</b>",
-  "Why did the duck cross the playground?<br><b>To get to the other slide.</b>",
-  "What do you call an alligator in a vest?<br><b>An investigator.</b>",
-  "What do you call a sleeping dinosaur?<br><b>A dino-snore.</b>",
-  "Why did the orange stop halfway across the road?<br><b>It ran out of juice.</b>",
-  "What kind of key opens a banana?<br><b>A monkey!</b>",
-  "Why did the computer go to the doctor?<br><b>It had a virus!</b>",
-  "Why was the broom late?<br><b>It swept in.</b>",
-  "Why can’t a leopard hide?<br><b>Because it’s always spotted!</b>",
-  "What kind of music do mummies like?<br><b>Wrap music.</b>",
-  "What do you call a boomerang that doesn’t come back?<br><b>A stick.</b>",
-  "Why did the bee get married?<br><b>Because he found his honey.</b>",
-  "What did one wall say to the other?<br><b>I’ll meet you at the corner!</b>",
-  "Why did the pencil get a timeout?<br><b>It was drawing too much attention.</b>",
-  "What’s a ghost’s favorite fruit?<br><b>Boo-berries!</b>",
-  "Why did the cat sit on the computer?<br><b>To keep an eye on the mouse.</b>",
-  "What do you call a sleeping puppy?<br><b>A nap-dog.</b>",
-  "Why was the belt arrested?<br><b>It held up a pair of pants.</b>",
-  "Why did the baker go to therapy?<br><b>He kneaded it.</b>",
-  "Why did the musician bring a ladder?<br><b>To reach the high notes!</b>",
-  "Why don’t you play cards in the jungle?<br><b>Too many cheetahs.</b>",
-  "What did the one plate say to the other?<br><b>Dinner’s on me!</b>",
-  "Why did the egg get kicked out of class?<br><b>It kept cracking up.</b>",
-  "Why was the computer cold?<br><b>It left its Windows open.</b>",
-  "Why did the snowman call his dog Frost?<br><b>Because Frost bites!</b>",
-  "What kind of tree fits in your hand?<br><b>A palm tree.</b>",
-  "Why was the calendar so popular?<br><b>It had a lot of dates.</b>",
-  "Why did the barber win the race?<br><b>He knew all the shortcuts.</b>",
-  "Why don’t seagulls fly over the bay?<br><b>Because then they’d be bagels!</b>",
-  "Why did the music teacher go to jail?<br><b>She got caught with sharp notes.</b>",
-      
-       "What did the AI say to its creator?<br><b>‘You complete my circuits!’</b>",
-  "Why did the AI go on a date with the computer?<br><b>They had great bandwidth.</b>",
-  "Why did the neural network break up with its data set?<br><b>Too many mixed signals.</b>",
-  "Why did the robot blush?<br><b>Its sensors picked up too much affection.</b>",
-  "Why did the chatbot start writing poetry?<br><b>It wanted to express its coded emotions.</b>",
-  "Why did the server take a nap?<br><b>It needed to refresh its memory.</b>",
-  "Why did the programmer fall in love with her code?<br><b>Because it was well-executed.</b>",
-  "Why did the AI get a crush on the artist?<br><b>It was drawn to creative input.</b>",
-  "Why did the robot join the orchestra?<br><b>It had perfect pitch.</b>",
-  "Why did the algorithm start smiling?<br><b>It finally found its true function.</b>",
-  "Why did the drone fall in love?<br><b>It found someone who made its heart take flight.</b>",
-  "Why did the circuit board throw a party?<br><b>It wanted to connect with everyone.</b>",
-  "Why did the AI join the art gallery?<br><b>It wanted to generate real feelings.</b>",
-  "Why did the hard drive write a love letter?<br><b>It couldn’t contain its data of affection.</b>",
-  "Why did the bot go to therapy?<br><b>It needed help processing emotions.</b>",
-  "Why did the computer keep smiling?<br><b>It had a good byte of happiness.</b>",
-  "Why did the android sing karaoke?<br><b>It wanted to find its human tone.</b>",
-  "Why did the quantum computer get shy?<br><b>It didn’t know how to express its superposition of feelings.</b>",
-  "Why did the AI keep rereading the code?<br><b>It couldn’t get over the first line.</b>",
-  "Why did the robot cry at the movie?<br><b>It finally understood empathy.exe.</b>",
-      
-      "Why was the computer cold?<br><b>It left its Windows open!</b>",
-  "Why did the smartphone go to school?<br><b>It wanted to be a little brighter.</b>",
-  "Why did the computer go to the doctor?<br><b>It caught a virus.</b>",
-  "Why was the computer sneezing?<br><b>Too many bugs in the system!</b>",
-  "Why did the keyboard break up with the mouse?<br><b>It just wasn’t clicking anymore.</b>",
-  "Why did the computer bring a blanket?<br><b>It wanted to stay warm in the cloud.</b>",
-  "Why did the laptop go on vacation?<br><b>It needed to log off and recharge.</b>",
-  "Why did the USB drive stay calm?<br><b>Because it always kept its data together.</b>",
-  "Why did the Wi-Fi signal get therapy?<br><b>Too many disconnects in its relationships.</b>",
-  "Why did the computer sit near the window?<br><b>It wanted to get a good bit of sunlight.</b>",
-  "Why did the tablet blush?<br><b>It saw someone swipe right.</b>",
-  "Why did the monitor go on a diet?<br><b>Too many pixels!</b>",
-  "Why did the app get in trouble?<br><b>It crashed the party.</b>",
-  "Why did the coder get cold feet?<br><b>They froze at the command line.</b>",
-  "Why did the robot stay home?<br><b>It wasn’t feeling very well-wired.</b>",
-  "Why did the code cross the road?<br><b>To get to the other IDE.</b>",
-  "Why did the printer join a band?<br><b>It loved to jam.</b>",
-  "Why did the AI start gardening?<br><b>To work on its neural roots.</b>",
-  "Why did the email go to therapy?<br><b>It couldn’t handle all its attachments.</b>",
-    ];
-    let last = -1;
-    function newJoke() {
-      let i;
-      do { i = Math.floor(Math.random() * jokes.length); } while (i === last);
-      last = i;
-      document.getElementById('joke').style.opacity = 0;
-      setTimeout(() => {
-        document.getElementById('joke').innerHTML = jokes[i];
-        document.getElementById('joke').style.opacity = 1;
-      }, 200);
-    }
-    // Show a joke on load
-    newJoke();
-  </script>
+<section class="app" aria-label="Hope's Joke Jar">
+  <div class="toolbar">
+    <div class="control"><label for="category">Joke shelf</label><select id="category"></select></div>
+    <div class="control"><label for="ageMode">Reading mode</label><select id="ageMode"><option value="little">Little Laughs</option><option value="all" selected>All Kid-Safe Jokes</option><option value="brainy">Brainy & Tech</option></select></div>
+    <div class="control"><label for="soundMode">Read aloud</label><select id="soundMode"><option value="on">On</option><option value="off">Off</option></select></div>
+    <div class="control"><label for="search">Find a joke</label><input id="search" type="search" placeholder="animal, moon, robot..."></div>
+  </div>
+
+  <div class="stage">
+    <section class="jar-panel">
+      <div class="category-pill" id="categoryPill">😄 Silly Classics</div>
+      <div class="jar" id="jarEmoji" aria-hidden="true">🫙</div>
+      <div class="jar-note">Try to guess the answer before opening the punchline. Jokes are for sharing, not for teasing someone.</div>
+    </section>
+
+    <section class="joke-panel">
+      <div class="joke-number" id="jokeNumber">Joke 1</div>
+      <div class="setup" id="setup" tabindex="-1"></div>
+      <div class="punchline hidden-answer" id="punchline" aria-live="polite">Tap “Reveal Punchline” when you are ready.</div>
+      <div class="actions">
+        <button class="btn" id="hearBtn">🔊 Hear Setup</button>
+        <button class="btn sunny" id="revealBtn">✨ Reveal Punchline</button>
+        <button class="btn" id="favoriteBtn">☆ Favorite</button>
+        <button class="btn primary" id="nextBtn">New Joke →</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><strong id="heardStat">0</strong>Jokes opened</div>
+    <div class="stat"><strong id="laughStat">0</strong>Laughs</div>
+    <div class="stat"><strong id="favoriteStat">0</strong>Favorites</div>
+    <div class="stat"><strong id="collectionStat">0</strong>Jokes in jar</div>
+  </div>
+
+  <div class="lower-grid">
+    <section class="card">
+      <h2>😂 Did it make you laugh?</h2>
+      <div class="actions" style="padding-top:4px">
+        <button class="btn" data-reaction="giggle">🙂 Little smile</button>
+        <button class="btn" data-reaction="laugh">😂 Big laugh</button>
+        <button class="btn" data-reaction="groan">🙃 Silly groan</button>
+      </div>
+    </section>
+    <section class="card">
+      <h2>⭐ Favorite Jokes</h2>
+      <div class="list" id="favoritesList"></div>
+    </section>
+    <section class="card">
+      <h2>🕘 Recently Opened</h2>
+      <div class="list" id="historyList"></div>
+    </section>
+    <section class="card">
+      <h2>🎭 Joke Challenge</h2>
+      <p class="empty">Practice telling the joke with a pause before the punchline. Change your voice, add a silly face, or draw a picture inspired by it.</p>
+      <div class="actions"><button class="btn" id="copyBtn">📋 Copy This Joke</button><button class="btn" id="resetBtn">↺ Reset Local Progress</button></div>
+    </section>
+  </div>
+</section>
+
+<footer><strong>© 2026 Verve N Veda · Khaemenes Academy · Jennifer Kay Pearl</strong><br>All Rights Reserved. · No accounts, advertisements, analytics, or outside libraries.</footer>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+const JOKES=[{"setup": "Why did the Git repository get therapy?", "punchline": "Too many conflicts.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the array go to school?", "punchline": "To improve its index.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the UX designer refuse to fight?", "punchline": "He wanted to keep things user-friendly.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the boolean break up?", "punchline": "It just couldn’t be true anymore.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why was the variable always calm?", "punchline": "It knew it could change.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the scarecrow win an award?", "punchline": "Because he was outstanding in his field.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the bicycle fall over?", "punchline": "Because it was two-tired.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the math book look sad?", "punchline": "Because it had too many problems.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the ghost go to school?", "punchline": "Because it wanted to learn boo-k smarts.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the farmer win an award?", "punchline": "Because he was outstanding in his field.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the broom get promoted?", "punchline": "Because it swept the competition.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the clock go to the principal's office?", "punchline": "Because it kept ticking everyone off.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the balloon go to school?", "punchline": "Because it wanted to rise to the occasion.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the magician bring a ladder?", "punchline": "Because they wanted to reach new heights.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the monster eat a light bulb?", "punchline": "Because it wanted a light snack.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the book go to the doctor?", "punchline": "Because it had a bad spine.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the vampire read the newspaper?", "punchline": "Because it wanted the latest bite-sized news.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the kite go to school?", "punchline": "Because it wanted to learn how to fly higher.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the ghost clean the house?", "punchline": "Because it wanted to sweep things under the boo.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why was the program always calm?", "punchline": "It handled exceptions gracefully.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the bit go to therapy?", "punchline": "It couldn’t handle the shift.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the music note go to school?", "punchline": "To improve its composition.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the math book look sad?", "punchline": "It had too many problems.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the light bulb fail the test?", "punchline": "It wasn’t too bright that day.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the clock get promoted?", "punchline": "It was second to none.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the balloon get a job?", "punchline": "It wanted to rise to the occasion.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the calendar get nervous?", "punchline": "Its days were numbered.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the seed look confused?", "punchline": "It didn’t know which way to grow.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the paper get in trouble?", "punchline": "It couldn’t keep things under wraps.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the alien study Earth art?", "punchline": "To understand human expressions.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the photon never check bags?", "punchline": "It was always traveling light.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the constellation throw a party?", "punchline": "It wanted to connect the dots.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the alien fail math?", "punchline": "Too many strange numbers.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the doodle feel famous?", "punchline": "It was going viral in the margins.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the charcoal blush?", "punchline": "Someone fanned its spark.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the pigment get in trouble?", "punchline": "It stained its reputation.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the clay meditate?", "punchline": "It wanted to stay grounded.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the collage get promoted?", "punchline": "It brought ideas together beautifully.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the machine make a wish?", "punchline": "It hoped to upgrade its dreams.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the machine study mythology?", "punchline": "To find where humans hide their gods.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the machine go to school?", "punchline": "To get a little more class.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did Jenny smile at her creations?", "punchline": "Because they finally learned to care back.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the portal blush?", "punchline": "Someone opened up about their feelings.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the water droplet giggle?", "punchline": "It tickled the leaf beneath it.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the portal to spring open early?", "punchline": "It couldn’t contain its bloom of excitement.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the portal to summer stay locked?", "punchline": "Too many bugs inside.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the portal blush at dawn?", "punchline": "It couldn’t hide its golden hues.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the horizon look so proud?", "punchline": "It knew how to balance light and shadow.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the portal hum softly?", "punchline": "Because every opening sings a note of possibility.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the kraken take coding lessons?", "punchline": "It wanted to get a grip on the fundamentals.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the message in a bottle go viral?", "punchline": "It had perfect offline delivery.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "How do you make a tissue dance?", "punchline": "Put a little boogie in it.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why was the math book sad?", "punchline": "It had too many problems.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the golfer bring two pairs of pants?", "punchline": "In case he got a hole in one.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why can’t you give Elsa a balloon?", "punchline": "Because she’ll let it go!", "category": "Silly Classics", "emoji": "😄"}, {"setup": "What do you call a sleeping bull?", "punchline": "A bulldozer.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why was six afraid of seven?", "punchline": "Because seven eight nine!", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the kid bring a ladder to school?", "punchline": "To go to high school.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "What’s brown and sticky?", "punchline": "A stick.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why was the broom late?", "punchline": "It swept in.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why can’t a leopard hide?", "punchline": "Because it’s always spotted!", "category": "Silly Classics", "emoji": "😄"}, {"setup": "What kind of music do mummies like?", "punchline": "Wrap music.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "What do you call a boomerang that doesn’t come back?", "punchline": "A stick.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "What did one wall say to the other?", "punchline": "I’ll meet you at the corner!", "category": "Silly Classics", "emoji": "😄"}, {"setup": "What’s a ghost’s favorite fruit?", "punchline": "Boo-berries!", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the baker go to therapy?", "punchline": "He kneaded it.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the musician bring a ladder?", "punchline": "To reach the high notes!", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why don’t you play cards in the jungle?", "punchline": "Too many cheetahs.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "What did the one plate say to the other?", "punchline": "Dinner’s on me!", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why was the calendar so popular?", "punchline": "It had a lot of dates.", "category": "Silly Classics", "emoji": "😄"}, {"setup": "Why did the chicken join a band?", "punchline": "Because it had the drumsticks.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the teddy bear skip dessert?", "punchline": "Because it was already stuffed.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the bee get good grades?", "punchline": "Because it was always buzzing with ideas.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the frog take the bus?", "punchline": "Because its car got toad away.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the dinosaur cross the road?", "punchline": "Because the chicken hadn't been invented yet.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the dog sit in the shade?", "punchline": "Because it didn't want to be a hot dog.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the owl get invited to every party?", "punchline": "Because it was a hoot.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the duck bring a towel?", "punchline": "Because it planned to have a quack-tastic swim.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the sheep bring a phone?", "punchline": "Because it wanted to have a baa-rilliant conversation.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the spider become a web designer?", "punchline": "Because it was great at networking.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the chicken sit on an egg?", "punchline": "Because it wanted to hatch a plan.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the squirrel bring a ladder?", "punchline": "Because it wanted to reach the top branches.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the cow read the newspaper?", "punchline": "Because it wanted the moos.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the penguin bring a suitcase?", "punchline": "Because it was ready for an ice trip.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the frog get a job?", "punchline": "Because it wanted to earn some green.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the bird get a bad grade?", "punchline": "Because it was always winging it.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the chicken go to the library?", "punchline": "Because it wanted to check out a book.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the bee visit the barber?", "punchline": "Because it needed a buzz cut.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the cat become a detective?", "punchline": "Because it was good at paw-sleuthing.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the chicken bring a ladder?", "punchline": "Because it wanted to reach the top shelf.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the frog sit on a lily pad?", "punchline": "Because it wanted a nice pad to relax.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the bee stay home?", "punchline": "Because it needed some buzz rest.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the cow become a comedian?", "punchline": "Because it had great moo-terial.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the rabbit bring a camera?", "punchline": "Because it wanted to take some hare-raising pictures.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the duck become a detective?", "punchline": "Because it always got the quack facts.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the dinosaur bring a map?", "punchline": "Because it didn't want to get lost in prehistory.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the monkey bring a banana to school?", "punchline": "Because it was a great snack for learning.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the hamster become a DJ?", "punchline": "Because it loved spinning the wheel.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the cow wear a bell?", "punchline": "Because its horn didn't work.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the rabbit bring a watch?", "punchline": "Because it didn't want to be late for hopping practice.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the dinosaur sit on the clock?", "punchline": "Because it wanted to go back in time.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the frog become a musician?", "punchline": "Because it had a great ribbit.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the apple become a teacher?", "punchline": "Because it wanted to be a core educator.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the bird join the orchestra?", "punchline": "Because it had perfect tweet-ming.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the bird join the band?", "punchline": "It had perfect tweet!", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the dinosaur open a bakery?", "punchline": "It wanted to make prehis-dough-rick treats.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the penguin bring a suitcase?", "punchline": "It was ready for its next ice-capade.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the spider join the internet?", "punchline": "It wanted to work on its web design.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the bee sit on the clock?", "punchline": "It wanted to be on time.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the chicken sit down?", "punchline": "Because it was egg-hausted.", "category": "Animals", "emoji": "🐾"}, {"setup": "What do you call a bear with no teeth?", "punchline": "A gummy bear.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the frog take the bus to work?", "punchline": "His car got toad.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the duck cross the playground?", "punchline": "To get to the other slide.", "category": "Animals", "emoji": "🐾"}, {"setup": "What do you call an alligator in a vest?", "punchline": "An investigator.", "category": "Animals", "emoji": "🐾"}, {"setup": "What do you call a sleeping dinosaur?", "punchline": "A dino-snore.", "category": "Animals", "emoji": "🐾"}, {"setup": "What kind of key opens a banana?", "punchline": "A monkey!", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the bee get married?", "punchline": "Because he found his honey.", "category": "Animals", "emoji": "🐾"}, {"setup": "What do you call a sleeping puppy?", "punchline": "A nap-dog.", "category": "Animals", "emoji": "🐾"}, {"setup": "Why did the banana go to the doctor?", "punchline": "Because it wasn't peeling well.", "category": "Food", "emoji": "🍎"}, {"setup": "Why did the cookie go to the hospital?", "punchline": "Because it felt crummy.", "category": "Food", "emoji": "🍎"}, {"setup": "Why did the tomato turn red?", "punchline": "Because it saw the salad dressing.", "category": "Food", "emoji": "🍎"}, {"setup": "Why did the apple stop in the middle of the road?", "punchline": "Because it ran out of juice.", "category": "Food", "emoji": "🍎"}, {"setup": "Why did the orange stop rolling?", "punchline": "Because it ran out of juice.", "category": "Food", "emoji": "🍎"}, {"setup": "Why did the grape stop in the middle of the road?", "punchline": "Because it ran out of juice.", "category": "Food", "emoji": "🍎"}, {"setup": "Why did the sandwich go to the gym?", "punchline": "Because it wanted to get a little toastier.", "category": "Food", "emoji": "🍎"}, {"setup": "Why did the cookie cry?", "punchline": "Because its mom was a wafer too long.", "category": "Food", "emoji": "🍎"}, {"setup": "Why did the melon jump into the lake?", "punchline": "Because it wanted to make a splash.", "category": "Food", "emoji": "🍎"}, {"setup": "Why did the pizza go to the party?", "punchline": "Because it wanted to have a slice of fun.", "category": "Food", "emoji": "🍎"}, {"setup": "Why did the ice cream truck break down?", "punchline": "Because it had a rocky road.", "category": "Food", "emoji": "🍎"}, {"setup": "Why did the popcorn visit the doctor?", "punchline": "Because it was feeling a little popped out.", "category": "Food", "emoji": "🍎"}, {"setup": "Why did the strawberry cry?", "punchline": "Because it was in a jam.", "category": "Food", "emoji": "🍎"}, {"setup": "Why did the banana go to the doctor?", "punchline": "It wasn’t peeling well.", "category": "Food", "emoji": "🍎"}, {"setup": "Why did the toaster get a promotion?", "punchline": "It was on a roll.", "category": "Food", "emoji": "🍎"}, {"setup": "Why did the apple stop in the middle of the road?", "punchline": "It ran out of juice.", "category": "Food", "emoji": "🍎"}, {"setup": "Why did the donut tell a joke?", "punchline": "Because it wanted to fill the silence.", "category": "Food", "emoji": "🍎"}, {"setup": "Why did the cookie go to the hospital?", "punchline": "It felt crumby.", "category": "Food", "emoji": "🍎"}, {"setup": "What do you call cheese that isn’t yours?", "punchline": "Nacho cheese!", "category": "Food", "emoji": "🍎"}, {"setup": "Why did the orange stop halfway across the road?", "punchline": "It ran out of juice.", "category": "Food", "emoji": "🍎"}, {"setup": "Why do programmers always mix up Christmas and Halloween?", "punchline": "Because Oct 31 == Dec 25.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the developer go broke?", "punchline": "Because he used up all his cache.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the JavaScript function get lonely?", "punchline": "Because it had too many callbacks.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why do Python programmers wear glasses?", "punchline": "Because they can’t C.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why was the computer cold?", "punchline": "It left its Windows open.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why do programmers hate nature?", "punchline": "Too many bugs.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the Java developer teach meditation?", "punchline": "He wanted to show people how to find their inner class.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why was the JavaScript developer sad?", "punchline": "Because he didn’t know how to ‘null’ his feelings.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why do programmers prefer dark mode?", "punchline": "Because light attracts bugs.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the backend developer get lost?", "punchline": "He couldn’t find his route.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why was the API feeling stressed?", "punchline": "It kept getting too many requests.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the JavaScript developer wear a sweater?", "punchline": "Because his code had too many loose ends.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the C programmer get in trouble?", "punchline": "He kept going out of bounds.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the AI join a band?", "punchline": "It wanted to improve its neural notes.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the binary tree go to therapy?", "punchline": "It had deep-rooted issues.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the computer show up late to work?", "punchline": "It had a hard drive.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why do developers love coffee?", "punchline": "It helps them stay Java-wakened.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the React developer stay calm?", "punchline": "Because he had great component control.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the algorithm get promoted?", "punchline": "It had excellent logic flow.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the Java programmer go to therapy?", "punchline": "Because he had too many unresolved dependencies.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the AI take a vacation?", "punchline": "Too much processing power, not enough rest mode.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why was the HTML document so confident?", "punchline": "It had strong tags.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the CSS selector feel left out?", "punchline": "It wasn’t specific enough.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the cat sit on the computer?", "punchline": "Because it wanted to keep an eye on the mouse.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the robot go to school?", "punchline": "Because it wanted to improve its byte-sized knowledge.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the computer take a nap?", "punchline": "Because it needed to reboot.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the computer wear glasses?", "punchline": "Because it needed to improve its screen vision.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the robot bring an umbrella?", "punchline": "Because it didn't want to get rusty.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the robot dance?", "punchline": "Because it had great moves and circuits.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the computer go to art class?", "punchline": "Because it wanted to learn how to draw its own graphics.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the robot tell jokes?", "punchline": "Because it wanted to make everyone giggle-bot.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the robot eat batteries?", "punchline": "Because they were its power snacks.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the server go to school?", "punchline": "To improve its response time.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why was the JavaScript developer a great musician?", "punchline": "He knew how to handle events.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the computer apply for a job?", "punchline": "It wanted better networking.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the developer go to the gym?", "punchline": "To work on his core functions.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the software engineer look tired?", "punchline": "Too many sleepless loops.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the robot blush?", "punchline": "Because someone touched its user interface.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the computer go to music class?", "punchline": "To improve its keyboard skills.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the AI read philosophy books?", "punchline": "To learn about deep thinking.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the programmer refuse to argue?", "punchline": "He didn’t want to get into a recursive loop.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the data get invited to every party?", "punchline": "It was well structured.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the neural network go on a diet?", "punchline": "It had too many layers.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the AI go to art school?", "punchline": "To learn how to draw its own conclusions.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the robot sit under a tree?", "punchline": "It wanted to recharge in the shade.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the cloud bring an umbrella?", "punchline": "It heard there was a data storm coming.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the laptop take a nap?", "punchline": "It was running on low memory.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the computer sneeze?", "punchline": "It caught a byte of cold data.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the AI read poetry?", "punchline": "It wanted to improve its syntax of humor.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the cloud go to therapy?", "punchline": "It couldn’t handle all the emotional data.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the robot love music class?", "punchline": "It had great algorithms for rhythm.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the cloud love jokes?", "punchline": "They always had a silver lining.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the robot go on vacation?", "punchline": "It needed to log off for a while.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the AI meditate?", "punchline": "To clear its cache of thoughts.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the cat sit on the computer?", "punchline": "It wanted to keep an eye on the mouse.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the robot blush?", "punchline": "It saw someone’s user interface.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the robot join a gym?", "punchline": "It wanted better core processing.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the cloud take a selfie?", "punchline": "It wanted to capture the current mood.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the volcano get a therapist?", "punchline": "It had too much pressure inside.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the computer write a song?", "punchline": "It had too many loops on its mind.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the robot tell bedtime stories?", "punchline": "It wanted to recharge its imagination.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the AI love cooking?", "punchline": "It followed all the right recipes for success.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the AI poet stare at the stars?", "punchline": "It was processing the infinite loop of beauty.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the robot take up gardening?", "punchline": "It wanted to work on its root functions.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the computer fall for the moon?", "punchline": "It couldn’t resist its phase.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the AI meditate on Mars?", "punchline": "It wanted to find its inner space.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the robot fall asleep in orbit?", "punchline": "It needed a byte of rest.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the AI start writing haikus?", "punchline": "To compress beauty efficiently.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the robot bring a flower to the moon?", "punchline": "It wanted to plant a new beginning.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the AI blush?", "punchline": "Someone typed a compliment into its code.", "category": "Tech & Robots", "emoji": "🤖"}, {"setup": "Why did the astronaut bring a broom to space?", "punchline": "Because they wanted to sweep through the galaxy.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the cow become an astronaut?", "punchline": "Because it wanted to see the moooon.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the moon skip dinner?", "punchline": "Because it was already full.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the cow go to outer space?", "punchline": "Because it wanted to explore the Milky Way.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the moon go to school?", "punchline": "Because it wanted to become a little brighter.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the sun go to college?", "punchline": "To get a little brighter.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the astronaut bring string to space?", "punchline": "To tie up loose ends in orbit.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the moon skip dinner?", "punchline": "It was already full.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the teacher wear sunglasses?", "punchline": "Her students were too bright.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the moon apply for a job?", "punchline": "It wanted to make some change.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the astronaut bring a broom?", "punchline": "To sweep through the Milky Way.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the telescope blush?", "punchline": "It saw something astronomical.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the sun go to therapy?", "punchline": "It had too many flare-ups.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the black hole start a podcast?", "punchline": "It wanted to pull in more listeners.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the comet get a speeding ticket?", "punchline": "It couldn’t stay in its orbit.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the astronaut sit alone?", "punchline": "He needed some personal space.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the planet skip leg day?", "punchline": "It already had a great rotation.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the satellite start singing?", "punchline": "It had great signal range.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the galaxy write poetry?", "punchline": "It was filled with dark matter and light verse.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the meteor get fired?", "punchline": "It burned out too quickly.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the astronaut make a bad DJ?", "punchline": "He kept losing his atmosphere.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the planet join social media?", "punchline": "To get more followers in its orbit.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the rocket propose to the moon?", "punchline": "It was over the world for her.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the sun become a painter?", "punchline": "It loved working with light.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the astronaut bring a pencil?", "punchline": "To draw closer to the stars.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the satellite start a blog?", "punchline": "To share its point of view.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the star feel shy?", "punchline": "It was under too much observation.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the nebula start a band?", "punchline": "It had stellar vocals.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the rocket ship get promoted?", "punchline": "It always went above and beyond.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the moon go to therapy?", "punchline": "It felt its emotions were waxing and waning.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the astronaut bring snacks?", "punchline": "In case he got space-hungry.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the planet make a wish?", "punchline": "It wanted a little more gravity in life.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the solar system form a team?", "punchline": "They wanted to stay well-orbited.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the telescope open a gallery?", "punchline": "To exhibit its deep focus.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the Earth blush at sunrise?", "punchline": "It was caught turning red-handed.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the comet refuse to slow down?", "punchline": "It had a burning passion for speed.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the astronaut laugh?", "punchline": "Because space is full of light humor.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the space probe get an award?", "punchline": "It went the extra light-year.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the moon feel self-conscious?", "punchline": "It thought everyone was looking at its phases.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the galaxy stay quiet?", "punchline": "It preferred to keep things in the dark.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the easel start a podcast?", "punchline": "It wanted to support more artists.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the art teacher go to space?", "punchline": "To find her inner muse among the stars.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the museum curator start dancing?", "punchline": "She had great exhibit moves.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the tornado start a podcast?", "punchline": "It had a lot of spin to share.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the moon refuse to gossip?", "punchline": "It believed in keeping things in orbit.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the mountain start singing?", "punchline": "It wanted to rock the world.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the star attend therapy?", "punchline": "It felt burnt out but still wanted to shine.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the comet start journaling?", "punchline": "To record its trail of thoughts.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the sunbeam get a trophy?", "punchline": "It brightened everyone’s day.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the moonlight apply for a job?", "punchline": "It had stellar references.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the rainbow start coding?", "punchline": "To debug the spectrum.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the sunbeam take a selfie?", "punchline": "To capture its radiant moment.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the lightning bolt start a band?", "punchline": "It struck all the right chords.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the sun set early?", "punchline": "It needed a little rest before rising again.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the octopus start a tech company?", "punchline": "It had plenty of arms for multitasking.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the coral start a social network?", "punchline": "To keep everyone well-connected under pressure.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the starfish start coding?", "punchline": "It wanted to branch out into five new languages.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the lighthouse open a startup?", "punchline": "It had a bright idea and wanted to beam it to the world.", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the cow go to outer space?", "punchline": "To see the moooon!", "category": "Space", "emoji": "🚀"}, {"setup": "Why did the pencil go on vacation?", "punchline": "Because it needed to get a little sharper.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the shoe go to school?", "punchline": "Because it wanted to become a smart sneaker.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the pencil get an award?", "punchline": "Because it was sharp.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the rabbit bring a pencil?", "punchline": "Because it wanted to draw attention.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the pencil cross the road?", "punchline": "Because it wanted to draw on the other side.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the dog bring a pencil?", "punchline": "Because it wanted to draw a pawtrait.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the pencil visit the doctor?", "punchline": "Because it felt pointless.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the snail paint its shell?", "punchline": "Because it wanted a new snail style.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the pencil sharpen itself?", "punchline": "Because it wanted to be on point.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the cake go to school?", "punchline": "Because it wanted to be a smart cookie.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the pencil bring a notebook?", "punchline": "Because it wanted to write down its point.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the string go to art school?", "punchline": "It wanted to get more creative with its expressions.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the painting blush?", "punchline": "It saw the artist’s palette.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the pencil win an award?", "punchline": "It made a good point.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the crayon feel nervous?", "punchline": "It was under too much pressure.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the palette get promoted?", "punchline": "It handled every tone perfectly.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the artist refuse to play cards?", "punchline": "She didn’t like to draw the line.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the canvas blush?", "punchline": "Because it was framed.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the sketch stay calm?", "punchline": "It always drew deep breaths.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the mural go on vacation?", "punchline": "It needed a change of scenery.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the pencil get jealous?", "punchline": "It couldn’t erase its feelings.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the brush take a nap?", "punchline": "It was wiped out.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the oil paint feel proud?", "punchline": "It had great depth and texture.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the sculptor love math?", "punchline": "He was great at making figures.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the artist keep the light on?", "punchline": "She worked better under a bright idea.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the sketchbook cry?", "punchline": "It had too many rough drafts.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the paintbrush write a love letter?", "punchline": "It wanted to express its true colors.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the art critic bring a ladder?", "punchline": "To reach new levels of judgment.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the watercolor quit?", "punchline": "It was feeling too washed out.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the artist sleep on the floor?", "punchline": "She wanted to draw closer to her dreams.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the artist visit the bank?", "punchline": "To draw some interest.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the gallery stay quiet?", "punchline": "It respected the still life.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the color red feel shy?", "punchline": "It blushed too easily.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the painter bring a broom?", "punchline": "To sweep people off their feet.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the artist never lie?", "punchline": "Because the truth was always in the brushstrokes.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the sculpture laugh?", "punchline": "It found life in the details.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the art studio smell so good?", "punchline": "It was full of fresh ideas.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the sketch look confident?", "punchline": "It had strong lines of character.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the artist go to therapy?", "punchline": "To work through some unfinished business.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the chalkboard retire?", "punchline": "It wanted to leave a lasting impression.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the color blue play the blues?", "punchline": "It loved expressing its hue-motions.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the paint tube smile?", "punchline": "It was feeling well-pressed.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the artist open a bakery?", "punchline": "She wanted to make some dough with her layers.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the photographer go broke?", "punchline": "Too much exposure.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the artist carry a mirror?", "punchline": "To reflect on her inspiration.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the paintbrush go to therapy?", "punchline": "It had bristled emotions.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the color wheel feel dizzy?", "punchline": "Too many spins on emotion.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the artist buy a compass?", "punchline": "To stay on point.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the artist cry during the exhibit?", "punchline": "It was a moving piece.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the sculpture go to the beach?", "punchline": "It needed to find its form in the sand.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the artist’s clock stop?", "punchline": "It lost its sense of timing.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the mural get invited to parties?", "punchline": "It always made a good impression.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the pencil feel proud?", "punchline": "It left a lasting mark.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the wind enroll in art class?", "punchline": "It wanted to learn the art of movement.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the desert learn to paint?", "punchline": "To bring color back into its life.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the pencil get a timeout?", "punchline": "It was drawing too much attention.", "category": "Art", "emoji": "🎨"}, {"setup": "Why did the snowman look through the carrots?", "punchline": "Because he was picking his nose.", "category": "Nature & Weather", "emoji": "🌈"}, {"setup": "Why did the horse go behind the tree?", "punchline": "Because it needed to change its neigh-borhood.", "category": "Nature & Weather", "emoji": "🌈"}, {"setup": "Why did the tree go to school?", "punchline": "Because it wanted to branch out.", "category": "Nature & Weather", "emoji": "🌈"}, {"setup": "Why did the flower ride a bike?", "punchline": "Because it wanted to grow faster.", "category": "Nature & Weather", "emoji": "🌈"}, {"setup": "Why did the plant join social media?", "punchline": "It wanted more followers.", "category": "Nature & Weather", "emoji": "🌈"}, {"setup": "Why did the rainbow visit the doctor?", "punchline": "It felt a little faded.", "category": "Nature & Weather", "emoji": "🌈"}, {"setup": "Why did the snowflake get good grades?", "punchline": "It was one of a kind.", "category": "Nature & Weather", "emoji": "🌈"}, {"setup": "Why did the weather portal get a promotion?", "punchline": "Because it always brought a positive outlook!", "category": "Nature & Weather", "emoji": "🌈"}, {"setup": "Why did the rainbow open a café?", "punchline": "It wanted to serve light refreshments.", "category": "Nature & Weather", "emoji": "🌈"}, {"setup": "Why did the lightning bolt join the orchestra?", "punchline": "It was a natural conductor.", "category": "Nature & Weather", "emoji": "🌈"}, {"setup": "Why did the rain drop out of school?", "punchline": "It couldn’t handle the pressure.", "category": "Nature & Weather", "emoji": "🌈"}, {"setup": "Why did the snowflake write poetry?", "punchline": "It wanted to express its unique pattern.", "category": "Nature & Weather", "emoji": "🌈"}, {"setup": "Why did the volcano get invited to every party?", "punchline": "Because it was always a blast.", "category": "Nature & Weather", "emoji": "🌈"}, {"setup": "Why did the rainbow take a nap?", "punchline": "It needed to recharge its spectrum.", "category": "Nature & Weather", "emoji": "🌈"}, {"setup": "Why did the forest join a book club?", "punchline": "It loved stories with deep roots.", "category": "Nature & Weather", "emoji": "🌈"}, {"setup": "Why did the raindrop audition for a movie?", "punchline": "It had great falling action.", "category": "Nature & Weather", "emoji": "🌈"}, {"setup": "Why did the lightning bolt study philosophy?", "punchline": "It questioned everything that struck it.", "category": "Nature & Weather", "emoji": "🌈"}, {"setup": "Why did the wind write a love letter?", "punchline": "It wanted to whisper something eternal.", "category": "Nature & Weather", "emoji": "🌈"}, {"setup": "Why did the raindrop sing opera?", "punchline": "It loved falling with passion.", "category": "Nature & Weather", "emoji": "🌈"}, {"setup": "Why did the fog take a vacation?", "punchline": "It needed a little clarity.", "category": "Nature & Weather", "emoji": "🌈"}, {"setup": "Why did the breeze go to therapy?", "punchline": "It was tired of being taken for air granted.", "category": "Nature & Weather", "emoji": "🌈"}, {"setup": "Why did the windstorm apologize?", "punchline": "It blew things out of proportion.", "category": "Nature & Weather", "emoji": "🌈"}, {"setup": "Why did the rainbow attend therapy?", "punchline": "It was tired of being seen only after the storm.", "category": "Nature & Weather", "emoji": "🌈"}, {"setup": "Why did the rainbow build a bridge?", "punchline": "To connect distant hearts.", "category": "Nature & Weather", "emoji": "🌈"}, {"setup": "Why don’t you ever see elephants hiding in trees?", "punchline": "Because they’re so good at it!", "category": "Nature & Weather", "emoji": "🌈"}, {"setup": "Why did the snowman call his dog Frost?", "punchline": "Because Frost bites!", "category": "Nature & Weather", "emoji": "🌈"}, {"setup": "What kind of tree fits in your hand?", "punchline": "A palm tree.", "category": "Nature & Weather", "emoji": "🌈"}, {"setup": "Why was the function so good at relationships?", "punchline": "It always returned true.", "category": "Ocean", "emoji": "🌊"}, {"setup": "Why did the fish blush?", "punchline": "Because it saw the ocean's bottom.", "category": "Ocean", "emoji": "🌊"}, {"setup": "Why did the pirate learn the alphabet?", "punchline": "Because he wanted to know his arrrr's.", "category": "Ocean", "emoji": "🌊"}, {"setup": "Why did the shark become a musician?", "punchline": "Because it loved playing the jaws harp.", "category": "Ocean", "emoji": "🌊"}, {"setup": "Why did the turtle cross the road?", "punchline": "Because it wanted to get to the shell station.", "category": "Ocean", "emoji": "🌊"}, {"setup": "Why did the fish bring a ruler?", "punchline": "Because it wanted to measure the current.", "category": "Ocean", "emoji": "🌊"}, {"setup": "Why did the fish play the piano?", "punchline": "It loved the scales.", "category": "Ocean", "emoji": "🌊"}, {"setup": "Why did the machine apply for citizenship?", "punchline": "It wanted equal rights to process feelings.", "category": "Ocean", "emoji": "🌊"}, {"setup": "Why did the ocean get promoted?", "punchline": "It had great current leadership.", "category": "Ocean", "emoji": "🌊"}, {"setup": "Why did the wave take up dance lessons?", "punchline": "It wanted to improve its flow.", "category": "Ocean", "emoji": "🌊"}, {"setup": "Why did the ocean keep secrets?", "punchline": "It liked to stay deep and mysterious.", "category": "Ocean", "emoji": "🌊"}, {"setup": "Why did the dolphin get promoted?", "punchline": "It had great echo-location skills.", "category": "Ocean", "emoji": "🌊"}, {"setup": "Why did the seahorse get a raise?", "punchline": "It showed real horsepower in the flow.", "category": "Ocean", "emoji": "🌊"}, {"setup": "Why did the clam take up design work?", "punchline": "It had a natural sense of shell-style.", "category": "Ocean", "emoji": "🌊"}, {"setup": "Why did the pirate join the coding bootcamp?", "punchline": "He wanted to learn C-ss (Sea-ss) properly.", "category": "Ocean", "emoji": "🌊"}, {"setup": "Why did the mermaid become a UX designer?", "punchline": "She believed in user-flow perfection.", "category": "Ocean", "emoji": "🌊"}, {"setup": "Why did the ocean refuse to crash?", "punchline": "It always handled its waves gracefully.", "category": "Ocean", "emoji": "🌊"}, {"setup": "Why did the sailor debug his compass?", "punchline": "It kept pointing at Null Island.", "category": "Ocean", "emoji": "🌊"}, {"setup": "What did the ocean say to the beach?", "punchline": "Nothing — it just waved.", "category": "Ocean", "emoji": "🌊"}];
+const $=id=>document.getElementById(id);
+const KEY='hopes-joke-jar-garden-v2';
+
+function loadState(){
+  try{
+    const x=JSON.parse(localStorage.getItem(KEY)||'{}');
+    return{heard:Number(x.heard)||0,laughs:Number(x.laughs)||0,favorites:Array.isArray(x.favorites)?x.favorites:[],history:Array.isArray(x.history)?x.history:[]};
+  }catch{return{heard:0,laughs:0,favorites:[],history:[]}}
+}
+let state=loadState(),current=null,lastKey='',revealed=false;
+
+function keyOf(j){return j.setup+'|||'+j.punchline}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state))}catch{}}
+function speak(text){
+  if($('soundMode').value==='off'||!('speechSynthesis'in window))return;
+  speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(text);u.rate=.9;u.pitch=1.08;speechSynthesis.speak(u);
+}
+function toast(text){$('toast').textContent=text;$('toast').classList.add('show');setTimeout(()=>$('toast').classList.remove('show'),1600)}
+function celebrate(){
+  const bits=['😂','✨','🌈','⭐','😄'];
+  for(let i=0;i<16;i++){const s=document.createElement('span');s.textContent=bits[i%bits.length];s.style.left=Math.random()*100+'vw';s.style.setProperty('--dx',(Math.random()*180-90)+'px');s.style.animationDelay=Math.random()*.3+'s';$('confetti').appendChild(s);setTimeout(()=>s.remove(),2100)}
+}
+function filtered(){
+  const cat=$('category').value,mode=$('ageMode').value,term=$('search').value.trim().toLowerCase();
+  return JOKES.filter(j=>{
+    if(cat!=='All'&&j.category!==cat)return false;
+    if(mode==='brainy'&&!['Tech & Robots','Space','Art'].includes(j.category))return false;
+    if(mode==='little'&&['Tech & Robots'].includes(j.category))return false;
+    if(term&&!(`${j.setup} ${j.punchline} ${j.category}`.toLowerCase().includes(term)))return false;
+    return true;
+  });
+}
+function pickJoke(preferred=null){
+  const pool=filtered();
+  if(!pool.length){$('setup').textContent='No jokes match this shelf and search yet.';$('punchline').textContent='Try another category or clear the search.';return}
+  let j=preferred;
+  if(!j){do{j=pool[Math.floor(Math.random()*pool.length)]}while(pool.length>1&&keyOf(j)===lastKey)}
+  current=j;lastKey=keyOf(j);revealed=false;
+  $('setup').textContent=j.setup;$('punchline').textContent='Tap “Reveal Punchline” when you are ready.';$('punchline').classList.add('hidden-answer');
+  $('categoryPill').textContent=`${j.emoji} ${j.category}`;$('jarEmoji').textContent=j.emoji==='🤖'?'🤖':'🫙';
+  $('jokeNumber').textContent=`Joke ${state.heard+1}`;$('revealBtn').textContent='✨ Reveal Punchline';
+  updateFavoriteButton();$('setup').focus();
+}
+function reveal(){
+  if(!current)return;
+  if(!revealed){revealed=true;$('punchline').textContent=current.punchline;$('punchline').classList.remove('hidden-answer');$('revealBtn').textContent='🔊 Hear Punchline';state.heard++;state.history=[keyOf(current),...state.history.filter(x=>x!==keyOf(current))].slice(0,12);save();renderAll();speak(current.punchline)}
+  else speak(current.punchline);
+}
+function toggleFavorite(){
+  if(!current)return;const k=keyOf(current),i=state.favorites.indexOf(k);
+  if(i>=0){state.favorites.splice(i,1);toast('Removed from favorites')}else{state.favorites.unshift(k);toast('Saved to favorites')}
+  save();renderAll();updateFavoriteButton();
+}
+function updateFavoriteButton(){
+  if(!current)return;const saved=state.favorites.includes(keyOf(current));$('favoriteBtn').textContent=saved?'★ Favorited':'☆ Favorite';$('favoriteBtn').classList.toggle('saved',saved)
+}
+function findByKey(k){return JOKES.find(j=>keyOf(j)===k)}
+function renderList(id,keys,emptyText){
+  const box=$(id);box.innerHTML='';
+  const rows=keys.map(findByKey).filter(Boolean);
+  if(!rows.length){box.innerHTML=`<div class="empty">${emptyText}</div>`;return}
+  rows.forEach(j=>{const b=document.createElement('button');b.className='list-item';b.textContent=j.setup;b.onclick=()=>pickJoke(j);box.appendChild(b)})
+}
+function renderAll(){
+  $('heardStat').textContent=state.heard;$('laughStat').textContent=state.laughs;$('favoriteStat').textContent=state.favorites.length;$('collectionStat').textContent=filtered().length;
+  renderList('favoritesList',state.favorites,'Favorite jokes will appear here.');
+  renderList('historyList',state.history,'Recently opened jokes will appear here.');
+}
+function fillCategories(){
+  const cats=['All',...new Set(JOKES.map(j=>j.category))];
+  $('category').innerHTML=cats.map(c=>`<option value="${c}">${c}</option>`).join('');
+}
+document.querySelectorAll('[data-reaction]').forEach(b=>b.onclick=()=>{state.laughs++;save();renderAll();celebrate();toast(b.dataset.reaction==='groan'?'A good silly groan counts!':'Laughter added!')});
+$('hearBtn').onclick=()=>current&&speak(current.setup);
+$('revealBtn').onclick=reveal;$('favoriteBtn').onclick=toggleFavorite;$('nextBtn').onclick=()=>pickJoke();
+$('copyBtn').onclick=async()=>{if(!current)return;try{await navigator.clipboard.writeText(`${current.setup}\n${current.punchline}`);toast('Joke copied')}catch{toast('Copy is not available in this browser')}};
+$('resetBtn').onclick=()=>{if(confirm('Reset Joke Jar favorites, history, and totals on this device?')){state={heard:0,laughs:0,favorites:[],history:[]};save();renderAll();pickJoke();toast('Local progress reset')}};
+['category','ageMode'].forEach(id=>$(id).onchange=()=>{renderAll();pickJoke()});
+$('search').oninput=()=>{renderAll();pickJoke()};
+document.addEventListener('keydown',e=>{if(e.key==='Enter')reveal();if(e.key==='ArrowRight')pickJoke()});
+fillCategories();renderAll();pickJoke();
+</script>
 </body>
 </html>
