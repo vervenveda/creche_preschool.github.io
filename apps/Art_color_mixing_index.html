@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Rainbow Mixing Laboratory — an offline preschool color-mixing game with primary, secondary, tint, shade, challenge, free play, speech, and progress tracking.">
+<title>Rainbow Mixing Laboratory</title>
+<style>
+:root{
+  --plum:#6650aa;
+  --violet:#8b6ad3;
+  --rose:#e878aa;
+  --coral:#ff8c73;
+  --sun:#ffd166;
+  --mint:#6fd0ac;
+  --aqua:#63c9ca;
+  --sky:#68b5e4;
+  --ink:#332d43;
+  --muted:#71697c;
+  --good:#3caf72;
+  --bad:#d85e6d;
+  --panel:rgba(255,255,255,.92);
+  --shadow:0 22px 58px rgba(68,45,88,.17);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  min-height:100vh;
+  color:var(--ink);
+  font-family:"Comic Sans MS","Trebuchet MS",system-ui,sans-serif;
+  background:
+    radial-gradient(circle at 12% 12%,rgba(255,255,255,.92) 0 5%,transparent 6%),
+    radial-gradient(circle at 88% 14%,rgba(255,255,255,.74) 0 4%,transparent 5%),
+    linear-gradient(145deg,#fff0c7 0%,#f5e6ff 42%,#ddf6ff 100%);
+  overflow-x:hidden;
+}
+button,select,input{font:inherit}
+button{touch-action:manipulation}
+.sky{
+  position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+}
+.sky span{
+  position:absolute;
+  font-size:clamp(1.2rem,3vw,2.2rem);
+  opacity:.32;
+  animation:float 12s ease-in-out infinite;
+}
+.sky span:nth-child(1){left:4%;top:12%}
+.sky span:nth-child(2){left:18%;top:76%;animation-delay:-3s}
+.sky span:nth-child(3){left:43%;top:7%;animation-delay:-5s}
+.sky span:nth-child(4){left:72%;top:80%;animation-delay:-8s}
+.sky span:nth-child(5){left:90%;top:18%;animation-delay:-10s}
+@keyframes float{50%{transform:translateY(-24px) rotate(7deg) scale(1.08)}}
+
+.app{
+  position:relative;z-index:1;
+  width:min(1160px,calc(100% - 22px));
+  margin:0 auto;
+  padding:22px 0 48px;
+}
+.hero{
+  color:white;
+  text-align:center;
+  padding:30px 20px 25px;
+  border-radius:34px;
+  background:
+    radial-gradient(circle at 18% 20%,rgba(255,255,255,.18),transparent 22%),
+    linear-gradient(135deg,var(--plum),var(--violet),var(--rose),var(--coral));
+  box-shadow:var(--shadow);
+}
+.hero h1{
+  margin:0;
+  font-size:clamp(2.2rem,7vw,4.9rem);
+  line-height:.97;
+  letter-spacing:-.05em;
+}
+.hero p{
+  margin:9px auto 0;
+  max-width:820px;
+  color:#fff4fb;
+  line-height:1.6;
+}
+.hero-icons{
+  display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:14px;
+}
+.hero-icons span{
+  width:50px;height:50px;display:grid;place-items:center;
+  border-radius:18px;background:rgba(255,255,255,.16);font-size:1.9rem;
+}
+.toolbar{
+  display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin:15px 0;
+}
+button,.pill,select{
+  border-radius:999px;padding:10px 14px;font-weight:850;
+}
+button{
+  border:0;cursor:pointer;
+  background:linear-gradient(135deg,var(--sun),var(--coral));
+  color:#3c2a16;
+  box-shadow:0 7px 18px rgba(94,56,24,.13);
+  transition:.18s ease;
+}
+button:hover{transform:translateY(-2px)}
+button.secondary{background:white;color:var(--plum);border:1px solid #dfd7e8}
+button.active{color:white;background:linear-gradient(135deg,var(--violet),var(--rose))}
+button.good{background:linear-gradient(135deg,#79dc9f,var(--good));color:#123621}
+button.danger{background:white;color:var(--bad);border:1px solid #efc7cd}
+.pill,select{background:white;border:1px solid #ded7e6;color:var(--plum)}
+.stats{
+  display:grid;grid-template-columns:repeat(5,1fr);gap:9px;margin-bottom:14px;
+}
+.stat{
+  background:rgba(255,255,255,.9);
+  border-radius:18px;padding:11px;text-align:center;
+  box-shadow:0 8px 20px rgba(62,42,81,.08);
+}
+.stat strong{display:block;font-size:1.24rem;color:var(--violet)}
+.layout{
+  display:grid;
+  grid-template-columns:minmax(0,1.1fr) minmax(330px,.9fr);
+  gap:16px;
+}
+.panel{
+  background:var(--panel);
+  border:1px solid rgba(255,255,255,.96);
+  border-radius:28px;padding:18px;box-shadow:var(--shadow);
+}
+.lab{
+  min-height:590px;
+  border-radius:26px;
+  padding:20px;
+  text-align:center;
+  background:
+    radial-gradient(circle at 80% 18%,rgba(255,255,255,.8),transparent 25%),
+    linear-gradient(145deg,#fff7d5,#f4ecff,#e6faff);
+}
+.question{
+  font-size:clamp(1.35rem,4vw,2.15rem);
+  color:var(--plum);
+  font-weight:950;
+  margin-bottom:8px;
+}
+.instruction{color:var(--muted);margin-bottom:14px}
+.palette{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  justify-content:center;
+}
+.color-card{
+  width:118px;
+  min-height:118px;
+  border-radius:24px;
+  border:4px solid white;
+  box-shadow:0 12px 24px rgba(55,37,71,.16);
+  color:white;
+  display:grid;
+  place-items:center;
+  align-content:center;
+  gap:5px;
+  cursor:pointer;
+  font-weight:950;
+  transition:.2s ease;
+}
+.color-card:hover{transform:translateY(-4px) rotate(1deg)}
+.color-card.selected{
+  outline:6px solid var(--sun);
+  transform:scale(1.06);
+}
+.color-card.light{color:#433c45}
+.color-drop{
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  gap:12px;
+  align-items:center;
+  justify-items:center;
+  margin:24px auto 10px;
+  max-width:650px;
+}
+.pot{
+  width:min(220px,60vw);
+  aspect-ratio:1;
+  border-radius:32px 32px 70px 70px;
+  display:grid;
+  place-items:center;
+  align-content:center;
+  background:#f6f3f8;
+  border:6px solid white;
+  box-shadow:inset -14px -16px 24px rgba(0,0,0,.08),0 18px 34px rgba(59,38,79,.17);
+  transition:.35s ease;
+}
+.pot.sparkle{animation:sparkle .8s ease}
+@keyframes sparkle{50%{transform:scale(1.08);filter:brightness(1.12)}}
+.pot-symbol{font-size:3.4rem}
+.pot-name{font-weight:950;font-size:1.25rem}
+.plus{font-size:2.2rem;color:var(--plum);font-weight:950}
+.mix-slots{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:10px;
+}
+.slot{
+  width:96px;height:96px;border-radius:22px;
+  display:grid;place-items:center;
+  background:white;
+  border:3px dashed #cabbd7;
+  color:var(--muted);
+  font-weight:900;
+  overflow:hidden;
+}
+.slot.filled{border-style:solid;border-color:white;color:white;box-shadow:0 10px 20px rgba(55,37,70,.13)}
+.result{
+  min-height:38px;
+  margin-top:12px;
+  font-size:1.15rem;
+  color:var(--plum);
+  font-weight:950;
+}
+.side-stack{display:grid;gap:14px}
+.activity{
+  border-radius:22px;padding:15px;
+  background:linear-gradient(145deg,#fff,#fff9ed);
+  border:1px solid #ebe3ee;
+}
+.activity h2{margin:0 0 7px;color:var(--plum);font-size:1.22rem}
+.recipe-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
+}
+.recipe{
+  border-radius:16px;
+  padding:9px;
+  background:white;
+  border:1px solid #e5dbe9;
+  font-size:.85rem;
+  font-weight:850;
+}
+.recipe-dots{display:flex;justify-content:center;gap:5px;margin-bottom:5px}
+.dot{width:24px;height:24px;border-radius:50%;border:2px solid white;box-shadow:0 3px 8px rgba(40,30,50,.13)}
+.level-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}
+.level-btn{
+  border-radius:16px;
+  padding:10px;
+  background:white;
+  color:var(--plum);
+  border:2px solid #e4dce9;
+  box-shadow:none;
+}
+.level-btn.active{color:white;background:linear-gradient(135deg,var(--violet),var(--rose))}
+.badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{
+  padding:7px 10px;border-radius:999px;
+  background:#f3effb;color:#654b80;font-size:.82rem;font-weight:850;
+}
+.progress{height:12px;border-radius:999px;overflow:hidden;background:#e9e3ed}
+.progress>div{
+  height:100%;width:0;
+  background:linear-gradient(90deg,var(--rose),var(--sun),var(--mint),var(--sky));
+  transition:width .35s ease;
+}
+.site-footer{
+  margin-top:16px;padding:15px 12px;text-align:center;border-radius:18px;
+  background:rgba(255,255,255,.78);border:1px solid rgba(90,60,120,.12);
+  color:#665b72;font-size:.84rem;line-height:1.5;
+}
+.site-footer strong{color:#503a76}
+.confetti{
+  position:fixed;
+  width:10px;height:10px;border-radius:50%;
+  pointer-events:none;z-index:30;
+  animation:fall 1.4s ease-out forwards;
+}
+@keyframes fall{
+  to{transform:translate(var(--x),140px) rotate(420deg);opacity:0}
+}
+@media(max-width:900px){
+  .layout{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:620px){
+  .color-drop{grid-template-columns:1fr}
+  .plus{transform:rotate(90deg)}
+  .recipe-grid{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important}
+}
+</style>
+</head>
+<body>
+<div class="sky" aria-hidden="true"><span>🎨</span><span>🌈</span><span>🧪</span><span>✨</span><span>💧</span></div>
+
+<main class="app">
+  <header class="hero">
+    <h1>Rainbow Mixing Laboratory</h1>
+    <p>Mix colors, discover new shades, complete recipes, hear every color name, and build a preschool color-science collection.</p>
+    <div class="hero-icons"><span>🔴</span><span>🟡</span><span>🔵</span><span>🌈</span></div>
+  </header>
+
+  <div class="toolbar">
+    <button id="mixBtn">🧪 Mix Colors</button>
+    <button id="clearBtn" class="secondary">🧽 Clear</button>
+    <button id="hearBtn" class="secondary">🔊 Hear Recipe</button>
+    <button id="challengeBtn" class="good">🎯 New Challenge</button>
+    <button id="freePlayBtn" class="secondary">♾ Free Play</button>
+  </div>
+
+  <section class="stats">
+    <div class="stat"><strong id="mixStat">0</strong>Mixes</div>
+    <div class="stat"><strong id="starStat">0</strong>Stars</div>
+    <div class="stat"><strong id="recipeStat">0</strong>Recipes Found</div>
+    <div class="stat"><strong id="streakStat">0</strong>Streak</div>
+    <div class="stat"><strong id="levelStat">Primary</strong>Level</div>
+  </section>
+
+  <div class="layout">
+    <section class="panel">
+      <div class="lab">
+        <div class="question" id="question">Choose two colors to mix.</div>
+        <div class="instruction" id="instruction">Tap one color, then another. You can also drag colors into the mixing pot.</div>
+
+        <div class="palette" id="palette"></div>
+
+        <div class="mix-slots">
+          <div class="slot" id="slot1">First color</div>
+          <div class="slot" id="slot2">Second color</div>
+        </div>
+
+        <div class="color-drop">
+          <div></div>
+          <div class="plus">＋</div>
+          <div class="pot" id="mixPot">
+            <div class="pot-symbol">🧪</div>
+            <div class="pot-name">Mixing Pot</div>
+          </div>
+        </div>
+
+        <div class="result" id="result" aria-live="polite">Let’s make a new color!</div>
+      </div>
+    </section>
+
+    <aside class="side-stack">
+      <section class="activity">
+        <h2>🌈 Learning Levels</h2>
+        <div class="level-grid" id="levelGrid"></div>
+      </section>
+
+      <section class="activity">
+        <h2>📖 Color Recipe Book</h2>
+        <div class="recipe-grid" id="recipeGrid"></div>
+      </section>
+
+      <section class="activity">
+        <h2>🏆 Rainbow Progress</h2>
+        <div class="progress"><div id="progressBar"></div></div>
+        <p id="progressText" style="color:var(--muted);margin:8px 0"></p>
+        <div class="badges" id="badges"></div>
+      </section>
+    </aside>
+  </div>
+
+  <footer class="site-footer">
+    <strong>© 2026 Verve N Veda · Khaemenes Academy · Jennifer Kay Pearl</strong><br>
+    All Rights Reserved.
+  </footer>
+</main>
+
+<script>
+(() => {
+"use strict";
+
+const COLORS = {
+  red:{name:"Red",hex:"#ef4444",light:false},
+  yellow:{name:"Yellow",hex:"#facc15",light:true},
+  blue:{name:"Blue",hex:"#3b82f6",light:false},
+  white:{name:"White",hex:"#ffffff",light:true},
+  black:{name:"Black",hex:"#222222",light:false},
+  orange:{name:"Orange",hex:"#f97316",light:false},
+  purple:{name:"Purple",hex:"#9333ea",light:false},
+  green:{name:"Green",hex:"#22c55e",light:false},
+  pink:{name:"Pink",hex:"#f9a8d4",light:true},
+  lightblue:{name:"Light Blue",hex:"#93c5fd",light:true},
+  lightgreen:{name:"Light Green",hex:"#86efac",light:true},
+  gray:{name:"Gray",hex:"#9ca3af",light:false},
+  brown:{name:"Brown",hex:"#8b5e3c",light:false},
+  darkred:{name:"Dark Red",hex:"#991b1b",light:false},
+  darkblue:{name:"Dark Blue",hex:"#1e3a8a",light:false},
+  darkgreen:{name:"Dark Green",hex:"#166534",light:false}
+};
+
+const RECIPES = {
+  "red-yellow":{result:"orange",label:"Red + Yellow = Orange"},
+  "blue-red":{result:"purple",label:"Blue + Red = Purple"},
+  "blue-yellow":{result:"green",label:"Blue + Yellow = Green"},
+  "red-white":{result:"pink",label:"Red + White = Pink"},
+  "blue-white":{result:"lightblue",label:"Blue + White = Light Blue"},
+  "green-white":{result:"lightgreen",label:"Green + White = Light Green"},
+  "black-white":{result:"gray",label:"Black + White = Gray"},
+  "orange-black":{result:"brown",label:"Orange + Black = Brown"},
+  "red-black":{result:"darkred",label:"Red + Black = Dark Red"},
+  "blue-black":{result:"darkblue",label:"Blue + Black = Dark Blue"},
+  "green-black":{result:"darkgreen",label:"Green + Black = Dark Green"}
+};
+
+const LEVELS = [
+  {name:"Primary",icon:"🌱",colors:["red","yellow","blue"],recipes:["red-yellow","blue-red","blue-yellow"]},
+  {name:"Tints",icon:"☁️",colors:["red","blue","green","white"],recipes:["red-white","blue-white","green-white"]},
+  {name:"Shades",icon:"🌙",colors:["red","blue","green","orange","black"],recipes:["orange-black","red-black","blue-black","green-black"]},
+  {name:"Rainbow Lab",icon:"🏆",colors:["red","yellow","blue","white","black","orange","green"],recipes:Object.keys(RECIPES)}
+];
+
+const state = {
+  level:Number(localStorage.getItem("rainbowLabLevel")||0),
+  mixes:Number(localStorage.getItem("rainbowLabMixes")||0),
+  stars:Number(localStorage.getItem("rainbowLabStars")||0),
+  streak:Number(localStorage.getItem("rainbowLabStreak")||0),
+  found:new Set(JSON.parse(localStorage.getItem("rainbowLabFound")||"[]")),
+  selected:[],
+  challenge:null,
+  freePlay:false
+};
+
+const $=id=>document.getElementById(id);
+
+function save(){
+  localStorage.setItem("rainbowLabLevel",String(state.level));
+  localStorage.setItem("rainbowLabMixes",String(state.mixes));
+  localStorage.setItem("rainbowLabStars",String(state.stars));
+  localStorage.setItem("rainbowLabStreak",String(state.streak));
+  localStorage.setItem("rainbowLabFound",JSON.stringify([...state.found]));
+}
+
+function speak(text){
+  if(!("speechSynthesis" in window))return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  const voices=speechSynthesis.getVoices();
+  u.voice=voices.find(v=>/child|kid|jenny|samantha|aria|female/i.test(v.name)&&/^en/i.test(v.lang))
+    ||voices.find(v=>/^en/i.test(v.lang))||voices[0]||null;
+  u.rate=.86;u.pitch=1.08;
+  speechSynthesis.speak(u);
+}
+
+function recipeKey(a,b){
+  return RECIPES[`${a}-${b}`] ? `${a}-${b}` : `${b}-${a}`;
+}
+
+function renderPalette(){
+  const box=$("palette");
+  box.innerHTML="";
+  LEVELS[state.level].colors.forEach(key=>{
+    const c=COLORS[key];
+    const b=document.createElement("button");
+    b.className="color-card"+(c.light?" light":"")+(state.selected.includes(key)?" selected":"");
+    b.style.background=c.hex;
+    b.draggable=true;
+    b.innerHTML=`<span style="font-size:2rem">💧</span><span>${c.name}</span>`;
+    b.addEventListener("click",()=>chooseColor(key));
+    b.addEventListener("dragstart",e=>e.dataTransfer.setData("text/plain",key));
+    box.appendChild(b);
+  });
+}
+
+function chooseColor(key){
+  if(state.selected.length>=2) state.selected=[];
+  state.selected.push(key);
+  updateSlots();
+  renderPalette();
+  const c=COLORS[key];
+  speak(c.name);
+  if(state.selected.length===2 && state.freePlay) mixColors();
+}
+
+function updateSlots(){
+  [1,2].forEach(i=>{
+    const slot=$(`slot${i}`);
+    const key=state.selected[i-1];
+    if(!key){
+      slot.className="slot";
+      slot.textContent=i===1?"First color":"Second color";
+      slot.style.background="";
+      return;
+    }
+    const c=COLORS[key];
+    slot.className="slot filled";
+    slot.textContent=c.name;
+    slot.style.background=c.hex;
+    slot.style.color=c.light?"#333":"#fff";
+  });
+}
+
+function mixColors(){
+  if(state.selected.length<2){
+    $("result").textContent="Choose two colors first.";
+    speak("Choose two colors first.");
+    return;
+  }
+
+  const [a,b]=state.selected;
+  const key=recipeKey(a,b);
+  const recipe=RECIPES[key];
+  state.mixes++;
+
+  if(!recipe){
+    $("result").textContent="Those colors made an interesting experiment. Try another recipe.";
+    $("mixPot").style.background="linear-gradient(135deg,#ddd,#aaa)";
+    state.streak=0;
+    speak("Interesting experiment. Try another recipe.");
+    updateStats();save();
+    return;
+  }
+
+  const result=COLORS[recipe.result];
+  $("mixPot").style.background=result.hex;
+  $("mixPot").style.color=result.light?"#333":"#fff";
+  $("mixPot").querySelector(".pot-symbol").textContent="🎨";
+  $("mixPot").querySelector(".pot-name").textContent=result.name;
+  $("mixPot").classList.add("sparkle");
+  setTimeout(()=>$("mixPot").classList.remove("sparkle"),850);
+
+  state.found.add(key);
+  const success=!state.challenge || recipe.result===state.challenge.result;
+  if(success){
+    state.stars+=3;
+    state.streak++;
+    $("result").textContent=`You made ${result.name}! ${recipe.label}`;
+    speak(`${COLORS[a].name} plus ${COLORS[b].name} makes ${result.name}.`);
+    confetti(result.hex);
+  }else{
+    state.streak=0;
+    $("result").textContent=`You made ${result.name}. Keep trying to make ${COLORS[state.challenge.result].name}.`;
+    speak(`You made ${result.name}. Keep trying.`);
+  }
+
+  updateStats();
+  renderRecipes();
+  save();
+}
+
+function clearMix(){
+  state.selected=[];
+  $("mixPot").style.background="#f6f3f8";
+  $("mixPot").style.color="#332d43";
+  $("mixPot").querySelector(".pot-symbol").textContent="🧪";
+  $("mixPot").querySelector(".pot-name").textContent="Mixing Pot";
+  $("result").textContent="Let’s make a new color!";
+  updateSlots();
+  renderPalette();
+}
+
+function newChallenge(){
+  state.freePlay=false;
+  $("freePlayBtn").textContent="♾ Free Play";
+  const keys=LEVELS[state.level].recipes;
+  const key=keys[Math.floor(Math.random()*keys.length)];
+  state.challenge=RECIPES[key];
+  const result=COLORS[state.challenge.result];
+  $("question").textContent=`Can you make ${result.name}?`;
+  $("instruction").textContent="Choose the two colors that create the target color.";
+  clearMix();
+  speak(`Can you make ${result.name}?`);
+}
+
+function renderLevels(){
+  const box=$("levelGrid");
+  box.innerHTML="";
+  LEVELS.forEach((level,index)=>{
+    const b=document.createElement("button");
+    b.className="level-btn"+(index===state.level?" active":"");
+    b.innerHTML=`${level.icon} ${level.name}`;
+    b.addEventListener("click",()=>{
+      state.level=index;
+      state.challenge=null;
+      $("question").textContent="Choose two colors to mix.";
+      $("instruction").textContent="Tap one color, then another.";
+      clearMix();
+      renderAll();
+    });
+    box.appendChild(b);
+  });
+}
+
+function renderRecipes(){
+  const box=$("recipeGrid");
+  box.innerHTML="";
+  LEVELS[state.level].recipes.forEach(key=>{
+    const recipe=RECIPES[key];
+    const [a,b]=key.split("-");
+    const found=state.found.has(key);
+    const item=document.createElement("div");
+    item.className="recipe";
+    item.innerHTML=`
+      <div class="recipe-dots">
+        <span class="dot" style="background:${COLORS[a].hex}"></span>
+        <span>＋</span>
+        <span class="dot" style="background:${COLORS[b].hex}"></span>
+        <span>＝</span>
+        <span class="dot" style="background:${found?COLORS[recipe.result].hex:"#ddd"}"></span>
+      </div>
+      ${found?recipe.label:"Mystery Recipe"}
+    `;
+    box.appendChild(item);
+  });
+}
+
+function updateStats(){
+  $("mixStat").textContent=state.mixes;
+  $("starStat").textContent=state.stars;
+  $("recipeStat").textContent=state.found.size;
+  $("streakStat").textContent=state.streak;
+  $("levelStat").textContent=LEVELS[state.level].name;
+  $("progressBar").style.width=(state.found.size/Object.keys(RECIPES).length*100)+"%";
+  $("progressText").textContent=`${state.found.size} of ${Object.keys(RECIPES).length} color recipes discovered.`;
+
+  const badges=[];
+  if(state.found.size>=3)badges.push("🌱 Primary Mixer");
+  if(state.found.size>=6)badges.push("☁️ Tint Explorer");
+  if(state.found.size>=9)badges.push("🌙 Shade Scientist");
+  if(state.found.size===Object.keys(RECIPES).length)badges.push("🏆 Rainbow Chemist");
+  $("badges").innerHTML=badges.length?badges.map(x=>`<span class="badge">${x}</span>`).join(""):'<span class="badge">Discover recipes to earn badges.</span>';
+}
+
+function confetti(color){
+  const r=$("mixPot").getBoundingClientRect();
+  for(let i=0;i<20;i++){
+    const c=document.createElement("span");
+    c.className="confetti";
+    c.style.background=color;
+    c.style.left=(r.left+r.width/2+(Math.random()*80-40))+"px";
+    c.style.top=(r.top+20)+"px";
+    c.style.setProperty("--x",(Math.random()*130-65)+"px");
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),1450);
+  }
+}
+
+function renderAll(){
+  renderPalette();
+  renderLevels();
+  renderRecipes();
+  updateSlots();
+  updateStats();
+  save();
+}
+
+$("mixBtn").addEventListener("click",mixColors);
+$("clearBtn").addEventListener("click",clearMix);
+$("hearBtn").addEventListener("click",()=>{
+  if(state.challenge){
+    speak(`Can you make ${COLORS[state.challenge.result].name}?`);
+  }else if(state.selected.length){
+    speak(state.selected.map(x=>COLORS[x].name).join(" and "));
+  }else{
+    speak("Choose two colors to mix.");
+  }
+});
+$("challengeBtn").addEventListener("click",newChallenge);
+$("freePlayBtn").addEventListener("click",()=>{
+  state.freePlay=!state.freePlay;
+  state.challenge=null;
+  $("freePlayBtn").textContent=state.freePlay?"✓ Free Play On":"♾ Free Play";
+  $("question").textContent=state.freePlay?"Free Play Color Laboratory":"Choose two colors to mix.";
+  $("instruction").textContent=state.freePlay?"The colors will mix automatically after your second choice.":"Tap one color, then another.";
+  clearMix();
+});
+
+const pot=$("mixPot");
+pot.addEventListener("dragover",e=>e.preventDefault());
+pot.addEventListener("drop",e=>{
+  e.preventDefault();
+  chooseColor(e.dataTransfer.getData("text/plain"));
+});
+
+renderAll();
+})();
+</script>
+</body>
+</html>
