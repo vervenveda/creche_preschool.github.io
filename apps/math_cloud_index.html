@@ -1,546 +1,576 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Pre‑K Math Cloud — Sovereign Edition</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Pre-K Math Cloud — a colorful 42-week offline-first early math curriculum with daily lessons, games, quizzes, progress, and teacher tools.">
+<title>Pre-K Math Cloud — Expanded Curriculum</title>
 <style>
-  :root{
-    --bg1:linear-gradient(180deg,#fff4d6 0%, #ffe0f0 50%, #d6f0ff 100%);
-    --ink:#222;
-    --muted:#555;
-    --brand:#ff7a59; /* coral */
-    --brand2:#6c5ce7; /* violet */
-    --good:#10b981;   /* green */
-    --bad:#ef4444;    /* red */
-    --gold:#f59e0b;   /* gold */
-    --card: #ffffffcc;
-    --radius: 24px;
-    --shadow: 0 12px 28px rgba(0,0,0,.12);
-  }
-  html,body{height:100%; margin:0;}
-  body{
-    font-family:"Comic Sans MS","Baloo 2","Poppins",system-ui,Arial,sans-serif;
-    background: var(--bg1);
-    display:flex;align-items:center;justify-content:center;
-    padding:16px; box-sizing:border-box;
-  }
-  .app{ width: min(1200px, 100%); background: var(--card); backdrop-filter: blur(8px);
-        border-radius: var(--radius); box-shadow: var(--shadow); padding:18px; }
-  header{ display:flex; gap:12px; align-items:center; justify-content:space-between; }
-  .title{ display:flex; align-items:center; gap:12px; }
-  .logo{ width:54px;height:54px; border-radius:16px; background: conic-gradient(from 0deg,#ffd166,#f77,#9af,#7ff); box-shadow: inset 0 0 0 6px #fff9;}
-  h1{ margin:0; font-size:28px; color:var(--ink); letter-spacing:.5px; }
-  .sub{ color:var(--muted); font-size:12px; }
-  nav{ display:flex; flex-wrap:wrap; gap:8px; margin-top:12px; }
-  .btn{ border:0; padding:14px 16px; border-radius:18px; font-weight:700; cursor:pointer; font-size:16px; 
-        background:linear-gradient(135deg,#fff,#f5f5f5); box-shadow: 0 6px 0 #00000020; transition: transform .06s ease, box-shadow .06s ease; }
-  .btn:active{ transform: translateY(2px); box-shadow: 0 3px 0 #00000020; }
-  .btn.big{ font-size:18px; padding:18px 22px; }
-  .pill{ background:linear-gradient(135deg,#ffd6a5,#ffb5e8); }
-  .pill2{ background:linear-gradient(135deg,#a5e3ff,#c7b7ff); }
-  .pill3{ background:linear-gradient(135deg,#b8ffcb,#ffd6a5); }
+:root{
+  --navy:#31406f;
+  --violet:#7c68cf;
+  --pink:#e97aad;
+  --coral:#ff8d76;
+  --sun:#ffd36a;
+  --mint:#76d5b1;
+  --aqua:#67cfd3;
+  --sky:#6bb8e8;
+  --cloud:#ffffff;
+  --ink:#302b43;
+  --muted:#70697b;
+  --good:#39ad70;
+  --bad:#d75f6e;
+  --panel:rgba(255,255,255,.9);
+  --shadow:0 22px 58px rgba(65,45,88,.16);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:"Comic Sans MS","Trebuchet MS",system-ui,sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(circle at 12% 12%,rgba(255,255,255,.9) 0 5%,transparent 6%),
+    radial-gradient(circle at 88% 14%,rgba(255,255,255,.75) 0 4%,transparent 5%),
+    linear-gradient(145deg,#fff2c8 0%,#f6e7ff 40%,#dff6ff 100%);
+  overflow-x:hidden;
+}
+button,select,input{font:inherit}
+button{touch-action:manipulation}
+.sky-decor{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.sky-decor span{position:absolute;opacity:.35;animation:floaty 12s ease-in-out infinite;font-size:clamp(1.4rem,3vw,2.4rem)}
+.sky-decor span:nth-child(1){left:4%;top:12%}
+.sky-decor span:nth-child(2){left:18%;top:75%;animation-delay:-3s}
+.sky-decor span:nth-child(3){left:42%;top:8%;animation-delay:-6s}
+.sky-decor span:nth-child(4){left:70%;top:78%;animation-delay:-8s}
+.sky-decor span:nth-child(5){left:88%;top:18%;animation-delay:-10s}
+@keyframes floaty{50%{transform:translateY(-24px) rotate(6deg) scale(1.08)}}
 
-  .grid{ display:grid; grid-template-columns: 1.1fr .9fr; gap:16px; }
-  @media (max-width: 920px){ .grid{ grid-template-columns: 1fr; } }
-  .card{ background:#fff; border-radius:20px; padding:16px; box-shadow: var(--shadow); position:relative; }
-  .card h2{ margin:0 0 8px; font-size:22px; }
-  .card p{ margin:0 0 12px; color:var(--muted) }
+.app{
+  position:relative;z-index:1;
+  width:min(1180px,calc(100% - 22px));
+  margin:0 auto;
+  padding:22px 0 48px;
+}
+.hero{
+  color:white;
+  text-align:center;
+  padding:28px 20px 24px;
+  border-radius:32px;
+  background:
+    radial-gradient(circle at 18% 20%,rgba(255,255,255,.18),transparent 22%),
+    linear-gradient(135deg,var(--navy),var(--violet),var(--pink),var(--coral));
+  box-shadow:var(--shadow);
+}
+.hero h1{margin:0;font-size:clamp(2.3rem,7vw,5rem);line-height:.96;letter-spacing:-.05em}
+.hero p{margin:8px auto 0;max-width:820px;color:#fff4fb;line-height:1.6}
+.hero-icons{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:14px}
+.hero-icons span{width:48px;height:48px;display:grid;place-items:center;border-radius:17px;background:rgba(255,255,255,.16);font-size:1.8rem}
 
-  .lesson-hero{ display:flex; gap:12px; align-items:center; }
-  .hero-num{ width:80px; height:80px; border-radius:22px; display:grid; place-items:center; font-size:46px; font-weight:900; color:white;
-              background: radial-gradient(circle at 30% 20%, #fff5, transparent 60%), linear-gradient(135deg,#ff7a59,#f59e0b); box-shadow: inset 0 -6px 12px #0003; }
+.toolbar{display:flex;justify-content:center;flex-wrap:wrap;gap:9px;margin:15px 0}
+button,.pill,select{border-radius:999px;padding:10px 14px;font-weight:850}
+button{border:0;cursor:pointer;background:linear-gradient(135deg,var(--sun),var(--coral));color:#3c2a16;box-shadow:0 7px 18px rgba(94,56,24,.13);transition:.18s ease}
+button:hover{transform:translateY(-2px)}
+button.secondary{background:white;color:var(--violet);border:1px solid #dfd7e8}
+button.good{background:linear-gradient(135deg,#79dc9f,var(--good));color:#123621}
+button.danger{background:white;color:var(--bad);border:1px solid #efc7cd}
+.pill,select{background:white;border:1px solid #ded7e6;color:var(--navy)}
 
-  .weekbar{ display:flex; gap:6px; flex-wrap:wrap; }
-  .chip{ padding:8px 10px; border-radius:999px; background:#f1f5f9; font-size:13px; cursor:pointer; }
-  .chip.active{ background: #111827; color: #fff; }
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;margin-bottom:14px}
+.stat{background:rgba(255,255,255,.9);border-radius:18px;padding:11px;text-align:center;box-shadow:0 8px 20px rgba(62,42,81,.08)}
+.stat strong{display:block;font-size:1.24rem;color:var(--violet)}
 
-  .flex{ display:flex; gap:8px; flex-wrap:wrap; }
-  .right{ text-align:right; }
-  .muted{ color:var(--muted); }
-  .stat{ background:#111827; color:#fff; border-radius:14px; padding:10px 12px; font-weight:700; }
+.layout{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(340px,.85fr);gap:16px}
+.panel{background:var(--panel);border:1px solid rgba(255,255,255,.96);border-radius:28px;padding:18px;box-shadow:var(--shadow)}
+.lesson-card{
+  min-height:520px;border-radius:26px;padding:20px;
+  background:
+    radial-gradient(circle at 82% 18%,rgba(255,255,255,.78),transparent 25%),
+    linear-gradient(145deg,#fff7d5,#f3ebff,#e6faff);
+}
+.lesson-head{display:flex;gap:14px;align-items:center}
+.lesson-icon{
+  width:96px;height:96px;border-radius:28px;display:grid;place-items:center;
+  color:white;font-size:3.2rem;font-weight:950;
+  background:linear-gradient(145deg,var(--violet),var(--pink),var(--coral));
+  box-shadow:inset -10px -12px 18px rgba(0,0,0,.12),inset 8px 9px 16px rgba(255,255,255,.2),0 15px 30px rgba(70,44,96,.18)
+}
+.lesson-title{margin:0;color:var(--navy);font-size:clamp(1.5rem,4vw,2.2rem)}
+.lesson-meta{color:var(--muted);margin-top:4px}
+.objective{margin:14px 0;padding:13px 15px;border-radius:18px;background:white;border-left:6px solid var(--mint);line-height:1.5}
+.game{display:grid;grid-template-columns:repeat(auto-fit,minmax(72px,1fr));gap:10px;margin-top:14px}
+.game-btn{
+  min-height:72px;border-radius:20px;background:linear-gradient(145deg,#fff,#f7f4ff);
+  color:var(--navy);font-size:1.7rem;border:2px solid #e7dfee;box-shadow:0 8px 18px rgba(68,45,88,.08)
+}
+.game-btn.correct{background:linear-gradient(145deg,#eafff1,#baf0cc);border-color:var(--good)}
+.game-btn.wrong{background:linear-gradient(145deg,#fff0f2,#ffd4d9);border-color:var(--bad)}
+.game-instruction{text-align:center;color:var(--plum);font-weight:900;min-height:30px;margin-top:10px}
+.lesson-actions{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-top:14px}
 
-  .game{ border: 3px dashed #e5e7eb; border-radius: 18px; padding:12px; display:grid; gap:10px; grid-template-columns: repeat(5, 1fr); }
-  .dot{ width:66px;height:66px;border-radius:18px; display:grid; place-items:center; font-weight:900; font-size:24px; cursor:pointer;
-        user-select:none; background:linear-gradient(135deg,#fff,#f0f0f0); box-shadow: 0 6px #00000012; }
-  .dot.good{ background:linear-gradient(135deg,#d1fae5,#bbf7d0); box-shadow: 0 6px #00000018; }
-  .dot.bad{ background:linear-gradient(135deg,#fee2e2,#fecaca); box-shadow: 0 6px #00000018; }
+.side-stack{display:grid;gap:14px}
+.activity{border-radius:22px;padding:15px;background:linear-gradient(145deg,#fff,#fff9ed);border:1px solid #ebe3ee}
+.activity h2{margin:0 0 7px;color:var(--navy);font-size:1.22rem}
+.progress{height:12px;border-radius:999px;overflow:hidden;background:#e9e3ed}
+.progress>div{height:100%;width:0;background:linear-gradient(90deg,var(--pink),var(--sun),var(--mint),var(--sky));transition:width .35s ease}
+.week-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:6px;max-height:300px;overflow:auto}
+.week-btn{padding:8px 4px;border-radius:13px;background:white;color:var(--violet);border:1px solid #e1d8e9;box-shadow:none}
+.week-btn.active{color:white;background:linear-gradient(135deg,var(--violet),var(--pink))}
+.week-btn.done::after{content:" ✓";color:var(--good)}
+.day-row{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-top:10px}
+.day-btn{padding:8px 4px;border-radius:14px;background:white;color:var(--navy);border:1px solid #e1d9e8;box-shadow:none}
+.day-btn.active{color:white;background:linear-gradient(135deg,var(--sky),var(--violet))}
+.day-btn.done{background:#effff4;border-color:#9edcb5}
+.badges{display:flex;flex-wrap:wrap;gap:7px}
+.badge{padding:7px 10px;border-radius:999px;background:#f3effb;color:#654b80;font-size:.82rem;font-weight:850}
 
-  .kbd{ font-family: ui-monospace, SFMono-Regular, Menlo, monospace; background:#111827; color:#fff; padding:3px 7px; border-radius:7px; }
-
-  .hidden{ display:none !important; }
-  .divider{ height:1px; background:#eee; margin:12px 0; }
-
-  /* Modal */
-  .modal{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; background: #0008; z-index: 50; }
-  .modal.show{ display:flex; }
-  .sheet{ width:min(720px,95%); background:#fff; border-radius:24px; padding:18px; box-shadow: var(--shadow); max-height:90vh; overflow:auto; }
-
-  /* Confetti canvas */
-  #confetti{ position: fixed; inset: 0; pointer-events: none; }
+.modal{position:fixed;inset:0;display:none;place-items:center;padding:16px;background:rgba(39,28,49,.66);z-index:40}
+.modal.open{display:grid}
+.sheet{width:min(760px,100%);max-height:90vh;overflow:auto;border-radius:28px;padding:20px;background:white;box-shadow:var(--shadow)}
+.sheet h2{color:var(--navy)}
+.quiz-q{padding:12px;border-radius:18px;background:#faf7ff;border:1px solid #e8dfee;margin:10px 0}
+.quiz-options{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:8px}
+.quiz-options button{background:linear-gradient(135deg,#fff2c7,#e9f7ff)}
+.site-footer{margin-top:16px;padding:15px 12px;text-align:center;border-radius:18px;background:rgba(255,255,255,.78);border:1px solid rgba(90,60,120,.12);color:#665b72;font-size:.84rem;line-height:1.5}
+.site-footer strong{color:#503a76}
+@media(max-width:900px){.layout{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.week-grid{grid-template-columns:repeat(4,1fr)}.quiz-options{grid-template-columns:1fr}.lesson-head{align-items:flex-start}.lesson-icon{width:78px;height:78px;font-size:2.6rem}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important}}
 </style>
 </head>
 <body>
-<canvas id="confetti"></canvas>
-<div class="app" id="app">
-  <header>
-    <div class="title">
-      <div class="logo" aria-hidden="true"></div>
-      <div>
-        <h1>Pre‑K Math Cloud</h1>
-        <div class="sub">Sovereign • Offline‑first • No external servers</div>
-      </div>
-    </div>
-    <div class="right">
-      <div class="stat" id="statStars">⭐ 0</div>
-    </div>
+<div class="sky-decor" aria-hidden="true"><span>☁️</span><span>⭐</span><span>🌈</span><span>✨</span><span>☀️</span></div>
+
+<main class="app">
+  <header class="hero">
+    <h1>Pre-K Math Cloud</h1>
+    <p>A colorful 42-week early-math journey with daily lessons, hands-on games, weekly quizzes, progress tracking, and private local saving.</p>
+    <div class="hero-icons"><span>🔢</span><span>🔺</span><span>🧩</span><span>🌈</span></div>
   </header>
 
-  <nav>
-    <button class="btn big pill" id="btnStart">Start Today’s Lesson</button>
-    <button class="btn big pill2" id="btnLibrary">Lesson Library</button>
-    <button class="btn big pill3" id="btnQuiz">Weekly Quiz</button>
-    <button class="btn big pill" id="btnTests">Quarterly & Final</button>
-    <button class="btn big pill2" id="btnRewards">Rewards</button>
-    <button class="btn big pill3" id="btnCloud">Cloud</button>
-    <button class="btn big pill" id="btnTeacher">Teacher Portal</button>
-  </nav>
+  <div class="toolbar">
+    <button id="prevLesson" class="secondary">⬅ Previous</button>
+    <button id="startLesson">▶ Start Lesson</button>
+    <button id="nextLesson" class="good">Next Lesson ➡</button>
+    <button id="quizBtn" class="secondary">🧠 Weekly Quiz</button>
+    <button id="teacherBtn" class="secondary">📊 Teacher View</button>
+    <button id="exportBtn" class="secondary">⬇️ Export</button>
+    <button id="resetBtn" class="danger">↺ Reset</button>
+  </div>
 
-  <div class="divider"></div>
+  <section class="stats">
+    <div class="stat"><strong id="starsStat">0</strong>Stars</div>
+    <div class="stat"><strong id="weekStat">1</strong>Week</div>
+    <div class="stat"><strong id="dayStat">1</strong>Day</div>
+    <div class="stat"><strong id="doneStat">0</strong>Lessons Complete</div>
+    <div class="stat"><strong id="scoreStat">0%</strong>Average</div>
+  </section>
 
-  <section class="grid">
-    <div class="card" id="cardLesson">
-      <h2>Today’s Lesson</h2>
-      <div class="lesson-hero">
-        <div class="hero-num" id="heroNum">#</div>
-        <div>
-          <div id="lessonTitle" style="font-weight:800;font-size:18px;">Welcome!</div>
-          <div id="lessonDesc" class="muted">Tap <span class="kbd">Start Today’s Lesson</span> to begin.</div>
+  <div class="layout">
+    <section class="panel">
+      <div class="lesson-card">
+        <div class="lesson-head">
+          <div class="lesson-icon" id="lessonIcon">🔢</div>
+          <div>
+            <h2 class="lesson-title" id="lessonTitle">Welcome to Math Cloud</h2>
+            <div class="lesson-meta" id="lessonMeta"></div>
+          </div>
+        </div>
+        <div class="objective" id="objective">Choose a week and day, then begin the lesson.</div>
+        <div class="game-instruction" id="instruction"></div>
+        <div class="game" id="game"></div>
+        <div class="lesson-actions">
+          <button id="hearBtn" class="secondary">🔊 Read Directions</button>
+          <button id="hintBtn" class="secondary">💡 Hint</button>
+          <button id="completeBtn">⭐ Complete Lesson</button>
         </div>
       </div>
-      <div class="divider"></div>
-      <div id="game" class="game"></div>
-    </div>
+    </section>
 
-    <div class="card" id="cardPlan">
-      <h2>42‑Week Plan</h2>
-      <p class="muted">5 lessons per week • Weekly quiz • Quarter tests in Weeks 9, 18, 27, 36 • Final in Week 42.</p>
-      <div class="weekbar" id="weekbar"></div>
-      <div class="divider"></div>
-      <div id="planDetail" class="muted">Select a week to view focus.</div>
-    </div>
-  </section>
-</div>
+    <aside class="side-stack">
+      <section class="activity">
+        <h2>☁️ 42-Week Curriculum</h2>
+        <div class="week-grid" id="weekGrid"></div>
+        <div class="day-row" id="dayRow"></div>
+      </section>
 
-<!-- ======= MODALS ======= -->
-<div class="modal" id="modalCloud">
-  <div class="sheet">
-    <h2>Cloud Vault</h2>
-    <p class="muted">Your sovereign cloud lives inside your browser using IndexedDB + OPFS. Export a backup file to move between devices, or use <b>Peer Sync</b> to connect two browsers via WebRTC by copy‑paste (no server).</p>
-    <div class="divider"></div>
-    <h3>Vault Controls</h3>
-    <div class="flex">
-      <button class="btn pill" id="btnExport">Export Vault (.json)</button>
-      <button class="btn pill2" id="btnImport">Import Vault</button>
-      <button class="btn pill3" id="btnBackupOPFS">Backup to OPFS</button>
-      <button class="btn" id="btnListOPFS">List OPFS Files</button>
-    </div>
-    <pre id="opfsList" style="white-space:pre-wrap;background:#f8fafc;padding:10px;border-radius:12px;margin-top:10px;max-height:180px;overflow:auto;"></pre>
+      <section class="activity">
+        <h2>🏆 Course Progress</h2>
+        <div class="progress"><div id="progressBar"></div></div>
+        <div class="game-instruction" id="progressText"></div>
+      </section>
 
-    <div class="divider"></div>
-    <h3>Peer Sync (serverless)</h3>
-    <p class="muted">On <b>Device A</b>, click <em>Create Offer</em> and copy the text to <b>Device B</b>. On Device B, click <em>Paste Offer → Create Answer</em>, copy the answer back to Device A, then click <em>Finalize</em>. When connected, press <em>Send Vault</em> to sync.</p>
-    <div class="flex">
-      <button class="btn" id="btnOffer">Create Offer</button>
-      <button class="btn" id="btnAnswer">Paste Offer → Create Answer</button>
-      <button class="btn" id="btnFinalize">Finalize</button>
-      <button class="btn pill3" id="btnSendVault">Send Vault</button>
-    </div>
-    <textarea id="signalBox" style="width:100%;min-height:120px;margin-top:10px;border-radius:12px;border:1px solid #e5e7eb;padding:10px;font-family:ui-monospace,Menlo,monospace"></textarea>
-    <div id="peerStatus" class="muted" style="margin-top:8px;">Status: idle</div>
+      <section class="activity">
+        <h2>🎖️ Math Badges</h2>
+        <div class="badges" id="badges"></div>
+      </section>
+    </aside>
   </div>
-</div>
 
-<div class="modal" id="modalTeacher">
-  <div class="sheet">
-    <h2>Teacher Portal</h2>
-    <p class="muted">Password‑protected gradebook and controls. First time here? Set a password.</p>
-    <div class="divider"></div>
-    <div id="teacherAuth">
-      <input id="teacherPass" type="password" placeholder="Enter password" style="width:60%;padding:10px;border-radius:12px;border:1px solid #e5e7eb;">
-      <button class="btn pill" id="btnTeacherLogin">Unlock</button>
-      <button class="btn pill2" id="btnTeacherSet">Set / Reset Password</button>
-      <div id="authMsg" class="muted"></div>
-    </div>
-    <div id="teacherPanel" class="hidden">
-      <div class="flex">
-        <button class="btn" id="btnViewGrades">View Gradebook</button>
-        <button class="btn" id="btnExportGrades">Export Grades CSV</button>
-        <button class="btn" id="btnResetStudent">Reset Student</button>
-      </div>
-      <div id="gradeTableWrap" style="margin-top:10px;max-height:300px;overflow:auto;"></div>
-    </div>
-  </div>
-</div>
+  <footer class="site-footer">
+    <strong>© 2026 Verve N Veda · Khaemenes Academy · Jennifer Kay Pearl</strong><br>
+    All Rights Reserved.
+  </footer>
+</main>
 
-<div class="modal" id="modalQuiz">
+<div class="modal" id="quizModal">
   <div class="sheet">
     <h2 id="quizTitle">Weekly Quiz</h2>
     <div id="quizArea"></div>
-    <div class="divider"></div>
-    <div class="flex">
-      <button class="btn" id="btnSubmitQuiz">Submit</button>
-      <button class="btn" id="btnExitQuiz">Close</button>
+    <div class="lesson-actions">
+      <button id="submitQuiz">Submit Quiz</button>
+      <button id="closeQuiz" class="secondary">Close</button>
     </div>
-    <div id="quizMsg" class="muted"></div>
+    <div class="game-instruction" id="quizResult"></div>
   </div>
 </div>
 
-<!-- ======= SCRIPT ======= -->
+<div class="modal" id="teacherModal">
+  <div class="sheet">
+    <h2>Teacher Progress View</h2>
+    <div id="teacherContent"></div>
+    <div class="lesson-actions"><button id="closeTeacher" class="secondary">Close</button></div>
+  </div>
+</div>
+
 <script>
-// =============================================================
-//  PRE‑K MATH CLOUD — Sovereign, Single‑File (Vanilla JS)
-//  Offline‑first storage (localStorage + OPFS when available)
-//  Serverless P2P sync via WebRTC data channel (manual signaling)
-//  42‑week curriculum scaffolding with quizzes & tests
-// =============================================================
+(() => {
+"use strict";
 
-const App = {
-  state: {
-    stars: 0,
-    week: 1, day: 1, // day 1..5
-    student: 'Student',
-    vault: null,
-    peer: null,
-  }
+const TOPICS = [
+["Numbers 0–3","🔢","Recognize, name, and count quantities from zero to three.","number"],
+["Numbers 4–5","🖐️","Recognize, name, and count four and five.","number"],
+["Numbers 0–5 Review","⭐","Match numerals to groups of objects through five.","count"],
+["Zero and Empty Sets","⭕","Understand zero as none or empty.","zero"],
+["Same and Different","🧩","Compare objects and notice what is alike or different.","compare"],
+["Big and Small","🐘","Compare size using big, small, bigger, and smaller.","compare"],
+["More and Less","⚖️","Compare two groups using more, fewer, and same.","compare"],
+["Number Order 0–5","➡️","Put numbers from zero to five in order.","sequence"],
+["AB Patterns","🟥","Recognize and continue simple AB patterns.","pattern"],
+["Shapes: Circle and Square","🔵","Identify circles and squares in everyday objects.","shape"],
+["Shapes: Triangle and Rectangle","🔺","Identify triangles and rectangles.","shape"],
+["Position Words","📍","Use above, below, beside, inside, and outside.","position"],
+["Numbers 6–7","7️⃣","Recognize and count six and seven.","number"],
+["Numbers 8–10","🔟","Recognize and count eight, nine, and ten.","number"],
+["Count to 10","🐾","Count objects accurately to ten.","count"],
+["Write Numbers 0–5","✏️","Practice tracing and forming numerals zero through five.","trace"],
+["Write Numbers 6–10","🖍️","Practice tracing and forming numerals six through ten.","trace"],
+["Number Order 0–10","🚂","Arrange numerals from zero through ten.","sequence"],
+["Ten Frames","🔲","Use ten frames to see quantities quickly.","tenframe"],
+["Compose Five","🧱","Find different ways to make five.","compose"],
+["Decompose Five","🍎","Break five into smaller groups.","compose"],
+["Simple Addition to 5","➕","Join two small groups and find the total.","add"],
+["Addition Stories","📖","Act out and solve joining stories within five.","add"],
+["Simple Subtraction to 5","➖","Take away objects and find how many remain.","subtract"],
+["Subtraction Stories","🐸","Act out and solve take-away stories within five.","subtract"],
+["Equal Groups","🟰","Notice when two groups have the same amount.","equal"],
+["Sort by Color","🌈","Sort objects by color and explain the rule.","sort"],
+["Sort by Shape","🔷","Sort objects by shape.","sort"],
+["Sort by Size","📏","Sort objects by size.","sort"],
+["Picture Graphs","📊","Read a simple picture graph.","graph"],
+["Measurement: Long and Short","📐","Compare length using long and short.","measure"],
+["Measurement: Heavy and Light","⚖️","Compare weight using heavy and light.","measure"],
+["Capacity: Full and Empty","🥛","Compare containers using full, empty, more, and less.","capacity"],
+["Time of Day","🌞","Identify morning, afternoon, evening, and night.","time"],
+["Sequence Daily Events","🗓️","Put familiar daily events in order.","sequence"],
+["Coins: Penny","🪙","Recognize a penny and understand it is money.","money"],
+["Numbers 11–15","1️⃣","Recognize and count eleven through fifteen.","number"],
+["Numbers 16–20","2️⃣","Recognize and count sixteen through twenty.","number"],
+["Count to 20","🌟","Count objects and movements to twenty.","count"],
+["Add and Subtract Review","🎯","Review joining and taking away within five.","mixed"],
+["Kindergarten Readiness Review","🎒","Review counting, shapes, patterns, comparison, and operations.","review"],
+["Final Math Celebration","🏆","Show what you know through playful final activities.","final"]
+];
+
+const DAILY_TYPES = ["Explore","Practice","Move & Count","Create","Review"];
+const state = {
+  week:Number(localStorage.getItem("mathCloudWeek")||1),
+  day:Number(localStorage.getItem("mathCloudDay")||1),
+  stars:Number(localStorage.getItem("mathCloudStars")||0),
+  completed:new Set(JSON.parse(localStorage.getItem("mathCloudCompleted")||"[]")),
+  grades:JSON.parse(localStorage.getItem("mathCloudGrades")||"[]"),
+  currentGame:null,
+  lessonSolved:false
 };
 
-// ---------------------- UTILITIES ----------------------
-const $ = sel => document.querySelector(sel);
-const el = (tag, attrs={}, children=[])=>{ const n=document.createElement(tag); Object.assign(n, attrs); children.forEach(c=>n.appendChild(c)); return n; };
-const sleep = ms => new Promise(r=>setTimeout(r,ms));
+const $=id=>document.getElementById(id);
+const lessonId=()=>`W${state.week}D${state.day}`;
 
-function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min }
-function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a }
+function save(){
+  localStorage.setItem("mathCloudWeek",String(state.week));
+  localStorage.setItem("mathCloudDay",String(state.day));
+  localStorage.setItem("mathCloudStars",String(state.stars));
+  localStorage.setItem("mathCloudCompleted",JSON.stringify([...state.completed]));
+  localStorage.setItem("mathCloudGrades",JSON.stringify(state.grades));
+}
 
-// SHA‑256 for teacher password
-async function sha256(text){ const h=await crypto.subtle.digest('SHA-256', new TextEncoder().encode(text)); return [...new Uint8Array(h)].map(b=>b.toString(16).padStart(2,'0')).join(''); }
+function speak(text){
+  if(!("speechSynthesis" in window)) return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  const voices=speechSynthesis.getVoices();
+  u.voice=voices.find(v=>/child|kid|jenny|samantha|aria|female/i.test(v.name)&&/^en/i.test(v.lang))
+    ||voices.find(v=>/^en/i.test(v.lang))||voices[0]||null;
+  u.rate=.86;u.pitch=1.1;
+  speechSynthesis.speak(u);
+}
 
-// Simple beep (correct answers)
-function beepOK(){ const ctx=new (window.AudioContext||window.webkitAudioContext)(); const o=ctx.createOscillator(); const g=ctx.createGain(); o.type='triangle'; o.frequency.value=880; o.connect(g); g.gain.setValueAtTime(0.001, ctx.currentTime); g.gain.exponentialRampToValueAtTime(0.15, ctx.currentTime+0.02); g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime+0.25); g.connect(ctx.destination); o.start(); o.stop(ctx.currentTime+0.26); }
+function shuffle(a){
+  const c=[...a];
+  for(let i=c.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[c[i],c[j]]=[c[j],c[i]]}
+  return c;
+}
 
-// Confetti (tiny built‑in)
-(function confettiInit(){
-  const c = document.getElementById('confetti');
-  const ctx = c.getContext('2d');
-  function resize(){ c.width = innerWidth; c.height= innerHeight; }
-  addEventListener('resize', resize); resize();
-  const pieces = [];
-  function make(){ for(let i=0;i<90;i++) pieces.push({x:Math.random()*c.width, y:-10-Math.random()*100, s:4+Math.random()*6, vy:2+Math.random()*3, vx:(Math.random()-.5)*2, r:Math.random()*360}); }
-  function draw(){ ctx.clearRect(0,0,c.width,c.height); pieces.forEach(p=>{ p.y+=p.vy; p.x+=p.vx; p.r+=p.vy; if(p.y>c.height+20){ p.y=-10; p.x=Math.random()*c.width; } ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.r*Math.PI/180); ctx.fillStyle = `hsl(${(p.x+p.y)%360} 90% 60%)`; ctx.fillRect(-p.s/2,-p.s/2,p.s,p.s); ctx.restore(); }); requestAnimationFrame(draw); }
-  draw();
-  window.shower = ()=>{ make(); setTimeout(()=>{},700); };
-})();
+function topic(){return TOPICS[state.week-1]}
 
-// ---------------------- CURRICULUM ----------------------
-function generateCurriculum(){
-  const weeks = [];
-  const focus = [
-    'Meet Numbers 0–5','Meet Numbers 6–10','Count to 10','Zero & Nothing','Compare Big / Small', // 1–5
-    'Count Objects 0–10','Write 0–10','Number Order','Patterns ABAB','Shapes & Counting',       // 6–10
-    'Quarter 1 Review','Numbers 11–15','Numbers 16–20','Count Teen Numbers','Tally Marks',      // 11–15
-    'More/Less (0–20)','Compose 10','Decompose 10','Number Lines 0–20','Story Problems (add 0–5)', // 16–20
-    'Quarter 2 Review','Add within 5','Add within 10','Doubles to 10','Make Ten',               // 21–25
-    'Subtraction within 5','Subtraction within 10','Equal / Not Equal','Compare Numbers 0–20','Sorting & Classify', // 26–30
-    'Quarter 3 Review','Graphs (picture)','Time (morning/noon/night)','Money (pennies)','Measurement (long/short)', // 31–35
-    'Quarter 4 Review','Review 0–20','Add & Sub Mix','Word Problems mix','Ready for K Final'   // 36–40
-  ];
-  // Ensure 42 weeks; last two weeks = Final Prep + Final
-  while(focus.length<41) focus.push('Review & Play');
-  focus[41] = 'Final Exam & Celebration';
-  for(let w=1; w<=42; w++){
-    const topic = focus[w-1] || 'Fun Math Play';
-    const lessons = Array.from({length:5}, (_,d)=>({
-      id:`W${w}D${d+1}`,
-      title:`Week ${w} • Day ${d+1}`,
-      target: lessonTargetForWeek(w,d+1,topic),
-    }));
-    weeks.push({week:w, topic, lessons});
+function dailyObjective(){
+  const [name,,base]=topic();
+  const dayText=[
+    `Explore ${name.toLowerCase()} with pictures and objects.`,
+    `Practice ${name.toLowerCase()} by choosing correct answers.`,
+    `Use movement, counting, and spoken math words.`,
+    `Create or sort something that shows ${name.toLowerCase()}.`,
+    `Review the week and explain one thing you learned.`
+  ][state.day-1];
+  return `${base} ${dayText}`;
+}
+
+function rand(min,max){return Math.floor(Math.random()*(max-min+1))+min}
+
+function makeGame(){
+  const [name,icon,,kind]=topic();
+  const max = state.week<13?5:state.week<37?10:20;
+  let prompt="", options=[], answer=0;
+
+  if(["number","count","zero","tenframe"].includes(kind)){
+    const n=kind==="zero"?0:rand(0,max);
+    prompt=`Tap the number ${n}.`;
+    options=shuffle([...new Set([n,rand(0,max),rand(0,max),rand(0,max),rand(0,max)])]);
+    while(options.length<5){const x=rand(0,max);if(!options.includes(x))options.push(x)}
+    answer=n;
+  }else if(kind==="shape"){
+    const shapes=[["●","circle"],["■","square"],["▲","triangle"],["▭","rectangle"]];
+    const target=shapes[rand(0,shapes.length-1)];
+    prompt=`Tap the ${target[1]}.`;
+    options=shuffle(shapes);
+    answer=target[0];
+  }else if(kind==="pattern"){
+    const patterns=["🔴🔵🔴🔵 ?","⭐🌙⭐🌙 ?","🍎🍌🍎🍌 ?"];
+    const p=patterns[rand(0,patterns.length-1)];
+    prompt=`What comes next? ${p}`;
+    options=p.includes("🔴")?["🔴","🔵","🟢","🟡"]:p.includes("⭐")?["⭐","🌙","☀️","☁️"]:["🍎","🍌","🍇","🍊"];
+    answer=options[0];
+    options=shuffle(options);
+  }else if(kind==="add"||kind==="subtract"||kind==="mixed"){
+    const a=rand(1,4), b=rand(1,kind==="subtract"?a:4);
+    const isSub=kind==="subtract"||(kind==="mixed"&&Math.random()<.5);
+    const result=isSub?a-b:a+b;
+    prompt=`What is ${a} ${isSub?"−":"+"} ${b}?`;
+    options=shuffle([...new Set([result,Math.max(0,result-1),result+1,result+2])]);
+    answer=result;
+  }else if(kind==="compare"||kind==="equal"){
+    const a=rand(0,8),b=rand(0,8);
+    prompt=`Which group has ${kind==="equal"?"the same number":"more"}?`;
+    options=[`${a} dots`,`${b} dots`];
+    answer=kind==="equal"?(a===b?`${a} dots`:"They are different"):(a>b?`${a} dots`:`${b} dots`);
+    if(kind==="equal") options.push("They are different");
+  }else if(kind==="sort"){
+    const sets=["🍎🍓🍒","🔵🔷💙","🐘🐭🦒","▲■●"];
+    prompt="Tap the group that belongs together.";
+    options=shuffle(sets);
+    answer=sets[0];
+  }else if(kind==="time"){
+    prompt="When do we usually see the moon and stars?";
+    options=shuffle(["Morning","Afternoon","Night","Lunch"]);
+    answer="Night";
+  }else if(kind==="money"){
+    prompt="Tap the penny.";
+    options=shuffle(["🪙","⭐","🔘","🍪"]);
+    answer="🪙";
+  }else{
+    const n=rand(1,10);
+    prompt=`Count and tap ${n}.`;
+    options=shuffle([n,Math.max(0,n-1),n+1,n+2]);
+    answer=n;
   }
-  return weeks;
+  state.currentGame={prompt,options,answer,kind,icon,name};
 }
 
-function lessonTargetForWeek(week,day,topic){
-  // Lightweight generator for intro‑to‑numbers focus
-  if(week<=3){
-    const nBase = week===1?0: (week===2?6:10);
-    const target = Math.min(10, nBase + day);
-    return { kind:'number', value: target, text:`Recognize and count ${target}` };
+function renderGame(){
+  makeGame();
+  const g=$("game");g.innerHTML="";
+  $("instruction").textContent=state.currentGame.prompt;
+  state.lessonSolved=false;
+  state.currentGame.options.forEach(opt=>{
+    const b=document.createElement("button");
+    b.className="game-btn";
+    b.textContent=opt;
+    b.onclick=()=>{
+      if(state.lessonSolved) return;
+      if(String(opt)===String(state.currentGame.answer)){
+        b.classList.add("correct");
+        $("instruction").textContent="Correct! Wonderful thinking.";
+        state.lessonSolved=true;
+        state.stars+=1;
+        save();updateStats();
+        speak("Correct. Wonderful thinking.");
+      }else{
+        b.classList.add("wrong");
+        $("instruction").textContent="Good try. Look carefully and try again.";
+        speak("Good try. Try again.");
+        setTimeout(()=>b.classList.remove("wrong"),600);
+      }
+    };
+    g.appendChild(b);
+  });
+}
+
+function renderLesson(){
+  const [name,icon]=topic();
+  $("lessonIcon").textContent=icon;
+  $("lessonTitle").textContent=name;
+  $("lessonMeta").textContent=`Week ${state.week} • Day ${state.day} • ${DAILY_TYPES[state.day-1]}`;
+  $("objective").textContent=dailyObjective();
+  renderGame();
+  renderWeeks();
+  updateStats();
+  save();
+}
+
+function renderWeeks(){
+  const wg=$("weekGrid");wg.innerHTML="";
+  TOPICS.forEach((_,i)=>{
+    const b=document.createElement("button");
+    b.className="week-btn"+(i+1===state.week?" active":"");
+    const allDone=[1,2,3,4,5].every(d=>state.completed.has(`W${i+1}D${d}`));
+    if(allDone)b.classList.add("done");
+    b.textContent=`W${i+1}`;
+    b.onclick=()=>{state.week=i+1;state.day=1;renderLesson()};
+    wg.appendChild(b);
+  });
+  const dr=$("dayRow");dr.innerHTML="";
+  for(let d=1;d<=5;d++){
+    const b=document.createElement("button");
+    b.className="day-btn"+(d===state.day?" active":"")+(state.completed.has(`W${state.week}D${d}`)?" done":"");
+    b.textContent=`D${d}`;
+    b.onclick=()=>{state.day=d;renderLesson()};
+    dr.appendChild(b);
   }
-  if(week===42){ return {kind:'final', text:'Final exam'} }
-  return { kind:'play', text: topic };
 }
 
-const CURRICULUM = generateCurriculum();
+function updateStats(){
+  $("starsStat").textContent=state.stars;
+  $("weekStat").textContent=state.week;
+  $("dayStat").textContent=state.day;
+  $("doneStat").textContent=state.completed.size;
+  const avg=state.grades.length?Math.round(state.grades.reduce((a,b)=>a+b.score,0)/state.grades.length):0;
+  $("scoreStat").textContent=avg+"%";
+  $("progressBar").style.width=(state.completed.size/210*100)+"%";
+  $("progressText").textContent=`${state.completed.size} of 210 lessons complete.`;
 
-// ---------------------- VAULT (local data) ----------------------
-const Vault = {
-  key: 'prek-math-cloud.v3',
-  data: { meta:{ created: Date.now(), version:3 }, student:'Student', stars:0, progress:{}, grades:[], admin:{hash:null} },
-  load(){ try{ const raw=localStorage.getItem(this.key); if(raw){ this.data = JSON.parse(raw); } }catch(e){ console.warn('Vault load',e) }
-    App.state.stars = this.data.stars||0; App.state.student=this.data.student||'Student'; updateStars(); },
-  save(){ try{ localStorage.setItem(this.key, JSON.stringify(this.data)); }catch(e){ console.warn('Vault save',e) } },
-  setStudent(name){ this.data.student=name; App.state.student=name; this.save(); },
-  awardStars(n){ this.data.stars=(this.data.stars||0)+n; App.state.stars=this.data.stars; this.save(); updateStars(); shower(); beepOK(); },
-  logGrade(entry){ this.data.grades.push({...entry, ts: Date.now()}); this.save(); },
-  snapshot(){ return JSON.stringify(this.data, null, 2); },
-  import(json){ try{ const obj=JSON.parse(json); if(obj && obj.meta){ this.data=obj; this.save(); App.state.stars=this.data.stars||0; updateStars(); return true; } }catch(e){ return false }
-    return false; }
-};
+  const badges=[];
+  if(state.completed.size>=5)badges.push("☁️ First Week");
+  if(state.completed.size>=25)badges.push("🔢 Number Explorer");
+  if(state.completed.size>=50)badges.push("🔺 Shape Spotter");
+  if(state.completed.size>=100)badges.push("🌈 Math Adventurer");
+  if(state.completed.size>=210)badges.push("🏆 Math Cloud Graduate");
+  $("badges").innerHTML=badges.length?badges.map(x=>`<span class="badge">${x}</span>`).join(""):'<span class="badge">Complete lessons to earn badges.</span>';
+}
 
-// ---------------------- OPFS (Origin Private File System) ----------------------
-const OPFS = {
-  root: null,
-  async init(){ if(!('storage' in navigator) || !('getDirectory' in navigator.storage)){ return false; }
-    try{ this.root = await navigator.storage.getDirectory(); return true; }catch{ return false }
-  },
-  async writeText(name, text){ if(!this.root) return false; const handle = await this.root.getFileHandle(name,{create:true}); const w = await handle.createWritable(); await w.write(new Blob([text],{type:'application/json'})); await w.close(); return true; },
-  async list(){ if(!this.root) return []; const out=[]; for await (const [name,handle] of this.root.entries()){ out.push(name); } return out; }
-};
+function moveLesson(delta){
+  let pos=(state.week-1)*5+(state.day-1)+delta;
+  pos=Math.max(0,Math.min(209,pos));
+  state.week=Math.floor(pos/5)+1;
+  state.day=pos%5+1;
+  renderLesson();
+}
 
-// ---------------------- P2P (manual WebRTC) ----------------------
-function PeerLink(){
-  const iceServers = []; // serverless; works best on same LAN
-  const pc = new RTCPeerConnection({iceServers});
-  let dc = null; let open=false;
-  const statusEl = $('#peerStatus');
-  function setStatus(t){ statusEl.textContent = 'Status: ' + t; }
-  pc.onicecandidate = e=>{ if(e.candidate) return; // gather complete
-    $('#signalBox').value = JSON.stringify(pc.localDescription); };
-  pc.onconnectionstatechange = ()=> setStatus(pc.connectionState);
-  pc.ondatachannel = e=>{ dc = e.channel; bindDC(); };
-  function bindDC(){ if(!dc) return; dc.onopen=()=>{ open=true; setStatus('connected'); }; dc.onclose=()=>{ open=false; setStatus('closed'); };
-    dc.onmessage = ev=>{ try{ const packet = JSON.parse(ev.data); if(packet.type==='vault'){ const ok = Vault.import(packet.payload); setStatus('received vault ' + (ok?'✓':'×')); if(ok){ alert('Vault received & loaded.'); } } }catch(err){} } }
-  return {
-    async makeOffer(){ dc = pc.createDataChannel('sync'); bindDC(); const offer = await pc.createOffer(); await pc.setLocalDescription(offer); setStatus('offer created'); },
-    async makeAnswer(){ const offer = JSON.parse($('#signalBox').value||'{}'); await pc.setRemoteDescription(offer); const answer = await pc.createAnswer(); await pc.setLocalDescription(answer); await sleep(200);
-      $('#signalBox').value = JSON.stringify(pc.localDescription); setStatus('answer created'); },
-    async finalize(){ const answer = JSON.parse($('#signalBox').value||'{}'); await pc.setRemoteDescription(answer); setStatus('finalized, connecting…'); },
-    sendVault(){ if(!open) return alert('Peer not connected'); dc.send(JSON.stringify({type:'vault', payload: Vault.snapshot()})); setStatus('sent vault'); }
+function buildQuiz(){
+  const items=[];
+  for(let i=0;i<5;i++){
+    makeGame();
+    items.push({...state.currentGame,choice:null});
   }
-}
-
-// ---------------------- QUIZ/TEST ENGINE ----------------------
-function makeMCQ_Number0_20(){
-  const correct = randInt(0,20);
-  const pool = new Set([correct]);
-  while(pool.size<4) pool.add(randInt(0,20));
-  const options = shuffle([...pool]);
-  return { kind:'mcq', prompt:`Which number is ${correct}?`, options, answer: options.indexOf(correct) };
-}
-
-function makeCountDots(){
-  const count = randInt(1,10);
-  const opts = shuffle([count, randInt(0,10), randInt(0,10), randInt(0,10)]);
-  const dots = Array.from({length:count},()=>'<span style="display:inline-block;width:16px;height:16px;border-radius:6px;background:#111827;margin:3px"></span>').join('');
-  return { kind:'mcqHtml', prompt:`How many dots? ${dots}`, options:opts.map(n=>String(n)), answer: opts.indexOf(count) };
-}
-
-function buildQuiz(n=8){
-  const items=[]; for(let i=0;i<n;i++){ items.push( i%2? makeCountDots() : makeMCQ_Number0_20() ); }
   return items;
 }
 
-function renderQuiz(items, container){
-  container.innerHTML='';
+function openQuiz(){
+  const items=buildQuiz();
+  $("quizTitle").textContent=`Week ${state.week} Quiz`;
+  const area=$("quizArea");area.innerHTML="";
   items.forEach((q,idx)=>{
-    const wrap = el('div',{className:'card', style:'margin:10px 0;padding:12px'});
-    wrap.append(el('div',{innerHTML:`<b>Q${idx+1}.</b> ${q.prompt}`}));
-    const row = el('div',{className:'flex', style:'margin-top:8px'});
-    q.options.forEach((opt,i)=>{
-      const b = el('button',{className:'btn', textContent:String(opt)});
-      b.onclick=()=>{ [...row.children].forEach(ch=>ch.classList.remove('pill','pill2')); b.classList.add('pill'); q.choice=i; };
-      row.append(b);
-    });
-    wrap.append(row);
-    container.append(wrap);
-  });
-}
-
-function gradeQuiz(items){
-  let ok=0; items.forEach(q=>{ if(q.choice===q.answer) ok++; });
-  const pct = Math.round((ok/items.length)*100);
-  return { ok, total: items.length, pct };
-}
-
-// ---------------------- GAME (lesson mini‑task) ----------------------
-function renderLessonGame(target){
-  const g = $('#game'); g.innerHTML='';
-  if(target.kind==='number'){
-    $('#lessonDesc').textContent = `Find all the ${target.value}s!`;
-    $('#heroNum').textContent = target.value;
-    const cells = shuffle([target.value,target.value,target.value,randInt(0,10),randInt(0,10),randInt(0,10),randInt(0,10),randInt(0,10),randInt(0,10),randInt(0,10)]);
-    cells.forEach(n=>{
-      const d = el('div',{className:'dot', textContent:String(n)});
-      d.onclick=()=>{
-        if(n===target.value){ d.classList.add('good'); Vault.awardStars(1); }
-        else { d.classList.add('bad'); }
-        d.style.pointerEvents='none';
+    const wrap=document.createElement("div");
+    wrap.className="quiz-q";
+    wrap.innerHTML=`<strong>Question ${idx+1}</strong><div>${q.prompt}</div>`;
+    const opts=document.createElement("div");opts.className="quiz-options";
+    q.options.forEach(opt=>{
+      const b=document.createElement("button");
+      b.textContent=opt;
+      b.onclick=()=>{
+        [...opts.children].forEach(x=>x.classList.remove("good"));
+        b.classList.add("good");q.choice=opt;
       };
-      g.append(d);
+      opts.appendChild(b);
     });
-  } else if(target.kind==='final'){
-    $('#lessonDesc').textContent = 'Time for the Final Exam! Go to Tests → Final.';
-    $('#heroNum').textContent = '🏁';
-    g.innerHTML = '<div class="muted">Open <b>Quarterly & Final</b> to begin.</div>';
-  } else {
-    $('#lessonDesc').textContent = target.text || 'Let\'s play!';
-    $('#heroNum').textContent = '★';
-    for(let i=0;i<10;i++){ const d=el('div',{className:'dot', textContent:String(randInt(0,10))}); g.append(d);}    
-  }
-}
-
-// ---------------------- TEACHER / GRADES ----------------------
-function asCSV(rows){ return rows.map(r=>r.map(v=>`"${String(v).replaceAll('"','""')}"`).join(',')).join('\n'); }
-function renderGradebook(){
-  const rows = [[ 'Date','Type','Week','Score','Percent' ]];
-  Vault.data.grades.forEach(g=> rows.push([ new Date(g.ts).toLocaleDateString(), g.kind, g.week||'', `${g.ok}/${g.total}`, g.pct+"%" ]));
-  const html = `<table style="width:100%;border-collapse:collapse">${ rows.map((r,i)=>`<tr>${r.map(c=>`<td style=\"border:1px solid #eee;padding:6px;${i?'' :'font-weight:700;background:#f8fafc'}\">${c}</td>`).join('')}</tr>`).join('') }</table>`;
-  $('#gradeTableWrap').innerHTML = html;
-  return rows;
-}
-
-// ---------------------- UI WIRING ----------------------
-function updateStars(){ $('#statStars').textContent = `⭐ ${App.state.stars}`; }
-
-function openModal(id){ $(id).classList.add('show'); }
-function closeModals(){ document.querySelectorAll('.modal').forEach(m=>m.classList.remove('show')); }
-
-// Build week bar
-function renderWeeks(){
-  const bar = $('#weekbar'); bar.innerHTML='';
-  CURRICULUM.forEach(w=>{
-    const ch = el('div',{className:'chip'+(w.week===App.state.week?' active':''), textContent:`W${w.week}`});
-    ch.onclick=()=>{ App.state.week=w.week; renderWeeks(); $('#planDetail').textContent = `Week ${w.week}: ${w.topic}`; const L = w.lessons[App.state.day-1]; renderLessonGame(L.target); };
-    bar.appendChild(ch);
+    wrap.appendChild(opts);area.appendChild(wrap);
   });
-  $('#planDetail').textContent = `Week ${App.state.week}: ${CURRICULUM[App.state.week-1].topic}`;
+  $("quizResult").textContent="";
+  $("quizModal").classList.add("open");
+  $("submitQuiz").onclick=()=>{
+    const correct=items.filter(q=>String(q.choice)===String(q.answer)).length;
+    const pct=Math.round(correct/items.length*100);
+    state.grades.push({week:state.week,score:pct,date:new Date().toISOString()});
+    state.stars+=pct>=80?5:pct>=60?2:0;
+    $("quizResult").textContent=`You scored ${correct}/${items.length} (${pct}%).`;
+    save();updateStats();
+  };
 }
 
-// Start today’s lesson
-$('#btnStart').onclick=()=>{
-  const w = CURRICULUM[App.state.week-1];
-  const L = w.lessons[App.state.day-1];
-  $('#lessonTitle').textContent = `${L.title} — ${w.topic}`;
-  renderLessonGame(L.target);
-};
-
-$('#btnLibrary').onclick=()=>{
-  const w = CURRICULUM[App.state.week-1];
-  alert(`Week ${w.week}: ${w.topic}\n\nLessons:\n` + w.lessons.map(x=>`• ${x.title}`).join('\n'));
-};
-
-// Weekly quiz
-$('#btnQuiz').onclick=()=>{
-  const quiz = buildQuiz(8);
-  openModal('#modalQuiz');
-  $('#quizTitle').textContent = `Weekly Quiz — Week ${App.state.week}`;
-  renderQuiz(quiz, $('#quizArea'));
-  $('#btnSubmitQuiz').onclick=()=>{
-    const res = gradeQuiz(quiz);
-    $('#quizMsg').textContent = `You got ${res.ok}/${res.total} (${res.pct}%).`;
-    Vault.logGrade({kind:'Weekly Quiz', week:App.state.week, ...res});
-    if(res.pct>=80) Vault.awardStars(5); else if(res.pct>=50) Vault.awardStars(2);
-  };
-};
-$('#btnExitQuiz').onclick=()=> closeModals();
-
-// Tests
-$('#btnTests').onclick=()=>{
-  const menu = `Choose a test:\n1) Quarter Test (Weeks 1–9)\n2) Quarter Test (10–18)\n3) Quarter Test (19–27)\n4) Quarter Test (28–36)\n5) Final Exam (Week 42)`;
-  const pick = prompt(menu,'1');
-  if(!pick) return;
-  const count = pick==='5'? 30 : 20;
-  openModal('#modalQuiz');
-  $('#quizTitle').textContent = (pick==='5'?'Final Exam':'Quarterly Test');
-  const quiz = buildQuiz(count);
-  renderQuiz(quiz, $('#quizArea'));
-  $('#btnSubmitQuiz').onclick=()=>{
-    const res = gradeQuiz(quiz);
-    $('#quizMsg').textContent = `You got ${res.ok}/${res.total} (${res.pct}%).`;
-    Vault.logGrade({kind: $('#quizTitle').textContent, week:App.state.week, ...res});
-    if(res.pct>=80) { Vault.awardStars(15); shower(); }
-    else if(res.pct>=60) Vault.awardStars(8);
-  };
-};
-
-// Rewards
-$('#btnRewards').onclick=()=>{
-  const s = Vault.data.stars||0;
-  const msg = s>=50 ? 'You unlocked the Rainbow Crown! 👑'
-            : s>=25 ? 'You earned a Golden Badge! 🥇'
-            : 'Keep going! Collect ⭐ to unlock prizes!';
-  alert(`${msg}\n\nStars: ${s}`);
-};
-
-// Cloud modal
-$('#btnCloud').onclick=()=> openModal('#modalCloud');
-
-// Teacher portal
-$('#btnTeacher').onclick=()=> openModal('#modalTeacher');
-
-// Teacher auth logic
-$('#btnTeacherLogin').onclick=async ()=>{
-  const pass = $('#teacherPass').value;
-  const hash = await sha256(pass);
-  if(!Vault.data.admin.hash){ $('#authMsg').textContent='No password set. Click "Set / Reset Password" first.'; return; }
-  if(hash===Vault.data.admin.hash){ $('#authMsg').textContent='Unlocked ✓'; $('#teacherPanel').classList.remove('hidden'); } else { $('#authMsg').textContent='Wrong password'; }
-};
-$('#btnTeacherSet').onclick=async ()=>{
-  const p1 = prompt('Set a new Teacher password:'); if(!p1) return;
-  const hash = await sha256(p1); Vault.data.admin.hash = hash; Vault.save(); alert('Password set.');
-};
-$('#btnViewGrades').onclick=()=> renderGradebook();
-$('#btnExportGrades').onclick=()=>{
-  const rows = renderGradebook();
-  const csv = asCSV(rows);
-  downloadText('grades.csv', csv, 'text/csv');
-};
-$('#btnResetStudent').onclick=()=>{
-  if(confirm('Reset all progress for this student?')){ Vault.data.stars=0; Vault.data.grades=[]; Vault.save(); App.state.stars=0; updateStars(); alert('Reset complete.'); }
-};
-
-// Cloud controls
-$('#btnExport').onclick=()=> downloadText('prek-math-vault.json', Vault.snapshot(), 'application/json');
-$('#btnImport').onclick=()=> pickFileText().then(txt=>{ if(!txt) return; const ok=Vault.import(txt); alert(ok?'Import successful.':'Import failed.'); });
-$('#btnBackupOPFS').onclick=async ()=>{ const ok = await OPFS.writeText('prek-math-vault.json', Vault.snapshot()); alert(ok?'Saved to OPFS.':'OPFS not available in this browser.'); };
-$('#btnListOPFS').onclick=async ()=>{ const list=await OPFS.list(); $('#opfsList').textContent = list.length? list.join('\n') : 'No OPFS support or empty.'; };
-
-// P2P wiring
-let peer;
-$('#btnOffer').onclick=async ()=>{ peer = PeerLink(); await peer.makeOffer(); };
-$('#btnAnswer').onclick=async ()=>{ peer = peer || PeerLink(); await peer.makeAnswer(); };
-$('#btnFinalize').onclick=async ()=>{ if(!peer) return; await peer.finalize(); };
-$('#btnSendVault').onclick=()=>{ if(peer) peer.sendVault(); };
-
-// File helpers
-function downloadText(filename, text, mime){
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([text],{type:mime||'text/plain'}));
-  a.download = filename; a.click(); URL.revokeObjectURL(a.href);
+function teacherView(){
+  const avg=state.grades.length?Math.round(state.grades.reduce((a,b)=>a+b.score,0)/state.grades.length):0;
+  $("teacherContent").innerHTML=`
+    <p><strong>Lessons completed:</strong> ${state.completed.size}/210</p>
+    <p><strong>Stars earned:</strong> ${state.stars}</p>
+    <p><strong>Quiz average:</strong> ${avg}%</p>
+    <p><strong>Current location:</strong> Week ${state.week}, Day ${state.day}</p>
+    <h3>Recent quiz results</h3>
+    ${state.grades.length?state.grades.slice(-10).reverse().map(g=>`<div class="quiz-q">Week ${g.week}: ${g.score}%</div>`).join(""):"<p>No quizzes recorded yet.</p>"}
+  `;
+  $("teacherModal").classList.add("open");
 }
-function pickFileText(){ return new Promise(res=>{ const inp=document.createElement('input'); inp.type='file'; inp.accept='.json,.txt'; inp.onchange=async ()=>{ const f=inp.files[0]; const txt = await f.text(); res(txt); }; inp.click(); }); }
 
-// Startup
-(async function init(){
-  Vault.load();
-  await OPFS.init();
-  renderWeeks();
-  $('#lessonTitle').textContent = `Week ${App.state.week} • Day ${App.state.day}`;
-  const L = CURRICULUM[App.state.week-1].lessons[0]; renderLessonGame(L.target);
+$("prevLesson").onclick=()=>moveLesson(-1);
+$("nextLesson").onclick=()=>moveLesson(1);
+$("startLesson").onclick=renderGame;
+$("quizBtn").onclick=openQuiz;
+$("teacherBtn").onclick=teacherView;
+$("hearBtn").onclick=()=>speak(dailyObjective()+" "+$("instruction").textContent);
+$("hintBtn").onclick=()=>speak(`Look for ${state.currentGame.answer}.`);
+$("completeBtn").onclick=()=>{
+  state.completed.add(lessonId());
+  state.stars+=2;
+  save();updateStats();renderWeeks();
+  $("instruction").textContent="Lesson complete! Two bonus stars earned.";
+  speak("Lesson complete. Great work.");
+};
+$("exportBtn").onclick=()=>{
+  const data={week:state.week,day:state.day,stars:state.stars,completed:[...state.completed],grades:state.grades};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");a.href=url;a.download="prek_math_cloud_progress.json";a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+};
+$("resetBtn").onclick=()=>{
+  if(!confirm("Reset all Pre-K Math Cloud progress?")) return;
+  state.week=1;state.day=1;state.stars=0;state.completed.clear();state.grades=[];
+  save();renderLesson();
+};
+$("closeQuiz").onclick=()=>$("quizModal").classList.remove("open");
+$("closeTeacher").onclick=()=>$("teacherModal").classList.remove("open");
+document.querySelectorAll(".modal").forEach(m=>m.onclick=e=>{if(e.target===m)m.classList.remove("open")});
 
-  // Close modal on backdrop click
-  document.querySelectorAll('.modal').forEach(m=> m.addEventListener('click', e=>{ if(e.target===m) m.classList.remove('show'); }));
+renderLesson();
 })();
 </script>
 </body>
